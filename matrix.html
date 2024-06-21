@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name to Binary Converter</title>
+    <style>
+        body {
+            background: url('matrix.gif') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ff00;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(0, 255, 51, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 100px;
+            max-width: 80%;
+            width: 600px;
+            word-wrap: break-word;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .question, .converter, .output-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .visible {
+            display: flex;
+        }
+
+        input, textarea {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        button {
+            width: 40%;
+            padding: 10px;
+            margin: 10px;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #80ff80;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00ff00;
+            color: #000000;
+        }
+
+        .nav-button {
+            background: #80ff80;
+            color: #000000;
+            margin-top: 20px;
+        }
+
+        #outputText, #outputName {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            background: rgba(128, 255, 128, 0.8);
+            color: #000000;
+            font-family: 'Courier New', Courier, monospace;
+            display: none;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .shaking {
+            animation: shake 1.5s infinite;
+        }
+
+        .typewriter-text {
+            display: inline-block;
+            border-right: 2px solid #00ff00;
+            white-space: normal;
+            overflow: hidden;
+            max-width: 100%;
+            word-wrap: break-word;
+            color: rgb(0, 37, 14);
+            animation: blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #00ff00; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="typewriter-text" id="typewriter"></h1>
+        <div id="question" class="question visible">
+            <button onclick="showConverter('toBinary')">Change your name to 0's and 1's</button>
+            <button onclick="showConverter('toText')">Change back from 0's and 1's to a name</button>
+        </div>
+        <div id="toBinary" class="converter">
+            <input type="text" id="inputText" placeholder="Type your name here...">
+            <button onclick="convertToBinary()">Convert to Binary</button>
+            <textarea id="outputText" rows="5" placeholder="Output..."></textarea>
+            <button class="nav-button shaking" onclick="goToHome()">⬅️ Return Home 🏡</button>
+        </div>
+        <div id="toText" class="converter">
+            <textarea id="inputBinary" rows="5" placeholder="Type your name in 0's and 1's here..."></textarea>
+            <button onclick="convertToText()">Convert to Text</button>
+            <input type="text" id="outputName" placeholder="Output...">
+            <button class="nav-button shaking" onclick="goToHome()">⬅️ Return Home 🏡</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const lastAction = localStorage.getItem('lastAction');
+            if (lastAction) {
+                showConverter(lastAction);
+            } else {
+                startTypewriter();
+            }
+        });
+
+        function showConverter(type) {
+            document.getElementById('question').classList.remove('visible');
+            document.getElementById('toBinary').classList.remove('visible');
+            document.getElementById('toText').classList.remove('visible');
+            document.getElementById(type).classList.add('visible');
+            localStorage.setItem('lastAction', type);
+
+            const typewriterElement = document.getElementById('typewriter');
+            typewriterElement.textContent = '';
+            typewriterElement.style.display = 'none'; // Hide the typewriter text
+        }
+
+        function convertToBinary() {
+            let text = document.getElementById('inputText').value;
+            let binary = '';
+            for (let i = 0; i < text.length; i++) {
+                binary += text.charCodeAt(i).toString(2) + ' ';
+            }
+            document.getElementById('outputText').value = `${binary.trim()}`;
+            document.getElementById('outputText').style.display = 'block';
+        }
+
+        function convertToText() {
+            let binary = document.getElementById('inputBinary').value;
+            let text = '';
+            let binaryArray = binary.split(' ');
+            for (let i = 0; i < binaryArray.length; i++) {
+                text += String.fromCharCode(parseInt(binaryArray[i], 2));
+            }
+            document.getElementById('outputName').value = `${text}`;
+            document.getElementById('outputName').style.display = 'block';
+        }
+
+        function copyOutput(id) {
+            const output = document.getElementById(id);
+            output.select();
+            output.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            alert('Copied the text: ' + output.value);
+        }
+
+        function goToHome() {
+            document.getElementById('question').classList.add('visible');
+            document.getElementById('toBinary').classList.remove('visible');
+            document.getElementById('toText').classList.remove('visible');
+            localStorage.removeItem('lastAction');
+
+            const typewriterElement = document.getElementById('typewriter');
+            typewriterElement.style.display = 'inline-block'; // Show the typewriter text
+            startTypewriter();
+        }
+
+        function startTypewriter() {
+            const typewriterElement = document.getElementById('typewriter');
+            const texts = [
+                "Text to Binary Converter",
+                "Change Your Name to 0's and 1's",
+                "Enjoy!!! 🤓"
+            ];
+            let textIndex = 0;
+            let charIndex = 0;
+            let currentText = texts[textIndex];
+            let typingSpeed = 100;
+            let deletingSpeed = 50;
+            let delayBetweenTexts = 2000;
+
+            function type() {
+                if (charIndex < currentText.length) {
+                    typewriterElement.textContent += currentText.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(type, typingSpeed);
+                } else {
+                    setTimeout(deleteText, delayBetweenTexts);
+                }
+            }
+
+            function deleteText() {
+                if (charIndex > 0) {
+                    typewriterElement.textContent = currentText.substring(0, charIndex - 1);
+                    charIndex--;
+                    setTimeout(deleteText, deletingSpeed);
+                } else {
+                    textIndex = (textIndex + 1) % texts.length;
+                    currentText = texts[textIndex];
+                    setTimeout(type, typingSpeed);
+                }
+            }
+
+            type();
+        }
+    </script>
+</body>
+</html>

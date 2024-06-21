@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P.3 Work</title>
+    <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
+    <style>
+ body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    width: 100%; /* Ensure body takes full width */
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #e65100;
+    margin-bottom: 20px;
+    text-align: center; /* Center-align text for better readability on mobile */
+    font-size: 1.5em; /* Adjust font size for better readability on smaller screens */
+}
+
+.search-container {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 500px; /* Limit the width of the search container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0 10px; /* Add padding to prevent the search container from touching the edges */
+}
+
+.search-input {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 100%; /* Make search input take full width of the container */
+    font-size: 16px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px; /* Limit the width of the cards container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0 10px; /* Add padding to prevent cards from touching the edges */
+}
+
+.no-results {
+    text-align: center;
+    font-size: 18px;
+    color: #e65100;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0 10px; /* Add padding to prevent text from touching the edges */
+}
+
+.card {
+    border: none;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background: #ffffff;
+    transition: transform 0.2s;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    width: 100%;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card h3 {
+    margin: 0 0 10px 0;
+    color: #ff6f00;
+    font-size: 1em; /* Adjust font size for better readability on smaller screens */
+}
+
+.view-button {
+    color: #ffffff;
+    background-color: #ff6f00;
+    padding: 10px 15px;
+    margin-top: 10px;
+    display: inline-block;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    font-size: 1em; /* Adjust font size for better readability on smaller screens */
+}
+
+.view-button:hover {
+    background-color: #e65100;
+}
+
+#pdf-viewer-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#pdf-viewer {
+    width: 100%; /* Adjust as needed */
+    height: 100%; /* Adjust as needed */
+    background: #ffffff;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#pdf-viewer iframe {
+    width: 100%; /* Make iframe width 100% of parent */
+    height: 100%; /* Make iframe height 100% of parent */
+    border-radius: 8px;
+}
+
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #d32f2f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+    font-size: 1em; /* Adjust font size for better readability on smaller screens */
+}
+
+.close-button:hover {
+    background: #b71c1c;
+}
+
+#scrollTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: #ff6f00;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+#scrollTopBtn:hover {
+    background-color: #e65100;
+}
+
+@media (max-width: 768px) {
+    .search-container, .no-results, .cards-container {
+        padding: 0 10px; /* Adjust padding for smaller screens */
+    }
+
+    .card {
+        padding: 15px; /* Adjust padding for smaller screens */
+    }
+
+    .view-button {
+        padding: 8px 12px; /* Adjust button padding for smaller screens */
+    }
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    padding: 10px;
+    margin: 0 5px;
+    border: none;
+    background-color: #ff6f00;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.pagination-button:hover {
+    background-color: #e65100;
+}
+
+.pagination-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.loading {
+            text-align: center;
+            font-size: 16px;
+            margin: 20px 0;
+            display: none; /* Initially hidden */
+        }
+
+        .loading .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 40px; /* Adjust logo size */
+            height: 40px; /* Adjust logo size */
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        .title {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .toggle {
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+            display: none; /* Initially hidden on larger screens */
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ff8c00;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .navbar .logo .title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin-left: 1rem;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: background-color 0.3s ease;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #e06b00;
+        }
+
+        .navbar .toggle {
+            display: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        .logout-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .toggle {
+                display: block;
+            }
+
+            .navbar ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar ul li {
+                margin: 10px 0;
+                text-align: center;
+            }
+
+            .navbar ul li a,
+            .navbar ul li .logout-button {
+                width: 100%;
+            }
+
+            .navbar ul.active {
+                display: flex;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="videos.html">Videos</a></li>
+            <li><a href="library.html">Library</a></li>
+        </ul>
+    </div>
+    <h1>Give Your Child The Best!</h1>
+    <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Search for content here..." onkeyup="filterCards()">
+    </div>
+    <div id="cards-container" class="cards-container"></div>
+    <div class="no-results" id="no-results" style="display: none;">No results found</div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        Loading more items...
+    </div>
+    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
+    <div id="pdf-viewer-modal">
+        <div id="pdf-viewer"><br><br>
+            <button class="close-button" onclick="closePdfViewer()">Close</button>
+            <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+    <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+    
+        const pdfData = [
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 TERM 3 ENGLISH WORK BOOK(0).pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 TERM 3 ENGLISH WORK BOOK.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 TERM 3 LIT II (SST) WORK BOOK.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 TERM 3 LIT II WORK BOOK  2023.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 TERM 3 LIT II WORK BOOK  2024 WORK BOOK OSEB EDUC. CONSULT.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 TERM 3 Literacy 1 WORK BOOK  2019.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 Thematic Curriculum FINAL(1).pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3_Thematic_Curr_21_November_2007_-_Edited.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3-P7 MTC COMBINED BREAK DOWN.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3RE (1).pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3-RELIGIOUS-EDUCATION-TERM-1-III-NOTES (1).pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/Evaluation Workbook P3 Science.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/FINAL- STANDARD KOLFRAM P3 SCIENCE TERM I WORKBOOK COLOURED.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/lesson notes P3 1.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3  LITERACY 2 TERM 3 LESSON NOTES_New1.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 Abridged Curriculum.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 CRE notes-1.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/p3 english lesson notes term 2 gram notes term 2.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 IRE notes.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 LIT II LESSON NOTES_Revised 2021.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 lit1 notes.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 lit1 notes-1.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 LIT1.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 LITERACY 11 TERM II LESSION NOTES (1)-1.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 LITERACY I LESSON NOTES 2016.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 LITERACY II TERMS 1 2.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 LITERACY II.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 LITERACY ONE  notes term one .pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 Literacy One Term Three-1.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 Material.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 Material_A3 1.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 math lesson notes for term 1,2,3 (1).pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 mathematics lesson notes for term 1 2 3.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 R.E LESSON NOTES @TJBEC.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 R.E TERM 1 NOTES.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 RE NOTES TERM 3.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 READING LESSON NOTES FOR TERM I.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 RELIGIOUS EDUCATION TERM 1 NOTES.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 sst notes term 1,2,3 -1.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 TEKART SCIENCE NOTES.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 TERM 3 ENGLISH WORK BOOK  2013.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 TERM 3 ENGLISH WORK BOOK  2019.pdf"},
+{ "pdfUrl": "P3 RESOURCES/LESSON NOTES/P3 TERM 3 ENGLISH WORK BOOK  docx.pdf"},
+
+];
+        let currentPage = 1;
+        const itemsPerPage = 12;
+        let filteredData = pdfData;
+        let isLoading = false;
+        let endOfData = false;
+    
+        function extractNameFromUrl(pdfUrl) {
+    const parts = pdfUrl.split('/');
+    const fileName = parts[parts.length - 1].replace('.pdf', '');
+    // Remove special characters except '&' and replace with spaces
+    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&]/g, ' ');
+    // Remove hyphens and underscores and replace with spaces
+    let nameWithoutHyphensUnderscores = nameWithoutSpecialChars.replace(/[-_]/g, ' ');
+    // Capitalize all letters
+    let capitalizedWords = nameWithoutHyphensUnderscores.toUpperCase();
+    return capitalizedWords;
+}
+
+
+
+    
+        function createCard(pdf) {
+            const card = document.createElement('div');
+            card.className = 'card';
+    
+            const title = document.createElement('h3');
+            title.textContent = extractNameFromUrl(pdf.pdfUrl);
+            card.appendChild(title);
+    
+            const viewButton = document.createElement('a');
+            viewButton.className = 'view-button';
+            viewButton.textContent = 'VIEW';
+            viewButton.onclick = () => openPdfViewer(pdf.pdfUrl);
+            card.appendChild(viewButton);
+    
+            return card;
+        }
+    
+        function displayCards() {
+            const cardsContainer = document.getElementById('cards-container');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const currentItems = filteredData.slice(start, end);
+    
+            currentItems.forEach(pdf => {
+                const card = createCard(pdf);
+                cardsContainer.appendChild(card);
+            });
+    
+            if (filteredData.length === 0) {
+                document.getElementById('no-results').style.display = 'block';
+            } else {
+                document.getElementById('no-results').style.display = 'none';
+            }
+    
+            isLoading = false;
+            document.getElementById('loading').style.display = 'none';
+    
+            if (currentItems.length < itemsPerPage) {
+                endOfData = true;
+                document.getElementById('end-message').style.display = 'block';
+            }
+        }
+    
+        function openPdfViewer(pdfUrl) {
+            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfIframe = document.getElementById('pdf-iframe');
+            pdfIframe.src = pdfUrl;
+            pdfViewerModal.style.display = 'flex';
+            setTimeout(() => {
+                pdfViewerModal.style.opacity = '1';
+                pdfViewer.style.transform = 'translateY(0)';
+            }, 10);
+        }
+    
+        function closePdfViewer() {
+            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfIframe = document.getElementById('pdf-iframe');
+            pdfViewer.style.transform = 'translateY(100%)';
+            pdfViewerModal.style.opacity = '0';
+            setTimeout(() => {
+                pdfIframe.src = '';
+                pdfViewerModal.style.display = 'none';
+            }, 500);
+        }
+    
+        function filterCards() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            filteredData = pdfData.filter(pdf => {
+                return extractNameFromUrl(pdf.pdfUrl).toLowerCase().includes(searchInput);
+            });
+            currentPage = 1;
+            endOfData = false;
+            document.getElementById('cards-container').innerHTML = '';
+            document.getElementById('end-message').style.display = 'none';
+            displayCards();
+        }
+    
+        function loadMoreCards() {
+            if (!isLoading && !endOfData && (filteredData.length > currentPage * itemsPerPage)) {
+                isLoading = true;
+                currentPage++;
+                document.getElementById('loading').style.display = 'block';
+                setTimeout(() => {
+                    displayCards();
+                }, 500); // Simulate a loading delay
+            }
+        }
+    
+        window.onscroll = function() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollTopBtn.style.display = 'block';
+            } else {
+                scrollTopBtn.style.display = 'none';
+            }
+    
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+                loadMoreCards();
+            }
+        };
+    
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    
+        window.onload = displayCards;
+    </script>
+    
+</body>
+</html>

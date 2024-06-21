@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P.5 Work</title>
+    <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
+    <style>
+ body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    width: 100%; /* Ensure body takes full width */
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #e65100;
+    margin-bottom: 20px;
+    text-align: center; /* Center-align text for better readability on mobile */
+    font-size: 1.5em; /* Adjust font size for better readability on smaller screens */
+}
+
+.search-container {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 500px; /* Limit the width of the search container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0 10px; /* Add padding to prevent the search container from touching the edges */
+}
+
+.search-input {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 100%; /* Make search input take full width of the container */
+    font-size: 16px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px; /* Limit the width of the cards container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0 10px; /* Add padding to prevent cards from touching the edges */
+}
+
+.no-results {
+    text-align: center;
+    font-size: 18px;
+    color: #e65100;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0 10px; /* Add padding to prevent text from touching the edges */
+}
+
+.card {
+    border: none;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background: #ffffff;
+    transition: transform 0.2s;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    width: 100%;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card h3 {
+    margin: 0 0 10px 0;
+    color: #ff6f00;
+    font-size: 1em; /* Adjust font size for better readability on smaller screens */
+}
+
+.view-button {
+    color: #ffffff;
+    background-color: #ff6f00;
+    padding: 10px 15px;
+    margin-top: 10px;
+    display: inline-block;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    font-size: 1em; /* Adjust font size for better readability on smaller screens */
+}
+
+.view-button:hover {
+    background-color: #e65100;
+}
+
+#pdf-viewer-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#pdf-viewer {
+    width: 100%; /* Adjust as needed */
+    height: 100%; /* Adjust as needed */
+    background: #ffffff;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#pdf-viewer iframe {
+    width: 100%; /* Make iframe width 100% of parent */
+    height: 100%; /* Make iframe height 100% of parent */
+    border-radius: 8px;
+}
+
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #d32f2f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+    font-size: 1em; /* Adjust font size for better readability on smaller screens */
+}
+
+.close-button:hover {
+    background: #b71c1c;
+}
+
+#scrollTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: #ff6f00;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+#scrollTopBtn:hover {
+    background-color: #e65100;
+}
+
+@media (max-width: 768px) {
+    .search-container, .no-results, .cards-container {
+        padding: 0 10px; /* Adjust padding for smaller screens */
+    }
+
+    .card {
+        padding: 15px; /* Adjust padding for smaller screens */
+    }
+
+    .view-button {
+        padding: 8px 12px; /* Adjust button padding for smaller screens */
+    }
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    padding: 10px;
+    margin: 0 5px;
+    border: none;
+    background-color: #ff6f00;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.pagination-button:hover {
+    background-color: #e65100;
+}
+
+.pagination-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.loading {
+            text-align: center;
+            font-size: 16px;
+            margin: 20px 0;
+            display: none; /* Initially hidden */
+        }
+
+        .loading .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 40px; /* Adjust logo size */
+            height: 40px; /* Adjust logo size */
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        .title {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .toggle {
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+            display: none; /* Initially hidden on larger screens */
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ff8c00;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .navbar .logo .title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin-left: 1rem;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: background-color 0.3s ease;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #e06b00;
+        }
+
+        .navbar .toggle {
+            display: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        .logout-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .toggle {
+                display: block;
+            }
+
+            .navbar ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar ul li {
+                margin: 10px 0;
+                text-align: center;
+            }
+
+            .navbar ul li a,
+            .navbar ul li .logout-button {
+                width: 100%;
+            }
+
+            .navbar ul.active {
+                display: flex;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="videos.html">Videos</a></li>
+            <li><a href="library.html">Library</a></li>
+        </ul>
+    </div>
+    <h1>Give Your Child The Best!</h1>
+    <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Search for content here..." onkeyup="filterCards()">
+    </div>
+    <div id="cards-container" class="cards-container"></div>
+    <div class="no-results" id="no-results" style="display: none;">No results found</div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        Loading more items...
+    </div>
+    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
+    <div id="pdf-viewer-modal">
+        <div id="pdf-viewer"><br><br>
+            <button class="close-button" onclick="closePdfViewer()">Close</button>
+            <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+    <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+    
+const pdfData = [
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/BROAD P5 MTC TERM 3.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/END P5 SCI.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/GVPS P5 ENG mid3 2023.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/GVPS P5 mid 3 SST 2023.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/GVPS P5 MTC mid3 2023.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/kolfram p5 English midterm set 1 2023 (1).pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/kolfram p5 MATHS midterm set 1 2023.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/kolfram p5 science midterm set 1 2023.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/MANTAPOL P5 EOT 2 SST.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/MBALE P6 & P5 MTC.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/MSSK P5 SCIE PAPER ONE 2024 TERM ONE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/MTC P5.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5  ENGLISH BEGINNING OF TERM II EXAMINATION 2018.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 ASSESSMENT WORK TERM II.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 BOT 3 ENG PRIME.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 BOT 3 MTC PRIME.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 BOT 3 SST PRIME.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 BOT SCIE MTC PRIME.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 BROAD SCIE TERM 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 END OF YEAR ENGLISH EXAM.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 END OF YEAR EXAM SCIENCE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 END OF YEAR SCI EXAM.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 end of year science 2022.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 END OF YEAR SCIENCE EXAM.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 ENG ASSESSMENT WORK TERM II.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/p5 eng END OF TERM ONE EXAMINATION 2024.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 ENG EOT 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 ENG MID.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/p5 eng sipro.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 ENGLISH (2).pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 ENGLISH RECESS WORK.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 ENGLISH YET HAPPY KIDZ SCHOOL HOLIDAY WORK.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 EOT III 2022 ENGLISH.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 EOT III 2022 SCIENCE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 EOT III 2022 SST the prime.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 EOT III EXAM ENGLISH 2022.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 EOT III SCIENCE 2022.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 HOLIDAY PACKAGE TERM III.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 HOLIDAY RECESS WORK SET TWO.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 INTEGRATED SCIENCE END OF TERM 2 EXAMINATIONS 2022..pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 KCCA EOT 3 SCIE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MATH.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MATHEMATICS SET 1 REVISION WORK NAMAGUNGA PRIMARY BOARDING SCHOOL (ecolebooks.com).pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 Mathematics.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 mid term III discussion exercise.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MID TERM III MATHS.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 Mid term III MTC Final set.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MID TERM III SCIENCE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 Mid Term III trial test 2022.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MID TERM SCIE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MOT 1 MTC.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MTC EOT 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MTC mid term III discussion exercise.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MTC MID.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MTC MOT 1 (2).pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MTC MOT 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 MTC PLACEMENT SET.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/p5 mtc sipro end 3.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 Pre End of year MTC exam.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 prime BOT 1 SCI 2023.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 PRIME BOT 3 ENG.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 prime sci BOT3.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 RAAYAT EOT 3 SCIE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 RAAYAT EOT 3 SST.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SCI NOTES YUDES.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 sci Prime BOT3.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/p5 sci sipro end 3.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/p5 sci topical workbook.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 sci_240117_091733.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 sci-1_240205_112524.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SCIE EOT 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SCIE MOT 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SCIENCE (2).pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SCIENCE EOT III 2022.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 science eot2 .pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 science eot3 .pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SCIENCE EXAM & MG.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 science mid term 1 .pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/p5 science mid term.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SCIENCE MOT 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SCIENCE YET HAPPY KIDZ SCHOOL HOLIDAY WORK.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SCIENCE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SIPRO BOT II MTC.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SIPRO MID-TERM 3 SCIENCE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SIPRO MTC MOT 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SST BOT 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SST EOT 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SST EOT III 2022.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SST EOT III.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 sst MOT 1Broad Examinations.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 SST.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 TERM 3 ENGLISH WORK BOOK  2019_074645.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 TERM III SCIENCE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5 The SIPRO MATHS EOT III 2022.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5_MATHEMATICS_SET_1_REVISION_WORK_NAMAGUNGA_PRIMARY_BOARDING_SCHOOL.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5_Science_Revision-1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5_SOCIAL_STUDIES_HALF_TERM_WORK_SET_5_2020_HILLSIDE_PRIMARY_SCHOOL.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5-CRE (1).pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/P5-Science-2021-SA2-Tao-Nan.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/PRIME BOT 3 P5 MTC.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/PRIME P5 BOT 3 MTC.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/PRIME P5 BOT 3 SCIE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/PRIME P5 BOT 3.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/PRIME P5 ENG EOT 2.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/PRIME P5 EOT 2 MTC.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/PRIME P5 EOT 3 SST.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/PRIME P5 EOT SCIE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/PRIME P5 EOY 3 MTC.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/PRIME P5 SST EOT 2.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/RAAYAT P5 EOT 3 ENG.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/RAAYAT P5 EOT 3 SCIE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/REPRODUCTION P5301 PAPER 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/Sipro end of term 11 Sci p5.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/SIPRO P5 BOT 2 SCIE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/Sipro P5 End of Term 3 Sci. Guide.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/SIPRO P5 EOT 2 SST.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/SIPRO P5 MOT 2 MTC.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/SIPRO P5 MOT 2 SCIE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/SIPRO P5 MOT 2 SST.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/SIPRO P5 MOT 3 SST.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/SIPRO P5 SST MID TERM 3.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/SKYLINE P5 EOT 2 SCIE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P5 BOT english ONE 2024.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/sure key P5 MTC end of term 2.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/TAAND P5 EOT 3 SCIE.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/TAAND P5 SCIE TERM 1.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/The prime EOY SST examination p5.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/THE PRIME P5 SST EOT III 2022.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/THE SIPRO EOT III P5 MTC EXAM 2022.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/The SIPRO P5 EOT III 2022 Mathematics.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/THE SIPRO P5 EOT III MATHS.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/Beginning of term 1 sst p5.pdf"},
+{ "pdfUrl": "P5 RESOURCES/PAST PAPERS/BROAD P5 EOT 3 SCIE.pdf"}
+];
+    
+        let currentPage = 1;
+        const itemsPerPage = 12;
+        let filteredData = pdfData;
+        let isLoading = false;
+        let endOfData = false;
+    
+        function extractNameFromUrl(pdfUrl) {
+    const parts = pdfUrl.split('/');
+    const fileName = parts[parts.length - 1].replace('.pdf', '');
+    // Remove special characters except '&' and replace with spaces
+    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&]/g, ' ');
+    // Remove hyphens and underscores and replace with spaces
+    let nameWithoutHyphensUnderscores = nameWithoutSpecialChars.replace(/[-_]/g, ' ');
+    // Capitalize all letters
+    let capitalizedWords = nameWithoutHyphensUnderscores.toUpperCase();
+    return capitalizedWords;
+}
+
+
+
+    
+        function createCard(pdf) {
+            const card = document.createElement('div');
+            card.className = 'card';
+    
+            const title = document.createElement('h3');
+            title.textContent = extractNameFromUrl(pdf.pdfUrl);
+            card.appendChild(title);
+    
+            const viewButton = document.createElement('a');
+            viewButton.className = 'view-button';
+            viewButton.textContent = 'VIEW';
+            viewButton.onclick = () => openPdfViewer(pdf.pdfUrl);
+            card.appendChild(viewButton);
+    
+            return card;
+        }
+    
+        function displayCards() {
+            const cardsContainer = document.getElementById('cards-container');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const currentItems = filteredData.slice(start, end);
+    
+            currentItems.forEach(pdf => {
+                const card = createCard(pdf);
+                cardsContainer.appendChild(card);
+            });
+    
+            if (filteredData.length === 0) {
+                document.getElementById('no-results').style.display = 'block';
+            } else {
+                document.getElementById('no-results').style.display = 'none';
+            }
+    
+            isLoading = false;
+            document.getElementById('loading').style.display = 'none';
+    
+            if (currentItems.length < itemsPerPage) {
+                endOfData = true;
+                document.getElementById('end-message').style.display = 'block';
+            }
+        }
+    
+        function openPdfViewer(pdfUrl) {
+            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfIframe = document.getElementById('pdf-iframe');
+            pdfIframe.src = pdfUrl;
+            pdfViewerModal.style.display = 'flex';
+            setTimeout(() => {
+                pdfViewerModal.style.opacity = '1';
+                pdfViewer.style.transform = 'translateY(0)';
+            }, 10);
+        }
+    
+        function closePdfViewer() {
+            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfIframe = document.getElementById('pdf-iframe');
+            pdfViewer.style.transform = 'translateY(100%)';
+            pdfViewerModal.style.opacity = '0';
+            setTimeout(() => {
+                pdfIframe.src = '';
+                pdfViewerModal.style.display = 'none';
+            }, 500);
+        }
+    
+        function filterCards() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            filteredData = pdfData.filter(pdf => {
+                return extractNameFromUrl(pdf.pdfUrl).toLowerCase().includes(searchInput);
+            });
+            currentPage = 1;
+            endOfData = false;
+            document.getElementById('cards-container').innerHTML = '';
+            document.getElementById('end-message').style.display = 'none';
+            displayCards();
+        }
+    
+        function loadMoreCards() {
+            if (!isLoading && !endOfData && (filteredData.length > currentPage * itemsPerPage)) {
+                isLoading = true;
+                currentPage++;
+                document.getElementById('loading').style.display = 'block';
+                setTimeout(() => {
+                    displayCards();
+                }, 500); // Simulate a loading delay
+            }
+        }
+    
+        window.onscroll = function() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollTopBtn.style.display = 'block';
+            } else {
+                scrollTopBtn.style.display = 'none';
+            }
+    
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+                loadMoreCards();
+            }
+        };
+    
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    
+        window.onload = displayCards;
+    </script>
+    
+</body>
+</html>

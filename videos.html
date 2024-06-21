@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events and Occasions</title>
+    <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #fff3e0; /* Light orange background */
+            color: #5a2d0c; /* Dark orange text */
+            margin: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ff8c00; /* Bright orange */
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .navbar .title {
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .navbar .toggle {
+            font-size: 28px;
+            color: #fff;
+            cursor: pointer;
+            display: none;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin-left: 20px;
+        }
+
+        .navbar ul li a,
+        .navbar ul li .logout-button {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover,
+        .navbar ul li .logout-button:hover {
+            background-color: #ff4500; /* Darker shade of orange */
+        }
+
+        .logout-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .toggle {
+                display: block;
+            }
+
+            .navbar ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar ul li {
+                margin: 10px 0;
+                text-align: center;
+            }
+
+            .navbar ul li a,
+            .navbar ul li .logout-button {
+                width: 100%;
+            }
+
+            .navbar ul.active {
+                display: flex;
+            }
+        }
+
+        #searchContainer {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        #searchInput {
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border: 2px solid #ff8c00;
+            border-radius: 5px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            flex: 1 1 30%;
+            max-width: 30%;
+            max-height: 300px; /* Set maximum height */
+            background: linear-gradient(to bottom right, #ffcc80, #ff8c00); /* Gradient orange background */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+            overflow: hidden; /* Hide overflow */
+        }
+
+        .card img {
+            max-width: 100%;
+            max-height: 150px; /* Set maximum height */
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card p {
+            margin: 10px 0 0;
+            color: #5a2d0c; /* Dark orange text */
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            color: #ff4500; /* Darker shade of orange */
+            margin-top: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #ffcc80; /* Light orange background */
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #ff8c00; /* Bright orange border */
+            width: 80%;
+            max-width: 700px;
+            position: relative;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #ff8c00; /* Bright orange for close button */
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ff4500; /* Darker shade of orange for hover/focus */
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content iframe {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+        }
+
+        footer {
+            background-color: #ffcc80; /* Light orange background */
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            border-top: 2px solid #ff8c00; /* Bright orange border */
+        }
+
+        footer p {
+            text-align: center;
+            color: #5a2d0c; /* Dark orange text */
+        }
+
+        footer span {
+            color: #ff4500; /* Darker shade of orange */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="videos.html">Videos</a></li>     
+            <li><a href="library.html">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+
+    <div id="searchContainer">
+        <input type="text" id="searchInput" placeholder="Search for videos...">
+    </div>
+    <div class="container" id="eventsContainer">
+        <!-- Events will be loaded here dynamically -->
+    </div>
+    <div class="no-results" id="noResults">No results found. Please try a different search term.</div>
+    <!-- Modals will be loaded here dynamically -->
+    <div id="modalsContainer"></div>
+
+    <footer class="footer">
+        <div>
+            <p>
+                &copy; Glorious Schools <span id="currentYear"></span><br>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const videos = [
+            { id: "1", imgSrc: "thumbnails/Screenshot (753).png", imgAlt: "Tour Day Thumbnail", title: "Dancing to Nkwagala Nnyo Song", videoSrc: "2cca9fb16c4f8e613d0cb5fb09b617ca.mp4" },
+            { id: "2", imgSrc: "thumbnails/Screenshot (754).png", imgAlt: "Video", title: "Dancing to Rush Song", videoSrc: "3d06fa2a73f5e4cdef18380f8ef4aec4.mp4" },
+            { id: "3", imgSrc: "thumbnails/Screenshot (755).png", imgAlt: "Video", title: "PLE Results", videoSrc: "3e355ebc106e6a8d1ef03eeb717e5f94.mp4" },
+            { id: "4", imgSrc: "thumbnails/Screenshot (756).png", imgAlt: "Video", title: "School Advert", videoSrc: "8a56230c1328278e2185036507e2cf4a.mp4" },
+            { id: "5", imgSrc: "thumbnails/Screenshot (757).png", imgAlt: "Video", title: "Happy Birthday", videoSrc: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4" },
+            { id: "6", imgSrc: "thumbnails/Screenshot (758).png", imgAlt: "Tour Day Thumbnail", title: "Dancing to Ruger's Song", videoSrc: "74fdd3a7c64f3c6f50c6517600d92bcb.mp4" },
+            { id: "7", imgSrc: "thumbnails/Screenshot (759).png", imgAlt: "Video", title: "Dancing to Honey Song", videoSrc: "925d1f65256112e69ddb85760e670fa5.mp4" },
+            { id: "8", imgSrc: "thumbnails/Screenshot (760).png", imgAlt: "Video", title: "Miming", videoSrc: "1813ef9accab0fdc282c9bb9d8c9924a.mp4" },
+            { id: "9", imgSrc: "thumbnails/Screenshot (763).png", imgAlt: "Video", title: "Dramatisation", videoSrc: "a7a2db2155b82abbbd58a753349e913c.mp4" },
+            { id: "10", imgSrc: "thumbnails/Screenshot (764).png", imgAlt: "Video", title: "Cultural Dance", videoSrc: "ad9b30abc42bc3f3c34f74698eba1cd9.mp4" },
+            { id: "11", imgSrc: "thumbnails/Screenshot (765).png", imgAlt: "Video", title: "School Ad", videoSrc: "c3dfb9b91256165f2f58326519cdd28e.mp4" },
+            { id: "12", imgSrc: "thumbnails/Screenshot (766).png", imgAlt: "Video", title: "Writing Paka Kuwulira Bubi 😂🤣", videoSrc: "c194ce16dcb733361d9139d20ea8fd1d.mp4" },
+            { id: "13", imgSrc: "thumbnails/Screenshot (767).png", imgAlt: "Video", title: "Glorious Kindergaten", videoSrc: "ddad261aa9585a5600cff02f5984657e.mp4" },
+            { id: "14", imgSrc: "thumbnails/Screenshot (768).png", imgAlt: "Video", title: "Glorious Schools' Carnival", videoSrc: "de885fe4f8d765e5939656e9f3647e34.mp4" },
+            { id: "15", imgSrc: "thumbnails/Screenshot (769).png", imgAlt: "Video", title: "Compilation", videoSrc: "f4c84ca2f5e03701338e3f573c34bd61.mp4" }
+        ];
+
+        const eventsContainer = document.getElementById('eventsContainer');
+        const modalsContainer = document.getElementById('modalsContainer');
+
+        const createEventElement = (video) => {
+            const eventElement = document.createElement('div');
+            eventElement.className = 'card';
+            eventElement.dataset.modal = video.id;
+            eventElement.innerHTML = `
+                <img src="${video.imgSrc}" alt="${video.imgAlt}">
+                <p>${video.title}</p>
+            `;
+            return eventElement;
+        };
+
+        const createModalElement = (video) => {
+            const modalElement = document.createElement('div');
+            modalElement.id = video.id;
+            modalElement.className = 'modal';
+            modalElement.innerHTML = `
+                <div class="modal-content">
+                    <span class="close" data-modal="${video.id}">&times;</span>
+                    <h5>${video.title}</h5>
+                    <iframe data-video-src="${video.videoSrc}" frameborder="0" allowfullscreen></iframe>
+                </div>
+            `;
+            return modalElement;
+        };
+
+        const openModal = (id) => {
+            const modal = document.getElementById(id);
+            const iframe = modal.querySelector('iframe');
+            iframe.src = iframe.getAttribute('data-video-src');
+            modal.style.display = 'block';
+        };
+
+        const closeModal = (id) => {
+            const modal = document.getElementById(id);
+            const iframe = modal.querySelector('iframe');
+            iframe.src = ''; // Reset the src to stop the video
+            modal.style.display = 'none';
+        };
+
+        videos.forEach(video => {
+            eventsContainer.appendChild(createEventElement(video));
+            modalsContainer.appendChild(createModalElement(video));
+        });
+
+        document.querySelectorAll('.card[data-modal]').forEach(event => {
+            event.addEventListener('click', function () {
+                openModal(this.getAttribute('data-modal'));
+            });
+        });
+
+        document.querySelectorAll('.modal .close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function () {
+                closeModal(this.getAttribute('data-modal'));
+            });
+        });
+
+        window.addEventListener('click', function (event) {
+            document.querySelectorAll('.modal').forEach(modal => {
+                if (event.target === modal) {
+                    closeModal(modal.id);
+                }
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchQuery = this.value.toLowerCase();
+            let hasResults = false;
+            document.querySelectorAll('.card').forEach(card => {
+                const title = card.querySelector('p').textContent.toLowerCase();
+                if (title.includes(searchQuery)) {
+                    card.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            document.getElementById('noResults').style.display = hasResults ? 'none' : 'block';
+        });
+
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        function logout() {
+            // Implement your logout functionality here
+            alert("Logged out");
+        }
+    </script>
+</body>
+</html>

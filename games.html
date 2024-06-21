@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games</title>
+    <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #fff3e0; /* Light orange background */
+            color: #5a2d0c; /* Dark orange text */
+            margin: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ff8c00; /* Bright orange */
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .navbar .title {
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .navbar .toggle {
+            font-size: 28px;
+            color: #fff;
+            cursor: pointer;
+            display: none;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin-left: 20px;
+        }
+
+        .navbar ul li a,
+        .navbar ul li .logout-button {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover,
+        .navbar ul li .logout-button:hover {
+            background-color: #ff4500; /* Darker shade of orange */
+        }
+
+        .logout-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .toggle {
+                display: block;
+            }
+
+            .navbar ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar ul li {
+                margin: 10px 0;
+                text-align: center;
+            }
+
+            .navbar ul li a,
+            .navbar ul li .logout-button {
+                width: 100%;
+            }
+
+            .navbar ul.active {
+                display: flex;
+            }
+        }
+
+        #searchContainer {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        #searchInput {
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border: 2px solid #ff8c00;
+            border-radius: 5px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            flex: 1 1 30%;
+            max-width: 30%;
+            max-height: 300px; /* Set maximum height */
+            background: linear-gradient(to bottom right, #ffcc80, #ff8c00); /* Gradient orange background */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+            overflow: hidden; /* Hide overflow */
+        }
+
+        .card img {
+            max-width: 100%;
+            max-height: 150px; /* Set maximum height */
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card p {
+            margin: 10px 0 0;
+            color: #5a2d0c; /* Dark orange text */
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            color: #ff4500; /* Darker shade of orange */
+            margin-top: 20px;
+        }
+
+        footer {
+            background-color: #ffcc80; /* Light orange background */
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            border-top: 2px solid #ff8c00; /* Bright orange border */
+        }
+
+        footer p {
+            text-align: center;
+            color: #5a2d0c; /* Dark orange text */
+        }
+
+        footer span {
+            color: #ff4500; /* Darker shade of orange */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="videos.html">Videos</a></li>
+            <li><a href="library.html">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+
+    <div id="searchContainer">
+        <input type="text" id="searchInput" placeholder="Search for games...">
+    </div>
+    <div class="container" id="gamesContainer">
+        <!-- Games will be loaded here dynamically -->
+    </div>
+    <div class="no-results" id="noResults">No results found. Please try a different search term.</div>
+
+    <footer class="footer">
+        <div>
+            <p>
+                &copy; Glorious Schools <span id="currentYear"></span><br>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const games = [
+            { id: "1", imgSrc: "Screenshot (770).png", imgAlt: "Drag", title: "Drag Game", link: "drag.html" },
+            { id: "2", imgSrc: "Screenshot (773).png", imgAlt: "Click", title: "Click Game", link: "click.html" },
+            { id: "3", imgSrc: "Screenshot (774).png", imgAlt: "Keyboard", title: "Typing Game", link: "typing.html" },
+            { id: "4", imgSrc: "Screenshot (780).png", imgAlt: "Falling", title: "Falling Game", link: "falling.html" },
+            { id: "5", imgSrc: "matrix.gif", imgAlt: "Matrix", title: "0's and 1's Game", link: "matrix.html" },
+
+            // Add more games as needed
+        ];
+
+        const gamesContainer = document.getElementById('gamesContainer');
+
+        const createGameElement = (game) => {
+            const gameElement = document.createElement('div');
+            gameElement.className = 'card';
+            gameElement.innerHTML = `
+                <img src="${game.imgSrc}" alt="${game.imgAlt}">
+                <p>${game.title}</p>
+            `;
+            gameElement.addEventListener('click', () => {
+                window.location.href = game.link;
+            });
+            return gameElement;
+        };
+
+        games.forEach(game => {
+            gamesContainer.appendChild(createGameElement(game));
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchQuery = this.value.toLowerCase();
+            let hasResults = false;
+            document.querySelectorAll('.card').forEach(card => {
+                const title = card.querySelector('p').textContent.toLowerCase();
+                if (title.includes(searchQuery)) {
+                    card.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            document.getElementById('noResults').style.display = hasResults ? 'none' : 'block';
+        });
+
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        function logout() {
+            // Implement your logout functionality here
+            alert("Logged out");
+        }
+    </script>
+</body>
+</html>

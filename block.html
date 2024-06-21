@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .block {
+            width: 100px;
+            height: 20px;
+            background-color: #4CAF50;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            transition: transform 0.5s;
+            animation: float 2s infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .letter {
+            font-size: 24px;
+            position: absolute;
+            top: -30px;
+            transition: transform 1s;
+        }
+
+        .block.elevate .letter {
+            transform: translateY(-200px);
+        }
+
+        .block.tilt {
+            animation: tilt 1s forwards;
+        }
+
+        .block.tilt .letter {
+            animation: slideOff 1.5s forwards;
+        }
+
+        @keyframes tilt {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(45deg); }
+        }
+
+        @keyframes slideOff {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+            70% { transform: translate(70px, 70px); }
+            100% { transform: translate(70px, 500px); }
+        }
+
+        .game-over {
+            display: none;
+            font-size: 24px;
+            color: red;
+            position: absolute;
+            bottom: 20px;
+        }
+
+        .game-over.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="block" id="block">
+    <div class="letter" id="letter">A</div>
+</div>
+<div class="game-over" id="gameOver">Game Over</div>
+
+<script>
+    const block = document.getElementById('block');
+    const letterElement = document.getElementById('letter');
+    const gameOverMessage = document.getElementById('gameOver');
+    let currentChar = 'A';
+
+    function getRandomChar() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        return chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key.toUpperCase() === currentChar) {
+            block.classList.add('elevate');
+            setTimeout(() => {
+                block.classList.remove('elevate');
+                currentChar = getRandomChar();
+                letterElement.textContent = currentChar;
+            }, 500);
+        } else {
+            block.classList.add('tilt');
+            letterElement.addEventListener('animationend', () => {
+                gameOverMessage.classList.add('show');
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>Typing Game</h1>
+        <div id="score-display">YOUR SCORE: 0</div>
+
+        <div id="word-container">
+            <span id="word-display"></span>
+        </div>
+        <input type="text" id="input-box" placeholder="Type the word here...">
+        <div id="words-remaining">Words remaining: 10</div>
+        <div id="timer">⏰ TIME LEFT: 10s ⏰</div>
+
+        <div id="falling-score">+10</div>
+    </div>
+    <div id="instruction-modal" class="modal">
+        <div class="modal-content">
+            <h2>Instructions</h2>
+            <p>Type the words displayed within the given time limit. Each correct word scores 10 points. The game consists of 10 random words.</p>
+            <button id="start-game-button" class="btn btn-primary heartbeat">Start Game</button>
+        </div>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>SCORE BOARD</h2>
+            <p id="final-score"></p>
+            <button id="restart-button" onclick="resetGame()">Play Again</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

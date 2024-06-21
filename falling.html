@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Fall Game</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #F7D08A; /* Light orange background */
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+    #game-container {
+      position: relative;
+      width: 300px; /* Reduced width */
+      height: 400px; /* Reduced height */
+      border: 2px solid #FFAC5E; /* Darker orange border */
+      overflow: hidden;
+      background-color: #FFEEC9; /* Lighter orange background */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      display: none; /* Initially hidden */
+    }
+    .letter {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      color: #333;
+      pointer-events: none;
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 18px;
+      color: #333;
+    }
+    #score-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+      display: none;
+    }
+    #play-again-button {
+      display: none;
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 15px 30px; /* Added padding */
+      font-size: 10px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #FF6347; /* Tomato red */
+      border: 2px solid #FF6347; /* Tomato red border */
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, border-color 0.3s;
+      animation: pulse-animation 1.5s infinite; /* Pulse animation */
+    }
+    #play-again-button:hover,
+    #play-again-button:focus {
+      background-color: #FF0000; /* Brighter red on hover */
+      border-color: #FF0000; /* Brighter red border on hover */
+    }
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      color: #333;
+    }
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    }
+    .modal-content {
+      background-color: #FFEEC9; /* Lighter orange background for modal */
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #FFAC5E; /* Darker orange border for modal */
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .modal h2 {
+      color: #333;
+    }
+    .close {
+      color: #FF6347; /* Tomato red close button */
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: #FF0000; /* Brighter red on hover */
+      text-decoration: none;
+      cursor: pointer;
+    }
+    /* Start button styled like Bootstrap */
+    .start-button {
+      display: block;
+      width: 200px;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+      background-color: #FF6347; /* Tomato red */
+      border: 2px solid #FF6347; /* Tomato red border */
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, border-color 0.3s;
+      animation: blink-animation 1s infinite; /* Blink animation */
+    }
+    .start-button:hover,
+    .start-button:focus {
+      background-color: #FF0000; /* Brighter red on hover */
+      border-color: #FF0000; /* Brighter red border on hover */
+    }
+    @keyframes blink-animation {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* Pulse animation for the Play Again button */
+    @keyframes pulse-animation {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    /* Animation for the +1 effect */
+    .plus-one {
+      position: absolute;
+      font-size: 20px;
+      color: #FF6347; /* Tomato red */
+      opacity: 0;
+      animation: pop-and-fade 1s forwards;
+    }
+    @keyframes pop-and-fade {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-20px) scale(1.5);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-40px) scale(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="modal" id="instructionsModal">
+    <div class="modal-content">
+      <h2>Instructions</h2>
+      <p>Type the falling letters, numbers, and special characters before they reach the ground. Use your keyboard to type the corresponding character.</p>
+      <button class="start-button" onclick="startGame()">Start Game</button>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <div id="score">Score: 0</div>
+    <div id="score-text"></div>
+    <button id="play-again-button" onclick="startGame()">PLAY AGAIN ⌨</button>
+  </div>
+
+  <script>
+    const gameContainer = document.getElementById('game-container');
+    const scoreElement = document.getElementById('score');
+    const scoreTextElement = document.getElementById('score-text');
+    const playAgainButton = document.getElementById('play-again-button');
+    const instructionsModal = document.getElementById('instructionsModal');
+    let score = 0;
+    let gameRunning = false;
+    let currentLetter = null;
+
+    function createLetter() {
+      if (!gameRunning) return;
+
+      const letter = document.createElement('div');
+      letter.classList.add('letter');
+      letter.textContent = randomCharacter();
+      gameContainer.appendChild(letter);
+
+      // Randomize the horizontal position within the game container
+      const maxWidth = gameContainer.offsetWidth - letter.offsetWidth;
+      const randomLeft = Math.random() * maxWidth;
+      letter.style.left = `${randomLeft}px`;
+
+      let position = 0;
+      const fallInterval = setInterval(() => {
+        if (gameRunning) {
+          position += 2; // Adjust speed here (higher value = faster)
+          letter.style.top = `${position}px`;
+
+          const gameHeight = gameContainer.offsetHeight;
+          if (position >= gameHeight) {
+            clearInterval(fallInterval);
+            gameContainer.removeChild(letter);
+            if (currentLetter === letter) currentLetter = null;
+            if (gameRunning) endGame();
+          }
+        } else {
+          clearInterval(fallInterval);
+        }
+      }, 10);
+
+      currentLetter = letter;
+    }
+
+    function endGame() {
+      gameRunning = false;
+      scoreTextElement.textContent = `Final Score: ${score}`;
+      scoreTextElement.style.display = 'block';
+      playAgainButton.style.display = 'block';
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (gameRunning && currentLetter !== null) {
+        const keyPressed = event.key;
+        if (currentLetter.textContent === keyPressed) {
+          score++;
+          scoreElement.textContent = `Score: ${score}`;
+          showPlusOne(currentLetter);
+          gameContainer.removeChild(currentLetter);
+          currentLetter = null;
+          createLetter();
+        }
+      }
+    });
+
+    function showPlusOne(letter) {
+      const plusOne = document.createElement('div');
+      plusOne.classList.add('plus-one');
+      plusOne.textContent = '+1';
+      const rect = letter.getBoundingClientRect();
+      plusOne.style.left = `${rect.left + rect.width / 2}px`;
+      plusOne.style.top = `${rect.top}px`;
+      document.body.appendChild(plusOne);
+
+      setTimeout(() => {
+        plusOne.remove();
+      }, 1000);
+    }
+
+    function randomCharacter() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_';
+      return characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    function openModal() {
+      instructionsModal.style.display = 'block';
+    }
+
+    function closeModal() {
+      instructionsModal.style.display = 'none';
+    }
+
+    function startGame() {
+      score = 0;
+      scoreElement.textContent = 'Score: 0';
+      scoreTextElement.style.display = 'none';
+      playAgainButton.style.display = 'none';
+      gameRunning = true;
+      instructionsModal.style.display = 'none';
+      gameContainer.style.display = 'block';
+      createLetter();
+    }
+
+    openModal(); // Open instructions modal when page loads
+  </script>
+</body>
+</html>

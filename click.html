@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Skills Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+        }
+        .game-area {
+            position: relative;
+            width: 80vw;
+            height: 80vh;
+            border: 2px solid #000;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+        .shape {
+            position: absolute;
+            cursor: pointer;
+        }
+        .circle {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+        .rectangle {
+            width: 100px;
+            height: 50px;
+        }
+        .square {
+            width: 50px;
+            height: 50px;
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 50px solid;
+        }
+        .star {
+            clip-path: polygon(
+                50% 0%, 61% 35%, 98% 35%, 
+                68% 57%, 79% 91%, 50% 70%, 
+                21% 91%, 32% 57%, 2% 35%, 
+                39% 35%
+            );
+            width: 50px;
+            height: 50px;
+        }
+        .oval {
+            width: 80px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        .scoreboard, .timer, .instruction {
+            position: absolute;
+            top: 10px;
+            font-size: 20px;
+        }
+        .scoreboard {
+            left: 10px;
+        }
+        .timer {
+            right: 10px;
+        }
+        .instruction {
+            top: 40px;
+            left: 10px;
+        }
+        .modal {
+            display: flex;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+        }
+        .modal-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .modal-button:hover {
+            background-color: #45a049;
+        }
+
+        .pentagon, .hexagon, .diamond, .heart {
+    width: 50px;
+    height: 50px;
+}
+.pentagon {
+    clip-path: polygon(50% 0%, 95% 35%, 77% 92%, 23% 92%, 5% 35%);
+}
+.hexagon {
+    clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
+}
+.diamond {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.heart {
+    clip-path: polygon(50% 15%, 61% 16%, 72% 25%, 80% 40%, 50% 80%, 20% 40%, 28% 25%, 39% 16%);
+}
+
+    </style>
+</head>
+<body>
+    <div class="game-area" id="gameArea">
+        <div class="scoreboard" id="scoreBoard">Score: 0</div>
+        <div class="timer" id="timer">Time Left: 3 Seconds</div>
+        <div class="instruction" id="instruction">Instruction: Click on the shape</div>
+    </div>
+
+    <!-- Instructions Modal -->
+    <div id="instructionsModal" class="modal">
+        <div class="modal-content">
+            <h2> Mouse Clicking Game!</h2>
+            <p>Instructions:</p>
+            <ul style="text-align: left;">
+                <li>Click on the given shapes correctly.</li>
+                <li>Make sure that you click on the given shape within 3 seconds.</li>
+                <li>If you click on a shape correctly, you'll get 1 mark.</li>
+            </ul>
+            <button class="modal-button" onclick="startGame()">Start Game</button>
+        </div>
+    </div>
+
+    <!-- Level 2 Instructions Modal -->
+<div id="level2InstructionsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h2>Welcome to Level 2!</h2>
+        <p>Instructions:</p>
+        <ul style="text-align: left;">
+            <li>Click on the pentagon</li>
+            <li>Right click on the hexagon</li>
+            <li>Double click on the diamond</li>
+            <li>Click on the heart</li>
+        </ul>
+        <button class="modal-button" onclick="startLevel2()">Start Level 2</button>
+    </div>
+</div>
+
+
+    <!-- Score Modal -->
+    <div id="scoreModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2> Score Board</h2>
+            <p id="finalScore"></p>
+            <button class="modal-button" onclick="restartGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const instructionsLevel2 = {
+    'pentagon': 'Click on the pentagon',
+    'hexagon': 'Right click on the hexagon',
+    'diamond': 'Double click on the diamond',
+    'heart': 'Click on the heart'
+};
+
+let currentLevel = 1;
+
+function getRandomShape(level) {
+    const shapesLevel1 = ['circle', 'rectangle', 'square', 'triangle', 'star', 'oval'];
+    const shapesLevel2 = ['pentagon', 'hexagon', 'diamond', 'heart'];
+
+    if (level === 1) {
+        return shapesLevel1[Math.floor(Math.random() * shapesLevel1.length)];
+    } else {
+        return shapesLevel2[Math.floor(Math.random() * shapesLevel2.length)];
+    }
+}
+
+function createShape() {
+    if (shapesDisplayed >= totalShapes) {
+        if (currentLevel === 1 && score === 10) {
+            showLevel2Instructions();
+        } else {
+            endGame();
+        }
+        return;
+    }
+
+    clearInterval(timer);
+    timeLeft = 3;
+    timerElement.textContent = `Time Left: ${timeLeft} seconds`;
+    timer = setInterval(updateTimer, 1000);
+
+    const shapeType = getRandomShape(currentLevel);
+    const shape = document.createElement('div');
+    shape.classList.add('shape', shapeType);
+
+    shape.style.backgroundColor = getRandomColor();
+
+    const x = Math.random() * (gameArea.clientWidth - 100);
+    const y = Math.random() * (gameArea.clientHeight - 100 - safeMarginTop) + safeMarginTop;
+
+    shape.style.left = `${x}px`;
+    shape.style.top = `${y}px`;
+
+    if (currentLevel === 1) {
+        instructionElement.textContent = `Instruction: ${instructions[shapeType]}`;
+    } else {
+        instructionElement.textContent = `Instruction: ${instructionsLevel2[shapeType]}`;
+    }
+
+    shape.addEventListener('click', (event) => {
+        if (currentLevel === 1) {
+            handleShapeClick(shapeType, shape);
+        } else {
+            handleShapeClickLevel2(shapeType, shape);
+        }
+    });
+
+    shape.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        if (currentLevel === 1) {
+            handleShapeContextMenu(shapeType, shape);
+        } else {
+            handleShapeContextMenuLevel2(shapeType, shape);
+        }
+    });
+
+    shape.addEventListener('dblclick', () => {
+        if (currentLevel === 1) {
+            handleShapeDoubleClick(shapeType, shape);
+        } else {
+            handleShapeDoubleClickLevel2(shapeType, shape);
+        }
+    });
+
+    gameArea.appendChild(shape);
+}
+
+function handleShapeClick(shapeType, shape) {
+    if (['square', 'triangle', 'star', 'oval'].includes(shapeType)) {
+        score++;
+        scoreBoard.textContent = `Score: ${score}`;
+        shape.remove();
+        shapesDisplayed++;
+        createShape();
+    }
+}
+
+function handleShapeContextMenu(shapeType, shape) {
+    if (shapeType === 'circle') {
+        score++;
+        scoreBoard.textContent = `Score: ${score}`;
+        shape.remove();
+        shapesDisplayed++;
+        createShape();
+    }
+}
+
+function handleShapeDoubleClick(shapeType, shape) {
+    if (shapeType === 'rectangle') {
+        score++;
+        scoreBoard.textContent = `Score: ${score}`;
+        shape.remove();
+        shapesDisplayed++;
+        createShape();
+    }
+}
+
+function handleShapeClickLevel2(shapeType, shape) {
+    if (['pentagon', 'heart'].includes(shapeType)) {
+        score++;
+        scoreBoard.textContent = `Score: ${score}`;
+        shape.remove();
+        shapesDisplayed++;
+        createShape();
+    }
+}
+
+function handleShapeContextMenuLevel2(shapeType, shape) {
+    if (shapeType === 'hexagon') {
+        score++;
+        scoreBoard.textContent = `Score: ${score}`;
+        shape.remove();
+        shapesDisplayed++;
+        createShape();
+    }
+}
+
+function handleShapeDoubleClickLevel2(shapeType, shape) {
+    if (shapeType === 'diamond') {
+        score++;
+        scoreBoard.textContent = `Score: ${score}`;
+        shape.remove();
+        shapesDisplayed++;
+        createShape();
+    }
+}
+
+function showLevel2Instructions() {
+    level2InstructionsModal.style.display = 'flex';
+}
+
+function startLevel2() {
+    level2InstructionsModal.style.display = 'none';
+    currentLevel = 2;
+    score = 0;
+    shapesDisplayed = 0;
+    scoreBoard.textContent = `Score: ${score}`;
+    createShape();
+}
+
+function endGame() {
+    finalScore.textContent = `Your score is ${score} out of 10.`;
+    scoreModal.style.display = 'flex';
+}
+
+        const gameArea = document.getElementById('gameArea');
+        const scoreBoard = document.getElementById('scoreBoard');
+        const timerElement = document.getElementById('timer');
+        const instructionElement = document.getElementById('instruction');
+        const instructionsModal = document.getElementById('instructionsModal');
+        const scoreModal = document.getElementById('scoreModal');
+        const finalScore = document.getElementById('finalScore');
+        let score = 0;
+        let timer;
+        let timeLeft = 3; // Number of seconds to click the shape
+        let shapesDisplayed = 0;
+        const totalShapes = 10;
+        const safeMarginTop = 70; // Safe margin at the top in pixels
+
+        const instructions = {
+            'circle': 'Right click on the circle',
+            'rectangle': 'Double click on the rectangle',
+            'square': 'Click on the square',
+            'triangle': 'Click on the triangle',
+            'star': 'Click on the star',
+            'oval': 'Click on the oval'
+        };
+
+        function getRandomShape() {
+            const shapes = ['circle', 'rectangle', 'square', 'triangle', 'star', 'oval'];
+            return shapes[Math.floor(Math.random() * shapes.length)];
+        }
+
+        function getRandomColor() {
+            const colors = ['#ff6347', '#ffa07a', '#8a2be2', '#5f9ea0', '#d2691e', '#ff7f50'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function createShape() {
+            if (shapesDisplayed >= totalShapes) {
+                endGame();
+                return;
+            }
+
+            // Reset timer
+            clearInterval(timer);
+            timeLeft = 3;
+            timerElement.textContent = `Time Left: ${timeLeft} seconds`;
+            timer = setInterval(updateTimer, 1000);
+
+            // Create a new shape
+            const shapeType = getRandomShape();
+            const shape = document.createElement('div');
+            shape.classList.add('shape', shapeType);
+            
+            if (shapeType === 'triangle') {
+                shape.style.borderBottomColor = getRandomColor();
+            } else {
+                shape.style.backgroundColor = getRandomColor();
+            }
+
+            const x = Math.random() * (gameArea.clientWidth - 100);
+            const y = Math.random() * (gameArea.clientHeight - 100 - safeMarginTop) + safeMarginTop;
+
+            shape.style.left = `${x}px`;
+            shape.style.top = `${y}px`;
+
+            // Set the instruction for the shape
+            instructionElement.textContent = `Instruction: ${instructions[shapeType]}`;
+
+            shape.addEventListener('click', (event) => {
+                if (shapeType === 'square' || shapeType === 'triangle' || shapeType === 'star' || shapeType === 'oval') {
+                    score++;
+                    scoreBoard.textContent = `Score: ${score}`;
+                    shape.remove();
+                    shapesDisplayed++;
+                    createShape();
+                }
+            });
+
+            shape.addEventListener('contextmenu', (event) => {
+                event.preventDefault();
+                if (shapeType === 'circle') {
+                    score++;
+                    scoreBoard.textContent = `Score: ${score}`;
+                    shape.remove();
+                    shapesDisplayed++;
+                    createShape();
+                }
+            });
+
+            shape.addEventListener('dblclick', () => {
+                if (shapeType === 'rectangle') {
+                    score++;
+                    scoreBoard.textContent = `Score: ${score}`;
+                    shape.remove();
+                    shapesDisplayed++;
+                    createShape();
+                }
+            });
+
+            gameArea.appendChild(shape);
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            timerElement.textContent =`Time Left: ${timeLeft} seconds`;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                const shape = document.querySelector('.shape');
+                if (shape) {
+                    shape.remove();
+                }
+                shapesDisplayed++;
+                createShape();
+            }
+        }
+
+        function endGame() {
+            finalScore.textContent = `Your score is ${score} out of 10.`;
+            scoreModal.style.display = 'flex';
+        }
+
+        function restartGame() {
+            score = 0;
+            shapesDisplayed = 0;
+            scoreBoard.textContent = `Score: ${score}`;
+            scoreModal.style.display = 'none';
+            createShape();
+        }
+
+        function startGame() {
+            instructionsModal.style.display = 'none';
+            createShape();
+        }
+
+        function initGame() {
+            instructionsModal.style.display = 'flex';
+        }
+
+        initGame();
+    </script>
+</body>
+</html>

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P.7 Work</title>
+    <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
+    <style>
+ body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    width: 100%; /* Ensure body takes full width */
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #e65100;
+    margin-bottom: 20px;
+    text-align: center; /* Center-align text for better readability on mobile */
+    font-size: 1.5em; /* Adjust font size for better readability on smaller screens */
+}
+
+.search-container {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 500px; /* Limit the width of the search container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0 10px; /* Add padding to prevent the search container from touching the edges */
+}
+
+.search-input {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 100%; /* Make search input take full width of the container */
+    font-size: 16px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px; /* Limit the width of the cards container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0 10px; /* Add padding to prevent cards from touching the edges */
+}
+
+.no-results {
+    text-align: center;
+    font-size: 18px;
+    color: #e65100;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    padding: 0 10px; /* Add padding to prevent text from touching the edges */
+}
+
+.card {
+    border: none;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background: #ffffff;
+    transition: transform 0.2s;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    width: 100%;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card h3 {
+    margin: 0 0 10px 0;
+    color: #ff6f00;
+    font-size: 1em; /* Adjust font size for better readability on smaller screens */
+}
+
+.view-button {
+    color: #ffffff;
+    background-color: #ff6f00;
+    padding: 10px 15px;
+    margin-top: 10px;
+    display: inline-block;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    font-size: 1em; /* Adjust font size for better readability on smaller screens */
+}
+
+.view-button:hover {
+    background-color: #e65100;
+}
+
+#pdf-viewer-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#pdf-viewer {
+    width: 100%; /* Adjust as needed */
+    height: 100%; /* Adjust as needed */
+    background: #ffffff;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#pdf-viewer iframe {
+    width: 100%; /* Make iframe width 100% of parent */
+    height: 100%; /* Make iframe height 100% of parent */
+    border-radius: 8px;
+}
+
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #d32f2f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+    font-size: 1em; /* Adjust font size for better readability on smaller screens */
+}
+
+.close-button:hover {
+    background: #b71c1c;
+}
+
+#scrollTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: #ff6f00;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+#scrollTopBtn:hover {
+    background-color: #e65100;
+}
+
+@media (max-width: 768px) {
+    .search-container, .no-results, .cards-container {
+        padding: 0 10px; /* Adjust padding for smaller screens */
+    }
+
+    .card {
+        padding: 15px; /* Adjust padding for smaller screens */
+    }
+
+    .view-button {
+        padding: 8px 12px; /* Adjust button padding for smaller screens */
+    }
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    padding: 10px;
+    margin: 0 5px;
+    border: none;
+    background-color: #ff6f00;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.pagination-button:hover {
+    background-color: #e65100;
+}
+
+.pagination-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.loading {
+            text-align: center;
+            font-size: 16px;
+            margin: 20px 0;
+            display: none; /* Initially hidden */
+        }
+
+        .loading .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 40px; /* Adjust logo size */
+            height: 40px; /* Adjust logo size */
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        .title {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .toggle {
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+            display: none; /* Initially hidden on larger screens */
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ff8c00;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .navbar .logo .title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin-left: 1rem;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: background-color 0.3s ease;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #e06b00;
+        }
+
+        .navbar .toggle {
+            display: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        .logout-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .toggle {
+                display: block;
+            }
+
+            .navbar ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar ul li {
+                margin: 10px 0;
+                text-align: center;
+            }
+
+            .navbar ul li a,
+            .navbar ul li .logout-button {
+                width: 100%;
+            }
+
+            .navbar ul.active {
+                display: flex;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="videos.html">Videos</a></li>
+            <li><a href="library.html">Library</a></li>
+        </ul>
+    </div>
+    <h1>Give Your Child The Best!</h1>
+    <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Search for content here..." onkeyup="filterCards()">
+    </div>
+    <div id="cards-container" class="cards-container"></div>
+    <div class="no-results" id="no-results" style="display: none;">No results found</div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        Loading more items...
+    </div>
+    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
+    <div id="pdf-viewer-modal">
+        <div id="pdf-viewer"><br><br>
+            <button class="close-button" onclick="closePdfViewer()">Close</button>
+            <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+    <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+    
+        const pdfData = [
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/1985 PLE SCIENCE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/1987 PLE MATH.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/2019 PLE science-min.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/2020 PLE ENG (1).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/2020 PLE SCIENCE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/2020 PLE SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/BECO 2022 MOCK EXAMINATIONS PHYSICS PAPER 1 FINAL.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Beginning of term 1 sst p7.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/BOBI WINE PLE 3 OF 4 MATHEMATICS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/BOT MTC P7.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/BOT STEM P7.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/COMPUTER GEEK SST END OF TERM ONE P7 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/CONFIDENTIAL FOR S.6 PRACTICAL PAPER 3 PRE MOCK 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Detailed Explanation on no.5 PLE 2023 BY SMILE EDUCATION CONSULTANCY BUSUNJU WHAT'S APP +256779680288.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/DIGIDA SST PIC-SST P7  FULL YEAR 2024  EDITION.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Dr EXCEL IN PLE 3.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Dr EXCEL IN PLE 4.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Dr EXCEL IN PLE 5.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Dr EXCEL IN PLE 6.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/EDUCAN PRE-MOCK EXAMINATIONS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG  PLE-BLUEPRINT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG  PLE-BLUEPRINT 2-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG  PLE-BLUEPRINT 3.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG  PLE-BLUEPRINT 4.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG  PLE-BLUEPRINT 5.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG E-LEARN UG PRE PLE GUIDE 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG KCCA MOCK 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG PLE GUIDE -BLUEPRINT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG PLE GUIDE -BLUEPRINT 2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG PLE GUIDE -BLUEPRINT 3.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG PLE GUIDE -BLUEPRINT 4.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG PLE GUIDE -BLUEPRINT 5.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG PLE ITEM 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG REAL PLE - 4- 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG REAL PLE - 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENGLISH PLE TIPS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ENG-PRE-MOCK-SET-TWO (1).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Ent 3 Ankole joint mock 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/EOT1 P7 SCI.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/EWALDI CRE LESSON NOTES FOR P7.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/F4 B.MATHS MS PRE MOCK ISESE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/F4 ISESE HISTORY PRE MOCK.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/FEEB PLE 2022.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/FINAL OFFICIAL GUIDE PLE SCIENCE 2022 TEACH & LEARN SCI. 0752041080.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/FINAL OFFICIAL MARKING GUIDE PLE ENGLISH 2023 TEACH & LEARN ENG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/FINAL OFFICIAL PLE ENG. 2022 MARKING GUIDE TEACH & LEARN ENG 0752041080-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/FINAL OFFICIAL PLE SCIENCE 2023 MARKING GUIDE TEACH & LEARN 0752041080 (2 files merged) (1).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/FINAL OFFICIAL PLE SCIENCE 2023 MARKING GUIDE TEACH & LEARN 0752041080 (2 files merged).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/FRACTIONS 1 PASS PLE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/GUIDANCE TO PLE(MTCS)_031236.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Hillside mock all. (1).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/HILLSIDE NAALYA P7 QUALITY CHECK I 2024 GET MORE  ON 0762120706.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/HILLSIDE NAALYA P7 SST 2024 QUALITY CHECK 2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/HODEB mock paper 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Hormisdallen P.7 ENG PRE-PLE SET 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Hormisdallen P.7 MTC PRE-PLE SET 1 SAMPLE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Hormisdallen P.7 MTC PRE-PLE SET 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Hormisdallen P.7 SCI PRE-PLE SET 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Hormisdallen P.7 SST PRE-PLE SET 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/KABALE DIOCESE P.7 SCIENCE PRE-MOCK 2023.JOIN WHATSAPP GROUP DAILY DISCUSSION IN SCIENCE THROUGH 0776641849(TR.SAMUEL TWEHEYO).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/KAMOTA MOCK EXAMINATION  2023 S.6 ENTREPRENEURSHIP EDUCATION.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/KAMPALA JUNIOR ACADEMY P7 SET 6 ENGLISH HOLIDAY WORK.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/KCC, P7 MTCS, MID TERM 1, 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/KCCA MOCKS ENGLISH @ GALIWANGO.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/KCCA SST MOCK 2022.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/KIBULI P7 SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/KMC MTC PLE 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/kolfram integgrated science mock marking guides 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/kolfram P7 set end of term one exams 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/kolfram set III p7 exams integrates science with guide P7.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Lecture (4) Anatomy of Lung & Pleura.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/LUWERO MOCK FULL SET BY PAULTECH SERVICES UG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MARKING GUIDE FOR PLE - INTEGRATED SCIENCE 2023. Prepared by 21st Century Forum Teachers..pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MARKING GUIDE FOR PLE - INTEGRATED SCIENCE 2023. Prepared by 21st Century Forum Teachers.-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MARKING GUIDE FOR PLE - INTEGRATED SCIENCE 2023. Prepared by the teachers of science in 21st Century forum.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MARKING_GUIDE_FOR_PLE_INTEGRATED_SCIENCE_2023_Prepared_by_21st_Century.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MASAKA CITY MOCK SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MASAKA MOCK 1-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Mathematics 2 BUGANDA EXAMINATIONS COUNCIL MOCKS 2019.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MATHEMATICS PLE TIPS 2023 BASED ONMODERATED.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/maths p7.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Maths PLE 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MOCK P.7 MTC NAMIREMBE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MOCK P.7 SCI NAMIREMBE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MOCK SST 004 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MSSK P7 SST & RE PAPER ONE 2024 TERM ONE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MTC P.7 MOCK KAPSHA 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MTC P.7 MOCK KAPSHA 2023-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MTC PLE - 5 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MTC PLE Guide -1 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MTC PLE Guide -2 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MTC PLE Guide -2 BLUEPRINT-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MTC PLE Guide -3 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MTC PLE Guide -4 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/MTC PLE PRE REGISTRATION SET I.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/NAALYA S.S.B INTERNAL MOCK SET 2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/NEREB MOCK PAPER 2 S.6 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/NEXUS PRE-PLE ENG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/NEXUS PRE-PLE SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/NUMBER PATTERNS AND SEQUENCE PASS PLE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/OPERATION ON WHOLE NUMBERS PASS PLE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P. 7 SCIENCE HILLSIDE MOCK SET 2 (ecolebooks.com).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.4 2023 MTC LPTE MOCK.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.4 2023 SCI LPTE MOCK.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.4 2023 SST LPTE MOCK.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.4 ENG LPTE MOCK.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7  2023 MTC PLE MOCK - GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7  MTC PRE PLE SET 1 KAMPALA PARENTS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 2023 ENG PLE SPECIAL MOCK.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 2023 MTC PLE SPECIAL MOCK.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 ENG PLE SETf.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 ENG PRE PLE 2022.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 ENG PRE PLE REG 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 MATHS EXTERNAL MOCK 2020 (ecolebooks.com).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 MTC PRE PLE REG 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 PLE MTC SERIES 2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 PLE PREP -SCI guide-1_034823.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 PLE SCI - SERIES 3 GUIDE_034835.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 PLE- SCI 3.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 SCI PRE PLE REG 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 SPECIAL MOCK SCI (Autosaved).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 SST PLE PREP SET 2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P.7 SST PRE PLE REG 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P3-P7 MTC COMBINED BREAK DOWN.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/p4,p6&p7 MTC notes all terms.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ART.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 BOT 1 ALL  EXAMS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 BOT 1 SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 BOT I 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENG ASSESSMENT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENG BOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENG MOT 1 (2).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENG MOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENG PRE-REG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENG SET 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENG SET 3.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENG TERM 3.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENG WAKISO INT A2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENGLISH EOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 English exams 2023 set iii.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENGLISH MARKING GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENGLISH MID TERM ONE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 English mock.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/p7 English prep 4.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 ENGLISH TERM ONE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/p7 EOT1 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 INTEGRATED SCIENCE MARKING GUIDE PRE-PLE EXAMINATIONS SERIES 2 SUREKEY EXAMINATIONS BOARD 2022.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 INTEGRATED SCIENCE PLE MOCK EXAMINATION SUREKEY 2022..pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 Kitgum Municipal English PLE Mock II 2022.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MATHS  MID TERM ONE EXAMINATIONS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MATHS MOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MID MARCH ENGLISH.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MOT 1 MTC.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MTC BOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MTC MOT 1 HORMISDALLEN.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MTC MOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MTC PLE MARKING GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MTC PRE REG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MTC SET 1 TERM 1, BROAD.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MTC SET 1 TERM ONE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MTC SET 1_041514.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MTC SET 2_041518.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/p7 MTC sipro.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 MTC TERM 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/p7 P. 7 Term I Revision Test.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 PRE P.L.E MOCK.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 PRE PLE ENGLISH SET I 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 PRE PREP SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 prime BOT 1 SCI 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 QB ALL SUBJECTS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 Qn BANK ALL SUBJECTS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 RELIGIOUS EDUCATION 20199.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCI ENCE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCI PRIME MID Mar @JuvMasterplanner.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCI SCHEME, 2023_044020.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCI WAKISO INT A2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 sci.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCIE BOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCIE EOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCIE MID MARCH.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/p7 scie pre reg.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCIE PRE-REG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCIE PRIME BOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCIE SCHEME.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SCIE TERM 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/p7 scie tes.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 Science.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SST & RE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SST ASSESSMENT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SST BOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SST MARKING GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SST MOT 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SST PLACEMENT TEST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SST PLE QUESTION BANK 2018.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SST PRE REG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SST PRE-REG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 SST SCHEMES III  III.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7 TOPICAL SCIENCE QUESTIONS 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7-ENGLISH-LESSON-NOTES-TERM-ONE-2020 (2).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7-ENGLISH-LESSON-NOTES-TERM-ONE-2020.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7-ENGLISH-REPORTED-SPEECH-lesson-27.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7-GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/P7-SCIENCE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PARAMOUNT SCIE P7 T 1_240112_104642.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PARAMOUNT SCIE P7 T 2-1_240112_104606.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PARAMOUNT SCIE P7 T 3_240112_104710.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PARAMOUNT SCIENCE NOTES FOR P7.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PIC-SST P7  FULL YEAR 2024  EDITION.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE  SST MARKING GUIDE (1).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2022 Mtc Marking guide forward to others.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2022 Science tekartlearning.com.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2022 SST GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 FULL SET.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 MARKING GUIDE - ENGLISH By Comprehension Experts, Vond Publishers Ltd.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 MATHEMATICS GUIDE BY TR FRANKLIEY.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 MATHEMATICS GUIDE BY TR FRANKLIEY-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 MTC PROVISIONAL GUIDE_231111_171755.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 Possible solutions.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 SCIENCE MARKING GUIDE BY BES-Ug_112916.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 SCIENCE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 SST GUIDE BY SMILE WHAT'S APP 0779680288 BUSUNJU.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023 SST MARKING GUIDE BY TEACHER AMOOTI.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE 2023-2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ple 2024 mtc guide.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE AND OTHER TOPICAL QNS.(ALGEBRA) SPACED.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE AND OTHER TOPICAL QUESTIONS 5.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE ENG 2006.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE ENG 2008.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE ENG 2015.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE ENG 2016.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE ENG 2017.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE ENG 2018.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE ENG 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE ENG.MUTEESA.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE ENGLISH 2022 MARKING GUIDE TEACH & LEARN ENG 0752041080.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE ENGLISH 2023 DIDIX.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE INTEGRATED 2023 links.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE INTEGRATED SCIENCE 2020-2000docx-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE INTEGRATED SCIENCE GUIDE, 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2006.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2008.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2009.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2010.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2011.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2013.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2014.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2015.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2016.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2017(0).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2018.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2023 GUIDE BY TR.EMMANUEL EKEYA.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC guide 2023 by SSEBALU.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE MTC GUIDE BY WAMULONGO JAMES .pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE RESULTS 2023 ST.JUDE PRIMARY SCHOOL KYEGOBE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE Results 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE RESULTS 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE RESULTS ANALYSIS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE REVISED EDITION FINAL_MOCK UP.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE REVISION EXAMS SCIENCE PLE 2022.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2006.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2007.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2008.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2009.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2010.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2011.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2012.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2013.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2016.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2017.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2018.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI 2023 DIDIX.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCI. QUESTION BANK 2006-2018.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCIENCE 2010- 2022.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCIENCE MARKING GUIDE 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SCIENCE MARKING GUIDE 2023-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE Sciences 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SST 2015.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SST 2016.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SST 2017.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SST 2023 DIDIX.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE SST.MUTEESA.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE Tips 2023 mathematics.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE TOPICAL QUESTIONS  (SET CONCEPTS) spaced.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE_MAP_AND_DATA_INTERPRETATION_WORK[1].pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/ple20202markingguide printable.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE-INTEGRATED-SCIENCE-GUIDE-2022-TEACH-LEARN-SCI.- (1).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE-Science-2017.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PLE-statistics.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PRE PLE ENG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PRE PLE SCIE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PRE PLE SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PRE-PLE ENG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PRE-PLE MTC.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Prime End 1 2024 P7 Eng.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/PRIME P7 MID TERM II SCIENCE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/prime pre mock 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/REAL PLE 2023 ENGLISH  -  English Academic Experts.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/REAL PLE 2023 ENGLISH  shared - E-Learn.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/REAL PLE 2023 SCIENCE  shared - E-Learn.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/REAL PLE 2023 SST  shared - E-Learn.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Scence PLE Marking Guide 2023 Tekart Learning.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE - 1 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE - 2 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE - 2 BLUEPRINT-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE - 3 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE - 3 BLUEPRINT-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE - 4 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE - 4 BLUEPRINT-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE - 5 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE - 5 BLUEPRINT-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE GUIDE - 1 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE GUIDE - 3 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE GUIDE - 4 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI PLE GUIDE - 5 BLUEPRINT.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCI REAL PLE -5 -(1).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCIE P.7 surekey special mock-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCIENCE CONSOLIDATION P7 BY MR KALULE(1).pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/science p7.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SCIENCE PLE TIPS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SET 1 MOCK EXAM_085004.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SET 4 MOCK EXAM_101352.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SIPRO BOT1 P7 MTC 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SIPRO MID MARCH MTC  P7 2024 @ PROF. MOSES VIP.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Skyline MTC P7 P. L. E - 2022 SET 01-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SMILE EXCEL IN PLE ISSUE 1 BY SMILE EDUCATION CONSULTANCY BUSUNJU WHAT'S APP 0779680288.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Social Studies and Religious Education TERM 1 P7.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Social studies sure key ple 2020.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SST E-LEARN UG PRE PLE GUIDE 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SST P7 Qn. & Ans. Approach.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SST P7 Scheme of work Term I 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/sst p7.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SST PLE TIPS.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SST PRE PLE REGISTRATION SET I.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P7 BOT SST ONE 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P7 MATHS PRE REGISTRATION  SET THREE 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P7 MATHS PRE REGISTRATION  SET THREE 2024-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P7 SCIENCE PRE REGISTRATION  SET THREE 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P7 SCIENCE PRE REGISTRATION  SET THREE GUIDES 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P7 SCIENCE PRE REGISTRATION  SET TWO 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P7 SST MID TERM ONE 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P7 SST PRE REGISTRATION  SET THREE 2024 MARKING GUIDES.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P7 SST PRE REGISTRATION  SET three 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/STANDARD KOLFRAM P7 SST PRE REGISTRATION  SET TWO 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Stem English p7 set 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/stem p7 mid sst.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SURE KEY PLE 2021 - ENG I-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SURE KEY PLE 2021 - SCI I-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SURE KEY PLE 2021 - SCI III.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SURE KEY PLE 2021 - SST 1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SURE KEY PLE 2021 ENGLISH II  GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Sure key Pre-PLE Magic series English.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Sure key Pre-PLE Magic series Science.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Sure key Pre-PLE Magic series SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY  PRE PLE TARGET SERIES SST 2022.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY EXAMINATIONS BOARD PRE PLE TARGET SERIES 2022 SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY EXAMINATIONS BOARD PRE-PLE TARGET SERIES 2022 INTEGRATED SCIENCE MARKING GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY EXAMINATIONS BOARD PRE-PLE TARGET SERIES 2022 SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY MOCK ENGLISH 2022-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY PLE ENG.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY PLE SCIE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY PRE PLE TARGET SERIES MTC 2022-2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY PRE-PLE ENG (2)-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY PRE-PLE ENG-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY PRE-PLE EXAMINATION SERIES ONE 2022 SCIENCE MARKING GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY PRE-PLE EXAMINATION SERIES ONE 2022 SCIENCE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY PRE-PLE EXAMINATION SERIES ONE 2022 SST MARKING GUIDE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY PRE-PLE EXAMINATION SERIES ONE 2022 SST.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY PRE-PLE EXAMINATION SERIES TWO 2022 SCIENCE.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/SUREKEY SOCIAL STUDIES MOCK 2022.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Surekey special mock Eng2023-2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Surekey special mock Sci 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/Tekart P7 Maths Revision Book Vol 2_230623_155057.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/THE EYE PRE- PLE SST. SET I 2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/THE PEARL PLE ENG 2006 2.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/THE PEARL PLE ENG 2006.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/The real 2020 PLE MTC.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/The real 2020 PLE MTC-1.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/THE SIPRO P7 B. O. T 1 2024.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/TR.PAUL EPIDU PLE SCI GUIDE-2023.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/UNEB PLE SCIENCE .pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/UNEB PRIMARY LEAVING EXAMINATION (PLE)-2022 ENGLISH .pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/UPPER-PRIMARY-SCIENCE P6-P7 WORKBOOK.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/WADEB 2019  MOCK FULL SET 0779680288.pdf"},
+{ "pdfUrl": "P7 RESOURCES/PAST PAPERS/3.B) ENGLISH SUBJECT COMPETENCES FOR P.2 TO P7.pdf"}
+];
+        let currentPage = 1;
+        const itemsPerPage = 12;
+        let filteredData = pdfData;
+        let isLoading = false;
+        let endOfData = false;
+    
+        function extractNameFromUrl(pdfUrl) {
+    const parts = pdfUrl.split('/');
+    const fileName = parts[parts.length - 1].replace('.pdf', '');
+    // Remove special characters except '&' and replace with spaces
+    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&]/g, ' ');
+    // Remove hyphens and underscores and replace with spaces
+    let nameWithoutHyphensUnderscores = nameWithoutSpecialChars.replace(/[-_]/g, ' ');
+    // Capitalize all letters
+    let capitalizedWords = nameWithoutHyphensUnderscores.toUpperCase();
+    return capitalizedWords;
+}
+
+
+
+    
+        function createCard(pdf) {
+            const card = document.createElement('div');
+            card.className = 'card';
+    
+            const title = document.createElement('h3');
+            title.textContent = extractNameFromUrl(pdf.pdfUrl);
+            card.appendChild(title);
+    
+            const viewButton = document.createElement('a');
+            viewButton.className = 'view-button';
+            viewButton.textContent = 'VIEW';
+            viewButton.onclick = () => openPdfViewer(pdf.pdfUrl);
+            card.appendChild(viewButton);
+    
+            return card;
+        }
+    
+        function displayCards() {
+            const cardsContainer = document.getElementById('cards-container');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const currentItems = filteredData.slice(start, end);
+    
+            currentItems.forEach(pdf => {
+                const card = createCard(pdf);
+                cardsContainer.appendChild(card);
+            });
+    
+            if (filteredData.length === 0) {
+                document.getElementById('no-results').style.display = 'block';
+            } else {
+                document.getElementById('no-results').style.display = 'none';
+            }
+    
+            isLoading = false;
+            document.getElementById('loading').style.display = 'none';
+    
+            if (currentItems.length < itemsPerPage) {
+                endOfData = true;
+                document.getElementById('end-message').style.display = 'block';
+            }
+        }
+    
+        function openPdfViewer(pdfUrl) {
+            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfIframe = document.getElementById('pdf-iframe');
+            pdfIframe.src = pdfUrl;
+            pdfViewerModal.style.display = 'flex';
+            setTimeout(() => {
+                pdfViewerModal.style.opacity = '1';
+                pdfViewer.style.transform = 'translateY(0)';
+            }, 10);
+        }
+    
+        function closePdfViewer() {
+            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfIframe = document.getElementById('pdf-iframe');
+            pdfViewer.style.transform = 'translateY(100%)';
+            pdfViewerModal.style.opacity = '0';
+            setTimeout(() => {
+                pdfIframe.src = '';
+                pdfViewerModal.style.display = 'none';
+            }, 500);
+        }
+    
+        function filterCards() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            filteredData = pdfData.filter(pdf => {
+                return extractNameFromUrl(pdf.pdfUrl).toLowerCase().includes(searchInput);
+            });
+            currentPage = 1;
+            endOfData = false;
+            document.getElementById('cards-container').innerHTML = '';
+            document.getElementById('end-message').style.display = 'none';
+            displayCards();
+        }
+    
+        function loadMoreCards() {
+            if (!isLoading && !endOfData && (filteredData.length > currentPage * itemsPerPage)) {
+                isLoading = true;
+                currentPage++;
+                document.getElementById('loading').style.display = 'block';
+                setTimeout(() => {
+                    displayCards();
+                }, 500); // Simulate a loading delay
+            }
+        }
+    
+        window.onscroll = function() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollTopBtn.style.display = 'block';
+            } else {
+                scrollTopBtn.style.display = 'none';
+            }
+    
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+                loadMoreCards();
+            }
+        };
+    
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    
+        window.onload = displayCards;
+    </script>
+    
+</body>
+</html>
