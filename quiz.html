@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ICT Examination</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff3e0; /* Light orange background */
+            color: #5d4037; /* Dark brown text */
+        }
+        .welcome-card {
+            background-color: #ffffff; /* White background for the card */
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #e65100; /* Dark orange header text */
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #ffe0b2; /* Light orange select background */
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #ff9800; /* Orange button */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #e65100; /* Dark orange button hover */
+        }
+        .school-logo {
+            max-width: 100px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-card">
+        <img src="school_logo.png" alt="School Logo" class="school-logo">
+        <h1>Welcome to ICT Examination</h1>
+        <form id="credentialsForm">
+            <select id="classSelect" required>
+                <option value="">Select Class</option>
+                <option value="Primary Three">Primary Three</option>
+                <option value="Primary Four">Primary Four</option>
+            </select>
+            <select id="streamSelect" required style="display:none;">
+                <option value="">Select Stream</option>
+            </select>
+            <select id="nameSelect" required style="display:none;">
+                <option value="">Select Name</option>
+            </select>
+            <button type="submit">Start Examination</button>
+        </form>
+    </div>
+
+    <script>
+        const studentData = {
+            'Primary Three': {
+                'Stream A': ['Mutumba Jesse', 'Matove Isaac', 'Kasagga Ian'],
+                'Stream B': ['Lukwago Jeremiah', 'Jumba Emmanuel', 'Michael Davis']
+            },
+            'Primary Four': {
+                'Stream X': ['Sarah Namatove', 'David Kabugo', 'Olivia Nakyanzi'],
+                'Stream Y': ['James Lubega', 'Sophia Nakyanzi', 'Daniel Kabuye Thomas']
+            }
+        };
+
+        const classSelect = document.getElementById('classSelect');
+        const streamSelect = document.getElementById('streamSelect');
+        const nameSelect = document.getElementById('nameSelect');
+
+        classSelect.addEventListener('change', function() {
+            streamSelect.style.display = 'block';
+            streamSelect.innerHTML = '<option value="">Select Stream</option>';
+            nameSelect.style.display = 'none';
+            
+            const selectedClass = this.value;
+            if (selectedClass in studentData) {
+                for (let stream in studentData[selectedClass]) {
+                    const option = document.createElement('option');
+                    option.value = stream;
+                    option.textContent = stream;
+                    streamSelect.appendChild(option);
+                }
+            }
+        });
+
+        streamSelect.addEventListener('change', function() {
+            nameSelect.style.display = 'block';
+            nameSelect.innerHTML = '<option value="">Select Name</option>';
+            
+            const selectedClass = classSelect.value;
+            const selectedStream = this.value;
+            if (selectedClass in studentData && selectedStream in studentData[selectedClass]) {
+                studentData[selectedClass][selectedStream].forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    nameSelect.appendChild(option);
+                });
+            }
+        });
+
+        document.getElementById('credentialsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedClass = classSelect.value;
+            const selectedStream = streamSelect.value;
+            const selectedName = nameSelect.value;
+
+            if (selectedClass && selectedStream && selectedName) {
+                localStorage.setItem('studentClass', selectedClass);
+                localStorage.setItem('studentStream', selectedStream);
+                localStorage.setItem('studentName', selectedName);
+                window.location.href = 'exam.html';
+            } else {
+                alert('Please select all fields before starting the examination.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICT Examination</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff3e0; /* Light orange background */
+            color: #5d4037; /* Dark brown text */
+        }
+        .exam-paper {
+            background-color: #ffffff; /* White background for the paper */
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+            color: #e65100; /* Dark orange header text */
+        }
+        .header p {
+            margin: 5px 0;
+            color: #ff6f00; /* Medium orange text */
+        }
+        .student-info {
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .question {
+            background-color: #ffe0b2; /* Light orange question background */
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #ff9800; /* Orange button */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #e65100; /* Dark orange button hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-paper">
+        <div class="header">
+            <h1>GLORIOUS KINDERGARTEN & PRIMARY SCHOOL</h1>
+            <p>MID-TERM II EXAMINATION 2024</p>
+            <p>INFORMATION AND COMMUNICATION TECHNOLOGY (ICT)</p>
+        </div>
+        <div class="student-info">
+            <p>NAME: <span id="studentName"></span></p>
+            <p>CLASS: <span id="studentClass"></span></p>
+            <p>STREAM: <span id="studentStream"></span></p>
+        </div>
+        <form id="quizForm">
+            <div id="questions"></div>
+            <button type="submit">Submit Examination</button>
+        </form>
+    </div>
+
+    <script>
+        // Populate student info
+        document.getElementById('studentName').textContent = localStorage.getItem('studentName');
+        document.getElementById('studentClass').textContent = localStorage.getItem('studentClass');
+        document.getElementById('studentStream').textContent = localStorage.getItem('studentStream');
+
+        const quizData = [
+            {
+                question: "Which component is considered the 'brain' of the computer?",
+                options: ["CPU", "RAM", "Hard Drive", "Motherboard"],
+                correctAnswer: 0
+            },
+            {
+                question: "What does RAM stand for?",
+                options: ["Random Access Memory", "Read-Only Memory", "Rapid Application Management", "Remote Access Module"],
+                correctAnswer: 0
+            },
+            {
+                question: "Which component stores data permanently?",
+                options: ["CPU", "RAM", "Hard Drive", "Graphics Card"],
+                correctAnswer: 2
+            },
+            {
+                question: "What is the main circuit board in a computer called?",
+                options: ["CPU", "RAM", "Hard Drive", "Motherboard"],
+                correctAnswer: 3
+            },
+            {
+                question: "Which component is responsible for displaying images on the screen?",
+                options: ["CPU", "RAM", "Graphics Card", "Sound Card"],
+                correctAnswer: 2
+            },
+            {
+                question: "What does PSU stand for in computer terminology?",
+                options: ["Personal System Unit", "Power Supply Unit", "Processing System Upgrade", "Peripheral System Utility"],
+                correctAnswer: 1
+            },
+            {
+                question: "Which type of storage device has no moving parts?",
+                options: ["Hard Disk Drive (HDD)", "Solid State Drive (SSD)", "Floppy Disk", "Optical Drive"],
+                correctAnswer: 1
+            },
+            {
+                question: "What component is responsible for producing sound in a computer?",
+                options: ["CPU", "RAM", "Graphics Card", "Sound Card"],
+                correctAnswer: 3
+            },
+            {
+                question: "Which port is commonly used to connect a monitor to a computer?",
+                options: ["USB", "HDMI", "Ethernet", "PS/2"],
+                correctAnswer: 1
+            },
+            {
+                question: "What is the purpose of a heat sink in a computer?",
+                options: ["To increase processing speed", "To reduce noise", "To cool components", "To boost Wi-Fi signal"],
+                correctAnswer: 2
+            }
+        ];
+
+        const questionsContainer = document.getElementById('questions');
+
+        quizData.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+            questionDiv.innerHTML = `
+                <p>${index + 1}. ${q.question}</p>
+                <div class="options">
+                    ${q.options.map((option, i) => `
+                        <label>
+                            <input type="radio" name="q${index}" value="${i}">
+                            ${option}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+            questionsContainer.appendChild(questionDiv);
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let answers = [];
+            quizData.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                answers.push(selected ? selected.value : 'Not answered');
+            });
+
+            const headerContent = `
+GLORIOUS KINDERGARTEN & PRIMARY SCHOOL
+MID-TERM II EXAMINATION 2024
+INFORMATION AND COMMUNICATION TECHNOLOGY (ICT)
+
+NAME: ${localStorage.getItem('studentName')}
+CLASS: ${localStorage.getItem('studentClass')}
+STREAM: ${localStorage.getItem('studentStream')}
+
+`;
+
+            const offlineContent = headerContent + quizData.map((q, index) => `
+${index + 1}. ${q.question}
+Options: ${q.options.join(', ')}
+Your answer: ${answers[index] === 'Not answered' ? 'Not answered' : q.options[answers[index]]}
+Correct answer: ${q.options[q.correctAnswer]}
+
+`).join('\n');
+
+            const blob = new Blob([offlineContent], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ICT_Examination_Results.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
