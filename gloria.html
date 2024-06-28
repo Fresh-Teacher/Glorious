@@ -1735,7 +1735,7 @@ let currentStoryIndex, currentParagraph;
 let isTyping = false;
 
 let timerInterval;
-let totalSeconds = 60; // 10 minutes in seconds
+let totalSeconds = 600; // 10 minutes in seconds
 let timerPaused = true;
 
 function downloadTypedStory() {
@@ -1845,7 +1845,7 @@ function pauseTimer() {
 function resetTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
-    totalSeconds = 60; // Reset to 10 minutes
+    totalSeconds = 600; // Reset to 10 minutes
     timerPaused = true;
     document.getElementById('timer').textContent = formatTime(totalSeconds);
 }
@@ -2299,7 +2299,7 @@ function loadGameState() {
         typedText = state.typedText;
         mistakes = state.mistakes;
         userName = state.userName;
-        totalSeconds = state.totalSeconds || 60; // Load the saved time or set to 10 minutes
+        totalSeconds = state.totalSeconds || 600; // Load the saved time or set to 10 minutes
         return state.storyStarted;
     }
     return false;
