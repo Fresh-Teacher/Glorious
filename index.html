@@ -269,6 +269,38 @@
                 display: flex;
             }
         }
+        .flash-message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF4500;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #FFE4B5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: flash-animation 1s infinite alternate, bounce 0.5s infinite alternate;
+}
+
+@keyframes flash-animation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-5px);
+    }
+}
         
     </style>
 </head>
@@ -283,14 +315,15 @@
         <span class="toggle" onclick="toggleMenu()">&#9776;</span>
         <ul id="nav-links">
             <li><a href="index.html">Home</a></li>
-            <li><a href="games.html">Games</a></li>
-            <li><a href="videos.html">Videos</a></li>     
-            <li><a href="library.html">Library</a></li>
-            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button>
-            </li>
+            <li><a href="javascript:void(0);" onclick="checkAuth(); if(localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') window.location.href='games.html';">Games</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth(); if(localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') window.location.href='videos.html';">Videos</a></li>     
+            <li><a href="javascript:void(0);" onclick="checkAuth(); if(localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') window.location.href='library.html';">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
         </ul>
     </div>
-
+    <div id="login-message" class="flash-message" style="display: none;">
+        Acess denied! You must first login to view this page 🔐 
+    </div>
     <div class="login-container active" id="login-container">
         <div class="login-box">
             <img src="schoologo-2-150x150.png" alt="School Logo">
@@ -331,70 +364,90 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const isRemembered = localStorage.getItem("rememberMe") === "true";
-            const sessionEmail = sessionStorage.getItem("email");
-            const localEmail = localStorage.getItem("email");
-            const email = isRemembered ? localEmail : sessionEmail;
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('needLogin') === 'true') {
+        document.getElementById("login-message").style.display = "block";
+    }
 
-            if ((isRemembered && localEmail === "user@glorious.com" && localStorage.getItem("password") === "User") ||
-                (sessionEmail === "user@glorious.com" && sessionStorage.getItem("password") === "User")) {
-                showContent();
-            }
-        });
+    const isRemembered = localStorage.getItem("rememberMe") === "true";
+    const sessionEmail = sessionStorage.getItem("email");
+    const localEmail = localStorage.getItem("email");
+    const email = isRemembered ? localEmail : sessionEmail;
 
-        function login() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-            const rememberMe = document.getElementById("rememberMe").checked;
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if ((isRemembered && localEmail === "user@glorious.com" && localStorage.getItem("password") === "User") ||
+        (sessionEmail === "user@glorious.com" && sessionStorage.getItem("password") === "User")) {
+        showContent();
+    }
+});
 
-            if (email === "user@glorious.com" && password === "User" && emailRegex.test(email)) {
-                if (rememberMe) {
-                    localStorage.setItem("rememberMe", "true");
-                    localStorage.setItem("email", email);
-                    localStorage.setItem("password", password);
-                    sessionStorage.removeItem("email");
-                    sessionStorage.removeItem("password");
-                } else {
-                    sessionStorage.setItem("email", email);
-                    sessionStorage.setItem("password", password);
-                    localStorage.removeItem("rememberMe");
-                    localStorage.removeItem("email");
-                    localStorage.removeItem("password");
-                }
-                showContent();
-            } else {
-                document.getElementById("error-message").style.display = "block";
-            }
-        }
+function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const rememberMe = document.getElementById("rememberMe").checked;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        function logout() {
+    if (email === "user@glorious.com" && password === "User" && emailRegex.test(email)) {
+        if (rememberMe) {
+            localStorage.setItem("rememberMe", "true");
+            localStorage.setItem("email", email);
+            localStorage.setItem("password", password);
+            localStorage.setItem("isLoggedIn", "true");
+            sessionStorage.removeItem("email");
+            sessionStorage.removeItem("password");
+        } else {
+            sessionStorage.setItem("email", email);
+            sessionStorage.setItem("password", password);
+            sessionStorage.setItem("isLoggedIn", "true");
             localStorage.removeItem("rememberMe");
             localStorage.removeItem("email");
             localStorage.removeItem("password");
-            sessionStorage.removeItem("email");
-            sessionStorage.removeItem("password");
-            showLogin();
         }
+        
+        const intendedPage = sessionStorage.getItem("intendedPage");
+        if (intendedPage && intendedPage !== window.location.href) {
+            sessionStorage.removeItem("intendedPage");
+            window.location.href = intendedPage;
+        } else {
+            showContent();
+        }
+    } else {
+        document.getElementById("error-message").style.display = "block";
+    }
+}
 
-        function showContent() {
-            document.getElementById("login-container").classList.remove("active");
-            document.getElementById("content-container").classList.add("active");
-            document.getElementById("logout-nav").style.display = "block";
-        }
+function logout() {
+    localStorage.removeItem("rememberMe");
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("password");
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("intendedPage");
+    showLogin();
+}
 
-        function showLogin() {
-            document.getElementById("login-container").classList.add("active");
-            document.getElementById("content-container").classList.remove("active");
-            document.getElementById("logout-nav").style.display = "none";
-        }
+function showContent() {
+    document.getElementById("login-container").classList.remove("active");
+    document.getElementById("content-container").classList.add("active");
+    document.getElementById("logout-nav").style.display = "block";
+    document.getElementById("login-message").style.display = "none";
+}
 
-        function toggleMenu() {
-            const navLinks = document.getElementById("nav-links");
-            navLinks.classList.toggle("show");
-        }
+function showLogin() {
+    document.getElementById("login-container").classList.add("active");
+    document.getElementById("content-container").classList.remove("active");
+    document.getElementById("logout-nav").style.display = "none";
+    document.getElementById("login-message").style.display = "none";
+}
+
+function toggleMenu() {
+    const navLinks = document.getElementById("nav-links");
+    navLinks.classList.toggle("show");
+}
     </script>
+<script src="auth.js"></script>
 </body>
 
 </html>

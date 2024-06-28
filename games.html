@@ -189,7 +189,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="checkAuth()">
     <div class="navbar">
         <div class="logo">
             <img src="schoologo-2-150x150.png" alt="School Logo">
@@ -230,6 +230,9 @@
             { id: "3", imgSrc: "Screenshot (774).png", imgAlt: "Keyboard", title: "Typing Game", link: "typing.html" },
             { id: "4", imgSrc: "Screenshot (780).png", imgAlt: "Falling", title: "Falling Game", link: "falling.html" },
             { id: "5", imgSrc: "matrix.gif", imgAlt: "Matrix", title: "0's and 1's Game", link: "matrix.html" },
+            { id: "6", imgSrc: "5c5197e98dd706a76fd45bf25f303cc8.gif", imgAlt: "Typing", title: "Touch Typing", link: "touch.html" },
+            { id: "7", imgSrc: "Screenshot (781).png", imgAlt: "Drawing", title: "Drawing Game", link: "draw.html" },
+            { id: "8", imgSrc: "giphy.gif", imgAlt: "story", title: "Stories From Gloria", link: "gloria.html" },
 
             // Add more games as needed
         ];
@@ -278,5 +281,6 @@
             alert("Logged out");
         }
     </script>
+<script src="auth.js"></script>
 </body>
 </html>

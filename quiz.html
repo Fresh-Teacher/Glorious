@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,33 +11,73 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #fff3e0; /* Light orange background */
-            color: #5d4037; /* Dark brown text */
+            background-color: #fff3e0;
+            /* Light orange background */
+            color: #5d4037;
+            /* Dark brown text */
         }
+
         .welcome-card {
-            background-color: #ffffff; /* White background for the card */
+            background-color: #ffffff;
+            /* White background for the card */
             border-radius: 8px;
             padding: 40px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+
         h1 {
-            color: #e65100; /* Dark orange header text */
+            color: #e65100;
+            /* Dark orange header text */
         }
-        select {
+
+        select,
+        .gender-select {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
-            background-color: #ffe0b2; /* Light orange select background */
+            background-color: #ffe0b2;
+            /* Light orange select background */
         }
+
+        .gender-select {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gender-select label {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .gender-select label:hover {
+            background-color: #ffd180;
+        }
+
+        .gender-select input[type="radio"] {
+            display: none;
+        }
+
+        .gender-select input[type="radio"]:checked+label {
+            background-color: #ff9800;
+            color: white;
+        }
+
         button {
             display: block;
             width: 100%;
             padding: 12px;
-            background-color: #ff9800; /* Orange button */
+            background-color: #ff9800;
+            /* Orange button */
             color: white;
             border: none;
             border-radius: 4px;
@@ -44,18 +85,22 @@
             font-size: 18px;
             transition: background-color 0.3s;
         }
+
         button:hover {
-            background-color: #e65100; /* Dark orange button hover */
+            background-color: #e65100;
+            /* Dark orange button hover */
         }
+
         .school-logo {
             max-width: 100px;
             margin: 20px auto;
         }
     </style>
 </head>
+
 <body>
     <div class="welcome-card">
-        <img src="school_logo.png" alt="School Logo" class="school-logo">
+        <img src="schoologo-2-150x150.png" alt="School Logo" class="school-logo">
         <h1>Welcome to ICT Examination</h1>
         <form id="credentialsForm">
             <select id="classSelect" required>
@@ -66,6 +111,11 @@
             <select id="streamSelect" required style="display:none;">
                 <option value="">Select Stream</option>
             </select>
+            <select id="genderSelect" required style="display:none;">
+                <option value="">Select Gender</option>
+                <option value="Boys">Boys</option>
+                <option value="Girls">Girls</option>
+            </select>
             <select id="nameSelect" required style="display:none;">
                 <option value="">Select Name</option>
             </select>
@@ -74,62 +124,405 @@
     </div>
 
     <script>
-        const studentData = {
-            'Primary Three': {
-                'Stream A': ['Mutumba Jesse', 'Matove Isaac', 'Kasagga Ian'],
-                'Stream B': ['Lukwago Jeremiah', 'Jumba Emmanuel', 'Michael Davis']
+ const studentData = {
+        'Primary Three': {
+        'Boys Cranes': [
+        'Akampulira Calvin',
+        'Bugembe Shakur',
+        'Ankunda Donald',
+        'Kisira Jordan',
+        'Kibudde Nicholas',
+        'Kagimu Shemaiah',
+        'Keeya Malcom',
+        'Kyeyune Daniel',
+        'Lwasa Dalton',
+        'Lwalanda Hakim',
+        'Isingoma Edgar',
+        'Magala Dalton',
+        'Mukiibi Jonathan',
+        'Mukisa Trajan',
+        'Muwamba Wilfred',
+        'Nkwisana Reagan',
+        'Ssentongo Simon Elvis',
+        'Ssimbwa Talia',
+        'Walusimbi Jethro V.',
+        'Hirwa Alle Ian',
+        'Turyakira Tyrone',
+        'Kafeero Elijah P',
+        'Mugerwa Jericho',
+        'Ssebuufu Raymond',
+        'Ssekajigo Victor',
+        'Bwiire Emmanuel',
+        'Lubega Michael',
+        'Kaweesi Abdul S.',
+        'Tumusiime Frank',
+        'Webare Gabriel',
+        'Kaweesi Evans',
+        'Kasule Eliasafu P.',
+        'Sseruyange Timothy',
+        'Migadde Shakur S.',
+        'Sserunjogi Ethan',
+        'Magumba Shakir',
+        'Adriko Prosper'
+                ],
+        'Girls Cranes': [
+        'Bukenya Krystal N.',
+        'Besigye Tricia',
+        'Byaruhanga Ashnaz',
+        'Mukisa Favour',
+        'Nakitto Rhonel R',
+        'Nannungi Anna',
+        'Namubiru Africa',
+        'Nakiboneka Prudence',
+        'Namagala Edron',
+        'Nanyeza Lyan',
+        'Namyalo Tasheemim',
+        'Nakabuye Cynthia',
+        'Nasasira Divine',
+        'Nambejja Christine',
+        'Nanjego Victoria',
+        'Ola Keron',
+        'Waikya Israella P',
+        'Rashym Wahidah I.',
+        'Nabukeera Shukran Y',
+        'Nankubuge Shainah',
+        'Nakasiisa Sheilah K.',
+        'Namuyiga Jovia',
+        'Nassimbwa Grace H',
+        'Nakiguli Shivan Pia',
+        'Nakalanzi Promise',
+        'Kaitesi Leah',
+        'Nassimbwa Ciara',
+        'Kamugisha Giovana',
+        'Mpairwe Celine L.',
+        'Mwesigwa Milva',
+        'Kiguli Nailor'
+        
+                ],
+        'Girls Sparrows': [
+        'Namazzi Hilda', 
+        'Abaasa Melisa', 
+        'Naluyange Madrine', 
+        'Namata Shifra K.', 
+        'Nanyunja Rinah', 
+        'Nakalungi Gabriella', 
+        'Katumba Maria', 
+        'Atuhaire Georgia', 
+        'Treasure Elizabeth Seku', 
+        'Namutebi Leona Rosella', 
+        'Namugerwa Sabrina', 
+        'Nampiima Pauline', 
+        'Mirembe Raudah', 
+        'Nyakato Edrinah', 
+        'Amila Adams Kyeyune', 
+        'Bwire Chloe Grighton', 
+        'Akwero Lynne A.', 
+        'Asaba Mulungi Joana', 
+        'Nalubega Maria', 
+        'Akamutuha Janet', 
+        'Komujuni Fedrace', 
+        'Namaganda Briannah', 
+        'Musiime Gift', 
+        'Muyama Abigail', 
+        'Nabukenya Cate Josephine', 
+        'Nalwanga Jazmine', 
+        'Arinda Martha', 
+        'Kavuma Norine Esther', 
+        'Irene Malaika Nabbale', 
+        'Namanda Majorine', 
+        'Nabbongole Katrinah', 
+        'Namujjuzi Winfred', 
+        'Ainembabazi Melissa', 
+        'Nansirumbi Isabella', 
+        'Nakintu Immaculate', 
+        'Ainembabazi Rainah Grace', 
+        'Sanyu Nisha Gasaro', 
+        'Barungi Victoria', 
+        'Anviko Shantal', 
+        'Malaika Trixie Kiyaga', 
+        'Nansumbi Deborah', 
+        'Ndagire Sarah'
+                ],
+                'Boys Sparrows': [
+    'Kalyango Raheem',
+    'Wasswa Kabuye Jonah',
+    'Kato Kabuye Jovans',
+    'Agaba John Treasure',
+    'Katumba Conrad',
+    'Eloy Titus Ssentongo',
+    'Ahumuza Praise Robert',
+    'Kaweesa Keiran',
+    'Balikuddembe Elvis',
+    'Batanda Jethro',
+    'Walusimbi Martin',
+    'Kaweesi Hashim',
+    'Ssewanyana Aaron',
+    'Tamale John Francis',
+    'Buyondo Israel',
+    'Kwezi Robin',
+    'Wodero Joshua',
+    'Ssempijja Oscar',
+    'Mukiriza George',
+    'Kalibbala Akram',
+    'Ariiho Israel',
+    'KalyesubulanJayden',
+    'Kakungulu Ryan Mark',
+    'Ntambi Reagan J.',
+    'Kimbugwe Abdullah'
+                ],
+    'Boys Parrots': [
+    'Agaba Joshua Walter',
+    'Asiimwe Derrick',
+    'Lugendo Amos',
+    'Atwiine Jotham',
+    'Batanda Dylan',
+    'Byamukama Keith',
+    'Tamale Jakira Flavour',
+    'Kakooza Abdul Razaq',
+    'Kakinda Fabian',
+    'Kato Jolly Jonathan',
+    'Kavuma Amir',
+    'Kaweesa Simpson',
+    'Kibuuka Raymond',
+    'Kimbugwe Stewart',
+    'Kimera Jonathan',
+    'Lubowa Abubaker',
+    'Lukwago Rayan',
+    'Magoma Benhur',
+    'Nsubuga Micheal',
+    'Sekate Godfrey',
+    'Ssali Micheal',
+    'Sseremba Jeremiah',
+    'Wasswa David Douglas',
+    'Mayanja Vuubi',
+    'Ssenyonga Jeremiah',
+    'Nayebare Timothy',
+    'Akatuhereza Merrick',
+    'Sserumagga John Putin',
+    'Kawuki Gipson',
+    'Kabagambe Weissman',
+    
+                ],
+    'Girls Parrots': [
+    'Ainomugisha Petrinah',
+    'Ampumuza Elianah',
+    'Asinguza Brenda',
+    'Avghail Batzion',
+    'Kizito Hanah Friend',
+    'Kasule Elsen Zawad',
+    'Katusiime Jasmine',
+    'Kisenyi Mellisa Maggie',
+    'Kyaligonza Josephine',
+    'Lumu Angel Favour',
+    'Lutaaya Catherine',
+    'Magoma Belicia',
+    'Nakanwagi Keirah',
+    'Nakimuli Ethel',
+    'Nambalirwa Trude',
+    'Namirembe Maria Nicole',
+    'Namumbejja Ryhan',
+    'Nassiwa Hailey',
+    'Okallo Natasha Esther',
+    'Nsiimire Faith',
+    'Ssekate Noella',
+    'Namuli Comfort',
+    'Wanyenze Marianah',
+    'Kalungi Neirah',
+    'Nansubuga Tracy Camilla',
+    'Nakirijja Cynthia',
+    'Kyomuhendo Grace',
+    'Ssenyonjo Mercy',
+    'Muhindo Gian',
+    'Niyibizi Jerusa', 
+    'Nanyonga Ziadah',
+    'Munezero Blessen',   
+    'Nanyonjo Patience',
+    'Kyenyini Cossiline', 
+    'Nakasumba Anitah',
+    'Namirembe Peninah',
+    
+                ]
             },
             'Primary Four': {
-                'Stream X': ['Sarah Namatove', 'David Kabugo', 'Olivia Nakyanzi'],
-                'Stream Y': ['James Lubega', 'Sophia Nakyanzi', 'Daniel Kabuye Thomas']
+        'Girls Cubs': [
+        'Ahereza Honour',
+        'Aliyah Adams K.',
+        'Akarabo Golda',
+        'Blessing Shiloh',
+        'Ainomugisha Angel',
+        'Kemigisha Alexandria',
+        'Lubuulwa Melina J',
+        'Mubeezi Shadia L.',
+        'Nakungu Precious',
+        'Nassanga Maria A.',
+        'Namirembe Alpha',
+        'Nanungi Drucilla L.',
+        'Namaganda Imrah',
+        'Nakaweesi Michelle',
+        'Namutebi Gertrude',
+        'Nanjobe Vanessa',
+        'Ninsiima Mary S.',
+        'Nvanungi Shaniez F.',
+        'Temitope Grace A.',
+        'Ashaba Elizabeth',
+        'Nansubuga Manuella',
+        'Namakula Sophia',
+        'Obang Shallom S.',
+        'Bukirwa Leticia',
+        'Kismart Dauda',
+        'Kasozi Aamrat',
+        'Nantongo Bushirah'
+                ],
+        'Boys Cubs': [
+        'Mokhta Adam Salam',
+        'Bagonza Joab',
+        'Kayongo Jawad',
+        'Kakona Jordan',
+        'Kiggundu Luke',
+        'Buyungo Eric',
+        'Lubega Malcom',
+        'Lukandwa Phillip',
+        'Murungi Ian',
+        'Muyinza Cyrus',
+        'Mulangira Joseph',
+        'Manzi Evans',
+        'Itaaga Nicholast',
+        'Luyiga  Rayan',
+        'Ssewakiryanga Hosea',
+        'Ssuuna Rafan W',
+        'Ssematimba Mark',
+        'Ssebabenga Keron',
+        'Twesigye Adrian',
+        'Walligo Ethan',
+        'Namwanja John Baptist',
+        'Ssengendo Prita',
+        'Kalule Carlos',
+        'Muhumuza Adhelito',
+        'Luggya Akram',
+        'Ssemombwe Anderson'
+                ],
+        'Boys Bunnies': [
+        'Bukenya Keith Martins',
+        'Ddumba Francis',
+        'Gitta Razaq',
+        'Kasozi Nelson',
+        'Kateregga Raul',
+        'Kayemba Shan',
+        'Kimbugwe Melvin',
+        'Kirabira Arnold',
+        'Kuteesa Ismail Kalule',
+        'Lwanga Raphael',
+        'Moya Elisha',
+        'Mugisa Valente',
+        'Mukisa Nathan',
+        'Mukisa Samson',
+        'Mulindwa Eddy',
+        'Muramuzi Jan Jensen',
+        'Najib Al-Shafiq',
+        'Ssekandi Ramathan',
+        'Ssonko Henry Arthur',
+        'Walusimbi Abdul-Sharik'    
+                ],
+    'Girl Bunnies': [
+    'Ankunda Denise',
+    'Asiimwe Sheena',
+    'Atamba Carol Jireh',
+    'Atukunda Gramia',
+    'Ayebareyesu Excellent',
+    'Bwire Clarrisa',
+    'Hipaingah Salah Josephine',
+    'Jibe Immaculate',
+    'Kabanda Martha',
+    'Kabuyaya Rayanna',
+    'Kalibala Janat',
+    'Kamugisha Natalie',
+    'Kasemire Blessing',
+    'Kavuma Grace',
+    'Kharunda Esther',
+    'Kyazze Martha',
+    'Lymiah Avril Salim',
+    'Manzi Galia',
+    'Michoro Anna Alexa',
+    'Nabakooza Christine',
+    'Nabikolo Anna',
+    'Nakasujja Shannah',
+    'Nalumansi Lyton',
+    'Namala Salsabel',
+    'Nambi Naava',
+    'Nampiima Hyrat',
+    'Namubiru Riah',
+    'Nandawula  Desire',
+    'Nanono Roshan Ismail',
+    'Ninsiima Kirabo Arianah',
+    'Nyonyozi Edrinah',
+    'Umutesi Dinah Inez'
+                ]
             }
         };
 
         const classSelect = document.getElementById('classSelect');
         const streamSelect = document.getElementById('streamSelect');
+        const genderSelect = document.getElementById('genderSelect');
         const nameSelect = document.getElementById('nameSelect');
 
-        classSelect.addEventListener('change', function() {
+        classSelect.addEventListener('change', function () {
             streamSelect.style.display = 'block';
             streamSelect.innerHTML = '<option value="">Select Stream</option>';
+            genderSelect.style.display = 'none';
             nameSelect.style.display = 'none';
-            
+
             const selectedClass = this.value;
             if (selectedClass in studentData) {
+                const streams = new Set();
                 for (let stream in studentData[selectedClass]) {
+                    streams.add(stream.split(' ')[1]); // Add unique stream names
+                }
+                streams.forEach(stream => {
                     const option = document.createElement('option');
                     option.value = stream;
                     option.textContent = stream;
                     streamSelect.appendChild(option);
-                }
-            }
-        });
-
-        streamSelect.addEventListener('change', function() {
-            nameSelect.style.display = 'block';
-            nameSelect.innerHTML = '<option value="">Select Name</option>';
-            
-            const selectedClass = classSelect.value;
-            const selectedStream = this.value;
-            if (selectedClass in studentData && selectedStream in studentData[selectedClass]) {
-                studentData[selectedClass][selectedStream].forEach(name => {
-                    const option = document.createElement('option');
-                    option.value = name;
-                    option.textContent = name;
-                    nameSelect.appendChild(option);
                 });
             }
         });
 
-        document.getElementById('credentialsForm').addEventListener('submit', function(e) {
+        streamSelect.addEventListener('change', function () {
+            genderSelect.style.display = 'block';
+            nameSelect.style.display = 'none';
+        });
+
+        genderSelect.addEventListener('change', function () {
+            nameSelect.style.display = 'block';
+            nameSelect.innerHTML = '<option value="">Select Name</option>';
+
+            const selectedClass = classSelect.value;
+            const selectedStream = streamSelect.value;
+            const selectedGender = genderSelect.value;
+
+            if (selectedClass in studentData) {
+                const fullStreamName = `${selectedGender} ${selectedStream}`;
+                if (fullStreamName in studentData[selectedClass]) {
+                    studentData[selectedClass][fullStreamName].forEach(name => {
+                        const option = document.createElement('option');
+                        option.value = name;
+                        option.textContent = name;
+                        nameSelect.appendChild(option);
+                    });
+                }
+            }
+        });
+
+        document.getElementById('credentialsForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const selectedClass = classSelect.value;
             const selectedStream = streamSelect.value;
+            const selectedGender = genderSelect.value;
             const selectedName = nameSelect.value;
 
-            if (selectedClass && selectedStream && selectedName) {
+            if (selectedClass && selectedStream && selectedGender && selectedName) {
                 localStorage.setItem('studentClass', selectedClass);
                 localStorage.setItem('studentStream', selectedStream);
+                localStorage.setItem('studentGender', selectedGender);
                 localStorage.setItem('studentName', selectedName);
                 window.location.href = 'exam.html';
             } else {
@@ -138,4 +531,5 @@
         });
     </script>
 </body>
+
 </html>

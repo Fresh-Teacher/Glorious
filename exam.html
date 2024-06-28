@@ -61,11 +61,17 @@
         button:hover {
             background-color: #e65100; /* Dark orange button hover */
         }
+        .school-logo {
+            max-width: 100px;
+            margin: 0 auto 20px;
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div class="exam-paper">
         <div class="header">
+            <img src="schoologo-2-150x150.png" alt="School Logo" class="school-logo">
             <h1>GLORIOUS KINDERGARTEN & PRIMARY SCHOOL</h1>
             <p>MID-TERM II EXAMINATION 2024</p>
             <p>INFORMATION AND COMMUNICATION TECHNOLOGY (ICT)</p>
@@ -86,63 +92,68 @@
         document.getElementById('studentName').textContent = localStorage.getItem('studentName');
         document.getElementById('studentClass').textContent = localStorage.getItem('studentClass');
         document.getElementById('studentStream').textContent = localStorage.getItem('studentStream');
-
-        const quizData = [
-            {
-                question: "Which component is considered the 'brain' of the computer?",
-                options: ["CPU", "RAM", "Hard Drive", "Motherboard"],
-                correctAnswer: 0
-            },
-            {
-                question: "What does RAM stand for?",
-                options: ["Random Access Memory", "Read-Only Memory", "Rapid Application Management", "Remote Access Module"],
-                correctAnswer: 0
-            },
-            {
-                question: "Which component stores data permanently?",
-                options: ["CPU", "RAM", "Hard Drive", "Graphics Card"],
-                correctAnswer: 2
-            },
-            {
-                question: "What is the main circuit board in a computer called?",
-                options: ["CPU", "RAM", "Hard Drive", "Motherboard"],
-                correctAnswer: 3
-            },
-            {
-                question: "Which component is responsible for displaying images on the screen?",
-                options: ["CPU", "RAM", "Graphics Card", "Sound Card"],
-                correctAnswer: 2
-            },
-            {
-                question: "What does PSU stand for in computer terminology?",
-                options: ["Personal System Unit", "Power Supply Unit", "Processing System Upgrade", "Peripheral System Utility"],
-                correctAnswer: 1
-            },
-            {
-                question: "Which type of storage device has no moving parts?",
-                options: ["Hard Disk Drive (HDD)", "Solid State Drive (SSD)", "Floppy Disk", "Optical Drive"],
-                correctAnswer: 1
-            },
-            {
-                question: "What component is responsible for producing sound in a computer?",
-                options: ["CPU", "RAM", "Graphics Card", "Sound Card"],
-                correctAnswer: 3
-            },
-            {
-                question: "Which port is commonly used to connect a monitor to a computer?",
-                options: ["USB", "HDMI", "Ethernet", "PS/2"],
-                correctAnswer: 1
-            },
-            {
-                question: "What is the purpose of a heat sink in a computer?",
-                options: ["To increase processing speed", "To reduce noise", "To cool components", "To boost Wi-Fi signal"],
-                correctAnswer: 2
-            }
-        ];
-
+    
+        const quizData = {
+            'Primary Three': [
+                {
+                    question: "Which component is considered the 'brain' of the computer?",
+                    options: ["CPU", "RAM", "Hard Drive", "Motherboard"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "What does RAM stand for?",
+                    options: ["Random Access Memory", "Read-Only Memory", "Rapid Application Management", "Remote Access Module"],
+                    correctAnswer: 0
+                },
+                {
+                    question: "Which component stores data permanently?",
+                    options: ["CPU", "RAM", "Hard Drive", "Graphics Card"],
+                    correctAnswer: 2
+                },
+                {
+                    question: "What is the main circuit board in a computer called?",
+                    options: ["CPU", "RAM", "Hard Drive", "Motherboard"],
+                    correctAnswer: 3
+                },
+                {
+                    question: "Which component is responsible for displaying images on the screen?",
+                    options: ["CPU", "RAM", "Graphics Card", "Sound Card"],
+                    correctAnswer: 2
+                }
+            ],
+            'Primary Four': [
+                {
+                    question: "What are the main components of a computer system? ",
+                    options: ["CPU", "RAM", "Hard Drive", "Motherboard", "Monitor", "Keyboard"],
+                    correctAnswers: [0, 1, 2, 3]
+                },
+                {
+                    question: "Which of the following are input devices? ",
+                    options: ["Keyboard", "Mouse", "Monitor", "Printer", "Scanner", "Speakers"],
+                    correctAnswers: [0, 1, 4]
+                },
+                {
+                    question: "What are the types of computer memory? ",
+                    options: ["RAM", "ROM", "Cache", "Hard Drive", "Floppy Disk"],
+                    correctAnswers: [0, 1, 2]
+                },
+                {
+                    question: "Which of these are storage devices? ",
+                    options: ["Hard Drive", "SSD", "USB Flash Drive", "DVD", "CPU"],
+                    correctAnswers: [0, 1, 2, 3]
+                },
+                {
+                    question: "What are the common ports found on a computer? ",
+                    options: ["USB", "HDMI", "VGA", "Ethernet", "Audio Jack", "Power Port"],
+                    correctAnswers: [0, 1, 2, 3, 4, 5]
+                }
+            ]
+        };
+    
         const questionsContainer = document.getElementById('questions');
-
-        quizData.forEach((q, index) => {
+        const studentClass = localStorage.getItem('studentClass');
+    
+        quizData[studentClass].forEach((q, index) => {
             const questionDiv = document.createElement('div');
             questionDiv.className = 'question';
             questionDiv.innerHTML = `
@@ -150,7 +161,9 @@
                 <div class="options">
                     ${q.options.map((option, i) => `
                         <label>
-                            <input type="radio" name="q${index}" value="${i}">
+                            <input type="${studentClass === 'Primary Three' ? 'radio' : 'checkbox'}" 
+                                   name="q${index}" 
+                                   value="${i}">
                             ${option}
                         </label>
                     `).join('')}
@@ -158,40 +171,57 @@
             `;
             questionsContainer.appendChild(questionDiv);
         });
-
+    
         document.getElementById('quizForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             let answers = [];
-            quizData.forEach((q, index) => {
-                const selected = document.querySelector(`input[name="q${index}"]:checked`);
-                answers.push(selected ? selected.value : 'Not answered');
+            quizData[studentClass].forEach((q, index) => {
+                if (studentClass === 'Primary Three') {
+                    const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                    answers.push(selected ? selected.value : 'Not answered');
+                } else {
+                    const selected = Array.from(document.querySelectorAll(`input[name="q${index}"]:checked`))
+                                          .map(input => input.value);
+                    answers.push(selected.length > 0 ? selected : 'Not answered');
+                }
             });
-
+    
             const headerContent = `
-GLORIOUS KINDERGARTEN & PRIMARY SCHOOL
-MID-TERM II EXAMINATION 2024
-INFORMATION AND COMMUNICATION TECHNOLOGY (ICT)
-
-NAME: ${localStorage.getItem('studentName')}
-CLASS: ${localStorage.getItem('studentClass')}
-STREAM: ${localStorage.getItem('studentStream')}
+                       GLORIOUS KINDERGARTEN & PRIMARY SCHOOL
+                        MID-TERM II EXAMINATION 2024
+               INFORMATION AND COMMUNICATION TECHNOLOGY (ICT)
+    
+    NAME: ${localStorage.getItem('studentName')}
+    CLASS: ${studentClass}
+    STREAM: ${localStorage.getItem('studentStream')}
+    
+    `;
+    
+    const offlineContent = headerContent + quizData[studentClass].map((q, index) => {
+    let answerText;
+    if (studentClass === 'Primary Three') {
+        answerText = answers[index] === 'Not answered' ? 'Not answered' : q.options[answers[index]];
+    } else {
+        answerText = answers[index] === 'Not answered' ? 'Not answered' : 
+                     answers[index].map(ans => q.options[ans]).join('\n');
+    }
+    return `
+${index + 1}. ${q.question}
+${answerText}
 
 `;
-
-            const offlineContent = headerContent + quizData.map((q, index) => `
-${index + 1}. ${q.question}
-Options: ${q.options.join(', ')}
-Your answer: ${answers[index] === 'Not answered' ? 'Not answered' : q.options[answers[index]]}
-Correct answer: ${q.options[q.correctAnswer]}
-
-`).join('\n');
-
+}).join('\n');
+    
             const blob = new Blob([offlineContent], {type: 'text/plain'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'ICT_Examination_Results.txt';
+            
+            const studentName = localStorage.getItem('studentName');
+            const safeFileName = studentName.replace(/[<>:"/\\|?*]/g, '');
+            a.download = `${safeFileName}.txt`;
+            
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);

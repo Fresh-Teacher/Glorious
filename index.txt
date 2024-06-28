@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glorious Schools</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #8B4513; /* Dark orange to brownish color */
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ff8c00;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .logo img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .navbar .logo .title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar ul li {
+            margin-left: 1rem;
+        }
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: background-color 0.3s ease;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+        .navbar ul li a:hover {
+            background-color: #e06b00;
+        }
+        .navbar .toggle {
+            display: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        .logout-button {
+            padding: 0.5rem 1rem;
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .logout-button:hover {
+            background-color: #e06b00;
+        }
+        .login-container, .content-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #8B4513;
+            margin-top: 60px; /* Adjust for sticky navbar height */
+        }
+        .login-container.active, .content-container.active {
+            display: flex;
+        }
+        .login-box {
+    background: linear-gradient(to bottom, #d46618, #FFA500); /* Gradient from dark orange to light orange */
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+        .login-box img {
+            width: 100px;
+            margin-bottom: 1rem;
+        }
+        .login-box h2 {
+            margin-bottom: 1rem;
+            color: white;
+            font-family: 'Comic Sans MS', Arial, sans-serif;
+        }
+        .login-box input {
+            display: block;
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .login-box input[type="checkbox"] {
+            display: inline-block;
+            width: auto;
+        }
+        .login-box label {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+            color: white;
+        }
+        .login-box button {
+    padding: 0.5rem 1rem;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: linear-gradient(45deg, #FFA500, #ffa722, #a76400); /* Initial gradient colors */
+    background-size: 200% 200%;
+    animation: gradient-animation 3s infinite alternate;
+    transition: color 0.3s ease; /* Smooth color change transition */
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%; /* Initial position */
+    }
+    100% {
+        background-position: 100% 50%; /* Final position */
+    }
+}
+
+.login-box button:hover {
+    color: white; /* Change text color on hover */
+}
+
+
+        .login-box button:hover {
+            background-color: #e06b00;
+        }
+        .content-container .content {
+            text-align: center;
+        }
+        .content-container h1 {
+            color: #ff8c00;
+            font-size: 2.5rem;
+            font-family: 'Comic Sans MS', Arial, sans-serif;
+        }
+        .content-container p {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+        @media (max-width: 600px) {
+            .navbar ul {
+                flex-direction: column;
+                display: none;
+                width: 100%;
+            }
+            .navbar ul li {
+                margin-left: 0;
+            }
+            .navbar ul li a {
+                text-align: center;
+                padding: 1rem;
+            }
+            .navbar .toggle {
+                display: block;
+            }
+            .navbar ul.show {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+
+    <div class="login-container active" id="login-container">
+        <div class="login-box">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <h2>Login</h2>
+            <input type="email" id="email" placeholder="School Email">
+            <input type="password" id="password" placeholder="Password">
+            <div>
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Remember Me</label>
+            </div>
+            <button onclick="login()">Login</button>
+            <p id="error-message" style="color:red; display:none;">Wrong email or password. Please try again.</p>
+        </div>
+    </div>
+
+    <div class="content-container" id="content-container">
+        <div class="content">
+            <h1>Welcome to Glorious Schools</h1>
+            <p>Your gateway to knowledge and excellence.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const isRemembered = localStorage.getItem("rememberMe") === "true";
+            const sessionEmail = sessionStorage.getItem("email");
+            const localEmail = localStorage.getItem("email");
+            const email = isRemembered ? localEmail : sessionEmail;
+
+            if ((isRemembered && localEmail === "gloriousschools@glorious.com" && localStorage.getItem("password") === "Glorious") || 
+                (sessionEmail === "gloriousschools@glorious.com" && sessionStorage.getItem("password") === "Glorious")) {
+                showContent();
+            }
+        });
+
+        function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const rememberMe = document.getElementById("rememberMe").checked;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (email === "gloriousschools@glorious.com" && password === "Glorious" && emailRegex.test(email)) {
+                if (rememberMe) {
+                    localStorage.setItem("rememberMe", "true");
+                    localStorage.setItem("email", email);
+                    localStorage.setItem("password", password);
+                    sessionStorage.removeItem("email");
+                    sessionStorage.removeItem("password");
+                } else {
+                    sessionStorage.setItem("email", email);
+                    sessionStorage.setItem("password", password);
+                    localStorage.removeItem("rememberMe");
+                    localStorage.removeItem("email");
+                    localStorage.removeItem("password");
+                }
+                showContent();
+            } else {
+                document.getElementById("error-message").style.display = "block";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("rememberMe");
+            localStorage.removeItem("email");
+            localStorage.removeItem("password");
+            sessionStorage.removeItem("email");
+            sessionStorage.removeItem("password");
+            showLogin();
+        }
+
+        function showContent() {
+            document.getElementById("login-container").classList.remove("active");
+            document.getElementById("content-container").classList.add("active");
+            document.getElementById("logout-nav").style.display = "block";
+        }
+
+        function showLogin() {
+            document.getElementById("login-container").classList.add("active");
+            document.getElementById("content-container").classList.remove("active");
+            document.getElementById("logout-nav").style.display = "none";
+        }
+
+        function toggleMenu() {
+            const navLinks = document.getElementById("nav-links");
+            navLinks.classList.toggle("show");
+        }
+    </script>
+</body>
+</html>

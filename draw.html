@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Drawing Game</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            margin: 20px;
+            color: #ff4500;
+            text-align: center;
+        }
+        #drawing-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            margin: 20px;
+        }
+        #tools {
+            display: flex;
+            flex-direction: column;
+            margin-right: 20px;
+        }
+        #canvas-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #canvas {
+            border: 5px solid #ff4500;
+            cursor: crosshair;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px #888888;
+        }
+        .tool {
+            margin-bottom: 10px;
+        }
+        .btn-custom {
+            background-color: #ff4500;
+            color: #ffffff;
+            border: none;
+            margin: 5px 0;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .btn-custom:hover {
+            background-color: #ff6347;
+        }
+        .img-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px;
+    max-width: 300px;
+}
+
+#refreshButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#refreshButton:hover {
+    background-color: #ff6347;
+}
+        .img-preview {
+            width: 200px;
+            height: 200px;
+            border: 3px solid #ff4500;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px #888888;
+        }
+        .image-name {
+            text-align: center;
+            margin-top: 10px;
+            color: #ff4500;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-header {
+            font-size: 24px;
+            color: #ff4500;
+            margin-bottom: 15px;
+        }
+        .modal-body {
+            margin-bottom: 15px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: center;
+        }
+        .modal-input {
+            width: 80%;
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .modal-button {
+            background-color: #ff4500;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .modal-button:hover {
+            background-color: #ff6347;
+        }
+        /* Add animation keyframes */
+@keyframes arrowAnimation {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+    100% { transform: translateY(0); }
+}
+
+/* Apply animation to the arrow */
+.arrow-animation {
+    display: inline-block;
+    animation: arrowAnimation 1s infinite;
+}
+.active-tool {
+    background-color: #ff6347;
+    animation: glowing 1.5s infinite, bounce 0.5s;
+}
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-5px);}
+    60% {transform: translateY(-3px);}
+}
+
+.tool-bounce {
+    animation: bounce 0.5s;
+}
+
+@keyframes glowing {
+    0% { box-shadow: 0 0 5px #ff4500; }
+    50% { box-shadow: 0 0 20px #ff4500; }
+    100% { box-shadow: 0 0 5px #ff4500; }
+}
+
+    </style>
+</head>
+<body>
+    <div id="drawing-container">
+        <div id="tools">
+            <label class="tool">Color:
+                <input type="color" id="colorPicker" value="#000000">
+            </label>
+            <label class="tool">Pencil Size:
+                <input type="range" id="sizePicker" value="5" min="1" max="50">
+            </label>
+            <button class="btn-custom tool" id="eraser">Eraser</button>
+            <button class="btn-custom tool" id="draw">Draw</button>
+            <button class="btn-custom tool" id="fillTool">Fill Tool</button>
+            <div class="tool">
+                <select class="btn-custom tool" id="shapePicker">
+                    <option value="" selected disabled>Select Shape</option>
+                    <option value="line">Line</option>
+                    <option value="circle">Circle</option>
+                    <option value="rectangle">Rectangle</option>
+                    <option value="square">Square</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="oval">Oval</option>
+                    <option value="heart">Heart</option>
+                    <option value="cylinder">Cylinder</option>
+                    <option value="cone">Cone</option>
+                    <option value="kite">Kite</option>
+                    <option value="cube">Cube</option>
+                    <option value="semicircle">Semi Circle</option>
+                    <option value="trapezoid">Trapezoid</option>
+                    <option value="ring">Ring</option>
+                    <option value="scalene">Scalene Triangle</option>
+                    <option value="pentagon">Pentagon</option>
+                    <option value="hexagon">Hexagon</option>
+                    <option value="arrow">Arrow</option>
+                    <option value="cross">Cross</option>
+                    <option value="crescentMoon">Crescent Moon</option>
+                    <option value="trefoil">Trefoil</option>
+                </select>
+            </div>
+            <button class="btn-custom tool" id="fill">Clear</button>
+            <button class="btn-custom tool" id="undo">Undo (Ctrl + Z)</button>
+            <button class="btn-custom tool" id="redo">Redo (Ctrl + Y)</button>
+            <button class="btn-custom tool" id="save">Save (Ctrl + S)</button>
+            <button class="btn-custom tool" id="addText">Add Text</button>
+        </div>
+        
+        <div id="canvas-container">
+            <canvas id="canvas" width="600" height="400"></canvas>
+        </div>
+        <div class="img-container">
+            <div id="draw-text">Draw this image:</div>
+            <img id="img-preview" class="img-preview">
+            <div class="image-name" id="image-name"></div>
+            <button id="refreshButton" class="btn-custom">Change Picture</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="saveModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">Wow! Nice drawing 🎨🖌️🖼️</div>
+            <div class="modal-body">
+                Would you like to save it? 😉
+                <input type="text" id="filename" class="modal-input" placeholder="Enter your sweet name here...">
+            </div>
+            <div class="modal-footer">
+                <button id="saveButton" class="modal-button">DOWNLOAD <span class="arrow-animation">↓</span></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const refreshButton = document.getElementById('refreshButton');
+    
+    refreshButton.addEventListener('click', function() {
+        location.reload();
+    });
+});
+        function resetShapePicker() {
+    shapePicker.value = "";
+    shapePicker.selectedIndex = 0;
+}
+function setActiveTool(toolId) {
+    document.querySelectorAll('.tool').forEach(tool => {
+        tool.classList.remove('active-tool', 'tool-bounce');
+    });
+    
+    const activeTool = document.getElementById(toolId);
+    if (activeTool) {
+        if (toolId === 'shapePicker') {
+            if (shapePicker.value) {
+                shapePicker.classList.add('active-tool', 'tool-bounce');
+            }
+        } else {
+            activeTool.classList.add('active-tool', 'tool-bounce');
+        }
+        setTimeout(() => {
+            if (toolId === 'shapePicker') {
+                shapePicker.classList.remove('tool-bounce');
+            } else {
+                activeTool.classList.remove('tool-bounce');
+            }
+        }, 500);
+    }
+}
+        const fillToolButton = document.getElementById('fillTool');
+fillToolButton.addEventListener('click', selectFillTool);
+
+function selectFillTool() {
+    currentTool = 'fill';
+    setActiveTool('fillTool');
+}
+
+function floodFill(x, y, fillColor) {
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const targetColor = getPixelColor(imageData, x, y);
+    
+    if (colorsMatch(targetColor, fillColor)) return;
+    
+    const pixelsToCheck = [{x, y}];
+    while (pixelsToCheck.length > 0) {
+        const {x, y} = pixelsToCheck.pop();
+        const currentColor = getPixelColor(imageData, x, y);
+        
+        if (colorsMatch(currentColor, targetColor)) {
+            setPixelColor(imageData, x, y, fillColor);
+            
+            if (x > 0) pixelsToCheck.push({x: x - 1, y});
+            if (y > 0) pixelsToCheck.push({x, y: y - 1});
+            if (x < canvas.width - 1) pixelsToCheck.push({x: x + 1, y});
+            if (y < canvas.height - 1) pixelsToCheck.push({x, y: y + 1});
+        }
+    }
+    
+    ctx.putImageData(imageData, 0, 0);
+}
+
+function getPixelColor(imageData, x, y) {
+    const index = (y * canvas.width + x) * 4;
+    return {
+        r: imageData.data[index],
+        g: imageData.data[index + 1],
+        b: imageData.data[index + 2],
+        a: imageData.data[index + 3]
+    };
+}
+
+function setPixelColor(imageData, x, y, color) {
+    const index = (y * canvas.width + x) * 4;
+    imageData.data[index] = color.r;
+    imageData.data[index + 1] = color.g;
+    imageData.data[index + 2] = color.b;
+    imageData.data[index + 3] = color.a;
+}
+
+function colorsMatch(color1, color2) {
+    return color1.r === color2.r && 
+           color1.g === color2.g && 
+           color1.b === color2.b && 
+           color1.a === color2.a;
+}
+        const images = [
+            { name: "Mouse", src: "simple-illustration-of-mouse-personal-computer-component-icon-free-vector.jpg" },
+            { name: "Desktop Computer", src: "how-to-draw-a-computer-tower-keyboard-screen-mouse-step-4_5e4c7476a3b295.09609749_5337_3_3.jpg" },
+            { name: "Keyboard", src: "keyboard-hand-drawn-doodle-element-sketch-line-style-vector-illustration-isolated-2JF2452.jpg" },
+            { name: "Laptop", src: "How-to-Draw-a-Laptop.webp" },
+            { name: "CPU", src: "16538699-drawing-computer-system-unit-on-a-white-background.jpg" },
+            { name: "Monitor", src: "c22d22422b9643e48926b342d638a483.jpg" },
+            { name: "Bee", src: "pictures/bee.jpg" },
+            { name: "Bird", src: "pictures/bird.jpg" },
+            { name: "Boat", src: "pictures/boat.jpg" },
+            { name: "Butterfly", src: "pictures/butterfly.jpg" },
+            { name: "Cat", src: "pictures/cat.jpg" },
+            { name: "Computer", src: "pictures/computer.jpg" },
+            { name: "Cow", src: "pictures/cow.jpg" },
+            { name: "Duck", src: "pictures/duck-easy-drawing.PNG" },
+            { name: "Duck", src: "pictures/duck.jpg" },
+            { name: "Flower", src: "pictures/flower.jpg" },
+            { name: "Giraffe", src: "pictures/giraffe 10.jpg" },
+            { name: "Home", src: "pictures/home lake.jpg" },
+            { name: "Home", src: "pictures/home swing.jpg" },
+            { name: "Home", src: "pictures/home.jpg" },
+            { name: "Home", src: "pictures/house bangalow.jpg" },
+            { name: "House", src: "pictures/house sky.jpg" },
+            { name: "House", src: "pictures/house.jpg" },
+            { name: "House", src: "pictures/houseun.jpg" },
+            { name: "Home", src: "pictures/hut.jpg" },
+            { name: "Butterfly", src: "pictures/nice butterfly.jpg" },
+            { name: "Computer", src: "pictures/pc.jpg" },
+            { name: "Peacock", src: "pictures/peackock.jpg" },
+            { name: "Pig", src: "pictures/pig.jpg" },
+            { name: "Rainbow", src: "pictures/rainbow.jpg" },
+            { name: "Rat", src: "pictures/rat.jpg" },
+            { name: "School", src: "pictures/school.webp" },
+            { name: "Bird & Worm", src: "pictures/worm and bird.jpg" },
+            { name: "Siblings", src: "pictures/bro n sis.jpg" },
+            { name: "Family", src: "pictures/fam.jpg" },
+            { name: "Family", src: "pictures/family.jpg" },
+            { name: "Home", src: "pictures/home boat.jpg" },
+            { name: "Home", src: "pictures/home fense.jpg" },
+            { name: "Home", src: "pictures/home local.jpeg" },
+            { name: "Home", src: "pictures/home mountain.jpg" },
+            { name: "Home", src: "pictures/home neighbours.jpg" },
+            { name: "Home", src: "pictures/home river.jpg" },
+            { name: "Family", src: "pictures/husband n wife baby.jpg" },
+            { name: "Home", src: "pictures/hut home.jpg" },
+            { name: "Mother", src: "pictures/mama.jpg" },
+            { name: "School", src: "pictures/school family.jpg" },
+            { name: "Children", src: "pictures/siblings.jpg" },
+            { name: "Siblings", src: "pictures/sis n baby.jpg" }
+
+        ];
+        const randomImage = images[Math.floor(Math.random() * images.length)];
+        document.getElementById('image-name').innerText = randomImage.name;
+        document.getElementById('img-preview').src = randomImage.src;
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const colorPicker = document.getElementById('colorPicker');
+        const sizePicker = document.getElementById('sizePicker');
+        const eraser = document.getElementById('eraser');
+        const drawButton = document.getElementById('draw');
+        const shapePicker = document.getElementById('shapePicker');
+        const fill = document.getElementById('fill');
+        const undoButton = document.getElementById('undo');
+        const redoButton = document.getElementById('redo');
+        const save = document.getElementById('save');
+        const addTextButton = document.getElementById('addText');
+
+        let drawing = false;
+        let currentTool = 'draw';
+        let currentColor = colorPicker.value;
+        let currentSize = sizePicker.value;
+        let backgroundColor = '#FFFFFF';
+
+        let startX, startY, imageData;
+        let undoStack = [];
+        let redoStack = [];
+
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mousemove', draw);
+colorPicker.addEventListener('input', changeColor);
+sizePicker.addEventListener('input', changeSize);
+eraser.addEventListener('click', () => {
+    toggleEraser();
+    setActiveTool('eraser');
+    resetShapePicker();
+});
+drawButton.addEventListener('click', () => {
+    selectDraw();
+    setActiveTool('draw');
+    resetShapePicker();
+});
+shapePicker.addEventListener('change', (e) => {
+    selectShape(e);
+    if (shapePicker.value) {
+        setActiveTool('shapePicker');
+    }
+});
+fill.addEventListener('click', () => {
+    fillCanvas();
+    resetShapePicker();
+});
+undoButton.addEventListener('click', undo);
+redoButton.addEventListener('click', redo);
+save.addEventListener('click', openSaveModal);
+addTextButton.addEventListener('click', () => {
+    addText();
+    setActiveTool('addText');
+    resetShapePicker();
+});
+fillToolButton.addEventListener('click', () => {
+    selectFillTool();
+    setActiveTool('fillTool');
+    resetShapePicker();
+});
+        // Modal
+        const modal = document.getElementById('saveModal');
+        const closeBtn = document.querySelector('.close');
+        const saveBtn = document.getElementById('saveButton');
+        const filenameInput = document.getElementById('filename');
+
+        // Event listeners for modal
+        closeBtn.addEventListener('click', closeSaveModal);
+        window.addEventListener('click', outsideClick);
+        saveBtn.addEventListener('click', saveDrawing);
+
+        function openSaveModal() {
+            modal.style.display = 'block';
+        }
+
+        function closeSaveModal() {
+            modal.style.display = 'none';
+        }
+
+        function outsideClick(e) {
+            if (e.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function saveDrawing() {
+            const filename = filenameInput.value;
+            if (filename.trim() !== '') {
+                canvas.toBlob(function(blob) {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    closeSaveModal();
+                }, 'image/jpeg');
+            } else {
+                alert('Please enter a valid filename.');
+            }
+        }
+
+        function startDrawing(e) {
+    if (currentTool === 'fill') {
+        const fillColor = hexToRgb(currentColor);
+        floodFill(e.offsetX, e.offsetY, fillColor);
+        undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+        redoStack = [];
+    } else {
+        drawing = true;
+        startX = e.offsetX;
+        startY = e.offsetY;
+        imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        undoStack.push(imageData);
+        redoStack = [];
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+    }
+}
+
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+        a: 255
+    } : null;
+}
+
+function stopDrawing(e) {
+    if (currentTool !== 'draw' && currentTool !== 'erase' && currentTool !== 'addText') {
+        drawShape(e);
+        resetShapePicker();
+    } else if (currentTool === 'addText') {
+        drawTextbox(e);
+    }
+    drawing = false;
+    ctx.closePath();
+}
+
+        document.addEventListener('keydown', function(event) {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') {
+        undo();
+        event.preventDefault();
+    } else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'y') {
+        redo();
+        event.preventDefault();
+    } else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+        openSaveModal();
+        event.preventDefault();
+    }
+});
+
+
+        function draw(e) {
+            if (!drawing) return;
+
+            if (currentTool === 'draw' || currentTool === 'erase') {
+                ctx.lineWidth = currentSize;
+                ctx.lineCap = 'round';
+
+                if (currentTool === 'draw') {
+                    ctx.strokeStyle = currentColor;
+                } else if (currentTool === 'erase') {
+                    ctx.strokeStyle = backgroundColor;
+                }
+
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(e.offsetX, e.offsetY);
+            } else {
+                ctx.putImageData(imageData, 0, 0);
+                drawShape(e);
+            }
+        }
+        function drawShape(e) {
+    const endX = e.offsetX;
+    const endY = e.offsetY;
+
+    ctx.strokeStyle = currentColor;
+    ctx.fillStyle = currentColor;
+    ctx.lineWidth = currentSize;
+
+    switch (currentTool) {
+        case 'line':
+            drawLine(endX, endY);
+            break;
+        case 'circle':
+            drawCircle(endX, endY);
+            break;
+        case 'rectangle':
+            drawRectangle(endX, endY);
+            break;
+        case 'square':
+            drawSquare(endX, endY);
+            break;
+        case 'triangle':
+            drawTriangle(endX, endY);
+            break;
+        case 'oval':
+            drawOval(endX, endY);
+            break;
+        case 'heart':
+            drawHeart(endX, endY);
+            break;
+        case 'cylinder':
+            drawCylinder(endX, endY);
+            break;
+        case 'cone':
+            drawCone(endX, endY);
+            break;
+        case 'kite':
+            drawKite(endX, endY);
+            break;
+        case 'cube':
+            drawCube(endX, endY);
+            break;
+        case 'semicircle':
+            drawSemiCircle(endX, endY);
+            break;
+        case 'trapezoid':
+            drawTrapezoid(endX, endY);
+            break;
+        case 'ring':
+            drawRing(endX, endY);
+            break;
+        case 'scalene':
+            drawScalene(endX, endY);
+            break;
+        case 'pentagon':
+            drawPentagon(endX, endY);
+            break;
+        case 'hexagon':
+            drawHexagon(endX, endY);
+            break;
+        case 'arrow':
+            drawArrow(endX, endY);
+            break;
+        case 'cross':
+            drawCross(endX, endY);
+            break;
+        case 'crescentMoon':
+            drawCrescentMoon(endX, endY);
+            break;
+        case 'trefoil':
+            drawTrefoil(endX, endY);
+            break;
+
+    }
+}
+
+function drawLine(endX, endY) {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+}
+
+function drawCircle(endX, endY) {
+    const radius = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    ctx.beginPath();
+    ctx.arc((startX + endX) / 2, (startY + endY) / 2, radius / 2, 0, 2 * Math.PI);
+    ctx.stroke();
+}
+
+function drawRectangle(endX, endY) {
+    ctx.beginPath();
+    ctx.rect(startX, startY, endX - startX, endY - startY);
+    ctx.stroke();
+}
+
+function drawSquare(endX, endY) {
+    const size = Math.min(Math.abs(endX - startX), Math.abs(endY - startY));
+    ctx.beginPath();
+    ctx.rect(startX, startY, size, size);
+    ctx.stroke();
+}
+
+function drawTriangle(endX, endY) {
+    ctx.beginPath();
+    ctx.moveTo(startX, endY);
+    ctx.lineTo((startX + endX) / 2, startY);
+    ctx.lineTo(endX, endY);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+function drawOval(endX, endY) {
+    const width = Math.abs(endX - startX);
+    const height = Math.abs(endY - startY);
+    ctx.beginPath();
+    ctx.ellipse((startX + endX) / 2, (startY + endY) / 2, width / 2, height / 2, 0, 0, 2 * Math.PI);
+    ctx.stroke();
+}
+
+
+
+function drawArrow(endX, endY) {
+    const headlen = 10;
+    const dx = endX - startX;
+    const dy = endY - startY;
+    const angle = Math.atan2(dy, dx);
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
+    ctx.lineTo(endX - headlen * Math.cos(angle - Math.PI / 6), endY - headlen * Math.sin(angle - Math.PI / 6));
+    ctx.moveTo(endX, endY);
+    ctx.lineTo(endX - headlen * Math.cos(angle + Math.PI / 6), endY - headlen * Math.sin(angle + Math.PI / 6));
+    ctx.stroke();
+}
+
+function drawCross(endX, endY) {
+    const width = Math.abs(endX - startX);
+    const height = Math.abs(endY - startY);
+    const centerX = (startX + endX) / 2;
+    const centerY = (startY + endY) / 2;
+    ctx.beginPath();
+    ctx.moveTo(centerX, startY);
+    ctx.lineTo(centerX, endY);
+    ctx.moveTo(startX, centerY);
+    ctx.lineTo(endX, centerY);
+    ctx.stroke();
+}
+
+function drawCrescentMoon(endX, endY) {
+    const radius = Math.abs(endX - startX) / 2;
+    const centerX = (startX + endX) / 2;
+    const centerY = (startY + endY) / 2;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, Math.PI / 6, -Math.PI / 6, true);
+    ctx.arc(centerX + radius / 3, centerY, radius * 2 / 3, -Math.PI / 6, Math.PI / 6, false);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+function drawTrefoil(endX, endY) {
+    const radius = Math.abs(endX - startX) / 4;
+    const centerX = (startX + endX) / 2;
+    const centerY = (startY + endY) / 2;
+    ctx.beginPath();
+    for (let i = 0; i < 3; i++) {
+        const angle = (i * 2 * Math.PI) / 3;
+        const x = centerX + radius * 2 * Math.cos(angle);
+        const y = centerY + radius * 2 * Math.sin(angle);
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+    }
+    ctx.stroke();
+}
+
+function drawKite(endX, endY) {
+    const width = Math.abs(endX - startX);
+    const height = Math.abs(endY - startY);
+    ctx.beginPath();
+    ctx.moveTo(startX + width / 2, startY);
+    ctx.lineTo(endX, startY + height / 2);
+    ctx.lineTo(startX + width / 2, endY);
+    ctx.lineTo(startX, startY + height / 2);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+function drawCube(endX, endY) {
+    const size = Math.min(Math.abs(endX - startX), Math.abs(endY - startY));
+    const offsetX = size * 0.3;
+    const offsetY = size * 0.3;
+    ctx.beginPath();
+    ctx.rect(startX, startY, size, size);
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(startX + offsetX, startY - offsetY);
+    ctx.lineTo(startX + offsetX + size, startY - offsetY);
+    ctx.lineTo(endX, startY);
+    ctx.moveTo(startX + offsetX + size, startY - offsetY);
+    ctx.lineTo(startX + offsetX + size, startY + size - offsetY);
+    ctx.lineTo(endX, endY);
+    ctx.moveTo(startX + size, startY + size);
+    ctx.lineTo(startX + offsetX + size, startY + size - offsetY);
+    ctx.stroke();
+}
+
+// Fixed semi circle function
+function drawSemiCircle(endX, endY) {
+    const radius = Math.abs(endX - startX) / 2;
+    const centerX = (startX + endX) / 2;
+    ctx.beginPath();
+    ctx.arc(centerX, startY, radius, 0, Math.PI, false);
+    ctx.moveTo(centerX - radius, startY);
+    ctx.lineTo(centerX + radius, startY);
+    ctx.stroke();
+}
+
+function drawTrapezoid(endX, endY) {
+    const width = Math.abs(endX - startX);
+    const height = Math.abs(endY - startY);
+    const offset = width / 4;
+    ctx.beginPath();
+    ctx.moveTo(startX + offset, startY);
+    ctx.lineTo(endX - offset, startY);
+    ctx.lineTo(endX, endY);
+    ctx.lineTo(startX, endY);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+function drawRing(endX, endY) {
+    const outerRadius = Math.abs(endX - startX) / 2;
+    const innerRadius = outerRadius * 0.7;
+    const centerX = (startX + endX) / 2;
+    const centerY = (startY + endY) / 2;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+    ctx.moveTo(centerX + innerRadius, centerY);
+    ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);
+    ctx.stroke();
+}
+
+// Fixed right angle triangle function
+function drawRightAngle(endX, endY) {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(startX, endY);
+    ctx.lineTo(endX, endY);
+    ctx.lineTo(startX, startY);
+    ctx.moveTo(startX + 10, endY - 10);
+    ctx.lineTo(startX + 10, endY);
+    ctx.lineTo(startX, endY - 10);
+    ctx.stroke();
+}
+
+function drawScalene(endX, endY) {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
+    ctx.lineTo(startX + (endX - startX) / 3, endY);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+function drawPentagon(endX, endY) {
+    const radius = Math.abs(endX - startX) / 2;
+    const centerX = (startX + endX) / 2;
+    const centerY = (startY + endY) / 2;
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+        const angle = (i * 2 * Math.PI) / 5 - Math.PI / 2;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.stroke();
+}
+
+
+function drawHexagon(endX, endY) {
+    const radius = Math.abs(endX - startX) / 2;
+    const centerX = (startX + endX) / 2;
+    const centerY = (startY + endY) / 2;
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+        const angle = (i * 2 * Math.PI) / 6;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.stroke();
+}
+
+function drawTrefoil(endX, endY) {
+    const radius = Math.abs(endX - startX) / 4;
+    const centerX = (startX + endX) / 2;
+    const centerY = (startY + endY) / 2;
+    ctx.beginPath();
+    for (let i = 0; i < 3; i++) {
+        const angle = (i * 2 * Math.PI) / 3;
+        const x = centerX + radius * 2 * Math.cos(angle);
+        const y = centerY + radius * 2 * Math.sin(angle);
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+    }
+    ctx.stroke();
+}
+
+function drawHeart(endX, endY) {
+    const width = Math.abs(endX - startX);
+    const height = Math.abs(endY - startY);
+    ctx.beginPath();
+    ctx.moveTo(startX, startY + height / 4);
+    ctx.quadraticCurveTo(startX, startY, startX + width / 4, startY);
+    ctx.quadraticCurveTo(startX + width / 2, startY, startX + width / 2, startY + height / 4);
+    ctx.quadraticCurveTo(startX + width / 2, startY, startX + width * 3 / 4, startY);
+    ctx.quadraticCurveTo(startX + width, startY, startX + width, startY + height / 4);
+    ctx.quadraticCurveTo(startX + width, startY + height / 2, startX + width / 2, startY + height);
+    ctx.quadraticCurveTo(startX, startY + height / 2, startX, startY + height / 4);
+    ctx.stroke();
+}
+
+function drawStar(endX, endY) {
+    const outerRadius = Math.abs(endX - startX) / 2;
+    const innerRadius = outerRadius / 2;
+    const centerX = (startX + endX) / 2;
+    const centerY = (startY + endY) / 2;
+    const spikes = 5;
+    const rot = Math.PI / 2 * 3;
+    const step = Math.PI / spikes;
+
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY - outerRadius);
+    for (let i = 0; i < spikes; i++) {
+        let x = centerX + Math.cos(rot) * outerRadius;
+        let y = centerY + Math.sin(rot) * outerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+
+        x = centerX + Math.cos(rot) * innerRadius;
+        y = centerY + Math.sin(rot) * innerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+    }
+    ctx.lineTo(centerX, centerY - outerRadius);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+
+function drawCylinder(endX, endY) {
+    const width = Math.abs(endX - startX);
+    const height = Math.abs(endY - startY);
+    const ovalHeight = height / 4;
+
+    ctx.beginPath();
+    ctx.ellipse(startX + width / 2, startY, width / 2, ovalHeight, 0, 0, Math.PI * 2);
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(startX, startY + height);
+    ctx.moveTo(startX + width, startY);
+    ctx.lineTo(startX + width, startY + height);
+    ctx.ellipse(startX + width / 2, startY + height, width / 2, ovalHeight, 0, 0, Math.PI * 2);
+    ctx.stroke();
+}
+
+function drawCone(endX, endY) {
+    const width = Math.abs(endX - startX);
+    const height = Math.abs(endY - startY);
+
+    ctx.beginPath();
+    ctx.moveTo(startX + width / 2, startY);
+    ctx.lineTo(startX, startY + height);
+    ctx.lineTo(startX + width, startY + height);
+    ctx.closePath();
+    ctx.moveTo(startX, startY + height);
+    ctx.ellipse(startX + width / 2, startY + height, width / 2, height / 8, 0, 0, Math.PI * 2);
+    ctx.stroke();
+        }
+
+        function changeColor(e) {
+            currentColor = e.target.value;
+        }
+
+        function changeSize(e) {
+            currentSize = e.target.value;
+        }
+
+        function toggleEraser() {
+            currentTool = 'erase';
+        }
+
+        function selectDraw() {
+            currentTool = 'draw';
+        }
+
+        function selectShape(e) {
+    currentTool = e.target.value;
+    if (currentTool) {
+        setActiveTool('shapePicker');
+    }
+}
+
+setActiveTool('draw');
+
+        function fillCanvas() {
+            ctx.fillStyle = backgroundColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            redoStack = [];
+        }
+
+        function undo() {
+            if (undoStack.length > 0) {
+                const lastImage = undoStack.pop();
+                redoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                ctx.putImageData(lastImage, 0, 0);
+            }
+        }
+
+        function redo() {
+            if (redoStack.length > 0) {
+                const lastImage = redoStack.pop();
+                undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                ctx.putImageData(lastImage, 0, 0);
+            }
+        }
+
+        function addText() {
+            currentTool = 'addText';
+        }
+
+        function drawTextbox(e) {
+            const text = prompt('Enter text:');
+            if (text) {
+                ctx.fillStyle = currentColor;
+                ctx.font = `${currentSize * 12}px Arial`;
+                ctx.fillText(text, e.offsetX, e.offsetY);
+            }
+        }
+    </script>
+</body>
+</html>
