@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="scripts.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Library</title>
@@ -81,109 +83,10 @@
             }
         }
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #ff8c00;
-            padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
-        .navbar .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .navbar .logo img {
-            width: 50px;
-            height: auto;
-            margin-right: 10px;
-        }
-
-        .navbar .logo .title {
-            color: white;
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-
-        .navbar ul {
-            list-style: none;
-            display: flex;
-            margin: 0;
-            padding: 0;
-        }
-
-        .navbar ul li {
-            margin-left: 1rem;
-        }
-
-        .navbar ul li a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            display: block;
-            transition: background-color 0.3s ease;
-            font-size: 1.1rem;
-            border-radius: 10px;
-        }
-
-        .navbar ul li a:hover {
-            background-color: #e06b00;
-        }
-
-        .navbar .toggle {
-            display: none;
-            color: white;
-            font-size: 1.8rem;
-            cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            .navbar .toggle {
-                display: block;
-            }
-
-            .navbar ul {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .navbar ul li {
-                margin: 10px 0;
-                text-align: center;
-            }
-
-            .navbar ul li a,
-            .navbar ul li .logout-button {
-                width: 100%;
-            }
-
-            .navbar ul.active {
-                display: flex;
-            }
-        }
     </style>
 </head>
-<body onload="checkAuth()">
-    <div class="navbar">
-        <div class="logo">
-            <img src="schoologo-2-150x150.png" alt="School Logo">
-            <div class="title">Glorious Schools</div>
-        </div>
-        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
-        <ul id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="games.html">Games</a></li>
-            <li><a href="videos.html">Videos</a></li>
-            <li><a href="library.html">Library</a></li>
-        </ul>
-    </div>
+<body>
+
     <main>
         <h2>Select Class</h2>
         <div id="class-list">
@@ -201,7 +104,7 @@
             <button onclick="navigateToResource('Schemes of Work')">Schemes of Work</button>
             <button onclick="navigateToResource('Past Papers')">Past Papers</button>
             <button class="back-button" onclick="backToClasses()">⬅ Back to Classes</button>
-        </div>
+        </div><br><br><br>
     </main>
     <script>
         let selectedClass = '';
@@ -228,6 +131,5 @@
             navLinks.classList.toggle('active');
         }
     </script>
-<script src="auth.js"></script>
 </body>
 </html>

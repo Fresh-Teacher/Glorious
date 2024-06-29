@@ -1,0 +1,22 @@
+<div class="navbar">
+    <div class="logo">
+        <img src="schoologo-2-150x150.png" alt="School Logo">
+        <div class="title">Glorious Schools</div>
+    </div>
+    <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+    <ul id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
+        <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+        <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
+        <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+    </ul>
+</div>
+<div id="login-message" class="flash-message" style="display: none;">
+    Access denied! You must first login to view this page 🔐 
+</div>
+
+<!-- Updated footer code -->
+<footer class="footer">
+    <p>&copy; Glorious Schools 2024</p>
+</footer>

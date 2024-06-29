@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="scripts.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mouse Skills Game</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f8ff;
-            font-family: Arial, sans-serif;
-        }
+
         .game-area {
             position: relative;
             width: 80vw;
@@ -131,11 +125,11 @@
     </style>
 </head>
 <body>
-    <div class="game-area" id="gameArea">
+    <center><div class="game-area" id="gameArea">
         <div class="scoreboard" id="scoreBoard">Score: 0</div>
         <div class="timer" id="timer">Time Left: 3 Seconds</div>
         <div class="instruction" id="instruction">Instruction: Click on the shape</div>
-    </div>
+    </div></center>
 
     <!-- Instructions Modal -->
     <div id="instructionsModal" class="modal">

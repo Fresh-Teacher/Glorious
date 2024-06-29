@@ -1,146 +1,153 @@
-body {
-    font-family: 'Comic Sans MS', sans-serif;
+
+.navbar {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    height: 100vh;
-    background-color: #ffe5b4;
-    margin: 0;
-}
-
-#game-container {
-    text-align: center;
-    background-color: #ffa500;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    position: relative;
-}
-
-h1 {
-    font-family: 'Comic Sans MS', sans-serif;
-    color: #fff;
-}
-
-#timer {
-    font-size: 18px;
-    color: red;
-}
-
-#word-container {
-    margin: 20px 0;
-    font-size: 24px;
-}
-
-#input-box {
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 18px;
-    border: 2px solid #fff;
-    border-radius: 5px;
-}
-
-#input-box:focus {
-    outline: none;
-    border-color: #ff4500;
-}
-
-#score-display {
-    margin: 20px 0;
-    font-size: 20px;
-    color: #fff;
-}
-
-#words-remaining {
-    margin: 20px 0;
-    font-size: 18px;
-    color: #fff;
-}
-
-#falling-score {
-    display: none;
-    position: absolute;
-    font-size: 24px;
-    color: green;
-    animation: fall 2s;
-}
-
-@keyframes fall {
-    from { top: 0; opacity: 1; }
-    to { top: 100%; opacity: 0; }
-}
-
-.modal {
-    display: none;
-    position: fixed;
+    background-color: #ff8c00;
+    padding: 0.1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
     top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    display: flex;
     align-items: center;
 }
 
-.modal-content {
-    background-color: #ffa500;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 300px;
-    color: #fff;
-    position: relative;
+.navbar .logo img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
 }
 
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 24px;
-    color: #fff;
-}
-
-#start-game-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    background-color: #ff4500;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-#start-game-button:hover {
-    background-color: #ff6347;
-}
-
-@keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-#restart-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    background-color: #ff4500;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#restart-button:hover {
-    background-color: #ff6347;
-}
-
-.correct {
-    color: green;
+.navbar .logo .title {
+    color: white;
+    font-size: 1.8rem;
     font-weight: bold;
 }
 
+.navbar ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    margin-left: 1rem;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
+    transition: background-color 0.3s ease;
+    font-size: 1.1rem;
+    border-radius: 10px;
+}
+
+.navbar ul li a:hover {
+    background-color: #e06b00;
+}
+
+.navbar .toggle {
+    display: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.logout-button {
+    padding: 0.5rem 1rem;
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #e06b00;
+}
+
+.flash-message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF4500;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #FFE4B5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: flash-animation 1s infinite alternate, bounce 0.5s infinite alternate;
+}
+
+@keyframes flash-animation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar ul {
+        flex-direction: column;
+        display: none;
+        width: 100%;
+    }
+
+    .navbar ul li {
+        margin-left: 0;
+    }
+
+    .navbar ul li a {
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .navbar .toggle {
+        display: block;
+    }
+
+    .navbar ul.show {
+        display: flex;
+    }
+}
+
+.footer {
+    background-color: #ff8c00;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 0.8rem; /* Reduced from 0.9rem */
+}
+
+body {
+    padding-bottom: 40px; /* Reduced from 60px */
+}
+
+.container {
+    margin-bottom: 40px; /* Reduced from 60px */
+}
