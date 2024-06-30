@@ -66,6 +66,88 @@
             margin: 0 auto 20px;
             display: block;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #e65100;
+        }
+
+        .unanswered-list {
+            text-align: left;
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            width: 48%;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background-color: #ddd;
+            margin-top: 10px;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 100%;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            width: 48%;
+        }
     </style>
 </head>
 <body>
@@ -85,6 +167,24 @@
             <div id="questions"></div>
             <button type="submit">Submit Examination</button>
         </form>
+    </div>
+    <div id="submitModal" class="modal">
+        <div class="modal-content">
+            <p class="modal-title">Are you sure you want to submit the exam?</p>
+            <p id="modalText"></p>
+            <ul id="unansweredList" class="unanswered-list"></ul>
+            <div class="modal-buttons">
+                <button id="confirmSubmit">SUBMIT 📤</button>
+                <button id="returnToExam">CANCEL ❌</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification">
+        Your exam has been submitted successfully, returning back to homepage.
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
     </div>
 
     <script>
@@ -212,82 +312,139 @@
         };
     
         const questionsContainer = document.getElementById('questions');
-        const studentClass = localStorage.getItem('studentClass');
-    
-        quizData[studentClass].forEach((q, index) => {
-            const questionDiv = document.createElement('div');
-            questionDiv.className = 'question';
-            questionDiv.innerHTML = `
-                <p>${index + 1}. ${q.question}</p>
-                <div class="options">
-                    ${q.options.map((option, i) => `
-                        <label>
-                            <input type="${studentClass === 'Primary Three' ? 'radio' : 'checkbox'}" 
-                                   name="q${index}" 
-                                   value="${i}">
-                            ${option}
-                        </label>
-                    `).join('')}
-                </div>
-            `;
-            questionsContainer.appendChild(questionDiv);
-        });
-    
-        document.getElementById('quizForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            let answers = [];
-            quizData[studentClass].forEach((q, index) => {
-                if (studentClass === 'Primary Three') {
-                    const selected = document.querySelector(`input[name="q${index}"]:checked`);
-                    answers.push(selected ? selected.value : 'Not answered');
-                } else {
-                    const selected = Array.from(document.querySelectorAll(`input[name="q${index}"]:checked`))
-                                          .map(input => input.value);
-                    answers.push(selected.length > 0 ? selected : 'Not answered');
-                }
-            });
-    
-            const headerContent = `
-                       GLORIOUS KINDERGARTEN & PRIMARY SCHOOL
-                        MID-TERM II EXAMINATION 2024
-               INFORMATION AND COMMUNICATION TECHNOLOGY (ICT)
-    
-    NAME: ${localStorage.getItem('studentName')}
-    CLASS: ${studentClass}
-    STREAM: ${localStorage.getItem('studentStream')}
-    
+const studentClass = localStorage.getItem('studentClass');
+
+quizData[studentClass].forEach((q, index) => {
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question';
+    questionDiv.innerHTML = `
+        <p>${index + 1}. ${q.question}</p>
+        <div class="options">
+            ${q.options.map((option, i) => `
+                <label>
+                    <input type="${studentClass === 'Primary Three' ? 'radio' : 'checkbox'}" 
+                           name="q${index}" 
+                           value="${i}">
+                    ${option}
+                </label>
+            `).join('')}
+        </div>
     `;
+    questionsContainer.appendChild(questionDiv);
+});
+
+let examSubmitted = false;
+
+document.getElementById('quizForm').addEventListener('submit', function(e) {
+    e.preventDefault();
     
-    const offlineContent = headerContent + quizData[studentClass].map((q, index) => {
-    let answerText;
-    if (studentClass === 'Primary Three') {
-        answerText = answers[index] === 'Not answered' ? 'Not answered' : q.options[answers[index]];
-    } else {
-        answerText = answers[index] === 'Not answered' ? 'Not answered' : 
-                     answers[index].map(ans => q.options[ans]).join('\n');
+    if (examSubmitted) {
+        alert("You have already submitted this exam.");
+        return;
     }
-    return `
+
+    let answers = [];
+    let unansweredQuestions = [];
+    quizData[studentClass].forEach((q, index) => {
+        if (studentClass === 'Primary Three') {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            if (!selected) {
+                unansweredQuestions.push(index + 1);
+            }
+            answers.push(selected ? selected.value : 'Not answered');
+        } else {
+            const selected = Array.from(document.querySelectorAll(`input[name="q${index}"]:checked`))
+                                  .map(input => input.value);
+            if (selected.length === 0) {
+                unansweredQuestions.push(index + 1);
+            }
+            answers.push(selected.length > 0 ? selected : 'Not answered');
+        }
+    });
+
+    const modal = document.getElementById('submitModal');
+    const modalText = document.getElementById('modalText');
+    const unansweredList = document.getElementById('unansweredList');
+    
+    if (unansweredQuestions.length > 0) {
+        modalText.textContent = 'The following questions were not answered:';
+        unansweredList.innerHTML = unansweredQuestions.map(num => `<li>Question ${num}</li>`).join('');
+    } else {
+        modalText.textContent = 'All questions have been answered successfully.';
+        unansweredList.innerHTML = '';
+    }
+
+    modal.style.display = 'block';
+
+    document.getElementById('confirmSubmit').onclick = function() {
+        examSubmitted = true;
+        modal.style.display = 'none';
+        submitExam(answers);
+    };
+
+    document.getElementById('returnToExam').onclick = function() {
+        modal.style.display = 'none';
+    };
+});
+
+function submitExam(answers) {
+    const headerContent = `
+               GLORIOUS KINDERGARTEN & PRIMARY SCHOOL
+                MID-TERM II EXAMINATION 2024
+       INFORMATION AND COMMUNICATION TECHNOLOGY (ICT)
+
+NAME: ${localStorage.getItem('studentName')}
+CLASS: ${studentClass}
+STREAM: ${localStorage.getItem('studentStream')}
+
+`;
+
+    const offlineContent = headerContent + quizData[studentClass].map((q, index) => {
+        let answerText;
+        if (studentClass === 'Primary Three') {
+            answerText = answers[index] === 'Not answered' ? 'Not answered' : q.options[answers[index]];
+        } else {
+            answerText = answers[index] === 'Not answered' ? 'Not answered' : 
+                         answers[index].map(ans => q.options[ans]).join('\n');
+        }
+        return `
 ${index + 1}. ${q.question}
 ${answerText}
 
 `;
-}).join('\n');
+    }).join('\n');
+
+    const blob = new Blob([offlineContent], {type: 'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
     
-            const blob = new Blob([offlineContent], {type: 'text/plain'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            
-            const studentName = localStorage.getItem('studentName');
-            const safeFileName = studentName.replace(/[<>:"/\\|?*]/g, '');
-            a.download = `${safeFileName}.txt`;
-            
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        });
+    const studentName = localStorage.getItem('studentName');
+    const safeFileName = studentName.replace(/[<>:"/\\|?*]/g, '');
+    a.download = `${safeFileName}.txt`;
+    
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // Show notification
+    const notification = document.getElementById('notification');
+    const progress = document.getElementById('progress');
+    notification.style.display = 'block';
+
+    let width = 100;
+    const interval = setInterval(function() {
+        if (width <= 0) {
+            clearInterval(interval);
+            notification.style.display = 'none';
+            window.location.href = 'examinations.html';
+        } else {
+            width -= 2;
+            progress.style.width = width + '%';
+        }
+    }, 100);
+}
     </script>
 </body>
 </html>
