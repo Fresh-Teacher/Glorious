@@ -12,6 +12,9 @@ def create_pdf(txt_path, pdf_path, header_image_path):
     with open(txt_path, 'r', encoding='utf-8') as file:
         content = file.read()
     
+    # Replace "Not answered" with a line of underscores
+    content = content.replace("Not answered", "____________________________________")
+    
     # Split content by double newlines to preserve original paragraphs
     paragraphs = content.split('\n\n')
     
