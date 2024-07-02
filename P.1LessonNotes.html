@@ -364,7 +364,72 @@ h1 {
                 display: flex;
             }
         }
+        .ribbon {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+}
 
+.ribbon::before,
+.ribbon::after {
+    position: absolute;
+    z-index: -1;
+    content: '';
+    display: block;
+    border: 3px solid #2980b9;
+    border-top-color: transparent;
+    border-right-color: transparent;
+}
+
+.ribbon::before {
+    top: 0;
+    left: 0;
+}
+
+.ribbon::after {
+    bottom: 0;
+    right: 0;
+}
+
+.ribbon span {
+    position: absolute;
+    display: block;
+    width: 100px;
+    padding: 4px 0;
+    background-color: #3498db;
+    box-shadow: 0 3px 5px rgba(0,0,0,.1);
+    color: #fff;
+    font: 700 10px/1 'Lato', sans-serif;
+    text-shadow: 0 1px 1px rgba(0,0,0,.2);
+    text-transform: uppercase;
+    text-align: center;
+    right: -22px;
+    top: 15px;
+    transform: rotate(45deg);
+}
+
+.ribbon-online span {
+    background-color: #4CAF50;
+}
+
+.ribbon-offline span {
+    background-color: #FFC107;
+    color: #000;
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+
+.card h3 {
+    padding-right: 30px; /* Add space for the ribbon */
+}
     </style>
 </head>
 <body>
@@ -406,6 +471,7 @@ h1 {
         }
     
 const pdfData = [
+{ "pdfUrl": "https://fresh-teacher.github.io/p4/P4 RELIGIOUS EDUCATION HOLIDAY WORK YET HAPPY KIDZ SCHOOL.pdf"},
 { "pdfUrl": "P1 RESOURCES/LESSON NOTES/P1 TERM 3 ENGLISH WORK BOOK  2019.pdf"},
 { "pdfUrl": "P1 RESOURCES/LESSON NOTES/P1 TERM 3 ENGLISH WORK BOOK  2023.pdf"},
 { "pdfUrl": "P1 RESOURCES/LESSON NOTES/P1 TERM 3 ENGLISH WORKBOOK.pdf"},
@@ -438,26 +504,33 @@ const pdfData = [
     let capitalizedWords = nameWithoutHyphensUnderscores.toUpperCase();
     return capitalizedWords;
 }
+function createCard(pdf) {
+    const card = document.createElement('div');
+    card.className = 'card';
 
+    const title = document.createElement('h3');
+    title.textContent = extractNameFromUrl(pdf.pdfUrl);
+    card.appendChild(title);
 
+    const ribbon = document.createElement('div');
+    ribbon.className = 'ribbon';
+    if (pdf.pdfUrl.startsWith('https:')) {
+        ribbon.classList.add('ribbon-online');
+        ribbon.innerHTML = '<span>Online</span>';
+    } else {
+        ribbon.classList.add('ribbon-offline');
+        ribbon.innerHTML = '<span>Offline</span>';
+    }
+    card.appendChild(ribbon);
 
-    
-        function createCard(pdf) {
-            const card = document.createElement('div');
-            card.className = 'card';
-    
-            const title = document.createElement('h3');
-            title.textContent = extractNameFromUrl(pdf.pdfUrl);
-            card.appendChild(title);
-    
-            const viewButton = document.createElement('a');
-            viewButton.className = 'view-button';
-            viewButton.textContent = 'VIEW';
-            viewButton.onclick = () => openPdfViewer(pdf.pdfUrl);
-            card.appendChild(viewButton);
-    
-            return card;
-        }
+    const viewButton = document.createElement('a');
+    viewButton.className = 'view-button';
+    viewButton.textContent = 'VIEW';
+    viewButton.onclick = () => openPdfViewer(pdf.pdfUrl);
+    card.appendChild(viewButton);
+
+    return card;
+}
     
         function displayCards() {
             const cardsContainer = document.getElementById('cards-container');
