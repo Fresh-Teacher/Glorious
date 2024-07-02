@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="scripts.js" defer></script>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events and Occasions</title>
@@ -125,10 +123,194 @@
             height: 400px;
             border-radius: 10px;
         }
+        
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ff8c00;
+    padding: 0.1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .logo img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.navbar .logo .title {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    margin-left: 1rem;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
+    transition: background-color 0.3s ease;
+    font-size: 1.1rem;
+    border-radius: 10px;
+}
+
+.navbar ul li a:hover {
+    background-color: #e06b00;
+}
+
+.navbar .toggle {
+    display: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.logout-button {
+    padding: 0.5rem 1rem;
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #e06b00;
+}
+
+.flash-message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF4500;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #FFE4B5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: flash-animation 1s infinite alternate, bounce 0.5s infinite alternate;
+}
+
+@keyframes flash-animation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar ul {
+        flex-direction: column;
+        display: none;
+        width: 100%;
+    }
+
+    .navbar ul li {
+        margin-left: 0;
+    }
+
+    .navbar ul li a {
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .navbar .toggle {
+        display: block;
+    }
+
+    .navbar ul.show {
+        display: flex;
+    }
+}
+
+.footer {
+    background-color: #ff8c00;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 0.8rem; /* Reduced from 0.9rem */
+}
+
+body {
+    padding-bottom: 40px; /* Reduced from 60px */
+}
+
+.container {
+    margin-bottom: 40px; /* Reduced from 60px */
+}
+@keyframes colorChange {
+        0% { color: white; }
+        20% { color: #FFE0B2; }
+        40% { color: #FFCC80; }
+        60% { color: #FFA726; }
+        80% { color: #FF9800; }
+        100% { color: white; }
+    }
+
+    .animated-title {
+        animation: colorChange 6s infinite;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
 
     </style>
 </head>
 <body>
+    <div class="navbar">
+    <div class="logo">
+        <img src="schoologo-2-150x150.png" alt="School Logo">
+        <div class="title animated-title">Glorious Schools</div>
+    </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+            <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+    <div id="login-message" class="flash-message" style="display: none;">
+        Access denied! You must first login to view this page 🔐 
+    </div>
 
     <div id="searchContainer">
         <input type="text" id="searchInput" placeholder="Search for videos...">
@@ -149,7 +331,9 @@
     </footer>
 
     <script>
+    document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('currentYear').textContent = new Date().getFullYear();
+        checkAuthStatus();
 
         const videos = [
             { id: "1", imgSrc: "thumbnails/Screenshot (753).png", imgAlt: "Tour Day Thumbnail", title: "Dancing to Nkwagala Nnyo Song", videoSrc: "2cca9fb16c4f8e613d0cb5fb09b617ca.mp4" },
@@ -250,16 +434,42 @@
             });
             document.getElementById('noResults').style.display = hasResults ? 'none' : 'block';
         });
+    });
 
-        function toggleMenu() {
-            const navLinks = document.getElementById('nav-links');
-            navLinks.classList.toggle('active');
-        }
+    function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        navLinks.classList.toggle('show');
+    }
 
-        function logout() {
-            // Implement your logout functionality here
-            alert("Logged out");
+    function logout() {
+        localStorage.removeItem("rememberMe");
+        localStorage.removeItem("email");
+        localStorage.removeItem("password");
+        localStorage.removeItem("isLoggedIn");
+        sessionStorage.removeItem("email");
+        sessionStorage.removeItem("password");
+        sessionStorage.removeItem("isLoggedIn");
+        sessionStorage.removeItem("intendedPage");
+        window.location.href = 'index.html';
+    }
+
+    function checkAuth(page) {
+        if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = page;
+        } else {
+            sessionStorage.setItem("intendedPage", page);
+            showLoginMessage();
         }
+    }
+
+    function showLoginMessage() {
+        document.getElementById("login-message").style.display = "block";
+    }
+
+    function checkAuthStatus() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+        document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+    }
     </script>
 </body>
 </html>

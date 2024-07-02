@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="scripts.js" defer></script>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ICT Examination</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-
-            background-color: #fff3e0; /* Light orange background */
-            color: #5d4037; /* Dark brown text */
+            background-color: #fff3e0;
+            color: #5d4037;
+            padding-bottom: 40px;
         }
         .exam-paper {
-            background-color: #ffffff; /* White background for the paper */
+            background-color: #ffffff;
             border-radius: 8px;
             padding: 40px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -26,18 +24,18 @@
         .header h1 {
             font-size: 24px;
             margin: 0;
-            color: #e65100; /* Dark orange header text */
+            color: #e65100;
         }
         .header p {
             margin: 5px 0;
-            color: #ff6f00; /* Medium orange text */
+            color: #ff6f00;
         }
         .student-info {
             margin-bottom: 30px;
             font-weight: bold;
         }
         .question {
-            background-color: #ffe0b2; /* Light orange question background */
+            background-color: #ffe0b2;
             border-radius: 4px;
             padding: 20px;
             margin-bottom: 20px;
@@ -50,7 +48,7 @@
             display: block;
             width: 100%;
             padding: 12px;
-            background-color: #ff9800; /* Orange button */
+            background-color: #ff9800;
             color: white;
             border: none;
             border-radius: 4px;
@@ -59,7 +57,7 @@
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #e65100; /* Dark orange button hover */
+            background-color: #e65100;
         }
         .school-logo {
             max-width: 100px;
@@ -77,7 +75,6 @@
             overflow: auto;
             background-color: rgba(0,0,0,0.4);
         }
-
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -88,30 +85,25 @@
             border-radius: 8px;
             text-align: center;
         }
-
         .modal-title {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
             color: #e65100;
         }
-
         .unanswered-list {
             text-align: left;
             margin: 20px 0;
             padding-left: 20px;
         }
-
         .modal-buttons {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
         }
-
         .modal-buttons button {
             width: 48%;
         }
-
         .notification {
             position: fixed;
             top: 20px;
@@ -125,32 +117,197 @@
             z-index: 1000;
             display: none;
         }
-
         .progress-bar {
             width: 100%;
             height: 5px;
             background-color: #ddd;
             margin-top: 10px;
         }
-
         .progress {
             height: 100%;
             background-color: #4CAF50;
             width: 100%;
         }
-
-        .modal-buttons {
+        .timer {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .timer.warning {
+            background-color: #f44336;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+        .navbar {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            align-items: center;
+            background-color: #ff8c00;
+            padding: 0.1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .logo img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .navbar .logo .title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar ul li {
+            margin-left: 1rem;
+        }
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: background-color 0.3s ease;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+        .navbar ul li a:hover {
+            background-color: #e06b00;
+        }
+        .navbar .toggle {
+            display: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        .logout-button {
+            padding: 0.5rem 1rem;
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .logout-button:hover {
+            background-color: #e06b00;
+        }
+        .flash-message {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FF4500;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #FFE4B5;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: flash-animation 1s infinite alternate, bounce 0.5s infinite alternate;
+        }
+        @keyframes flash-animation {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.7; transform: scale(1.05); }
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+        .footer {
+            background-color: #ff8c00;
+            color: white;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 0.8rem;
+        }
+        .container {
+            margin-bottom: 40px;
+        }
+        @media (max-width: 600px) {
+            .navbar ul {
+                flex-direction: column;
+                display: none;
+                width: 100%;
+            }
+            .navbar ul li {
+                margin-left: 0;
+            }
+            .navbar ul li a {
+                text-align: center;
+                padding: 1rem;
+            }
+            .navbar .toggle {
+                display: block;
+            }
+            .navbar ul.show {
+                display: flex;
+            }
+        }
+        @keyframes colorChange {
+            0% { color: white; }
+            20% { color: #FFE0B2; }
+            40% { color: #FFCC80; }
+            60% { color: #FFA726; }
+            80% { color: #FF9800; }
+            100% { color: white; }
         }
 
-        .modal-buttons button {
-            width: 48%;
+        .animated-title {
+            animation: colorChange 6s infinite;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 <body>
+    <div class="navbar">
+            <div class="logo">
+                <img src="schoologo-2-150x150.png" alt="School Logo">
+                <div class="title animated-title">Glorious Schools</div>
+            </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+            <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+    <div id="login-message" class="flash-message" style="display: none;">
+        Access denied! You must first login to view this page 🔐 
+    </div>
+
+    <footer class="footer">
+        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
+    </footer>
+
     <div class="exam-paper">
         <div class="header">
             <img src="schoologo-2-150x150.png" alt="School Logo" class="school-logo">
@@ -163,11 +320,15 @@
             <p>CLASS: <span id="studentClass"></span></p>
             <p>STREAM: <span id="studentStream"></span></p>
         </div>
+        <div id="timer" class="timer">
+            <span id="time">10:00</span>
+        </div>
         <form id="quizForm">
             <div id="questions"></div>
             <button type="submit">Submit Examination</button>
         </form>
     </div>
+
     <div id="submitModal" class="modal">
         <div class="modal-content">
             <p class="modal-title">Are you sure you want to submit the exam?</p>
@@ -187,12 +348,61 @@
         </div>
     </div>
 
+    <footer class="footer">
+        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
+    </footer>
+
     <script>
+        function setCurrentYear() {
+            const currentYear = new Date().getFullYear();
+            document.getElementById('currentYear').textContent = currentYear;
+        }
+
+        function toggleMenu() {
+            const navLinks = document.getElementById("nav-links");
+            navLinks.classList.toggle("show");
+        }
+
+        function checkAuth(page) {
+            if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = page;
+            } else {
+                sessionStorage.setItem("intendedPage", page);
+                showLoginMessage();
+            }
+        }
+
+        function showLoginMessage() {
+            document.getElementById("login-message").style.display = "block";
+        }
+
+        function checkAuthStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+            document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+        }
+
+        function logout() {
+            localStorage.removeItem("rememberMe");
+            localStorage.removeItem("email");
+            localStorage.removeItem("password");
+            localStorage.removeItem("isLoggedIn");
+            sessionStorage.removeItem("email");
+            sessionStorage.removeItem("password");
+            sessionStorage.removeItem("isLoggedIn");
+            sessionStorage.removeItem("intendedPage");
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            setCurrentYear();
+        });
+
         // Populate student info
         document.getElementById('studentName').textContent = localStorage.getItem('studentName');
         document.getElementById('studentClass').textContent = localStorage.getItem('studentClass');
         document.getElementById('studentStream').textContent = localStorage.getItem('studentStream');
-    
+
         const quizData = {
             'Primary Three': [
             {
@@ -221,7 +431,7 @@
                 },
                 {
                     question: "Of what importance is a mouse on a computer?",
-                    options: ["I mouse helps to scare away rats in the computer room.", "A mouse is used for playing music.", "A mouse is like the mouth of a computer.", "A mouse is used for selecting items on the screen."],
+                    options: ["A mouse helps to scare away rats in the computer room.", "A mouse is used for playing music.", "A mouse is like the mouth of a computer.", "A mouse is used for selecting items on the screen."],
                     correctAnswer: 3
                 },
                 {
@@ -231,7 +441,7 @@
                 },
                 {
                     question: "Give the meaning of the term software.",
-                    options: ["Software are parts of a computer which you can see and but not touch.", "Software means somethings very soft.", "Software are the soft parts on a computer.", "Software refers to parts of a computer which you can and touch but they are very soft."],
+                    options: ["Software are parts of a computer which you can see but not touch.", "Software means something very soft.", "Software are the soft parts on a computer.", "Software refers to parts of a computer which you can and touch but they are very soft."],
                     correctAnswer: 2
                 },
                 {
@@ -263,7 +473,7 @@
                 },
                 {
                     question: "Give the meaning of the term software.",
-                    options: ["Software are parts of a computer which you can see and but not touch.", "Software means somethings very soft.", "Software are the soft parts on a computer.", "Software refers to parts of a computer which you can and touch but they are very soft."],
+                    options: ["Software are parts of a computer which you can see and but not touch.", "Software means somethings very soft.", "Software are the soft parts on a computer.", "Software refers to parts of a computer which you can see but touch but they are very soft."],
                     correctAnswers: [0, 1, 2, 3]
                 },
                 {
@@ -335,6 +545,45 @@ quizData[studentClass].forEach((q, index) => {
 
 let examSubmitted = false;
 
+let timeLeft = 10 * 60; // 10 minutes in seconds
+const timerElement = document.getElementById('time');
+
+function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft % 60;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+    timerElement.textContent = `${minutes}:${seconds}`;
+    
+    if (timeLeft <= 60) { // Last minute
+        document.getElementById('timer').classList.add('warning');
+    }
+    
+    if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        autoSubmitExam();
+    } else {
+        timeLeft--;
+    }
+}
+
+const timerInterval = setInterval(updateTimer, 1000);
+
+function autoSubmitExam() {
+    let answers = [];
+    quizData[studentClass].forEach((q, index) => {
+        if (studentClass === 'Primary Three') {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            answers.push(selected ? selected.value : 'Not answered');
+        } else {
+            const selected = Array.from(document.querySelectorAll(`input[name="q${index}"]:checked`))
+                                  .map(input => input.value);
+            answers.push(selected.length > 0 ? selected : 'Not answered');
+        }
+    });
+
+    submitExam(answers);
+}
+
 document.getElementById('quizForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -377,7 +626,6 @@ document.getElementById('quizForm').addEventListener('submit', function(e) {
     modal.style.display = 'block';
 
     document.getElementById('confirmSubmit').onclick = function() {
-        examSubmitted = true;
         modal.style.display = 'none';
         submitExam(answers);
     };
@@ -388,6 +636,11 @@ document.getElementById('quizForm').addEventListener('submit', function(e) {
 });
 
 function submitExam(answers) {
+    if (examSubmitted) {
+        return; // Prevent multiple submissions
+    }
+    examSubmitted = true;
+
     const headerContent = `
                GLORIOUS KINDERGARTEN & PRIMARY SCHOOL
                 MID-TERM II EXAMINATION 2024

@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="scripts.js" defer></script>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typing Game</title>
@@ -143,11 +141,230 @@ h1 {
     color: green;
     font-weight: bold;
 }
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ff8c00;
+    padding: 0.1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
 
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
 
+.navbar .logo img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.navbar .logo .title {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    margin-left: 1rem;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
+    transition: background-color 0.3s ease;
+    font-size: 1.1rem;
+    border-radius: 10px;
+}
+
+.navbar ul li a:hover {
+    background-color: #e06b00;
+}
+
+.navbar .toggle {
+    display: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.logout-button {
+    padding: 0.5rem 1rem;
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #e06b00;
+}
+
+@keyframes flash-animation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar ul {
+        flex-direction: column;
+        display: none;
+        width: 100%;
+    }
+
+    .navbar ul li {
+        margin-left: 0;
+    }
+
+    .navbar ul li a {
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .navbar .toggle {
+        display: block;
+    }
+
+    .navbar ul.show {
+        display: flex;
+    }
+}
+
+.footer {
+    background-color: #ff8c00;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 0.8rem; /* Reduced from 0.9rem */
+}
+
+body {
+    padding-bottom: 40px; /* Reduced from 60px */
+}
+
+.container {
+    margin-bottom: 40px; /* Reduced from 60px */
+}
+@keyframes colorChange {
+        0% { color: white; }
+        20% { color: #FFE0B2; }
+        40% { color: #FFCC80; }
+        60% { color: #FFA726; }
+        80% { color: #FF9800; }
+        100% { color: white; }
+    }
+
+    .animated-title {
+        animation: colorChange 6s infinite;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title animated-title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+            <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+    <footer class="footer">
+        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
+    </footer>
+    <script>
+        function toggleMenu() {
+    const navLinks = document.getElementById("nav-links");
+    navLinks.classList.toggle("show");
+}
+function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        function setCurrentYear() {
+            const currentYear = new Date().getFullYear();
+            document.getElementById('currentYear').textContent = currentYear;
+        }
+
+        function checkAuth(page) {
+            if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = page;
+            } else {
+                sessionStorage.setItem("intendedPage", page);
+                showLoginMessage();
+            }
+        }
+
+        function showLoginMessage() {
+            document.getElementById("login-message").style.display = "block";
+        }
+
+        function checkAuthStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+            document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+        }
+
+        function logout() {
+            localStorage.removeItem("rememberMe");
+            localStorage.removeItem("email");
+            localStorage.removeItem("password");
+            localStorage.removeItem("isLoggedIn");
+            sessionStorage.removeItem("email");
+            sessionStorage.removeItem("password");
+            sessionStorage.removeItem("isLoggedIn");
+            sessionStorage.removeItem("intendedPage");
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            setCurrentYear();
+        });
+    
+    </script>
     <center><div id="game-container">
         <h1>Typing Game</h1>
         <div id="score-display">YOUR SCORE: 0</div>

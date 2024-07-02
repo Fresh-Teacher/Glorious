@@ -2,22 +2,20 @@
 <html lang="en">
 
 <head>
-    <script src="scripts.js" defer></script>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Glorious Schools</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
-
     <style>
         body {
             font-family: 'Comic Sans MS', Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #8B4513;
-            /* Dark orange to brownish color */
+            color: #5d4037;
+            padding-bottom: 40px;
         }
-
+    
         .login-container,
         .content-container {
             display: none;
@@ -26,17 +24,15 @@
             height: 100vh;
             background-color: #8B4513;
             margin-top: 60px;
-            /* Adjust for sticky navbar height */
         }
-
+    
         .login-container.active,
         .content-container.active {
             display: flex;
         }
-
+    
         .login-box {
             background: linear-gradient(to bottom, #d46618, #FFA500);
-            /* Gradient from dark orange to light orange */
             padding: 2rem;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -44,18 +40,18 @@
             max-width: 400px;
             width: 100%;
         }
-
+    
         .login-box img {
             width: 100px;
             margin-bottom: 1rem;
         }
-
+    
         .login-box h2 {
             margin-bottom: 1rem;
             color: white;
             font-family: 'Comic Sans MS', Arial, sans-serif;
         }
-
+    
         .login-box input {
             display: block;
             width: 100%;
@@ -65,19 +61,19 @@
             border-radius: 5px;
             font-size: 1rem;
         }
-
+    
         .login-box input[type="checkbox"] {
             display: inline-block;
             width: auto;
         }
-
+    
         .login-box label {
             display: inline-block;
             margin-left: 0.5rem;
             font-size: 0.9rem;
             color: white;
         }
-
+    
         .login-box button {
             padding: 0.5rem 1rem;
             color: white;
@@ -85,56 +81,43 @@
             border-radius: 5px;
             cursor: pointer;
             background: linear-gradient(45deg, #FFA500, #ffa722, #a76400);
-            /* Initial gradient colors */
             background-size: 200% 200%;
             animation: gradient-animation 3s infinite alternate;
             transition: color 0.3s ease;
-            /* Smooth color change transition */
         }
-
+    
         @keyframes gradient-animation {
-            0% {
-                background-position: 0% 50%;
-                /* Initial position */
-            }
-
-            100% {
-                background-position: 100% 50%;
-                /* Final position */
-            }
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
-
+    
         .login-box button:hover {
             color: white;
-            /* Change text color on hover */
-        }
-
-        .login-box button:hover {
             background-color: #e06b00;
         }
-
+    
         .content-container .content {
             text-align: center;
         }
-
+    
         .content-container h1 {
             color: #ff8c00;
             font-size: 2.5rem;
             font-family: 'Comic Sans MS', Arial, sans-serif;
         }
-
+    
         .content-container p {
             font-size: 1.2rem;
             color: #fff;
         }
-
+    
         .resource-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             margin-top: 2rem;
         }
-
+    
         .resource-item {
             background: #FFA500;
             padding: 1rem;
@@ -145,11 +128,11 @@
             width: 200px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
+    
         .resource-item:hover {
             transform: scale(1.05);
         }
-
+    
         .resource-item img {
             width: 100%;
             height: 120px;
@@ -157,7 +140,7 @@
             border-radius: 10px;
             margin-bottom: 1rem;
         }
-
+    
         .resource-item a {
             text-decoration: none;
             color: white;
@@ -166,49 +149,180 @@
             display: block;
             margin-top: 0.5rem;
         }
-
+    
         .resource-item a:hover {
             text-decoration: underline;
         }
-
-
+    
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ff8c00;
+            padding: 0.1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+    
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+    
+        .navbar .logo img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+    
+        .navbar .logo .title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+    
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+    
+        .navbar ul li {
+            margin-left: 1rem;
+        }
+    
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: background-color 0.3s ease;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+    
+        .navbar ul li a:hover {
+            background-color: #e06b00;
+        }
+    
+        .navbar .toggle {
+            display: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+    
+        .logout-button {
+            padding: 0.5rem 1rem;
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        .logout-button:hover {
+            background-color: #e06b00;
+        }
+    
         .flash-message {
-    font-size: 24px;
-    font-weight: bold;
-    color: #FF4500;
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #FFE4B5;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    animation: flash-animation 1s infinite alternate, bounce 0.5s infinite alternate;
-}
+            font-size: 24px;
+            font-weight: bold;
+            color: #FF4500;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #FFE4B5;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: flash-animation 1s infinite alternate, bounce 0.5s infinite alternate;
+        }
+    
+        @keyframes flash-animation {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.7; transform: scale(1.05); }
+        }
+    
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+    
+        .footer {
+            background-color: #ff8c00;
+            color: white;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 0.8rem;
+        }
+    
+        .container {
+            margin-bottom: 40px;
+        }
+    
+        @media (max-width: 600px) {
+            .navbar ul {
+                flex-direction: column;
+                display: none;
+                width: 100%;
+            }
+            .navbar ul li {
+                margin-left: 0;
+            }
+            .navbar ul li a {
+                text-align: center;
+                padding: 1rem;
+            }
+            .navbar .toggle {
+                display: block;
+            }
+            .navbar ul.show {
+                display: flex;
+            }
+        }
+        @keyframes colorChange {
+        0% { color: white; }
+        20% { color: #FFE0B2; }
+        40% { color: #FFCC80; }
+        60% { color: #FFA726; }
+        80% { color: #FF9800; }
+        100% { color: white; }
+    }
 
-@keyframes flash-animation {
-    0% {
-        opacity: 1;
-        transform: scale(1);
+    .animated-title {
+        animation: colorChange 6s infinite;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
-    100% {
-        opacity: 0.7;
-        transform: scale(1.05);
-    }
-}
-
-@keyframes bounce {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(-5px);
-    }
-}
-        
     </style>
 </head>
 
 <body>
+    <div class="navbar">
+    <div class="logo">
+        <img src="schoologo-2-150x150.png" alt="School Logo">
+        <div class="title animated-title">Glorious Schools</div>
+    </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+            <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+    <div id="login-message" class="flash-message" style="display: none;">
+        Access denied! You must first login to view this page 🔐 
+    </div>
 
     <div class="login-container active" id="login-container">
         <div class="login-box">
@@ -244,96 +358,124 @@
                     <img src="7TGCGa.gif" alt="Activities">
                     <a href="games.html">Games</a>
                 </div>
-               
             </div>
         </div>
     </div><br><br><br>
 
+    <footer class="footer">
+        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
+    </footer>
+
     <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('needLogin') === 'true') {
+    document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('needLogin') === 'true') {
+            document.getElementById("login-message").style.display = "block";
+        }
+
+        const isRemembered = localStorage.getItem("rememberMe") === "true";
+        const sessionEmail = sessionStorage.getItem("email");
+        const localEmail = localStorage.getItem("email");
+        const email = isRemembered ? localEmail : sessionEmail;
+
+        if ((isRemembered && localEmail === "user@glorious.com" && localStorage.getItem("password") === "User") ||
+            (sessionEmail === "user@glorious.com" && sessionStorage.getItem("password") === "User")) {
+            showContent();
+        }
+
+        checkAuthStatus();
+        setCurrentYear();
+    });
+
+    function login() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const rememberMe = document.getElementById("rememberMe").checked;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (email === "user@glorious.com" && password === "User" && emailRegex.test(email)) {
+            if (rememberMe) {
+                localStorage.setItem("rememberMe", "true");
+                localStorage.setItem("email", email);
+                localStorage.setItem("password", password);
+                localStorage.setItem("isLoggedIn", "true");
+                sessionStorage.removeItem("email");
+                sessionStorage.removeItem("password");
+            } else {
+                sessionStorage.setItem("email", email);
+                sessionStorage.setItem("password", password);
+                sessionStorage.setItem("isLoggedIn", "true");
+                localStorage.removeItem("rememberMe");
+                localStorage.removeItem("email");
+                localStorage.removeItem("password");
+            }
+            
+            const intendedPage = sessionStorage.getItem("intendedPage");
+            if (intendedPage && intendedPage !== window.location.href) {
+                sessionStorage.removeItem("intendedPage");
+                window.location.href = intendedPage;
+            } else {
+                showContent();
+            }
+        } else {
+            document.getElementById("error-message").style.display = "block";
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("rememberMe");
+        localStorage.removeItem("email");
+        localStorage.removeItem("password");
+        localStorage.removeItem("isLoggedIn");
+        sessionStorage.removeItem("email");
+        sessionStorage.removeItem("password");
+        sessionStorage.removeItem("isLoggedIn");
+        sessionStorage.removeItem("intendedPage");
+        showLogin();
+    }
+
+    function showContent() {
+        document.getElementById("login-container").classList.remove("active");
+        document.getElementById("content-container").classList.add("active");
+        document.getElementById("logout-nav").style.display = "block";
+        document.getElementById("login-message").style.display = "none";
+    }
+
+    function showLogin() {
+        document.getElementById("login-container").classList.add("active");
+        document.getElementById("content-container").classList.remove("active");
+        document.getElementById("logout-nav").style.display = "none";
+        document.getElementById("login-message").style.display = "none";
+    }
+
+    function toggleMenu() {
+        const navLinks = document.getElementById("nav-links");
+        navLinks.classList.toggle("show");
+    }
+
+    function setCurrentYear() {
+        const currentYear = new Date().getFullYear();
+        document.getElementById('currentYear').textContent = currentYear;
+    }
+
+    function checkAuth(page) {
+        if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = page;
+        } else {
+            sessionStorage.setItem("intendedPage", page);
+            showLoginMessage();
+        }
+    }
+
+    function showLoginMessage() {
         document.getElementById("login-message").style.display = "block";
     }
 
-    const isRemembered = localStorage.getItem("rememberMe") === "true";
-    const sessionEmail = sessionStorage.getItem("email");
-    const localEmail = localStorage.getItem("email");
-    const email = isRemembered ? localEmail : sessionEmail;
-
-    if ((isRemembered && localEmail === "user@glorious.com" && localStorage.getItem("password") === "User") ||
-        (sessionEmail === "user@glorious.com" && sessionStorage.getItem("password") === "User")) {
-        showContent();
+    function checkAuthStatus() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+        document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
     }
-});
-
-function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const rememberMe = document.getElementById("rememberMe").checked;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (email === "user@glorious.com" && password === "User" && emailRegex.test(email)) {
-        if (rememberMe) {
-            localStorage.setItem("rememberMe", "true");
-            localStorage.setItem("email", email);
-            localStorage.setItem("password", password);
-            localStorage.setItem("isLoggedIn", "true");
-            sessionStorage.removeItem("email");
-            sessionStorage.removeItem("password");
-        } else {
-            sessionStorage.setItem("email", email);
-            sessionStorage.setItem("password", password);
-            sessionStorage.setItem("isLoggedIn", "true");
-            localStorage.removeItem("rememberMe");
-            localStorage.removeItem("email");
-            localStorage.removeItem("password");
-        }
-        
-        const intendedPage = sessionStorage.getItem("intendedPage");
-        if (intendedPage && intendedPage !== window.location.href) {
-            sessionStorage.removeItem("intendedPage");
-            window.location.href = intendedPage;
-        } else {
-            showContent();
-        }
-    } else {
-        document.getElementById("error-message").style.display = "block";
-    }
-}
-
-function logout() {
-    localStorage.removeItem("rememberMe");
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
-    localStorage.removeItem("isLoggedIn");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("password");
-    sessionStorage.removeItem("isLoggedIn");
-    sessionStorage.removeItem("intendedPage");
-    showLogin();
-}
-
-function showContent() {
-    document.getElementById("login-container").classList.remove("active");
-    document.getElementById("content-container").classList.add("active");
-    document.getElementById("logout-nav").style.display = "block";
-    document.getElementById("login-message").style.display = "none";
-}
-
-function showLogin() {
-    document.getElementById("login-container").classList.add("active");
-    document.getElementById("content-container").classList.remove("active");
-    document.getElementById("logout-nav").style.display = "none";
-    document.getElementById("login-message").style.display = "none";
-}
-
-function toggleMenu() {
-    const navLinks = document.getElementById("nav-links");
-    navLinks.classList.toggle("show");
-}
     </script>
-<script src="auth.js"></script>
 </body>
 
 </html>
