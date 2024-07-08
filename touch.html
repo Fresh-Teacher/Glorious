@@ -320,6 +320,99 @@ body {
         font-weight: bold;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
+    .model {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+}
+
+.model-content {
+    background-color: #f0f8ff;
+    border: 5px solid #4caf50;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.rainbow-text {
+    font-size: 28px;
+    background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+}
+
+.fun-text {
+    font-size: 20px;
+    color: #4a4a4a;
+    margin-bottom: 10px;
+}
+
+.instruction-box {
+    background-color: #e6f7ff;
+    border: 2px dashed #1e90ff;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.hand-instructions {
+    display: flex;
+    justify-content: space-around;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.countdown {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff4500;
+}
+
+#timer {
+    font-size: 28px;
+    color: #ff6347;
+}
+
+@media (max-height: 600px) {
+    .model-content {
+        padding: 15px;
+    }
+    .rainbow-text {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    .fun-text {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+    .instruction-box {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    .hand-instructions {
+        font-size: 15px;
+    }
+    .countdown {
+        font-size: 18px;
+    }
+    #timer {
+        font-size: 24px;
+    }
+}
+
+    
     </style>
 </head>
 <body>
@@ -337,10 +430,41 @@ body {
             <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
         </ul>
     </div>
+    <div id="instructionModal" class="model">
+        <div class="model-content">
+        <center><h2 class="rainbow-text">Get Set to Type!</h2></center>
+            <div class="instruction-box">
+                <p class="fun-text">Place your fingers on the keys correctly:</p>
+                <div class="hand-instructions">
+                    <span>🖐️ Left: ASDF</span>
+                    <span>🖐️ Right: JKL;</span>
+                </div>
+                <p class="fun-text">Close your eyes 👀 & open your ears 👂</p>
+            </div>
+            <center><div id="countdown" class="countdown">Game starts in <span id="timer">10</span> seconds</div></center>
+        </div>
+    </div>
+    <div id="gameOverModal" class="model">
+        <div class="model-content game-over-content">
+        <center><h2 class="rainbow-text">GAME OVER!</h2></center>
+            <p class="fun-text">You did one of the following:</p>
+            <ul class="game-over-list">
+                <li>You looked at the screen.</li>
+                <li>Someone told you the next letter to type.</li>
+                <li>Maybe you accidentally typed two keys at once.</li>
+            </ul>
+            <p class="fun-text emphasis">PLEASE BE CAREFUL & Listen to my voice only!</p>
+            <center><button id="restartButton" class="button">Restart Level</button></center>
+        </div>
+    </div>
     <footer class="footer">
         <p>&copy; Glorious Schools <span id="currentYear"></span></p>
     </footer>
     <script>
+        let isGameOver = false;
+        let lastSpeechTime = 0;
+let minTimeBetweenKeystrokes = 500; // 500 ms, adjust as needed
+
         function toggleMenu() {
     const navLinks = document.getElementById("nav-links");
     navLinks.classList.toggle("show");
@@ -433,188 +557,283 @@ function toggleMenu() {
         </div>
     </div>
     <script>
-        const homeRowLevels = [
-            ['f', 'j'],
-            ['f', 'j', ' '],
-            ['d', 'k'],
-            ['f', 'j', 'd', 'k'],
-            ['s', 'l'],
-            ['a', ';'],
-            ['s', 'l','a', ';'],
-            ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';']
-        ];
+const homeRowLevels = [
+    ['f', 'j'],
+    ['f', 'j', ' '],
+    ['d', 'k'],
+    ['f', 'j', 'd', 'k'],
+    ['f', 'j', 'd', 'k', ' '],
+    ['s', 'l'],
+    ['s', 'l', 'd', 'k'],
+    ['s', 'l', 'd', 'k','f', 'j'],
+    ['s', 'l', 'd', 'k','f', 'j', ' '],
+    ['a', ';'],
+    ['s', 'l','a', ';'],
+    ['s', 'l','a', ';', 'd', 'k'],
+    ['s', 'l','a', ';', 'd', 'k', 'f', 'j'],
+    ['s', 'l','a', ';', 'd', 'k', 'f', 'j', ' '],
+    ['g', 'h'],
+    ['g', 'h', 'a', ';' ],
+    ['g', 'h', 'a', ';', 's', 'l'],
+    ['g', 'h', 'a', ';', 's', 'l', 'd', 'k'],
+    ['g', 'h', 'a', ';', 's', 'l', 'd', 'k', 'f', 'j'],
+    ['g', 'h', 'a', ';', 's', 'l', 'd', 'k', 'f', 'j', ' ']
+];
 
-        const topRowLevels = [
-            ['r', 'u'],
-            ['e', 'i'],
-            ['r', 'u', 'e', 'i'],
-            ['w', 'o'],
-            ['q', 'y'],
-            ['w', 'o','q', 'y'],
-            ['p', 't'],
-            ['p', 't', 'q', 'y'],
-            ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
-        ];
+const topRowLevels = [
+    ['r', 'u'],
+    ['e', 'i'],
+    ['r', 'u', 'e', 'i'],
+    ['w', 'o'],
+    ['w', 'o', 'e', 'i'],
+    ['w', 'o', 'e', 'i', 'r', 'u'],
+    ['t', 'y'],
+    ['w', 'o','t', 'y'],
+    ['w', 'o','t', 'y', 'e', 'i'],
+    ['w', 'o','t', 'y', 'r', 'u'],
+    ['w', 'o','t', 'y', 'r', 'u', 'e', 'i' ],
+    ['p', 'q'],
+    ['p', 'q', 't', 'y'],
+    ['p', 't', 'q', 'y', 'w', 'o'],
+    ['p', 't', 'q', 'y', 'e', 'i'],
+    ['p', 't', 'q', 'y', 'r', 'u'],
+    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
+];
 
-        const bottomRowLevels = [
-            ['v', 'm'],
-            ['c', ','],
-            ['v', 'm', 'c', ','],
-            ['x', '.'],
-            ['z', '/'],
-            ['x', '.', 'z', '/'],
-            ['b', 'n'],
-            ['b', 'n', 'z', '/' ],
-            ['v', 'm', 'c', ',','x', '.','z', '/','b', 'n']
-        ];
+const bottomRowLevels = [
+    ['v', 'm'],
+    ['c', ','],
+    ['v', 'm', 'c', ','],
+    ['x', '.'],
+    ['x', '.', 'c', ',' ],
+    ['x', '.', 'v', 'm'],
+    ['x', '.', 'v', 'm', 'c', ','],
+    ['z', '/'],
+    [ 'z', '/','x', '.'],
+    ['z', '/', 'c', ','],
+    ['z', '/', 'v', 'm'],
+    ['z', '/', 'v', 'm', 'c', ',', 'x', '.'],
+    ['b', 'n'],
+    ['b', 'n', 'z', '/' ],
+    ['b', 'n', 'x', '.'],
+    ['b', 'n', 'c', ','],
+    ['b', 'n', 'v', 'm'],
+    ['v', 'm', 'c', ',','x', '.','z', '/','b', 'n']
+];
 
-        const levels = [...homeRowLevels, ...topRowLevels, ...bottomRowLevels];
+const levels = [...homeRowLevels, ...topRowLevels, ...bottomRowLevels];
 
-        let currentLevel = 0;
-        let unlockedLevels = JSON.parse(sessionStorage.getItem('unlockedLevels')) || Array(levels.length).fill(false);
-        unlockedLevels[0] = true; // Ensure the first level is unlocked by default
-        let targetString = '';
-        let currentIndex = 0;
+let currentLevel = 0;
+let unlockedLevels = JSON.parse(sessionStorage.getItem('unlockedLevels')) || Array(levels.length).fill(false);
+unlockedLevels[0] = true; // Ensure the first level is unlocked by default
+let targetString = '';
+let currentIndex = 0;
 
-        const homeContainer = document.getElementById('home');
-        const gameContainer = document.getElementById('game');
-        const homeRowLevelsContainer = document.getElementById('homeRowLevels').querySelector('.grid-container');
-        const topRowLevelsContainer = document.getElementById('topRowLevels').querySelector('.grid-container');
-        const bottomRowLevelsContainer = document.getElementById('bottomRowLevels').querySelector('.grid-container');
-        const keyboard = document.getElementById('keyboard');
-        const message = document.getElementById('message');
-        const nextLevelButton = document.getElementById('nextLevel');
-        const retryButton = document.getElementById('retry');
-        const backHomeButton = document.getElementById('backHome');
-        const lockModal = document.getElementById('lockModal');
-        const incompleteModal = document.getElementById('incompleteModal');
+const homeContainer = document.getElementById('home');
+const gameContainer = document.getElementById('game');
+const homeRowLevelsContainer = document.getElementById('homeRowLevels').querySelector('.grid-container');
+const topRowLevelsContainer = document.getElementById('topRowLevels').querySelector('.grid-container');
+const bottomRowLevelsContainer = document.getElementById('bottomRowLevels').querySelector('.grid-container');
+const keyboard = document.getElementById('keyboard');
+const message = document.getElementById('message');
+const nextLevelButton = document.getElementById('nextLevel');
+const retryButton = document.getElementById('retry');
+const backHomeButton = document.getElementById('backHome');
+const lockModal = document.getElementById('lockModal');
+const incompleteModal = document.getElementById('incompleteModal');
+const instructionModal = document.getElementById('instructionModal');
+const countdownElement = document.getElementById('timer');
 
-        function renderLevels() {
-            homeRowLevelsContainer.innerHTML = '';
-            topRowLevelsContainer.innerHTML = '';
-            bottomRowLevelsContainer.innerHTML = '';
+let speech = new SpeechSynthesisUtterance();
+speech.rate = 0.8;  // Adjust speech rate as needed
 
-            levels.forEach((level, index) => {
-                const levelCard = document.createElement('div');
-                levelCard.className = 'level-card' + (unlockedLevels[index] ? '' : ' locked');
-                levelCard.innerHTML = `<span>Level ${index + 1}</span><br>${unlockedLevels[index] ? '🔓 UNLOCKED' : '🔐 LOCKED'}`;
-                levelCard.onclick = () => {
-                    if (unlockedLevels[index]) {
-                        currentLevel = index;
-                        startLevel(index);
-                        homeContainer.style.display = 'none';
-                        gameContainer.style.display = 'block';
-                    } else {
-                        lockModal.style.display = 'block';
-                    }
-                };
 
-                if (index < homeRowLevels.length) {
-                    homeRowLevelsContainer.appendChild(levelCard);
-                } else if (index < homeRowLevels.length + topRowLevels.length) {
-                    topRowLevelsContainer.appendChild(levelCard);
-                } else {
-                    bottomRowLevelsContainer.appendChild(levelCard);
-                }
-            });
+function renderLevels() {
+    homeRowLevelsContainer.innerHTML = '';
+    topRowLevelsContainer.innerHTML = '';
+    bottomRowLevelsContainer.innerHTML = '';
+
+    levels.forEach((level, index) => {
+        const levelCard = document.createElement('div');
+        levelCard.className = 'level-card' + (unlockedLevels[index] ? '' : ' locked');
+        levelCard.innerHTML = `<span>Level ${index + 1}</span><br>${unlockedLevels[index] ? '🔓 UNLOCKED' : '🔐 LOCKED'}`;
+        levelCard.onclick = () => {
+            if (unlockedLevels[index]) {
+                currentLevel = index;
+                homeContainer.style.display = 'none';
+                gameContainer.style.display = 'block';
+                showInstructions(index);
+            } else {
+                lockModal.style.display = 'block';
+            }
+        };
+
+        if (index < homeRowLevels.length) {
+            homeRowLevelsContainer.appendChild(levelCard);
+        } else if (index < homeRowLevels.length + topRowLevels.length) {
+            topRowLevelsContainer.appendChild(levelCard);
+        } else {
+            bottomRowLevelsContainer.appendChild(levelCard);
         }
+    });
+}
 
-        
+function showInstructions(level) {
+    instructionModal.style.display = 'flex';
+        let countdown = 10;
+    countdownElement.textContent = countdown;
 
-        function startLevel(level) {
-            targetString = generateRandomString(levels[level], 20);
-            currentIndex = 0;
-            keyboard.innerHTML = '';
-            message.textContent = '';
+    const timer = setInterval(() => {
+        countdown--;
+        countdownElement.textContent = countdown;
+        if (countdown <= 0) {
+            clearInterval(timer);
+            startLevel(level);
+        }
+    }, 1000);
+}
+
+function startLevel(level) {
+    instructionModal.style.display = 'none';
+    isGameOver = false;
+    const levelChars = levels[level];
+    targetString = generateRandomString(levelChars, 20);
+    currentIndex = 0;
+    lastSpeechTime = 0;
+    keyboard.innerHTML = '';
+    message.textContent = '';
+    nextLevelButton.classList.add('disabled');
+    nextLevelButton.disabled = true;
+    nextLevelButton.classList.remove('shaking');
+    retryButton.style.display = 'none';
+    
+    for (let char of targetString) {
+        const keyElement = document.createElement('div');
+        keyElement.className = 'key';
+        keyElement.textContent = char === ' ' ? '' : char;
+        keyboard.appendChild(keyElement);
+    }
+    
+    speakNextChar();
+}
+
+function generateRandomString(chars, length) {
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+}
+
+function speakNextChar() {
+    if (!isGameOver && currentIndex < targetString.length) {
+        let char = targetString[currentIndex];
+        speech.text = char === ' ' ? 'space' : char;
+        lastSpeechTime = Date.now();
+        window.speechSynthesis.speak(speech);
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    if (isGameOver || currentIndex >= targetString.length || homeContainer.style.display === 'block') return;
+
+    const timeSinceLastSpeech = Date.now() - lastSpeechTime;
+    if (timeSinceLastSpeech < minTimeBetweenKeystrokes) {
+        showGameOverModal();
+        return;
+    }
+
+    const keys = keyboard.getElementsByClassName('key');
+    const expectedChar = targetString[currentIndex];
+    const typedChar = e.key.toLowerCase();
+
+    if (typedChar === expectedChar) {
+        keys[currentIndex].classList.add('correct');
+    } else {
+        keys[currentIndex].classList.add('wrong');
+    }
+
+    currentIndex++;
+
+    if (currentIndex < targetString.length) {
+        speakNextChar();
+    } else {
+        let correctCount = document.getElementsByClassName('correct').length;
+        message.textContent = `You typed ${correctCount} out of ${targetString.length} characters correctly! 😉`;
+
+        speech.text = `Congratulations! You typed ${correctCount} out of ${targetString.length} characters correctly!`;
+        window.speechSynthesis.speak(speech);
+
+        if (correctCount === targetString.length && currentLevel < levels.length - 1) {
+            unlockedLevels[currentLevel + 1] = true;
+        }
+        sessionStorage.setItem('unlockedLevels', JSON.stringify(unlockedLevels));
+
+        if (correctCount === targetString.length) {
+            nextLevelButton.classList.remove('disabled');
+            nextLevelButton.disabled = false;
+            nextLevelButton.classList.add('shaking');
+        } else {
             nextLevelButton.classList.add('disabled');
             nextLevelButton.disabled = true;
             nextLevelButton.classList.remove('shaking');
-            retryButton.style.display = 'none';
-            
-            for (let char of targetString) {
-                const keyElement = document.createElement('div');
-                keyElement.className = 'key';
-                keyElement.textContent = char;
-                keyboard.appendChild(keyElement);
+            retryButton.style.display = 'inline';
+        }
+    }
+});
+
+function showGameOverModal() {
+    isGameOver = true;
+    const gameOverModal = document.getElementById('gameOverModal');
+    gameOverModal.style.display = 'flex';
+    window.speechSynthesis.cancel(); // Cancel any ongoing speech
+    speech.text = "GAME OVER! You did one of the following: You looked at the screen. Someone told you the next letter to type. Maybe you accidentally typed two keys at once. PLEASE BE CAREFUL and Listen to my voice only!";
+    window.speechSynthesis.speak(speech);
+}
+
+function restartLevel() {
+    isGameOver = false;
+    const gameOverModal = document.getElementById('gameOverModal');
+    gameOverModal.style.display = 'none';
+    window.speechSynthesis.cancel(); // Cancel any ongoing speech
+    showInstructions(currentLevel);
+}
+
+document.getElementById('restartButton').addEventListener('click', restartLevel);
+
+
+
+nextLevelButton.addEventListener('click', () => {
+    if (nextLevelButton.disabled) {
+        incompleteModal.style.display = 'block';
+    } else {
+        let correctCount = document.getElementsByClassName('correct').length;
+        if (correctCount === targetString.length) {
+            if (currentLevel < levels.length - 1) {
+                currentLevel++;
+                showInstructions(currentLevel);
+            } else {
+                message.textContent = 'Congratulations! You completed all levels!';
+                nextLevelButton.classList.add('disabled');
+                nextLevelButton.disabled = true;
+                nextLevelButton.classList.remove('shaking');
             }
         }
+    }
+});
 
-        function generateRandomString(chars, length) {
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += chars[Math.floor(Math.random() * chars.length)];
-            }
-            return result;
-        }
+retryButton.addEventListener('click', () => {
+    showInstructions(currentLevel);
+});
 
-        document.addEventListener('keydown', (e) => {
-            if (currentIndex >= targetString.length || homeContainer.style.display === 'block') return;
+backHomeButton.addEventListener('click', () => {
+    gameContainer.style.display = 'none';
+    homeContainer.style.display = 'block';
+    renderLevels();
+});
 
-            const keys = keyboard.getElementsByClassName('key');
-            const expectedChar = targetString[currentIndex];
-            const typedChar = e.key.toLowerCase();
-
-            if (typedChar === expectedChar) {
-                keys[currentIndex].classList.add('correct');
-            } else {
-                keys[currentIndex].classList.add('wrong');
-            }
-
-            currentIndex++;
-
-            if (currentIndex === targetString.length) {
-                let correctCount = document.getElementsByClassName('correct').length;
-                message.textContent = `You typed ${correctCount} out of ${targetString.length} characters correctly! 😉`;
-
-                if (correctCount === targetString.length && currentLevel < levels.length - 1) {
-                    unlockedLevels[currentLevel + 1] = true;
-                }
-                sessionStorage.setItem('unlockedLevels', JSON.stringify(unlockedLevels));
-
-                if (correctCount === targetString.length) {
-                    nextLevelButton.classList.remove('disabled');
-                    nextLevelButton.disabled = false;
-                    nextLevelButton.classList.add('shaking');
-                } else {
-                    nextLevelButton.classList.add('disabled');
-                    nextLevelButton.disabled = true;
-                    nextLevelButton.classList.remove('shaking');
-                    retryButton.style.display = 'inline';
-                }
-            }
-        });
-
-        nextLevelButton.addEventListener('click', () => {
-            if (nextLevelButton.disabled) {
-                incompleteModal.style.display = 'block';
-            } else {
-                let correctCount = document.getElementsByClassName('correct').length;
-                if (correctCount === targetString.length) {
-                    if (currentLevel < levels.length - 1) {
-                        currentLevel++;
-                        startLevel(currentLevel);
-                    } else {
-                        message.textContent = 'Congratulations! You completed all levels!';
-                        nextLevelButton.classList.add('disabled');
-                        nextLevelButton.disabled = true;
-                        nextLevelButton.classList.remove('shaking');
-                    }
-                }
-            }
-        });
-
-        retryButton.addEventListener('click', () => {
-            startLevel(currentLevel);
-        });
-
-        backHomeButton.addEventListener('click', () => {
-            gameContainer.style.display = 'none';
-            homeContainer.style.display = 'block';
-            renderLevels();
-        });
-
-        // Initial rendering of levels
-        renderLevels();
+// Initial rendering of levels
+renderLevels();
     </script>
 </body>
 </html>

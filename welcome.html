@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - School Grading System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        select {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to School Grading System</h1>
+        <select id="classSelect">
+            <option value="">Select Class</option>
+            <option value="P1">Primary One</option>
+            <option value="P2">Primary Two</option>
+            <option value="P3">Primary Three</option>
+            <option value="P4">Primary Four</option>
+            <option value="P5">Primary Five</option>
+            <option value="P6">Primary Six</option>
+            <option value="P7">Primary Seven</option>
+        </select>
+        <select id="streamSelect" disabled>
+            <option value="">Select Stream</option>
+        </select>
+        <button id="goToGrading">Go to Grading</button>
+    </div>
+    <script>
+        const classSelect = document.getElementById('classSelect');
+        const streamSelect = document.getElementById('streamSelect');
+        const goToGradingBtn = document.getElementById('goToGrading');
+
+        const streams = {
+            'P3': ['Boys Cranes', 'Girls Cranes', 'Boys Sparrows', 'Girls Sparrows', 'Boys Parrots', 'Girls Parrots'],
+            'P4': ['Girls Cubs', 'Boys Cubs', 'Boys Bunnies', 'Girls Bunnies', 'Girls Eaglets', 'Boys Eaglets']
+        };
+
+        classSelect.addEventListener('change', function() {
+            streamSelect.innerHTML = '<option value="">Select Stream</option>';
+            streamSelect.disabled = true;
+
+            if (this.value in streams) {
+                streams[this.value].forEach(stream => {
+                    const option = document.createElement('option');
+                    option.value = stream;
+                    option.textContent = stream;
+                    streamSelect.appendChild(option);
+                });
+                streamSelect.disabled = false;
+            }
+        });
+
+        goToGradingBtn.addEventListener('click', function() {
+            const selectedClass = classSelect.value;
+            const selectedStream = streamSelect.value;
+            if (selectedClass && selectedStream) {
+                window.location.href = `crud.html?class=${selectedClass}&stream=${selectedStream}`;
+            } else {
+                alert('Please select both class and stream');
+            }
+        });
+    </script>
+</body>
+</html>

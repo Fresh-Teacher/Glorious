@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glorious Examinations Board</title>
+    <style>
+        :root {
+            --primary-color: #FF8C00;
+            --secondary-color: #FFA500;
+            --light-color: #FFE4B5;
+            --dark-color: #D2691E;
+            --white-color: #FFFFFF;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-color);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .card {
+            background-color: var(--white-color);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+        
+        h1, h2 {
+            color: var(--dark-color);
+            margin: 10px 0;
+        }
+        
+        .select-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+            width: 60%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        select, button {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 5px;
+            background-color: var(--white-color);
+            color: var(--dark-color);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        select:focus, button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--secondary-color);
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: var(--dark-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 12px; /* Adjusted font size */
+        }
+        
+        th, td {
+            border: 1px solid var(--secondary-color);
+            padding: 6px; /* Adjusted padding */
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+        
+        input[type="text"] {
+            width: 40px;
+            padding: 4px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 3px;
+        }
+        
+        .subject-aggregate, .total-aggregates, .division {
+            font-size: 12px;
+        }
+        
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .grade-info, .division-info {
+            flex-basis: 48%;
+            background-color: var(--light-color);
+            border-radius: 5px;
+            padding: 15px;
+        }
+        
+        @media screen and (max-width: 768px) {
+            table {
+                font-size: 10px; /* Adjusted font size for smaller screens */
+            }
+        
+            th, td {
+                padding: 4px; /* Adjusted padding for smaller screens */
+            }
+        
+            input[type="text"] {
+                width: 30px;
+                padding: 2px;
+            }
+        
+            .subject-aggregate, .total-aggregates, .division {
+                font-size: 10px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            table {
+                font-size: 8px; /* Adjusted font size for smallest screens */
+            }
+        
+            th, td {
+                padding: 2px; /* Adjusted padding for smallest screens */
+            }
+        
+            input[type="text"] {
+                width: 25px;
+                padding: 1px;
+            }
+        
+            .subject-aggregate, .total-aggregates, .division {
+                font-size: 9px;
+            }
+        }
+        
+        .grade-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .grade-table th, .grade-table td {
+            border: 1px solid var(--secondary-color);
+            padding: 6px; /* Adjusted padding */
+            text-align: left;
+        }
+        
+        .grade-table th {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+        
+        .grade-table tr:nth-child(even) {
+            background-color: var(--light-color);
+        }
+        
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .info-table th, .info-table td {
+            border: 1px solid var(--secondary-color);
+            padding: 6px; /* Adjusted padding */
+            text-align: left;
+        }
+        
+        .info-table th {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+        
+        .invalid-input {
+            background-color: #ffdddd;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+        }
+        
+        #saveDraftBtn, #importDataBtn {
+            margin-top: 20px;
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        
+        .notification.success {
+            background-color: #4CAF50;
+        }
+        
+        .notification.error {
+            background-color: #f44336;
+        }
+        
+        .notification.info {
+            background-color: #2196F3;
+        }
+        
+        .notification-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding-top: 20px;
+            z-index: 1000;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.3);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .progress {
+            width: 0;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 0 0 5px 5px;
+            transition: width 0.3s linear;
+        }
+
+        table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+th, td {
+    border: 1px solid var(--secondary-color);
+    padding: 4px;
+    text-align: left;
+}
+
+input[type="text"] {
+    width: 35px;
+    padding: 2px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 3px;
+}
+
+@media screen and (max-width: 768px) {
+    table {
+        font-size: 10px;
+    }
+
+    th, td {
+        padding: 2px;
+    }
+
+    input[type="text"] {
+        width: 30px;
+        padding: 1px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    table {
+        font-size: 8px;
+    }
+
+    th, td {
+        padding: 1px;
+    }
+
+    input[type="text"] {
+        width: 25px;
+        padding: 0;
+    }
+}
+.minor-subject {
+    background-color: #f0f0f0;
+    color: #666;
+}
+
+input.minor-subject {
+    background-color: #f8f8f8;
+}
+.analysis-section {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.analysis-section > div {
+    flex-basis: calc(50% - 10px);
+    margin-bottom: 20px;
+}
+
+.analysis-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.analysis-section th, .analysis-section td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.analysis-section th {
+    background-color: #f2f2f2;
+}
+
+.analysis-section h3 {
+    margin-top: 0;
+}
+
+@media print {
+        body {
+            font-size: 12pt;
+        }
+        .container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        button, input[type="file"] {
+            display: none !important;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+        input[type="text"] {
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-size: inherit;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    }
+        </style>
+        
+</head>
+<body>
+    
+    <div class="container">
+        <div id="welcomePage" class="card">
+            <center>
+                <img src="schoologo-2-150x150.png" alt="School Logo" class="logo">
+                <h1>Glorious Examinations Board</h1>
+            </center>
+            <h2>Select Class and Stream</h2>
+            <div class="select-container">
+                <select id="classSelect">
+                    <option value="" disabled selected>Select Class</option>
+                </select>
+                <select id="streamSelect" style="display: none;">
+                    <option value="" disabled selected>Select Stream</option>
+                </select>
+                <button id="goToGradingBtn" style="display: none;">Go to Grading</button>
+            </div>
+        </div>
+
+        <div id="gradingPage" style="display: none;">
+            <div class="card">
+                <h1>Glorious Examinations Board</h1>
+                <h2 id="classStreamTitle"></h2>
+                <table id="gradeTable">
+                    <thead id="gradeTableHeader">
+                        <!-- The header will be dynamically populated -->
+                    </thead>
+                    <tbody id="gradeTableBody">
+                        <!-- Student rows will be added here dynamically -->
+                    </tbody>
+                </table>
+                <button id="importDataBtn" style="margin-top: 20px;">Import Data</button>
+                <input type="file" id="fileInput" accept=".json">
+                <button id="saveDraftBtn" style="margin-top: 20px;">Save Draft</button>
+                <button id="exportBtn" style="margin-top: 20px;">Export Results</button>
+            </div>
+            <button id="generatePdfBtn" style="margin-top: 20px;">Generate PDF</button>
+            <div class="analysis-section">
+                <h3>Division Analysis</h3>
+                <table id="divisionAnalysisTable">
+                    <thead>
+                        <tr>
+                            <th>Division</th>
+                            <th>Number of Pupils</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Division analysis rows will be added here dynamically -->
+                    </tbody>
+                </table>
+            
+                <h3>Aggregate Analysis</h3>
+                <table id="aggregateAnalysisTable">
+                    <thead>
+                        <tr>
+                            <th>Aggregate</th>
+                            <th>Number of Pupils</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aggregate analysis rows will be added here dynamically -->
+                    </tbody>
+                </table>
+            
+                <h3>Subject Analysis</h3>
+                <table id="subjectAnalysisTable">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>D1</th>
+                            <th>D2</th>
+                            <th>C3</th>
+                            <th>C4</th>
+                            <th>C5</th>
+                            <th>C6</th>
+                            <th>P7</th>
+                            <th>P8</th>
+                            <th>F9</th>
+                            <th>X</th>
+                            <th>1st Grades</th>
+                            <th>Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Subject analysis rows will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="info-section">
+                <div class="grade-info card">
+                    <h3>Grading Scale:</h3>
+                    <table class="info-table">
+                        <tr><th>Marks Range</th><th>Aggregate</th></tr>
+                        <tr><td>90 - 100</td><td>D1</td></tr>
+                        <tr><td>80 - 89</td><td>D2</td></tr>
+                        <tr><td>70 - 79</td><td>C3</td></tr>
+                        <tr><td>65 - 69</td><td>C4</td></tr>
+                        <tr><td>60 - 64</td><td>C5</td></tr>
+                        <tr><td>55 - 59</td><td>C6</td></tr>
+                        <tr><td>50 - 54</td><td>P7</td></tr>
+                        <tr><td>40 - 49</td><td>P8</td></tr>
+                        <tr><td>0 - 39</td><td>F9</td></tr>
+                        <tr><td>-</td><td>X</td></tr>
+                    </table>
+                </div>
+                
+                <div class="division-info card">
+                    <h3>Division Table:</h3>
+                    <table class="info-table">
+                        <tr><th>Division</th><th>Aggregate Range</th></tr>
+                        <tr><td>Division 1</td><td>4-12</td></tr>
+                        <tr><td>Division 2</td><td>13-24</td></tr>
+                        <tr><td>Division 3</td><td>24-28</td></tr>
+                        <tr><td>Division 4</td><td>29-32</td></tr>
+                        <tr><td>Ungraded</td><td>33-36</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generatePDF() {
+    // Hide elements we don't want in the PDF
+    const welcomePage = document.getElementById('welcomePage');
+    const importDataBtn = document.getElementById('importDataBtn');
+    const fileInput = document.getElementById('fileInput');
+    const saveDraftBtn = document.getElementById('saveDraftBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const generatePdfBtn = document.getElementById('generatePdfBtn');
+
+    welcomePage.style.display = 'none';
+    importDataBtn.style.display = 'none';
+    fileInput.style.display = 'none';
+    saveDraftBtn.style.display = 'none';
+    exportBtn.style.display = 'none';
+    generatePdfBtn.style.display = 'none';
+
+    // Show the grading page if it's not already visible
+    const gradingPage = document.getElementById('gradingPage');
+    gradingPage.style.display = 'block';
+
+    // Print the page
+    window.print();
+
+    // Restore the hidden elements
+    setTimeout(() => {
+        welcomePage.style.display = 'block';
+        importDataBtn.style.display = 'inline-block';
+        fileInput.style.display = 'inline-block';
+        saveDraftBtn.style.display = 'inline-block';
+        exportBtn.style.display = 'inline-block';
+        generatePdfBtn.style.display = 'inline-block';
+    }, 100);
+}
+
+// Add event listener for the Generate PDF button
+document.getElementById('generatePdfBtn').addEventListener('click', generatePDF);
+
+        function updateAnalysisTables() {
+    updateDivisionAnalysisTable();
+    updateAggregateAnalysisTable();
+    updateSubjectAnalysisTable();
+}
+
+function updateDivisionAnalysisTable() {
+    const table = document.getElementById('divisionAnalysisTable').getElementsByTagName('tbody')[0];
+    table.innerHTML = '';
+
+    const divisionCounts = {
+        '1': 0,
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        'U': 0,
+        'X': 0
+    };
+
+    const divisionCells = document.querySelectorAll('#gradeTable .division');
+
+    divisionCells.forEach(cell => {
+        const division = cell.textContent.trim();
+        if (division in divisionCounts) {
+            divisionCounts[division]++;
+        }
+    });
+
+    Object.entries(divisionCounts).forEach(([division, count]) => {
+        const row = table.insertRow();
+        row.insertCell().textContent = division;
+        row.insertCell().textContent = count;
+    });
+}
+
+function updateAggregateAnalysisTable() {
+    const table = document.getElementById('aggregateAnalysisTable').getElementsByTagName('tbody')[0];
+    table.innerHTML = '';
+
+    const aggregateCounts = {};
+    const totalAggregateCells = document.querySelectorAll('#gradeTable .total-aggregates');
+
+    totalAggregateCells.forEach(cell => {
+        const aggregate = cell.textContent.trim();
+        if (aggregate) {
+            aggregateCounts[aggregate] = (aggregateCounts[aggregate] || 0) + 1;
+        }
+    });
+
+    Object.entries(aggregateCounts).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).forEach(([aggregate, count]) => {
+        const row = table.insertRow();
+        row.insertCell().textContent = aggregate;
+        row.insertCell().textContent = count;
+    });
+}
+
+function updateSubjectAnalysisTable() {
+    const table = document.getElementById('subjectAnalysisTable').getElementsByTagName('tbody')[0];
+    table.innerHTML = '';
+
+    const subjects = ['ENG', 'MTC', 'SCIE', 'SST'];
+    const grades = ['D1', 'D2', 'C3', 'C4', 'C5', 'C6', 'P7', 'P8', 'F9', 'X'];
+
+    const subjectData = {};
+
+    subjects.forEach(subject => {
+        const row = table.insertRow();
+        row.insertCell().textContent = subject;
+
+        const counts = grades.map(grade => countGradesForSubject(subject, grade));
+        counts.forEach(count => {
+            row.insertCell().textContent = count;
+        });
+
+        const div1Count = counts[0] + counts[1]; // D1 + D2 count
+        row.insertCell().textContent = div1Count;
+
+        subjectData[subject] = div1Count;
+    });
+
+    const subjectPositions = calculateSubjectPositions(subjectData);
+
+    // Add subject positions
+    Array.from(table.rows).forEach((row, index) => {
+        const subject = subjects[index];
+        row.insertCell().textContent = subjectPositions[subject];
+    });
+}
+
+function countGradesForSubject(subject, grade) {
+    const subjectIndex = ['ENG', 'MTC', 'SCIE', 'SST'].indexOf(subject) * 2 + 2;
+    const cells = document.querySelectorAll(`#gradeTable td:nth-child(${subjectIndex + 1})`);
+    return Array.from(cells).filter(cell => cell.textContent.trim().startsWith(grade)).length;
+}
+
+function calculateSubjectPositions(subjectData) {
+    const sortedSubjects = Object.entries(subjectData)
+        .sort(([, a], [, b]) => b - a);
+
+    const positions = {};
+    let currentPosition = 1;
+    let previousScore = null;
+
+    sortedSubjects.forEach(([subject, score], index) => {
+        if (score !== previousScore) {
+            currentPosition = index + 1;
+        }
+        positions[subject] = currentPosition;
+        previousScore = score;
+    });
+
+    return positions;
+}
+
+        function showNotification(message, type = 'info', duration = 3000) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+
+    const progressBar = document.createElement('div');
+    progressBar.className = 'progress-bar';
+    const progress = document.createElement('div');
+    progress.className = 'progress';
+    progressBar.appendChild(progress);
+    notification.appendChild(progressBar);
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.opacity = '1';
+    }, 10);
+
+    setTimeout(() => {
+        progress.style.width = '100%';
+    }, 50);
+
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, duration);
+}
+             // Add this new function to import data
+             let filePickerOpened = false;
+
+function importData() {
+    const fileInput = document.getElementById('fileInput');
+    fileInput.value = ''; // Clear the file input
+    filePickerOpened = true;
+
+    fileInput.onchange = function(event) {
+        filePickerOpened = false;
+        handleFileSelect(event);
+    };
+
+    // Use setTimeout to allow the file picker to open before adding the blur event listener
+    setTimeout(() => {
+        window.addEventListener('focus', checkImportCancelled);
+    }, 1000);
+
+    fileInput.click();
+}
+
+function checkImportCancelled() {
+    const fileInput = document.getElementById('fileInput');
+    if (filePickerOpened && !fileInput.value) {
+        showNotification("Import cancelled", "info");
+    }
+    filePickerOpened = false;
+    window.removeEventListener('focus', checkImportCancelled);
+}
+
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const jsonData = JSON.parse(e.target.result);
+                populateTableWithImportedData(jsonData);
+                showNotification("Data imported successfully!", "success");
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                showNotification("Error importing data. Please make sure the file is a valid JSON.", "error");
+            }
+        };
+        reader.readAsText(file);
+    }
+    // Reset the file input to allow re-importing the same file
+    event.target.value = '';
+}
+
+// Add event listener for the Import Data button
+document.getElementById('importDataBtn').addEventListener('click', importData);
+
+        function populateTableWithImportedData(data) {
+    // Set the class and stream selects
+    classSelect.value = data.class;
+    populateStreamSelect(data.class);
+    streamSelect.value = data.stream;
+
+    // Show the grading page
+    welcomePage.style.display = 'none';
+    gradingPage.style.display = 'block';
+
+    // Set the title
+    classStreamTitle.textContent = `${data.class} - ${data.stream}`;
+
+    // Clear existing table rows
+    const tableBody = document.getElementById('gradeTableBody');
+    tableBody.innerHTML = '';
+
+    // Populate the table with imported data
+    data.students.forEach(student => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${student.name}</td>
+            <td><input type="text" class="subject-mark" value="${student.math.marks}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${student.math.marks ? student.math.grade : ''}</td>
+            <td><input type="text" class="subject-mark" value="${student.english.marks}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${student.english.marks ? student.english.grade : ''}</td>
+            <td><input type="text" class="subject-mark" value="${student.sst.marks}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${student.sst.marks ? student.sst.grade : ''}</td>
+            <td><input type="text" class="subject-mark" value="${student.science.marks}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${student.science.marks ? student.science.grade : ''}</td>
+            <td class="total-aggregates">${calculateTotalAggregates(student)}</td>
+            <td class="division">${calculateDivision(calculateTotalAggregates(student))}</td>
+        `;
+
+        const inputs = row.querySelectorAll('.subject-mark');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9-]/g, '');
+                validateAndUpdateResults(this);
+            });
+            input.addEventListener('blur', () => validateAndUpdateResults(input));
+        });
+
+        tableBody.appendChild(row);
+    });
+
+    // Trigger update for all inputs to recalculate grades and aggregates
+    tableBody.querySelectorAll('.subject-mark').forEach(input => {
+        validateAndUpdateResults(input);
+    });
+}
+        // Add event listeners for the new Import Data button and file input
+        document.getElementById('importDataBtn').addEventListener('click', importData);
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+
+        async function saveDraft() {
+    const selectedClass = classSelect.value;
+    const selectedStream = streamSelect.value;
+    const rows = document.querySelectorAll('#gradeTable tr');
+    let jsonData = {
+        class: selectedClass,
+        stream: selectedStream,
+        students: []
+    };
+
+    // Skip the header row (index 0)
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const columns = row.querySelectorAll('td');
+        const studentData = {
+            name: columns[0].textContent,
+            math: {
+                marks: columns[1].querySelector('input').value,
+                grade: columns[2].textContent.split(' ')[0] || '',
+                aggregates: columns[2].textContent.split('(')[1] ? parseInt(columns[2].textContent.split('(')[1]) : ''
+            },
+            english: {
+                marks: columns[3].querySelector('input').value,
+                grade: columns[4].textContent.split(' ')[0] || '',
+                aggregates: columns[4].textContent.split('(')[1] ? parseInt(columns[4].textContent.split('(')[1]) : ''
+            },
+            sst: {
+                marks: columns[5].querySelector('input').value,
+                grade: columns[6].textContent.split(' ')[0] || '',
+                aggregates: columns[6].textContent.split('(')[1] ? parseInt(columns[6].textContent.split('(')[1]) : ''
+            },
+            science: {
+                marks: columns[7].querySelector('input').value,
+                grade: columns[8].textContent.split(' ')[0] || '',
+                aggregates: columns[8].textContent.split('(')[1] ? parseInt(columns[8].textContent.split('(')[1]) : ''
+            },
+            totalAggregates: columns[9].textContent,
+            division: columns[10].textContent
+        };
+        jsonData.students.push(studentData);
+    }
+
+    // Convert to JSON string
+    const jsonString = JSON.stringify(jsonData, null, 2);
+    const fileName = `${selectedClass}_${selectedStream}_Draft.json`;
+
+    if ('showSaveFilePicker' in window) {
+        try {
+            const fileHandle = await window.showSaveFilePicker({
+                suggestedName: fileName,
+                types: [{
+                    description: 'JSON File',
+                    accept: {'application/json': ['.json']},
+                }],
+            });
+            const writable = await fileHandle.createWritable();
+            await writable.write(jsonString);
+            await writable.close();
+            console.log('Draft saved successfully using modern API');
+            showNotification('Draft saved successfully!', 'success');
+        } catch (err) {
+            if (err.name === 'AbortError') {
+                console.log('User cancelled the save operation');
+                showNotification("Draft save cancelled", "info");
+            } else {
+                console.warn('Error using modern save method:', err);
+                showNotification("Error saving draft. Please try again.", "error");
+            }
+        }
+    } else {
+        const shouldSave = confirm("Do you want to save the draft?");
+        if (shouldSave) {
+            fallbackSaveMethod(jsonString, fileName);
+            showNotification('Draft saved successfully (using fallback method).', 'success');
+        } else {
+            showNotification("Draft save cancelled", "info");
+        }
+    }
+}
+
+// Add event listener for the Save Draft button
+document.getElementById('saveDraftBtn').addEventListener('click', saveDraft);
+const studentData = {
+    'Primary Four': {
+    'Cubs': [
+      'AHEREZA HONOUR',
+      'ALIYAH ADAMS K.',
+      'AKARABO GOLDA',
+      'BLESSING SHILOH',
+      'AINOMUGISHA ANGEL',
+      'KEMIGISHA ALEXANDRIA',
+      'LUBUULWA MELINA J',
+      'MUBEEZI SHADIA L.',
+      'NAKUNGU PRECIOUS',
+      'NASSANGA MARIA A.',
+      'NAMIREMBE ALPHA',
+      'NANUNGI DRUCILLA L.',
+      'NAMAGANDA IMRAH',
+      'NAKAWEESI MICHELLE',
+      'NAMUTEBI GERTRUDE',
+      'NANJOBE VANESSA',
+      'NINSIIMA MARY S.',
+      'NVANUNGI SHANIEZ F.',
+      'TEMITOPE GRACE A.',
+      'ASHABA ELIZABETH',
+      'NANSUBUGA MANUELLA',
+      'NAMAKULA SOPHIA',
+      'OBANG SHALLOM S.',
+      'BUKIRWA LETICIA',
+      'KISMART DAUDA',
+      'KASOZI AAMRAT',
+      'NANTONGO BUSHIRAH',
+      'MOKHTA ADAM SALAM',
+      'BAGONZA JOAB',
+      'KAYONGO JAWAD',
+      'KAKONA JORDAN',
+      'KIGGUNDU LUKE',
+      'BUYUNGO ERIC',
+      'LUBEGA MALCOM',
+      'LUKANDWA PHILLIP',
+      'MURUNGI IAN',
+      'MUYINZA CYRUS',
+      'MULANGIRA JOSEPH',
+      'MANZI EVANS',
+      'ITAAGA NICHOLAST',
+      'LUYIGA  RAYAN',
+      'SSEWAKIRYANGA HOSEA',
+      'SSUUNA RAFAN W',
+      'SSEMATIMBA MARK',
+      'SSEBABENGA KERON',
+      'TWESIGYE ADRIAN',
+      'WALLIGO ETHAN',
+      'NAMWANJA JOHN BAPTIST',
+      'SSENGENDO PRITA',
+      'KALULE CARLOS',
+      'MUHUMUZA ADHELITO',
+      'LUGGYA AKRAM',
+      'SSEMOMBWE ANDERSON'
+    ],
+    'Bunnies': [
+      'BUKENYA KEITH MARTINS',
+      'DDUMBA FRANCIS',
+      'GITTA RAZAQ',
+      'KASOZI NELSON',
+      'KATEREGGA RAUL',
+      'KAYEMBA SHAN',
+      'KIMBUGWE MELVIN',
+      'KIRABIRA ARNOLD',
+      'KUTEESA ISMAIL KALULE',
+      'LWANGA RAPHAEL',
+      'MOYA ELISHA',
+      'MUGISA VALENTE',
+      'MUKISA NATHAN',
+      'MUKISA SAMSON',
+      'MULINDWA EDDY',
+      'MURAMUZI JAN JENSEN',
+      'NAJIB AL-SHAFIQ',
+      'SSEKANDI RAMATHAN',
+      'SSONKO HENRY ARTHUR',
+      'WALUSIMBI ABDUL-SHARIK',
+      'ANKUNDA DENISE',
+      'ASIIMWE SHEENA',
+      'ATAMBA CAROL JIREH',
+      'ATUKUNDA GRAMIA',
+      'AYEBAREYESU EXCELLENT',
+      'BWIRE CLARRISA',
+      'HIPAINGAH SALAH JOSEPHINE',
+      'JIBE IMMACULATE',
+      'KABANDA MARTHA',
+      'KABUYAYA RAYANNA',
+      'KALIBALA JANAT',
+      'KAMUGISHA NATALIE',
+      'KASEMIRE BLESSING',
+      'KAVUMA GRACE',
+      'KHARUNDA ESTHER',
+      'KYAZZE MARTHA',
+      'LYMIAH AVRIL SALIM',
+      'MANZI GALIA',
+      'MICHORO ANNA ALEXA',
+      'NABAKOOZA CHRISTINE',
+      'NABIKOLO ANNA',
+      'NAKASUJJA SHANNAH',
+      'NALUMANSI LYTON',
+      'NAMALA SALSABEL',
+      'NAMBI NAAVA',
+      'NAMPIIMA HYRAT',
+      'NAMUBIRU RIAH',
+      'NANDAWULA  DESIRE',
+      'NANONO ROSHAN ISMAIL',
+      'NINSIIMA KIRABO ARIANAH',
+      'NYONYOZI EDRINAH',
+      'UMUTESI DINAH INEZ',
+    ],
+    'Eaglets': [
+      'KISAKYE MARTHA',
+      'ANYANGO KAREN MERCY',
+      'ASIIMWE MONICA',
+      'ATUHAIRE ANGELLA',
+      'BUKIRWA RAHMA DDUMBA',
+      'JAMILAH PEACE ATHUMAN',
+      'KATEREGGA RASHIM',
+      'KAYAGA KATRINAH',
+      'KEBIRUNGI DAISY EVE',
+      'LUMU ANNA GRAGIOUS',
+      'MUTESI TRINA TEDDY',
+      'MUTUMBA AALIYAH',
+      'NABAGULANYI TENDO TREASURE',
+      'NABIRYE PRECIOUS',
+      'NABUUMA VANESSA',
+      'NAKIBUUKA ASSUMPTA',
+      'NAKIBUULE MELAN BLESSED',
+      'NAKITTO HAPPY DANIELLA',
+      'NALUWOOZA BUSHIRAH',
+      'NAMATOVU IMMACULATE',
+      'NAMATOVU PROVIA ABIGAIL',
+      'NAMBATYA SHIVAN',
+      'NAMULINDWA VICTORIA',
+      'NANTONGO SHANTEL',
+      'TENDO HASIFA HAKIM',
+      'UWINEZA SHAMAH ZINDUKA',
+      'WASSAJJA MELISSA RAP',
+      'MUTESAASIRA JOLLEN',
+      'MUBIRU INAN',
+      'NABBALE BLESSING V.',
+      'MERCY ALLEN',
+      'AVANI PATRICIA',
+      'AHABWE ALVIN',
+      'AINEBYONA ISAIAH',
+      'AKOL LEON MASABA',
+      'DDAMBA SHADRACK',
+      'KAKANDE BLESSED',
+      'KAWULUKUSI SHAKURAN',
+      'KEVIN KHAMIS KENNEDY',
+      'KIGOZI RAHEEM',
+      'KITANDWE ABDULSHAKUL',
+      'MATSIKO HANIF',
+      'MAWEJJE UKASHA',
+      'MIKKA TYABA NICHOLAS',
+      'MUBIRU MIGUEL HERO',
+      'MULUMBA FAVOUR CLINTON',
+      'MULWANA NEAL',
+      'NAMUTALE FEDERICO',
+      'NSAMBA JORDAN RICH',
+      'SSEJJUUKO PEDRO',
+      'SSEKANJAKO ARAFAT',
+      'SSETUMBA JESSIE',
+      'TUSUUBIRA ARTHUR',
+      'MBAZIRA JOEL',
+      'MBABAZI CYROH',
+      'MPANGA FAHAD',
+      'RWOMUSHANA OMUGISHA G.',
+    ]
+  },
+  'Primary Five': {
+  'Sunset': [
+    'AHABWE JOSIAH',
+    'AMUGE LYNDSEY MILES',
+    'ATULINDA AISHA',
+    'AYEBARE MELLISA',
+    'BATARINGAYA SHIMARO',
+    'BUKIRWA SHAMRA DDUMBA',
+    'BULEGA PIUS',
+    'JAZMINE BIDS',
+    'JJAGWE JOVAN',
+    'JJUMBA ANGELLO',
+    'KAKOOZA DIVINE MACKYLA',
+    'KALUNGI JONATHAN',
+    'KAREMERA ABDUL HANAN',
+    'KATENDE HAMIR',
+    'KATONO ALLAN',
+    'KAZIBA JOSHUA',
+    'KIGGUNDU LIA',
+    'KIMBUGWE HASSAN AWADH',
+    'KIRABO EVAS',
+    'KIZZA JOYCE MYER SEMPA',
+    'KYALIGONZA HARVEY RENATAH',
+    'LUBWAMA MARTIN WASSWA',
+    'LUKWAGO LUCKY AHMET',
+    'LWANGA WYCLIFF',
+    'MAKIKA MEEKSON',
+    'MUBIRU RAJAB',
+    'MUKISA PHILEMON',
+    'MULWANA JONATHAN',
+    'MUSASIZI ADRIAN',
+    'MUWONGE PENIEL',
+    'MWEBAZA PEACE DIVINE',
+    'NABWIRE GLORIA MICHELLE',
+    'NAGAWA ANTHONIA BEATRICE',
+    'NAKAWEKE JANE',
+    'NAKITTO MYRA REMEDY',
+    'NAKIYEMBA SHUKRAH',
+    'NAMAGANDA JULIANA TENDO',
+    'NAMARA REBECCA BLESSED',
+    'NAMAWEJJE ELIZABETH SHANTAL',
+    'NAMIREMBE KAHLAN MARTHA',
+    'NAMPIJJA PATRICIA',
+    'NAMUGENYI HELLEN',
+    'NAMUSISI MARIA FEDERESI',
+    'NAMWANJE MACRINAH',
+    'NANYONJO HALIMAH',
+    'NASSUUNA WILDER',
+    'NYIRANEZA VIVIAN',
+    'ODONG DAVID ISA',
+    'OPIO DANIEL OPOLOT',
+    'OWARUHANGA JONATHAN KAHIIRWA',
+    'SSERUNKUMA ABRIELLE PROSPER',
+    'TUMUSIIME ELIJAH'
+  ],
+  'Sunrise': [
+    'ADITE DIRAN',
+    'AKATUSIIMA RAVEN',
+    'ANZOA JOVANNAH',
+    'ATURINDA KELTON',
+    'BALUKU ELEUTHERIUS BROGAN',
+    'BUGINGO JORAM',
+    'BYEGANJE JOSEMARY ROVINSAH',
+    'ITUNGO ISOBEL AYETA',
+    'KAAZA JEMIMAH',
+    'KABISWA ISAAC',
+    'KALUNGI DAVID',
+    'KASULE GORDON',
+    'KATUMBA MARTHA',
+    'KIRABO MADRINE PRINCESS',
+    'KIWENDO CALVIN',
+    'KYOMUGISHA ETHEL HANNAH',
+    'LUYIGA RAHIM',
+    'MAYITTO CHRISTIAN',
+    'MIREMBE GIFT REBECCA',
+    'MIRIMU ELIJAH',
+    'MUGARURA PAXTON',
+    'MUGENYI RYAN',
+    'MUKIIBI JOSEPH',
+    'MUKISA JEFFRON',
+    'MUKISA SHAMMAH',
+    'MURUNGI AARON',
+    'MUSIIMENTA HANNAH AMITO',
+    'MUTEBI JORDAN DIEGO',
+    'MUWANGUZI ETHAN',
+    'NABACHWA SHIVAN',
+    'NABUKENYA TYRA',
+    'NAJJINGO RHONITAH LUCY',
+    'NAKAWUKI RIANAH',
+    'NAKAYENGA MARY KATEREGGA',
+    'NAKIBUULE SHEENAH',
+    'NAKIJJE PRISCA RESTY',
+    'NAKIMERA MARIA',
+    'NAKIMULI KATRINAH PEACE',
+    'NAMAGANDA LUISA JOY',
+    'NAMMANDA HAIFA',
+    'NANGENDO GABRIELLA',
+    'NANSAMBA ESTHER',
+    'NASSAAZI JACINTA KIZZA',
+    'NATYABA EVELYN TENDO',
+    'NAYIGA SHUDAT ZAHARA',
+    'NYANZI RAYAN',
+    'OSINDE AHMED',
+    'SSAAZI RAPHEAL',
+    'SSENDAGI SOLOMON',
+    'SSENUNGI TITUS',
+    'SSERUGO ASHLEY',
+    'YEBETE MARY SADAD ELIAS'
+  ],
+  'Vibrant': [
+    'ASIIMWE DIVINE MERCY',
+    'AYEBAZIBWE EDINAS',
+    'BATARINGAYA COLLINS',
+    'HAYRAT DAUDA',
+    'KABAGAMBE GREED',
+    'KARUNGI MELISSA OPRAH',
+    'KASUMBA ANGEL MARIAM',
+    'KATAMBALA ROMAN TUSUBIRA',
+    'KIRABIRA ALVIN',
+    'KIRUMIRA KEREN',
+    'KITAYIMBWA STANISLAUS PROSPER',
+    'KITENGEJJA PRISCILLA',
+    'KIYIMBA MARIAM',
+    'KIZITO ALICIA',
+    'KUKIRIZA JOSHUA',
+    'KYAGABA JEREMIAH',
+    'KYAGABA TAYLOR',
+    'LUTAISIRYE RICHARD',
+    'LUTEMBE RIAZ',
+    'MUTEBI IMRAN MUBIRU',
+    'MASIKA SEANICE',
+    'MBAZIIRA TIHAN',
+    'MIREMBE ESTHER',
+    'MUKWAYA MICHELLE MELVINAH EDITH',
+    'MUSASIZI PHILLIP DAVIS',
+    'MUWANGUZI SUHAIR',
+    'NAAMARA VICTORIA',
+    'NABATEREGGA JOSELYN',
+    'NAGGAYI NATAVIA',
+    'NAJJEMBA ANNABELL LUCY',
+    'NAKABUYE ESTHER MARITEZ',
+    'NAKATO MARY',
+    'NAMATOVU JOSELYN',
+    'NAMPIJJA JANE',
+    'NAMUDDU PAULINE',
+    'NANTUME PETRINAH PATIENCE',
+    'NANYOMO JAZIRAH KIGOYE',
+    'NSIMBI BENJAMIN',
+    'NTULUME JOHN JASON',
+    'RUTUNGA DARCHILLE',
+    'SEKU FAVOUR LINCOLN',
+    'SSEMAKULA JOEL',
+    'SSEMWOGERERE IMRAN',
+    'TALEMWA SHALOM LEE',
+    'WASSWA JOSEPH',
+    'ZIMBE JOSIAH'
+  ]
+},
+'Primary Six': {
+  'Victors': [
+    'ABALINABYO NATASHA',
+    'AGABA REAGAN',
+    'AHIMBISIBWE MARKSON',
+    'AHURIRA CALEB',
+    'ALUMAI ENOCK',
+    'APOLOT HELLEN',
+    'AUDO TRACY',
+    'AYERANGO GLORIA',
+    'BAGUMA JOSHUA',
+    'BESIGYE KEVIN',
+    'BYARUHANGA HASSAN',
+    'KAKEETO K.B BENJAMIN',
+    'KAKOOZA SHURAIM',
+    'KALYANGO JONATHAN',
+    'KATO ENOCK',
+    'KAWADWA COLLINS',
+    'KEMIGISHA PRINCESS',
+    'KUTOSI FAITH',
+    'LUKYAMUZI IVAN',
+    'LUTAAYA JONATHAN',
+    'MAGUMBA SHAKUR',
+    'MUBUYA RYAN',
+    'MUHANGUZI LINCOLN',
+    'MUHINDO PATRICK PEDIAH',
+    'MUKAMA CALVIN',
+    'MULINDWA TRAVIS',
+    'MULUMBA ROBINSON',
+    'MUTEESA JOHNBAPTIST',
+    'MUTIIBWA MELLISA',
+    'NABWIRE MERCILINA MARIA',
+    'NAKAWEESA KELVIN NICOLE',
+    'NAKAYENGA FLAVIA',
+    'NAKAYONGO BEST PATRICIA',
+    'NAKIMBUGWE ELITHERIA',
+    'NAKKU SAMANTHA',
+    'NAMUDDE VANESSA',
+    'NANTEZA MAJORINE',
+    'NANZIRA MARY IVY',
+    'NASSUUNA KATRINAH HARIATAH',
+    'NATOORO SHARITAH',
+    'RUBANGAKENE GABRIEL',
+    'SSEMATIMBA ERNEST',
+    'SSEMPA TERRY RYAN',
+    'SSENYONGA JOHN BOSCO',
+    'SSERUNJOGI ALVIN',
+    'SSERUNJOJI ABIGAIL',
+    'TAMALE MARLON',
+    'WASSWA JOHN ELIJAH',
+    'ZZIWA ANDREW GERALD'
+  ],
+  'Skyhigh': [
+    'ABAHO FARRELL',
+    'AINEMBABAZI ELIANAH',
+    'AMAANI JEHEL KAISER',
+    'ARIHO CALVIN',
+    'ATUHAIRE COMFORT',
+    'ATUHAIRE PROMISE',
+    'ATWIINE RUTH',
+    'AYEBALE ABORIGINE',
+    'BUGANZA PATIENCE',
+    'BUKENYA HENRY SHADRACK',
+    'ELIANA TREASURE MUKISA',
+    'KABUYAYA TATIANA',
+    'KAKOOZA JUMA KAGGWA',
+    'KAYONDO MUSA HASHIM',
+    'KIDHUUDO PATRICIA GLADYS',
+    'KIMBUGWE TIMOTHY',
+    'KISAWUZI PROSPER JONATHAN',
+    'KIWANA GENEROUS SHAKRAN',
+    'KIYAGA TERRY ELIJAH',
+    'KIZITO ISAIAH',
+    'KYAZZE MARIA',
+    'LUBOWA SHANITAH',
+    'LUBUULWA MELLISA',
+    'LUZZE MARK IBRAHIM',
+    'MAGOMA BENSON',
+    'MURUNGI BETTINAH',
+    'MURUNGI SHAREEF RAUSHAN',
+    'MUTANDA LEON ARTHUR',
+    'MUWANGUZI JEREMIAH ANKUNDA',
+    'NAJJINGO TEOPISTA KALUNGI',
+    'NAKANDI ROCINTA',
+    'NAKINTU RAMLAH',
+    'NAKYANZI BENINA',
+    'NAMATA DIVINE HANNAH',
+    'NAMITALA TONNIA',
+    'NAMUTEBI LETICIA',
+    'NAMYALO CLARA KETRA',
+    'NANKYA NUSRAH',
+    'NANOZI KEISHA',
+    'NANTUME JAZMINE',
+    'NDAGIRE SALMAH ALYSON',
+    'NSUBUGA ERON',
+    'NSUBUGA MATILDA YULLIANA',
+    'OMAR ROSHEEN NSEGIMAANA',
+    'PARA PATRINA',
+    'RUGUMAYO JOSEPH REMIGIUS',
+    'SANGA FAITH LISA',
+    'SSEKATAWA CLANCY CALVIN',
+    'SSENYONJO SEAN ADRIAN',
+    'TALIDDA SARAH',
+    'WALUGEMBE JONATHAN',
+    'WAMALA CHESTNUT',
+    'YIGA INNOCENT'
+  ],
+  'Radiant': [
+    'AGAWO HARMONY ASHEL',
+    'AHIMBISIBWE PRINCE DENIS',
+    'AINOMUGISHA JOY',
+    'AMUGE TEMPLE',
+    'ANKUNDA CEDRIC MURAMIRA',
+    'ATUHAIRWE ALVIN',
+    'ATURINDA KAREN',
+    'BYARUHANGA HUSSEIN',
+    'JENGO MUSTAFA',
+    'KAFEERO FELIX',
+    'KASOZI VERNICE CHRISTABELLE',
+    'KATUSIIME SHIVAN',
+    'KIRISA JAYSON JOEL',
+    'KISIRA JORAM',
+    'LUTAAYA JOHN WILSON',
+    'MANENO MARIANA',
+    'MUBIRU RAYAN KIZITO',
+    'MUGAGGA JESSICAH',
+    'MUHUMUZA NEWMAN',
+    'NAKABALIRA MARY',
+    'NAKATO THERESA SEMPA',
+    'NAKAWOOYA ERINE',
+    'NAKAYONDE MARIA',
+    'NAKIBUULE AMINAH',
+    'NAKIMULI IVY MARIA',
+    'NAKINTU DANIELLA',
+    'NAKIYINGI JOAN',
+    'NAKYAMBADDE HENRIATA',
+    'NAKYANZI COTILDA KIARA',
+    'NALUBEGA SHAMIRAH',
+    'NAMATOVU RACHEAL',
+    'NAMUGENYI MELLISA',
+    'NANTABA PATRICIA',
+    'NSAZITWARI TREASURE MARY',
+    'NTONGO GLORIA',
+    'NUWAMANYA WILSON',
+    'NUWASIIMA ANNABEL',
+    'OKIA JORDAN DARENS',
+    'OKOTEL BARUCH',
+    'SSALI RAHIM',
+    'SSERUNJOJI JOHN MARK',
+    'TALEMWA GODROCK VIANNEY',
+    'WASSWA JEREMIAH SEMPA',
+    'WERE EDWARD KELLY',
+    'WESONGA ALBERT'
+  ]
+},  
+'Primary Seven': {
+  'Winners': [
+  'AGASHA CHOICE LABONITA',
+  'ALLENI PATIENCE',
+  'BAGANIGIRA BENSON',
+  'BAYIGA DANIELLA',
+  'BESIGYE IVAN',
+  'BIRIBAWA JOANITAH',
+  'BIRUNGI ANGEL LUYIMA',
+  'BUKIRWA JOVIN MARIAM',
+  'BUSINGE BIVA',
+  'DUKU RUDOLF',
+  'KAKONGE ALTON',
+  'KIGGUNDU PRINCE PAUL',
+  'KIRIBA HAM',
+  'KISENYI OSCAR',
+  'KWAGALA PATIENCE',
+  'KYOMUHENDO JULIANAH PRECIOUS',
+  'LUGOBE FRANCIS LUTAAYA',
+  'LUKWAGO EVANS',
+  'MAGALA ETHAN WILLIAMS',
+  'MIIRO ACRAM',
+  'MUKISA CALEB ALBERT',
+  'MUSIIME ELISSA',
+  'MUSINGUZI KRIVIE',
+  'MUTYABA ABDULLATIF',
+  'MWANJE LOUIS',
+  'NABBANJA JULIAN',
+  'NAKIMULI TRINITY KISITU',
+  'NAKIRAGGA RITAH',
+  'NAMALE ROLITAH MARTHA',
+  'NAMATOVU KAUTHARAH',
+  'NAMBOWA MILLY',
+  'NAMBUYA CHARITY',
+  'NANYANGE JARVICE',
+  'NASSALI JUSTINE',
+  'NASSONKO NINA ROSE',
+  'NTEGE RASHID',
+  'NYONYOZI SHIFRAH MIREMBE',
+  'SSEBAGALA RAHIM',
+  'SSENTONGO WILLIAM',
+  'SSERUBIRI DARVIN LUTEETE',
+  'TUMUSIIME JEREMIAH',
+  'VICTOR CHRISTIAN KASOZI'
+  ],
+  'Achievers': [
+  'ABIGAIL TAFFI',
+  'AGWANG NIESHA',
+  'ALEX JOSHUA WALUSIMBI',
+  'ATWIINE KEITH',
+  'BAITAWO JONATHAN DAWSON',
+  'BBAALE HAYAN',
+  'BWENGYE MARK',
+  'BWIRE PROSPER',
+  'DDAMULIRA ELVIS',
+  'JASMINE NOELLA ABER',
+  'KABEJJA NAGADYA CATHERINE',
+  'KAKANDE MICHEAL CHAVIS',
+  'KAKOOZA GERALD BRITON',
+  'KALUNDU MIGUEL',
+  'KANSIIME MARIA IMMACULATE',
+  'KARUNGI NADIA',
+  'KASOMA MEDDIE',
+  'KAYONGO FAZIL',
+  'KENGAJU EVE HANNAH',
+  'KIBIRANGO GIFT ENOCK',
+  'KIGGUNDU RAYAN',
+  'KIYAGA RAYAN',
+  'KIZZA RAUTHA NABUKENYA',
+  'KUZZA SCOTT JOHN',
+  'KYOMUGISHA PEARL ANGEL',
+  'LUKWAGO KEITH KYMANI',
+  'LULE BRIGHT BLESSING',
+  'LUTAAYA OLIVIA FLORENCE',
+  'MASIKA PATRICIA',
+  'MBABAZI FLAVIA',
+  'MORIKU BRIDGET',
+  'MUBINZI SAMUEL',
+  'MUGANGA JEROME',
+  'MUGERWA NATHAN KENNETH',
+  'MULUNGI DENISE',
+  'NABUKEERA PRISCILLA',
+  'NAGIRINYA SHERINA JOY',
+  'NAKAMATTE ELIZABETH',
+  'NAKIGUDDE NOELINE',
+  'NAKIMERA ANTHOUSA',
+  'NAKIMERA MARIA ELIZABETH',
+  'NAKIYIMBA SANAH',
+  'NALUYIMA JOSELYN',
+  'NAMAKULA MARY DELISHA',
+  'NAMATA SHARON SEKATE',
+  'NAMUBIRU EVELYN CLARISA',
+  'NAMUDDU ERINAH MAURISIA',
+  'NAMULEMA TAKIA',
+  'NAMULINDWA JAMIRAH',
+  'NANGENDO RABIIBAH',
+  'NANYONJO MACKLINE',
+  'NSEREKO ABDUL RAHIM',
+  'NSUBUGA RICHARD',
+  'SSAAZI WHITNEY',
+  'SSUUBI KETRA NAMUGENYI',
+  'SSUUNA RAYAN JJUNJU',
+  'TUKUNDANE EION',
+  'TUMWEBAZE AUSTIN',
+  'UWASE BRENDA',
+  'WALUSIMBI KEDRINE'
+  ]
+}
+        };
+
+// Function to sort students alphabetically
+function sortStudents(students) {
+    return students.sort((a, b) => a.localeCompare(b));
+}
+
+// Sort students in each stream of each class
+for (let className in studentData) {
+    for (let streamName in studentData[className]) {
+        studentData[className][streamName] = sortStudents(studentData[className][streamName]);
+    }
+}
+
+async function exportToJSON() {
+    if (!validateTable()) {
+        showNotification("Please correct the errors in the table before exporting.", "error");
+        return;
+    }
+
+    const selectedClass = classSelect.value;
+    const selectedStream = streamSelect.value;
+    const rows = document.querySelectorAll('#gradeTable tr');
+    let jsonData = {
+        class: selectedClass,
+        stream: selectedStream,
+        students: [],
+        analysis: {
+            division: {},
+            aggregate: {},
+            subject: {}
+        }
+    };
+
+    // Export student data
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const columns = row.querySelectorAll('td');
+        const studentData = {
+            name: columns[0].textContent,
+            math: {
+                marks: columns[1].querySelector('input').value,
+                grade: columns[2].textContent.split(' ')[0],
+                aggregates: parseInt(columns[2].textContent.split('(')[1])
+            },
+            english: {
+                marks: columns[3].querySelector('input').value,
+                grade: columns[4].textContent.split(' ')[0],
+                aggregates: parseInt(columns[4].textContent.split('(')[1])
+            },
+            sst: {
+                marks: columns[5].querySelector('input').value,
+                grade: columns[6].textContent.split(' ')[0],
+                aggregates: parseInt(columns[6].textContent.split('(')[1])
+            },
+            science: {
+                marks: columns[7].querySelector('input').value,
+                grade: columns[8].textContent.split(' ')[0],
+                aggregates: parseInt(columns[8].textContent.split('(')[1])
+            },
+            totalAggregates: columns[9].textContent,
+            division: columns[10].textContent
+        };
+        jsonData.students.push(studentData);
+    }
+
+    // Export Division Analysis
+    const divisionRows = document.querySelectorAll('#divisionAnalysisTable tbody tr');
+    divisionRows.forEach(row => {
+        const division = row.cells[0].textContent;
+        const count = parseInt(row.cells[1].textContent);
+        jsonData.analysis.division[division] = count;
+    });
+
+    // Export Aggregate Analysis
+    const aggregateRows = document.querySelectorAll('#aggregateAnalysisTable tbody tr');
+    aggregateRows.forEach(row => {
+        const aggregate = row.cells[0].textContent;
+        const count = parseInt(row.cells[1].textContent);
+        jsonData.analysis.aggregate[aggregate] = count;
+    });
+
+    // Export Subject Analysis
+    const subjectRows = document.querySelectorAll('#subjectAnalysisTable tbody tr');
+    subjectRows.forEach(row => {
+        const subject = row.cells[0].textContent;
+        jsonData.analysis.subject[subject] = {
+            D1: parseInt(row.cells[1].textContent),
+            D2: parseInt(row.cells[2].textContent),
+            C3: parseInt(row.cells[3].textContent),
+            C4: parseInt(row.cells[4].textContent),
+            C5: parseInt(row.cells[5].textContent),
+            C6: parseInt(row.cells[6].textContent),
+            P7: parseInt(row.cells[7].textContent),
+            P8: parseInt(row.cells[8].textContent),
+            F9: parseInt(row.cells[9].textContent),
+            X: parseInt(row.cells[10].textContent),
+            firstGrades: parseInt(row.cells[11].textContent),
+            position: parseInt(row.cells[12].textContent)
+        };
+    });
+
+    // Convert to JSON string
+    const jsonString = JSON.stringify(jsonData, null, 2);
+    const fileName = `${selectedClass}_${selectedStream}_Results.json`;
+
+    if ('showSaveFilePicker' in window) {
+        try {
+            const fileHandle = await window.showSaveFilePicker({
+                suggestedName: fileName,
+                types: [{
+                    description: 'JSON File',
+                    accept: {'application/json': ['.json']},
+                }],
+            });
+            const writable = await fileHandle.createWritable();
+            await writable.write(jsonString);
+            await writable.close();
+            console.log('File saved successfully using modern API');
+            showNotification("Data exported successfully!", "success");
+        } catch (err) {
+            if (err.name === 'AbortError') {
+                console.log('User cancelled the save operation');
+                showNotification("Export cancelled", "info");
+            } else {
+                console.warn('Error using modern save method:', err);
+                showNotification("Error exporting data. Please try again.", "error");
+            }
+        }
+    } else {
+        const shouldSave = confirm("Do you want to save the file?");
+        if (shouldSave) {
+            fallbackSaveMethod(jsonString, fileName);
+            showNotification("Data exported successfully (using fallback method).", "success");
+        } else {
+            showNotification("Export cancelled", "info");
+        }
+    }
+}
+
+function fallbackSaveMethod(content, fileName) {
+    const blob = new Blob([content], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }, 100);
+}
+
+// Update the event listener
+document.getElementById('exportBtn').addEventListener('click', exportToJSON);
+
+const classSelect = document.getElementById('classSelect');
+const streamSelect = document.getElementById('streamSelect');
+const goToGradingBtn = document.getElementById('goToGradingBtn');
+
+// Function to populate the class select
+function populateClassSelect() {
+    classSelect.innerHTML = '<option value="" disabled selected>Select Class</option>';
+    for (const className in studentData) {
+        const option = document.createElement('option');
+        option.value = className;
+        option.textContent = className;
+        classSelect.appendChild(option);
+    }
+}
+
+// Function to populate the stream select based on the selected class
+function populateStreamSelect(className) {
+    streamSelect.innerHTML = '<option value="" disabled selected>Select Stream</option>';
+    if (studentData[className]) {
+        for (const streamName in studentData[className]) {
+            const option = document.createElement('option');
+            option.value = streamName;
+            option.textContent = streamName;
+            streamSelect.appendChild(option);
+        }
+        streamSelect.style.display = 'block';
+    } else {
+        streamSelect.style.display = 'none';
+        goToGradingBtn.style.display = 'none';
+    }
+}
+
+// Populate the class select when the page loads
+populateClassSelect();
+
+// Event listener for class select
+classSelect.addEventListener('change', function() {
+    if (this.value) {
+        populateStreamSelect(this.value);
+        streamSelect.style.display = 'block';
+    } else {
+        streamSelect.style.display = 'none';
+        goToGradingBtn.style.display = 'none';
+    }
+});
+
+// Event listener for stream select
+streamSelect.addEventListener('change', function() {
+    goToGradingBtn.style.display = this.value ? 'block' : 'none';
+});
+
+goToGradingBtn.addEventListener('click', function() {
+    const selectedClass = classSelect.value;
+    const selectedStream = streamSelect.value;
+    classStreamTitle.textContent = `${selectedClass} - ${selectedStream}`;
+    createTableRows(studentData[selectedClass][selectedStream]);
+    welcomePage.style.display = 'none';
+    gradingPage.style.display = 'block';
+    showNotification(`Grading page loaded for ${selectedClass} - ${selectedStream}`, "info");
+});
+
+// Function to calculate grade and aggregates based on marks
+function calculateGrade(marks) {
+    if (marks === "-") return { grade: "F9", aggregates: 9 };
+    if (marks === "") return { grade: "", aggregates: 0 };
+    marks = parseInt(marks);
+    if (isNaN(marks) || marks < 0 || marks > 100) return { grade: "", aggregates: 0 };
+    
+    if (marks >= 90) return { grade: "D1", aggregates: 1 };
+    if (marks >= 80) return { grade: "D2", aggregates: 2 };
+    if (marks >= 70) return { grade: "C3", aggregates: 3 };
+    if (marks >= 65) return { grade: "C4", aggregates: 4 };
+    if (marks >= 60) return { grade: "C5", aggregates: 5 };
+    if (marks >= 55) return { grade: "C6", aggregates: 6 };
+    if (marks >= 50) return { grade: "P7", aggregates: 7 };
+    if (marks >= 40) return { grade: "P8", aggregates: 8 };
+    return { grade: "F9", aggregates: 9 };
+}
+
+// Function to calculate division based on total aggregates
+function calculateOverallResult(totalAggregates, hasMissedExam, hasF9) {
+    if (hasMissedExam) {
+        return { totalAggregates, division: 'X' };
+    }
+    let division = calculateDivision(totalAggregates);
+    if (division === "1" && hasF9) {
+        division = "2";
+    }
+    return { totalAggregates, division };
+}
+
+
+
+function calculateDivision(totalAggregates) {
+    if (totalAggregates >= 4 && totalAggregates <= 12) return "1";
+    if (totalAggregates >= 13 && totalAggregates <= 24) return "2";
+    if (totalAggregates >= 25 && totalAggregates <= 28) return "3";
+    if (totalAggregates >= 29 && totalAggregates <= 32) return "4";
+    if (totalAggregates >= 33 && totalAggregates <= 36) return "U";
+    return "U"; // This covers cases where totalAggregates > 36
+}
+
+function calculateTotalAggregates(student) {
+    const subjects = ['math', 'english', 'sst', 'science'];
+    const totalAggregates = subjects.reduce((total, subject) => {
+        return total + (student[subject].aggregates || 0);
+    }, 0);
+    return totalAggregates > 0 ? totalAggregates : '';
+}
+
+function updateResults(input) {
+    const row = input.closest('tr');
+    const aggregateCell = input.parentElement.nextElementSibling;
+    const marks = input.value.trim();
+    
+    if (marks === "") {
+        aggregateCell.textContent = "";
+    } else {
+        const { grade, aggregates } = calculateGrade(marks);
+        aggregateCell.textContent = grade;
+    }
+
+    const mainSubjectInputs = row.querySelectorAll('.subject-mark.main-subject');
+    let totalAggregates = 0;
+    let hasMissedExam = false;
+    let hasF9 = false;
+    let allMainFieldsFilled = true;
+
+    mainSubjectInputs.forEach((input) => {
+        const value = input.value.trim();
+        if (value === "") {
+            allMainFieldsFilled = false;
+        } else {
+            const { grade, aggregates } = calculateGrade(value);
+            totalAggregates += aggregates;
+            if (grade === "F9") {
+                hasF9 = true;
+            }
+            if (value === "-") {
+                hasMissedExam = true;
+            }
+        }
+    });
+
+    // Update minor subjects aggregates
+    const minorSubjectInputs = row.querySelectorAll('.subject-mark.minor-subject');
+    minorSubjectInputs.forEach((input) => {
+        const minorAggregateCell = input.parentElement.nextElementSibling;
+        const minorMarks = input.value.trim();
+        if (minorMarks === "") {
+            minorAggregateCell.textContent = "";
+        } else {
+            const { grade } = calculateGrade(minorMarks);
+            minorAggregateCell.textContent = grade;
+        }
+    });
+
+    const totalAggregatesCell = row.querySelector('.total-aggregates');
+    const divisionCell = row.querySelector('.division');
+
+    if (allMainFieldsFilled) {
+        const { totalAggregates: finalTotal, division } = calculateOverallResult(totalAggregates, hasMissedExam, hasF9);
+        totalAggregatesCell.textContent = finalTotal;
+        divisionCell.textContent = division;
+    } else {
+        totalAggregatesCell.textContent = '';
+        divisionCell.textContent = '';
+    }
+}
+
+function validateTable() {
+    const inputs = document.querySelectorAll('.subject-mark');
+    let isValid = true;
+    
+    inputs.forEach(input => {
+        const value = input.value.trim();
+        if (value === "-") {
+            input.setCustomValidity(""); // Clear any previous validation message
+        } else {
+            const numValue = parseFloat(value);
+            if (value === "" || isNaN(numValue) || numValue < 0 || numValue > 100) {
+                isValid = false;
+                input.setCustomValidity("Please enter a number between 0 and 100, or '-' for no score.");
+            } else {
+                input.setCustomValidity(""); // Clear any previous validation message
+            }
+        }
+        input.reportValidity();
+    });
+    
+    return isValid;
+}
+
+function createTableRows(studentList) {
+    const tableBody = document.getElementById('gradeTableBody');
+    const tableHeader = document.getElementById('gradeTableHeader');
+    tableBody.innerHTML = '';
+    
+    const selectedClass = classSelect.value;
+    const isLowerPrimary = ['Primary One', 'Primary Two', 'Primary Three'].includes(selectedClass);
+    
+    // Update table header
+    if (isLowerPrimary) {
+        tableHeader.innerHTML = `
+            <tr>
+                <th>Name</th>
+                <th>ENG</th>
+                <th>Agg</th>
+                <th>MTC</th>
+                <th>Agg</th>
+                <th>SCIE</th>
+                <th>Agg</th>
+                <th>SST</th>
+                <th>Agg</th>
+                <th class="minor-subject">ICT</th>
+                <th class="minor-subject">Agg</th>
+                <th class="minor-subject">KISW</th>
+                <th class="minor-subject">Agg</th>
+                <th class="minor-subject">Writing</th>
+                <th class="minor-subject">Agg</th>
+                <th>Total Agg</th>
+                <th>Div</th>
+            </tr>
+        `;
+    } else {
+        tableHeader.innerHTML = `
+            <tr>
+                <th>Name</th>
+                <th>ENG</th>
+                <th>Agg</th>
+                <th>MTC</th>
+                <th>Agg</th>
+                <th>SCIE</th>
+                <th>Agg</th>
+                <th>SST</th>
+                <th>Agg</th>
+                <th class="minor-subject">ICT</th>
+                <th class="minor-subject">Agg</th>
+                <th class="minor-subject">KISW</th>
+                <th class="minor-subject">Agg</th>
+                <th>Total Agg</th>
+                <th>Div</th>
+            </tr>
+        `;
+    }
+    
+    studentList.forEach((student, rowIndex) => {
+        const row = document.createElement('tr');
+        let rowHTML = `
+            <td>${student}</td>
+            <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate"></td>
+            <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate"></td>
+            <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate"></td>
+            <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate"></td>
+        `;
+        
+        if (isLowerPrimary) {
+            rowHTML += `
+                <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject"></td>
+                <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject"></td>
+                <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject"></td>
+            `;
+        } else {
+            rowHTML += `
+                <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject"></td>
+                <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject"></td>
+            `;
+        }
+        
+        rowHTML += `
+            <td class="total-aggregates"></td>
+            <td class="division"></td>
+        `;
+        
+        row.innerHTML = rowHTML;
+        tableBody.appendChild(row);
+    });
+
+    const allInputs = tableBody.querySelectorAll('.subject-mark');
+    allInputs.forEach((input, index) => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9-]/g, '');
+            validateAndUpdateResults(this);
+            
+            // Check if the input is complete and valid before moving to the next cell
+            const numValue = parseInt(this.value);
+            if ((numValue > 10 && numValue < 100) || this.value === '-' || this.value === '100') {
+                if (index < allInputs.length - 1) {
+                    allInputs[index + 1].focus();
+                }
+            }
+        });
+        input.addEventListener('keydown', function(e) {
+            // ... (keep the existing keydown event listener)
+        });
+        input.addEventListener('blur', () => validateAndUpdateResults(input));
+    });
+}
+
+function handleInputChange(input) {
+    const value = input.value;
+    if (value === '-' || value === '100' || (value.length === 2 && parseInt(value) >= 11 && parseInt(value) <= 99)) {
+        moveToNextInput(input);
+    }
+}
+
+function moveToNextInput(currentInput) {
+    // Add leading zero if necessary
+    if (currentInput.value.length === 1 && parseInt(currentInput.value) >= 0 && parseInt(currentInput.value) <= 9) {
+        currentInput.value = '0' + currentInput.value;
+    }
+
+    const currentCell = currentInput.parentElement;
+    const currentRow = currentCell.parentElement;
+    const cells = Array.from(currentRow.cells);
+    const currentIndex = cells.indexOf(currentCell);
+    
+    // Find the next input field
+    for (let i = currentIndex + 1; i < cells.length; i++) {
+        const nextInput = cells[i].querySelector('input');
+        if (nextInput) {
+            nextInput.focus();
+            nextInput.select();  // Select the text in the next input
+            return;
+        }
+    }
+    
+    // If we're at the last cell of the current row, move to the first cell of the next row
+    const nextRow = currentRow.nextElementSibling;
+    if (nextRow) {
+        const firstInput = nextRow.querySelector('input');
+        if (firstInput) {
+            firstInput.focus();
+            firstInput.select();  // Select the text in the next input
+        }
+    }
+}
+
+function validateAndUpdateResults(input) {
+    const value = input.value.trim();
+    
+    if (value === "-") {
+        input.setCustomValidity("");
+        input.classList.remove('invalid-input');
+    } else if (value === "") {
+        input.setCustomValidity("This field is required. Enter a number or '-' for no score.");
+        input.classList.add('invalid-input');
+    } else {
+        const numValue = parseFloat(value);
+        if (!/^\d+$/.test(value) || isNaN(numValue)) {
+            input.setCustomValidity("Please enter a valid whole number between 0 and 100, or '-' for no score.");
+            input.classList.add('invalid-input');
+        } else if (numValue < 0 || numValue > 100) {
+            input.setCustomValidity("Please enter a number between 0 and 100.");
+            input.classList.add('invalid-input');
+        } else {
+            input.setCustomValidity("");
+            input.classList.remove('invalid-input');
+        }
+    }
+    
+    updateResults(input);
+    updateAnalysisTables(); // Add this line
+
+}
+    </script>
+</body>
+</html>

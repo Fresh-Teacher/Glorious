@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Aggregates</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        @media print {
+            button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Class: Primary Four</h1>
+    <h2>Stream: Bunnies</h2>
+    <button onclick="saveAsPDF()">Save table as PDF</button>
+    <table id="student-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>ENG</th>
+                <th>Agg</th>
+                <th>MTC</th>
+                <th>Agg</th>
+                <th>SCIE</th>
+                <th>Agg</th>
+                <th>SST</th>
+                <th>Agg</th>
+                <th>ICT</th>
+                <th>Agg</th>
+                <th>KISW</th>
+                <th>Agg</th>
+                <th>Total Agg</th>
+                <th>Div</th>
+            </tr>
+        </thead>
+        <tbody id="student-data">
+            <!-- Student data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        const data = {
+            "class": "Primary Four",
+            "stream": "Bunnies",
+            "students": [
+                {
+                    "name": "ANKUNDA DENISE",
+                    "math": {
+                        "marks": "34",
+                        "grade": "F9",
+                        "aggregates": ""
+                    },
+                    "english": {
+                        "marks": "32",
+                        "grade": "F9",
+                        "aggregates": ""
+                    },
+                    "sst": {
+                        "marks": "45",
+                        "grade": "P8",
+                        "aggregates": ""
+                    },
+                    "science": {
+                        "marks": "65",
+                        "grade": "C4",
+                        "aggregates": ""
+                    },
+                    "totalAggregates": "",
+                    "division": "P8"
+                },
+                {
+                    "name": "ASIIMWE SHEENA",
+                    "math": {
+                        "marks": "65",
+                        "grade": "C4",
+                        "aggregates": ""
+                    },
+                    "english": {
+                        "marks": "43",
+                        "grade": "P8",
+                        "aggregates": ""
+                    },
+                    "sst": {
+                        "marks": "45",
+                        "grade": "P8",
+                        "aggregates": ""
+                    },
+                    "science": {
+                        "marks": "43",
+                        "grade": "P8",
+                        "aggregates": ""
+                    },
+                    "totalAggregates": "",
+                    "division": "P8"
+                }
+            ]
+        };
+
+        function populateTable() {
+            const tableBody = document.getElementById('student-data');
+            data.students.forEach(student => {
+                const row = document.createElement('tr');
+                
+                const nameCell = document.createElement('td');
+                nameCell.textContent = student.name;
+                row.appendChild(nameCell);
+                
+                const englishMarksCell = document.createElement('td');
+                englishMarksCell.textContent = student.english.marks;
+                row.appendChild(englishMarksCell);
+                
+                const englishAggCell = document.createElement('td');
+                englishAggCell.textContent = student.english.aggregates;
+                row.appendChild(englishAggCell);
+                
+                const mathMarksCell = document.createElement('td');
+                mathMarksCell.textContent = student.math.marks;
+                row.appendChild(mathMarksCell);
+                
+                const mathAggCell = document.createElement('td');
+                mathAggCell.textContent = student.math.aggregates;
+                row.appendChild(mathAggCell);
+                
+                const scienceMarksCell = document.createElement('td');
+                scienceMarksCell.textContent = student.science.marks;
+                row.appendChild(scienceMarksCell);
+                
+                const scienceAggCell = document.createElement('td');
+                scienceAggCell.textContent = student.science.aggregates;
+                row.appendChild(scienceAggCell);
+                
+                const sstMarksCell = document.createElement('td');
+                sstMarksCell.textContent = student.sst.marks;
+                row.appendChild(sstMarksCell);
+                
+                const sstAggCell = document.createElement('td');
+                sstAggCell.textContent = student.sst.aggregates;
+                row.appendChild(sstAggCell);
+
+                const ictMarksCell = document.createElement('td');
+                ictMarksCell.textContent = ""; // No ICT data in the JSON
+                row.appendChild(ictMarksCell);
+
+                const ictAggCell = document.createElement('td');
+                ictAggCell.textContent = ""; // No ICT data in the JSON
+                row.appendChild(ictAggCell);
+
+                const kiswMarksCell = document.createElement('td');
+                kiswMarksCell.textContent = ""; // No KISW data in the JSON
+                row.appendChild(kiswMarksCell);
+
+                const kiswAggCell = document.createElement('td');
+                kiswAggCell.textContent = ""; // No KISW data in the JSON
+                row.appendChild(kiswAggCell);
+                
+                const totalAggCell = document.createElement('td');
+                totalAggCell.textContent = student.totalAggregates;
+                row.appendChild(totalAggCell);
+                
+                const divCell = document.createElement('td');
+                divCell.textContent = student.division;
+                row.appendChild(divCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function saveAsPDF() {
+            window.print();
+        }
+
+        populateTable();
+    </script>
+</body>
+</html>

@@ -1903,7 +1903,7 @@ body {
      "Tip: Using cable management solutions can keep the inside of your computer case tidy! 🎨 Neat cables improve airflow and look better."
  ];
 
-let userName = '';
+ let userName = '';
 let unreadCount = 0;
 let allMessages = [];
 let elementsToType, typedText, totalParagraphs, mistakes;
@@ -1930,55 +1930,43 @@ function confirmDownload() {
     const story = stories[currentStoryIndex];
     let typedStory = '';
 
-    // Collect only the typed portions of the story
     for (let i = 0; i < currentParagraph; i++) {
         typedStory += story.content[i] + '\n\n';
     }
     
-    // Add the partially typed current paragraph
     if (currentParagraph < story.content.length) {
         typedStory += typedText;
     }
 
-    // Trim any trailing whitespace
     typedStory = typedStory.trim();
 
-    // If nothing was typed, inform the user
     if (typedStory === '') {
         alert("You haven't typed any part of the story yet. There's nothing to download.");
         closeModal('modal-download-name');
         return;
     }
 
-    // Create a Blob with the typed story content
     const blob = new Blob([typedStory], { type: 'text/plain' });
-    
-    // Create a temporary URL for the Blob
     const url = window.URL.createObjectURL(blob);
     
-    // Create a temporary anchor element and trigger the download
     const a = document.createElement('a');
     a.style.display = 'none';
     a.href = url;
-    a.download = `${userFileName}.txt`; // Use only the user-provided filename
+    a.download = `${userFileName}.txt`;
     
     document.body.appendChild(a);
     a.click();
     
-    // Clean up
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
 
-    // Close the name input modal
     closeModal('modal-download-name');
 
-    // Reopen the story complete modal after a short delay
     setTimeout(() => {
         openModal('modal-story-complete');
     }, 100);
 }
 
-// Add this event listener outside of any function
 document.addEventListener('DOMContentLoaded', function() {
     const downloadNameInput = document.getElementById('download-name-input');
     if (downloadNameInput) {
@@ -2023,7 +2011,7 @@ function pauseTimer() {
 function resetTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
-    totalSeconds = 600; // Reset to 10 minutes
+    totalSeconds = 600;
     timerPaused = true;
     document.getElementById('timer').textContent = formatTime(totalSeconds);
 }
@@ -2051,18 +2039,17 @@ function showNotification() {
         document.body.appendChild(notificationIcon);
 
         notificationIcon.addEventListener('click', () => {
-    showChatbox();
-    notificationIcon.querySelector('.notification-badge').style.display = 'none';
-    notificationIcon.style.animation = 'none';
-    notificationIcon.style.opacity = '0.7';
-    pauseTimer(); // Pause the timer when the chatbox is opened
-});
+            showChatbox();
+            notificationIcon.querySelector('.notification-badge').style.display = 'none';
+            notificationIcon.style.animation = 'none';
+            notificationIcon.style.opacity = '0.7';
+            pauseTimer();
+        });
     }
 }
 
 function showChatbox() {
     let flashDiv = document.querySelector('.flash-message');
-    
     
     if (!flashDiv) {
         flashDiv = document.createElement('div');
@@ -2085,10 +2072,10 @@ function showChatbox() {
         document.body.appendChild(flashDiv);
 
         const closeBtn = flashDiv.querySelector('.flash-message-close');
-closeBtn.addEventListener('click', () => {
-    flashDiv.classList.remove('show');
-    startTimer(); // Resume the timer when the chatbox is closed
-});
+        closeBtn.addEventListener('click', () => {
+            flashDiv.classList.remove('show');
+            startTimer();
+        });
 
         const sendButton = flashDiv.querySelector('.send-button');
         const replyInput = flashDiv.querySelector('.reply-input');
@@ -2100,11 +2087,7 @@ closeBtn.addEventListener('click', () => {
         });
     }
 
-    pauseTimer(); // Pause the timer when the chatbox is opened
-    updateChatDisplay(flashDiv);
-    flashDiv.classList.add('show', 'scale-up');
-
-
+    pauseTimer();
     updateChatDisplay(flashDiv);
     flashDiv.classList.add('show', 'scale-up');
 }
@@ -2195,8 +2178,21 @@ function processUserChoice(input, flashDiv) {
             responseMessage = '<p>Returning to the welcome page. Please wait...</p>';
             action = returnToWelcomePage;
             break;
+        case 'options':
+            responseMessage = `
+                <p>Here are the available options:</p>
+                <ul>
+                    <li>Type <strong>Help</strong> to get instructions on how to play the game</li>
+                    <li>Type <strong>Learn</strong> to get one amazing fact</li>
+                    <li>Type <strong>Change</strong> to change the story</li>
+                    <li>Type <strong>Games</strong> to go to the games page</li>
+                    <li>Type <strong>Stop</strong> to go back to the welcome page</li>
+                    <li>Type <strong>Options</strong> to see these options again</li>
+                </ul>
+            `;
+            break;
         default:
-            responseMessage = "<p>Hey, in case you need any help from me, please type any of the following commands:</p><ul><li>Help</li><li>Learn</li><li>Change</li><li>Games</li><li>Home</li><li>Stop</li></ul>";
+            responseMessage = "<p>I didn't understand that command. Type <strong>Options</strong> to see the available options.</p>";
             break;
     }
 
@@ -2218,40 +2214,43 @@ function processUserChoice(input, flashDiv) {
 }
 
 function returnToWelcomePage() {
-    // Clear game state and chat history
     clearGameState();
     clearChatHistory();
 
-    // Hide the story container and show the intro container
     document.getElementById('story-container').style.display = 'none';
     document.getElementById('intro-container').style.display = 'block';
 
-    // Clear the user name
     userName = '';
 
-    // Reset the intro container content
     document.getElementById('ai-message').innerHTML = '';
     document.getElementById('name-input').style.display = 'none';
     document.getElementById('error-message').textContent = '';
 
-    // Remove any existing play button
     const existingPlayButton = document.getElementById('play-button');
     if (existingPlayButton) {
         existingPlayButton.remove();
     }
 
-    // Start the intro sequence again
     startIntro();
 
-    // Close the chatbox if it's open
     const flashDiv = document.querySelector('.flash-message');
     if (flashDiv) {
         dismissFlashMessage(flashDiv);
     }
 
-    // Stop the timer
     clearInterval(timerInterval);
     timerInterval = null;
+
+    // Reset game state variables
+    currentStoryIndex = null;
+    currentParagraph = 0;
+    typedText = '';
+    mistakes = 0;
+    isTyping = false;
+    modalOpen = false;
+
+    // Remove the keydown event listener
+    document.removeEventListener('keydown', handleKeyDown);
 }
 
 function clearChatHistory() {
@@ -2275,7 +2274,6 @@ function generateGameInstructions() {
 }
 
 function getRandomFact() {
-    // Assuming flashMessages is an array of facts
     const randomIndex = Math.floor(Math.random() * flashMessages.length);
     return flashMessages[randomIndex].replace('{username}', userName);
 }
@@ -2292,7 +2290,7 @@ function dismissFlashMessage(flashDiv) {
     flashDiv.classList.remove('show');
     flashDiv.addEventListener('transitionend', () => {
         flashDiv.remove();
-        startTimer(); // Resume the timer when the chatbox is closed
+        startTimer();
     });
     clearTimeout(parseInt(flashDiv.dataset.autoDismissTimeout));
 }
@@ -2321,7 +2319,7 @@ function typeWriter(element, text, callback) {
 function typeWriterParagraph(text, callback) {
     let index = 0;
     isTyping = true;
-    pauseTimer(); // Pause the timer during animation
+    pauseTimer();
     function type() {
         if (index < text.length) {
             elementsToType[currentParagraph].innerHTML += text.charAt(index);
@@ -2329,7 +2327,7 @@ function typeWriterParagraph(text, callback) {
             setTimeout(type, Math.random() * 50 + 30);
         } else {
             isTyping = false;
-            startTimer(); // Resume the timer when animation is done
+            startTimer();
             if (callback) callback();
         }
     }
@@ -2345,53 +2343,6 @@ function startIntro() {
             document.getElementById('name-input').classList.add('fade-in');
         });
     }
-}
-
-function typeWriter(element, text, callback) {
-    let index = 0;
-    element.innerHTML = '';
-    function type() {
-        if (index < text.length) {
-            if (text[index] === '\n') {
-                element.innerHTML += '<br>';
-            } else {
-                element.innerHTML += text.charAt(index);
-            }
-            index++;
-            const delay = text[index - 1] === '.' && text[index] === '\n' ? 1000 : Math.random() * 50 + 30;
-            setTimeout(type, delay);
-        } else {
-            element.innerHTML += '<span class="cursor"></span>';
-            if (callback) setTimeout(callback, 1000);
-        }
-    }
-    type();
-}
-
-function typeWriter(element, text, callback) {
-    let index = 0;
-    element.innerHTML = '';
-    function type() {
-        if (index < text.length) {
-            if (text[index] === '\n') {
-                element.innerHTML += '<br>';
-            } else {
-                element.innerHTML += text.charAt(index);
-            }
-            index++;
-            const delay = text[index - 1] === '.' && text[index] === '\n' ? 1000 : Math.random() * 50 + 30;
-            
-            // Scroll to the bottom of the container
-            const container = document.getElementById('intro-container');
-            container.scrollTop = container.scrollHeight;
-            
-            setTimeout(type, delay);
-        } else {
-            element.innerHTML += '<span class="cursor"></span>';
-            if (callback) setTimeout(callback, 1000);
-        }
-    }
-    type();
 }
 
 function validateAndSubmitName() {
@@ -2443,7 +2394,6 @@ function showPlayButton() {
 
     document.getElementById('intro-container').appendChild(playButton);
     
-    // Scroll to the bottom of the container after adding the button
     const container = document.getElementById('intro-container');
     container.scrollTop = container.scrollHeight;
 }
@@ -2465,7 +2415,7 @@ function saveGameState() {
         mistakes,
         userName,
         storyStarted: true,
-        totalSeconds, // Save the current time left
+        totalSeconds,
     }));
 }
 
@@ -2477,7 +2427,7 @@ function loadGameState() {
         typedText = state.typedText;
         mistakes = state.mistakes;
         userName = state.userName;
-        totalSeconds = state.totalSeconds || 600; // Load the saved time or set to 10 minutes
+        totalSeconds = state.totalSeconds || 600;
         return state.storyStarted;
     }
     return false;
@@ -2543,6 +2493,9 @@ function startGame(storyIndex) {
     });
     
     saveGameState();
+
+    // Add the keydown event listener
+    document.addEventListener('keydown', handleKeyDown);
 }
 
 function openModal(modalId) {
@@ -2554,7 +2507,7 @@ function openModal(modalId) {
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
     modalOpen = false;
-    startTimer(); // Resume the timer when the modal is closed
+    startTimer();
 }
 
 document.querySelectorAll('.modal .close-btn').forEach(button => {
@@ -2564,10 +2517,8 @@ document.querySelectorAll('.modal .close-btn').forEach(button => {
     });
 });
 
-document.addEventListener('keydown', (event) => {
-
+function handleKeyDown(event) {
     if (event.target.closest('.flash-message')) {
-        // If the event originated from within the chat box, don't process it for the game
         return;
     }
 
@@ -2577,12 +2528,9 @@ document.addEventListener('keydown', (event) => {
 
     if (modalOpen || isTyping) return;
 
-
-
     const key = event.key;
     const story = stories[currentStoryIndex];
     const currentText = story.content[currentParagraph];
-
 
     if (key.length === 1 && typedText.length < currentText.length) {
         const currentChar = currentText[typedText.length];
@@ -2590,10 +2538,10 @@ document.addEventListener('keydown', (event) => {
             typedText += key;
         } else {
             mistakes++;
-        if (mistakes >= maxMistakes) {
-            endGame('mistakes');
-            return;
-        }
+            if (mistakes >= maxMistakes) {
+                endGame('mistakes');
+                return;
+            }
             document.getElementById('chances-left').innerText = maxMistakes - mistakes;
             openModal('modal-wrong');
             typedText += key;
@@ -2636,7 +2584,7 @@ document.addEventListener('keydown', (event) => {
         
         saveGameState();
     }
-});
+}
 
 document.getElementById('submit-name').addEventListener('click', validateAndSubmitName);
 document.getElementById('user-name').addEventListener('keypress', function(event) {
@@ -2645,53 +2593,57 @@ document.getElementById('user-name').addEventListener('keypress', function(event
     }
 });
 
-startIntro();
+function initializeGame() {
+    startIntro();
+    // Any other initial setup you need
+}
+
+document.addEventListener('DOMContentLoaded', initializeGame);
 
 function toggleMenu() {
-            const navLinks = document.getElementById('nav-links');
-            navLinks.classList.toggle('active');
-        }
+    const navLinks = document.getElementById('nav-links');
+    navLinks.classList.toggle('active');
+}
 
-        function setCurrentYear() {
-            const currentYear = new Date().getFullYear();
-            document.getElementById('currentYear').textContent = currentYear;
-        }
+function setCurrentYear() {
+    const currentYear = new Date().getFullYear();
+    document.getElementById('currentYear').textContent = currentYear;
+}
 
-        function checkAuth(page) {
-            if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
-                window.location.href = page;
-            } else {
-                sessionStorage.setItem("intendedPage", page);
-                showLoginMessage();
-            }
-        }
+function checkAuth(page) {
+    if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+        window.location.href = page;
+    } else {
+        sessionStorage.setItem("intendedPage", page);
+        showLoginMessage();
+    }
+}
 
-        function showLoginMessage() {
-            document.getElementById("login-message").style.display = "block";
-        }
+function showLoginMessage() {
+    document.getElementById("login-message").style.display = "block";
+}
 
-        function checkAuthStatus() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
-            document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
-        }
+function checkAuthStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+    document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+}
 
-        function logout() {
-            localStorage.removeItem("rememberMe");
-            localStorage.removeItem("email");
-            localStorage.removeItem("password");
-            localStorage.removeItem("isLoggedIn");
-            sessionStorage.removeItem("email");
-            sessionStorage.removeItem("password");
-            sessionStorage.removeItem("isLoggedIn");
-            sessionStorage.removeItem("intendedPage");
-            window.location.href = 'index.html';
-        }
+function logout() {
+    localStorage.removeItem("rememberMe");
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("password");
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("intendedPage");
+    window.location.href = 'index.html';
+}
 
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuthStatus();
-            setCurrentYear();
-        });
-    
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuthStatus();
+    setCurrentYear();
+});
 </script>
 </body>
 </html>
