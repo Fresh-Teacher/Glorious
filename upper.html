@@ -484,7 +484,6 @@ input.minor-subject {
         
 </head>
 <body>
-    <body>
         <div class="pdf-title">
             <h2>GLORIOUS KINDERGARTEN AND PRIMARY SCHOOL</h2>
             <h2>MID TERM II EXAMS RESULTS 2024</h2>
@@ -550,40 +549,43 @@ input.minor-subject {
                 </table>
             
                 <h3>Aggregate Analysis</h3>
-                <table id="aggregateAnalysisTable" class="horizontal-table">
-                    <tr>
-                        <th>AGG</th>
-                        <!-- Aggregate values will be added here dynamically, e.g., 4, 5, 6, ... -->
-                    </tr>
-                    <tr>
-                        <th>Number of Pupils</th>
-                        <!-- Number of pupils for each aggregate will be added here dynamically -->
-                    </tr>
-                </table>
+<table id="aggregateAnalysisTable">
+    <thead>
+        <tr id="aggregateRow">
+            <th>AGGREGATE:</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr id="pupilCountRow">
+            <th>NUMBER OF PUPILS:</th>
+        </tr>
+    </tbody>
+</table>
             
-                <h3>Subject Analysis</h3>
-                <table id="subjectAnalysisTable">
-                    <thead>
-                        <tr>
-                            <th>Subject</th>
-                            <th>D1</th>
-                            <th>D2</th>
-                            <th>C3</th>
-                            <th>C4</th>
-                            <th>C5</th>
-                            <th>C6</th>
-                            <th>P7</th>
-                            <th>P8</th>
-                            <th>F9</th>
-                            <th>X</th>
-                            <th>DIV 1</th>
-                            <th>PSTN</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Subject analysis rows will be added here dynamically -->
-                    </tbody>
-                </table>
+<h3>Subject Analysis</h3>
+<table id="subjectAnalysisTable">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>D1</th>
+            <th>D2</th>
+            <th>C3</th>
+            <th>C4</th>
+            <th>C5</th>
+            <th>C6</th>
+            <th>P7</th>
+            <th>P8</th>
+            <th>F9</th>
+            <th>X</th>
+            <th>1st Grades</th>
+            <th>%</th>
+            <th>POS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Subject analysis rows will be added here dynamically -->
+    </tbody>
+</table>
             </div>
             <div class="info-section">
     
@@ -950,6 +952,7 @@ document.getElementById('generatePdfBtn').addEventListener('click', generatePDF)
     updateDivisionAnalysisTable();
     updateAggregateAnalysisTable();
     updateSubjectAnalysisTable();
+    
 }
 
 function updateDivisionAnalysisTable() {
@@ -980,10 +983,17 @@ function updateDivisionAnalysisTable() {
         row.insertCell().textContent = count;
     });
 }
-
 function updateAggregateAnalysisTable() {
-    const table = document.getElementById('aggregateAnalysisTable').getElementsByTagName('tbody')[0];
-    table.innerHTML = '';
+    const aggregateRow = document.getElementById('aggregateRow');
+    const pupilCountRow = document.getElementById('pupilCountRow');
+    
+    // Clear existing data
+    while (aggregateRow.children.length > 1) {
+        aggregateRow.removeChild(aggregateRow.lastChild);
+    }
+    while (pupilCountRow.children.length > 1) {
+        pupilCountRow.removeChild(pupilCountRow.lastChild);
+    }
 
     const aggregateCounts = {};
     const totalAggregateCells = document.querySelectorAll('#gradeTable .total-aggregates');
@@ -996,9 +1006,13 @@ function updateAggregateAnalysisTable() {
     });
 
     Object.entries(aggregateCounts).sort((a, b) => parseInt(a[0]) - parseInt(b[0])).forEach(([aggregate, count]) => {
-        const row = table.insertRow();
-        row.insertCell().textContent = aggregate;
-        row.insertCell().textContent = count;
+        const aggregateTh = document.createElement('th');
+        aggregateTh.textContent = aggregate;
+        aggregateRow.appendChild(aggregateTh);
+
+        const countTd = document.createElement('td');
+        countTd.textContent = count;
+        pupilCountRow.appendChild(countTd);
     });
 }
 
@@ -1008,6 +1022,9 @@ function updateSubjectAnalysisTable() {
 
     const subjects = ['ENG', 'MTC', 'SCIE', 'SST'];
     const grades = ['D1', 'D2', 'C3', 'C4', 'C5', 'C6', 'P7', 'P8', 'F9', 'X'];
+
+    // Get total number of pupils
+    const totalPupils = document.querySelectorAll('#gradeTable tbody tr').length;
 
     const subjectData = {};
 
@@ -1020,10 +1037,14 @@ function updateSubjectAnalysisTable() {
             row.insertCell().textContent = count;
         });
 
-        const div1Count = counts[0] + counts[1]; // D1 + D2 count
-        row.insertCell().textContent = div1Count;
+        const firstGradesCount = counts[0] + counts[1] + counts[2]; // D1 + D2 + C3 count
+        row.insertCell().textContent = firstGradesCount;
 
-        subjectData[subject] = div1Count;
+        // Calculate percentage
+        const percentage = (firstGradesCount / totalPupils) * 100;
+        row.insertCell().textContent = percentage.toFixed(2) + '%';
+
+        subjectData[subject] = firstGradesCount;
     });
 
     const subjectPositions = calculateSubjectPositions(subjectData);
@@ -2279,7 +2300,7 @@ function createTableRows(studentList) {
     studentList.forEach((student, rowIndex) => {
         const row = document.createElement('tr');
         let rowHTML = `
-            <td>${student}</td>
+            <td class="name-cell">${rowIndex + 1}. <span class="student-name">${student}</span></td>
             <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
             <td class="subject-aggregate"></td>
             <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
@@ -2316,6 +2337,7 @@ function createTableRows(studentList) {
         row.innerHTML = rowHTML;
         tableBody.appendChild(row);
     });
+
 
     const allInputs = tableBody.querySelectorAll('.subject-mark');
     allInputs.forEach((input, index) => {

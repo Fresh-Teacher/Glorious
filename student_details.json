@@ -1,0 +1,479 @@
+[
+    {
+        "name": "ADAM SALAMA MOKHTAR",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS3762",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "AHEREZA HONOUR MULUNGI",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS1349",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "AINOMUGISHA ANGEL",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS3068",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "AKARABO GOLDA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS7702",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "ALIYAH ADAMS KYEYUNE",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS9305",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "ASHABA ELIZABETH",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS5200",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "BAGONZA JOAB",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS8582",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "BLESSING SHILOH",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS5671",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Victoria"
+    },
+    {
+        "name": "BUKIRWA LETICIA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS6327",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Victoria"
+    },
+    {
+        "name": "BUYUNGO BRANDON ERIC",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS6358",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "KAKONA JORDAN KASH",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS8427",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "KALULE CAESAR CARLOS",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS4592",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Victoria"
+    },
+    {
+        "name": "KASOZI AAMRAT",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS3314",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Victoria"
+    },
+    {
+        "name": "KAYONGO JAWAD",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS6467",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "KEMIGISHA ALEXANDRIA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS9332",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "KIGGUNDU LUKE",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS2764",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "KISMART DAUDA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS3596",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "LUBEGA MALCOM EMMANUEL",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS8725",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "LUBUULWA MELLINA JOSEPHINE",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS4195",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "LUGYA AKRAM",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS1989",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "LUYIGA RAYAN",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS7179",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "MANZI EVANS",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS8250",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "MUBEEZI SHADIA LUYIGA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS8630",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "MULANGIRA JOSEPH",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS2418",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "MULUNGI IAN",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS1262",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "MUYINZA SYRUS",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS7137",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "NAKAWEESI MICHELLE",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS6064",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Victoria"
+    },
+    {
+        "name": "NAKUNGU PRECIOUS CYNTHIA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS9166",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "NAMAGANDA IMRAH SSEMPIJJA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS1266",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "NAMAKULA SOPHIA KITIIBWA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS3383",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "NAMIREMBE ALPHA DDAMULIRA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS8615",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Victoria"
+    },
+    {
+        "name": "NAMUTEBI GETRUDE",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS6610",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "NAMWANJA JOHNBAPTIST",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS4815",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "NANJOBE VANESSA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS2496",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Victoria"
+    },
+    {
+        "name": "NANSUBUGA MANNUELLAH",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS3827",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "NANTONGO BUSHIRA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS5760",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "NANUNGI DRUCILLA LUTEETE",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS2314",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "NASSANGA MARIA VIENNA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS5774",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "NICHOLAS ITAAGA TRUST",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS7723",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "NINSIIMA MARY SHALOM",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS8802",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "NVANUNGI SHANIEZ",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS3493",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "OBANG SHALLOM SHANTAL",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS8346",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "PHILIP DAVID LUKANDWA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS9490",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "SSEBABENGA KERON",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS5203",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "SSEMATIMBA MARK",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS3594",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Rwenzori"
+    },
+    {
+        "name": "SSEMOMBWE ANDERSON",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS9590",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "SSENGENDO PRITA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS9890",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "SSEWAKIRYANGA HOSEA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS4524",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Nile"
+    },
+    {
+        "name": "SSUUNA RAFAN WASSAJJA",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS6747",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Victoria"
+    },
+    {
+        "name": "TWESIGE ADRIAN",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS5292",
+        "sex": "Male",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "WALIGGO CHRISTIAN ETHAN",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS7662",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "MUHUMUZA ADELITO",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS7846",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    },
+    {
+        "name": "TEMITOPE ABASODE",
+        "photo": "dp.png",
+        "schoolPayCode": "GPS6350",
+        "sex": "Female",
+        "term": "Third Term",
+        "year": "2024",
+        "house": "Mandela"
+    }
+]
