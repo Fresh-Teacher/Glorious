@@ -18,27 +18,25 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .container {
             text-align: center;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            max-width: 1000px;
+            width: 100%;
+            max-width: 1200px;
             padding: 20px;
+            box-sizing: border-box;
         }
 
         h1 {
             color: #FF8C00;
             grid-column: 1 / -1;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
         }
 
         .card {
@@ -80,7 +78,7 @@
         h2 {
             color: #FF8C00;
             margin-bottom: 10px;
-            font-size: 1.5rem;
+            font-size: clamp(1rem, 3vw, 1.5rem);
             z-index: 1;
             position: relative;
         }
@@ -94,7 +92,7 @@
             cursor: pointer;
             transition: background-color 0.3s;
             align-self: center;
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 2vw, 1rem);
             z-index: 1;
             position: relative;
         }
@@ -106,9 +104,7 @@
         img.thumbnail {
             width: 100%;
             height: 200px;
-            /* Set a fixed height */
             object-fit: cover;
-            /* Ensures the image covers the container without distortion */
             border-radius: 10px;
             margin-bottom: 10px;
             z-index: 1;
@@ -130,13 +126,8 @@
         }
 
         @keyframes fadeInModal {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
@@ -144,7 +135,7 @@
             margin: 10% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%;
+            width: 90%;
             max-width: 400px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -157,7 +148,6 @@
                 transform: translateY(-50%);
                 opacity: 0;
             }
-
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -169,7 +159,6 @@
                 transform: translateY(0);
                 opacity: 1;
             }
-
             to {
                 transform: translateY(-50%);
                 opacity: 0;
@@ -183,7 +172,7 @@
         .modal-content h3 {
             color: #FF8C00;
             margin-bottom: 15px;
-            font-size: 1.25rem;
+            font-size: clamp(1rem, 3vw, 1.25rem);
         }
 
         .modal-btn {
@@ -196,7 +185,7 @@
             transition: background-color 0.3s;
             margin: 10px;
             width: 150px;
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 2vw, 1rem);
             position: relative;
         }
 
@@ -255,6 +244,22 @@
             content: "";
             display: inline-block;
             margin-left: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+
+            .modal-btn {
+                width: 100%;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
