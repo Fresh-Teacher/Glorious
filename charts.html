@@ -76,15 +76,11 @@
             background-color: #FFE4B5;
         }
         .chart-container {
-            width: 60%;
-            max-width: 600px;
-            height: 400px;
-            margin: 20px auto;
-            background-color: #FFF5E6;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(255,140,0,0.1);
-        }
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    margin: 20px auto;
+}
     </style>
 </head>
 <body>
@@ -109,81 +105,134 @@
     </div>
 
     <script>
-        class VanillaChart {
-  constructor(ctx, type, data, options) {
-    this.ctx = ctx;
-    this.type = type;
-    this.data = data;
-    this.options = options;
-    this.animationProgress = 0;
-    this.draw();
-  }
-
-  draw() {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    if (this.type === 'pie') {
-      this.drawPieChart();
-    } else if (this.type === 'bar') {
-      this.drawBarChart();
-    }
-    this.drawLegend();
-    this.drawTitle();
-
-    if (this.animationProgress < 1) {
-      this.animationProgress += 0.05;
-      requestAnimationFrame(() => this.draw());
-    }
-  }
-
-  drawPieChart() {
-    const total = this.data.datasets[0].data.reduce((a, b) => a + b, 0);
-    let startAngle = 0;
-    const centerX = this.ctx.canvas.width / 2;
-    const centerY = this.ctx.canvas.height / 2;
-    const radius = Math.min(centerX, centerY) * 0.8;
-
-    this.data.datasets[0].data.forEach((value, index) => {
-      const sliceAngle = (value / total) * 2 * Math.PI * this.animationProgress;
-      this.ctx.beginPath();
-      this.ctx.moveTo(centerX, centerY);
-      this.ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
-      this.ctx.fillStyle = this.data.datasets[0].backgroundColor[index];
-      this.ctx.fill();
-      startAngle += sliceAngle;
-    });
-  }
-
-  drawBarChart() {
-    const barWidth = this.ctx.canvas.width / this.data.labels.length / (this.data.datasets.length + 1);
-    const maxValue = Math.max(...this.data.datasets.flatMap(dataset => dataset.data));
-    const scaleY = (this.ctx.canvas.height - 50) / maxValue;
-
-    this.data.datasets.forEach((dataset, datasetIndex) => {
-      dataset.data.forEach((value, index) => {
-        const x = index * (this.ctx.canvas.width / this.data.labels.length) + barWidth * datasetIndex;
-        const y = this.ctx.canvas.height - (value * scaleY * this.animationProgress);
-        const height = value * scaleY * this.animationProgress;
-
-        this.ctx.fillStyle = dataset.backgroundColor;
-        this.ctx.fillRect(x, y, barWidth, height);
-      });
-    });
-  }
-
-  drawLegend() {
-    // Implement legend drawing
-  }
-
-  drawTitle() {
-    if (this.options.plugins.title.display) {
-      this.ctx.font = '20px Arial';
-      this.ctx.fillStyle = 'black';
-      this.ctx.textAlign = 'center';
-      this.ctx.fillText(this.options.plugins.title.text, this.ctx.canvas.width / 2, 30);
-    }
-  }
+        function isOnline() {
+    return navigator.onLine;
 }
 
+function drawVanillaChart(data, type, width, height) {
+    const canvas = document.getElementById('analysis-chart');
+    const ctx = canvas.getContext('2d');
+
+    ctx.clearRect(0, 0, width, height);
+
+    if (type === 'pie') {
+        drawPieChart(ctx, data, width, height);
+    } else {
+        drawBarChart(ctx, data, width, height);
+    }
+}
+
+function drawPieChart(ctx, data, width, height) {
+    const total = data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+    let startAngle = 0;
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const radius = Math.min(width, height) / 2.5;
+
+    // Draw title
+    ctx.fillStyle = '#333';
+    ctx.font = 'bold 16px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Stream Performance Comparison', width / 2, 20);
+
+    data.datasets[0].data.forEach((value, index) => {
+        const sliceAngle = (value / total) * 2 * Math.PI;
+        
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+        ctx.closePath();
+        
+        ctx.fillStyle = data.datasets[0].backgroundColor[index];
+        ctx.fill();
+        
+        // Add slice border
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Add labels
+        const middleAngle = startAngle + sliceAngle / 2;
+        const labelRadius = radius * 1.2;
+        const labelX = centerX + Math.cos(middleAngle) * labelRadius;
+        const labelY = centerY + Math.sin(middleAngle) * labelRadius;
+
+        ctx.fillStyle = '#333';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`${data.labels[index]}: ${(value / total * 100).toFixed(1)}%`, labelX, labelY);
+        
+        startAngle += sliceAngle;
+    });
+}
+
+function drawBarChart(ctx, data, width, height) {
+    const padding = 40;
+    const chartWidth = width - padding * 2;
+    const chartHeight = height - padding * 2;
+    const barCount = data.datasets[0].data.length;
+    const barWidth = chartWidth / barCount * 0.8;
+    const maxValue = Math.max(...data.datasets[0].data) * 1.1;
+
+    // Draw title
+    ctx.fillStyle = '#333';
+    ctx.font = 'bold 16px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Performance Comparison', width / 2, 20);
+
+    // Draw axes
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(padding, height - padding);
+    ctx.lineTo(width - padding, height - padding);
+    ctx.moveTo(padding, height - padding);
+    ctx.lineTo(padding, padding);
+    ctx.stroke();
+
+    // Draw bars and labels
+    data.datasets[0].data.forEach((value, index) => {
+        const barHeight = (value / maxValue) * chartHeight;
+        const x = padding + index * (chartWidth / barCount) + (chartWidth / barCount - barWidth) / 2;
+        const y = height - padding - barHeight;
+        
+        ctx.fillStyle = data.datasets[0].backgroundColor[index];
+        ctx.fillRect(x, y, barWidth, barHeight);
+
+        // Add value label
+        ctx.fillStyle = '#333';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(value.toFixed(2), x + barWidth / 2, y - 5);
+
+        // Add x-axis label
+        ctx.fillStyle = '#333';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(data.labels[index], x + barWidth / 2, height - padding + 15);
+    });
+
+    // Add y-axis labels
+    for (let i = 0; i <= 5; i++) {
+        const value = (maxValue / 5) * i;
+        const y = height - padding - (chartHeight / 5) * i;
+        ctx.fillStyle = '#333';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'right';
+        ctx.fillText(value.toFixed(2), padding - 5, y);
+    }
+}
+
+function setCanvasSize() {
+    const container = document.getElementById('chart-container');
+    const canvas = document.getElementById('analysis-chart');
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
+}
+
+// Call this function before creating the chart
+setCanvasSize();
 
 function countStudentsByGrade(data, grade) {
     let count = 0;
@@ -192,20 +241,6 @@ function countStudentsByGrade(data, grade) {
             streamData.forEach(student => {
                 const hasGrade = subjects.some(subject => student[subject].grade === grade.toString());
                 if (hasGrade) {
-                    count++;
-                }
-            });
-        });
-    });
-    return count;
-}
-
-function countStudentsByDivision(data, division) {
-    let count = 0;
-    Object.values(data).forEach(streams => {
-        Object.values(streams).forEach(streamData => {
-            streamData.forEach(student => {
-                if (student.division === division.toString()) {
                     count++;
                 }
             });
@@ -5458,9 +5493,41 @@ function countStudentsByDivision(data, division) {
     return allTablesHTML;
 }
 
+function handleOnlineStatusChange() {
+    if (isOnline()) {
+        if (document.getElementById('analysis-screen').style.display !== 'none') {
+            const onlineConfirm = confirm("You are back online. Would you like to view an online version of the charts?");
+            if (onlineConfirm && currentChartData) {
+                createChart(currentChartData);
+            }
+        }
+    } else {
+        if (document.getElementById('analysis-screen').style.display !== 'none') {
+            alert("You are now offline. The chart will be displayed using a simplified version.");
+            if (currentChartData) {
+                drawVanillaChart(currentChartData, analysisType.value === 'stream' ? 'pie' : 'bar');
+            }
+        }
+    }
+}
+
+window.addEventListener('online', handleOnlineStatusChange);
+window.addEventListener('offline', handleOnlineStatusChange);
+
+function showOfflineNotification() {
+    return confirm("You are currently offline. The chart will be displayed using a simplified version. Do you want to continue?");
+}
+
 function performAnalysis() {
     const type = analysisType.value;
     if (!type) return;
+
+    if (!isOnline()) {
+        const offlineConfirm = showOfflineNotification();
+        if (!offlineConfirm) {
+            return;
+        }
+    }
 
     let title, data, summary, streamSummary;
 
@@ -5600,24 +5667,33 @@ function generateOverallSummary(data) {
  `;
 }
 
+let currentChartData = null;
+
 function createChart(data) {
-    const ctx = document.getElementById('analysis-chart').getContext('2d');
+    setCanvasSize();
+    const canvas = document.getElementById('analysis-chart');
+    const ctx = canvas.getContext('2d');
     const chartType = analysisType.value === 'stream' ? 'pie' : 'bar';
-    let options;
 
-    if (analysisType.value === 'stream') {
-        options = getPieChartOptions();
-    } else if (analysisType.value === 'all') {
-        options = getAllClassesChartOptions();
+    if (isOnline()) {
+        // Use Chart.js when online
+        let options;
+        if (analysisType.value === 'stream') {
+            options = getPieChartOptions();
+        } else if (analysisType.value === 'all') {
+            options = getAllClassesChartOptions();
+        } else {
+            options = getBarChartOptions();
+        }
+
+        new Chart(ctx, {
+            type: chartType,
+            data: data,
+            options: options
+        });
     } else {
-        options = getBarChartOptions();
+        drawVanillaChart(data, chartType, canvas.width, canvas.height);
     }
-
-    new Chart(ctx, {
-        type: chartType,
-        data: data,
-        options: options
-    });
 
     // Add custom legend only for All Classes analysis
     if (analysisType.value === 'all') {
