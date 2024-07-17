@@ -375,6 +375,22 @@
     </footer>
 
     <script>
+    const studentNames = [
+            'AHEREZA HONOUR',
+            'ALIYAH ADAMS K.',
+        ];
+
+    function generateEmail(name) {
+        return name.toLowerCase().replace(/[^a-z]/g, '') + '@glorious.com';
+    }
+
+    const validUsers = studentNames.map(name => ({
+        email: generateEmail(name),
+        password: "123" // Default password for all students
+    }));
+
+    
+
     document.addEventListener("DOMContentLoaded", function () {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('needLogin') === 'true') {
@@ -386,8 +402,7 @@
         const localEmail = localStorage.getItem("email");
         const email = isRemembered ? localEmail : sessionEmail;
 
-        if ((isRemembered && localEmail === "user@glorious.com" && localStorage.getItem("password") === "User") ||
-            (sessionEmail === "user@glorious.com" && sessionStorage.getItem("password") === "User")) {
+        if (isUserValid(email, isRemembered ? localStorage.getItem("password") : sessionStorage.getItem("password"))) {
             showContent();
         }
 
@@ -401,7 +416,7 @@
         const rememberMe = document.getElementById("rememberMe").checked;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (email === "user@glorious.com" && password === "User" && emailRegex.test(email)) {
+        if (isUserValid(email, password) && emailRegex.test(email)) {
             if (rememberMe) {
                 localStorage.setItem("rememberMe", "true");
                 localStorage.setItem("email", email);
@@ -428,6 +443,10 @@
         } else {
             document.getElementById("error-message").style.display = "block";
         }
+    }
+
+    function isUserValid(email, password) {
+        return validUsers.some(user => user.email === email && user.password === password);
     }
 
     function logout() {
