@@ -88,6 +88,8 @@
 }
 
 .video-controls input[type="range"] {
+    width: 100px;
+    max-width: 10%;
     flex-grow: 1;
     margin: 0 10px;
     height: 5px;
@@ -374,25 +376,59 @@
     <script>
 const videoList = [
     {
-        title: "Glorious News",
-        link: "tv.mp4"
-    },
-    {
-        title: "Glorious News",
-        link: "news.mp4"
+        title: "Advert",
+        link: "c3dfb9b91256165f2f58326519cdd28e.mp4"
     },
     {
         title: "Morning Talk",
-        link: "tv.mp4"
+        link: "8a56230c1328278e218e1ed54d8e93b2.mp4"
     },
     {
         title: "Agataliiko Nfuufu",
         link: "3e355ebc106e6a8d1ef03eeb717e5f94.mp4"
     },
     {
-        title: "Midday News",
-        link: "tv.mp4"
+        title: "Katandika Butandisi",
+        link: "https://mobifliks.info/downloadmp4.php?file=luganda/Journey%20to%20the%20West%20-%20Red%20Boy%20by%20Vj%20Muba%20-%20Mobifliks.com.mp4"
+    },
+    {
+        title: "Entertainment",
+        link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4"
+    },
+    {
+        title: "Katandika Butandisi",
+        link: "https://mobifliks.info/downloadmp4.php?file=luganda/The%20Boss%20Baby-%20Christmas%20Bonus%20by%20Vj%20Kevo%20-%20Mobifliks.com.mov"
+    },
+    {
+        title: "Entertainment",
+        link: "news.mp4"
+    },
+    {
+        title: "Entertainment",
+        link: "1813ef9accab0fdc282c9bb9d8c9924a.mp4"
+    },
+    {
+        title: "Entertainment",
+        link: "a7a2db2155b82abbbd58a753349e913c.mp4"
+    },
+    {
+        title: "Entertainment",
+        link: "925d1f65256112e69ddb85760e670fa5.mp4"
+    },
+    {
+        title: "Entertainment",
+        link: "c194ce16dcb733361d9139d20ea8fd1d.mp4"
+    },
+    {
+        title: "Entertainment",
+        link: "de885fe4f8d765e5939656e9f3647e34.mp4"
+    },
+    {
+        title: "Katandika Butandisi",
+        link: "https://mobifliks.info/downloadmp4.php?file=luganda/Dr.%20Dolittle%202%20by%20Vj%20Emmy%20-%20Mobifliks.com.mp4"
     }
+
+    
     // Add more videos as needed
 ];
 
@@ -404,19 +440,34 @@ const fullscreenBtn = document.getElementById('fullscreenBtn');
 const programTable = document.getElementById('programTable');
 
 let currentVideoIndex = 0;
+let playingTransition = false;
 
 function playNextVideo() {
     if (currentVideoIndex < videoList.length) {
-        videoPlayer.src = videoList[currentVideoIndex].link;
-        videoPlayer.play().catch(error => {
-            console.error("Error playing video:", error);
-        });
-        updateProgramInfo();
-        currentVideoIndex++;
+        if (!playingTransition && videoList[currentVideoIndex].link !== "tv.mp4") {
+            playingTransition = true;
+            videoPlayer.src = "tv.mp4";
+            videoPlayer.play().catch(error => {
+                console.error("Error playing transition video:", error);
+                playMainVideo();
+            });
+        } else {
+            playMainVideo();
+        }
     } else {
         currentVideoIndex = 0;
         playNextVideo();
     }
+}
+
+function playMainVideo() {
+    videoPlayer.src = videoList[currentVideoIndex].link;
+    videoPlayer.play().catch(error => {
+        console.error("Error playing video:", error);
+    });
+    updateProgramInfo();
+    playingTransition = false;
+    currentVideoIndex++;
 }
 
 function updateProgramInfo() {
@@ -433,6 +484,7 @@ function updateProgramInfo() {
         programTable.appendChild(row);
     });
 }
+
 
 muteBtn.addEventListener('click', () => {
     videoPlayer.muted = !videoPlayer.muted;
