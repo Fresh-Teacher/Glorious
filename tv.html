@@ -128,6 +128,13 @@
 
 
 @media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    #programInfo {
+        max-height: none;
+    }
     .video-controls {
         padding: 5px;
     }
@@ -158,12 +165,15 @@
             margin: 0 10px;
         }
         #programInfo {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+    flex: 1;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    max-height: 600px; /* Adjust as needed */
+    overflow-y: auto;
+}
+
         .btn {
             display: inline-block;
             padding: 10px 20px;
@@ -217,10 +227,10 @@
         }
 
         #programInfo th, #programInfo td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid var(--background-color);
-        }
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
 
         #programInfo th {
             background-color: var(--primary-color);
@@ -336,277 +346,93 @@
             <div id="videoContainer" class="video-container">
                 <video id="videoPlayer"></video>
                 <div class="video-controls">
-                    <button id="playPauseBtn">▶</button>
-                    <input type="range" id="progressBar" min="0" max="100" value="0" step="0.1">                    <span id="currentTime">0:00</span>  <span id="duration">0:00</span>
                     <button id="muteBtn">🔊</button>
                     <input type="range" id="volumeBar" min="0" max="100" value="100">
-                    <button id="pipBtn">&#x2398;
-                    </button>                 
+                    <button id="pipBtn">&#x2398;</button>                 
                     <button id="fullscreenBtn">⛶</button>
                 </div>
             </div>
-            <div id="programInfo">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Program</th>
-                            <th>Presenter</th>
-                        </tr>
-                    </thead>
-                    <tbody id="programTable">
-                        <!-- Program data will be inserted here by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
         </div>
-        <div id="missedPrograms">
-            <h2>Missed Programs</h2>
-            <ul id="missedProgramsList"></ul>
+        <div id="programInfo">
+            <h2>Program Schedule</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Program</th>
+                    </tr>
+                </thead>
+                <tbody id="programTable">
+                    <!-- Program data will be inserted here by JavaScript -->
+                </tbody>
+            </table>
         </div>
+    </div>
+       
     </div>
 
     <script>
-        
-        const programList = [
-            {
-                name: "Early Morning Show",
-                link: "news.mp4",
-                time: "05:00",
-                presenter: "Alice Johnson"
-            },
-            {
-                name: "Sunrise News",
-                link: "tv.mp4",
-                time: "07:00",
-                presenter: "Bob Smith"
-            },
-            {
-                name: "Morning Talk",
-                link: "https://example.com/morning-talk.mp4",
-                time: "09:00",
-                presenter: "Carol White"
-            },
-            {
-                name: "Cooking Extravaganza",
-                link: "https://example.com/cooking-extravaganza.mp4",
-                time: "11:00",
-                presenter: "David Brown"
-            },
-            {
-                name: "Midday News",
-                link: "https://example.com/midday-news.mp4",
-                time: "13:00",
-                presenter: "Eve Taylor"
-            },
-            {
-                name: "Afternoon Drama",
-                link: "https://example.com/afternoon-drama.mp4",
-                time: "15:00",
-                presenter: "Frank Miller"
-            },
-            {
-                name: "Evening Talk Show",
-                link: "https://example.com/evening-talk-show.mp4",
-                time: "17:00",
-                presenter: "Grace Lee"
-            },
-            {
-                name: "Prime Time News",
-                link: "https://example.com/prime-time-news.mp4",
-                time: "19:00",
-                presenter: "Henry Clark"
-            },
-            {
-                name: "Night Time Movie",
-                link: "https://example.com/night-time-movie.mp4",
-                time: "21:00",
-                presenter: "Iris Wang"
-            },
-            {
-                name: "Late Night Comedy",
-                link: "https://example.com/late-night-comedy.mp4",
-                time: "23:00",
-                presenter: "Jack Robinson"
-            },
-            {
-                name: "Overnight Music",
-                link: "https://example.com/overnight-music.mp4",
-                time: "01:00",
-                presenter: "Karen Davis"
-            },
-            {
-                name: "Dawn Documentary",
-                link: "https://example.com/dawn-documentary.mp4",
-                time: "03:00",
-                presenter: "Liam Thompson"
-            }
-        ];
+const videoList = [
+    {
+        title: "Glorious News",
+        link: "tv.mp4"
+    },
+    {
+        title: "Glorious News",
+        link: "news.mp4"
+    },
+    {
+        title: "Morning Talk",
+        link: "tv.mp4"
+    },
+    {
+        title: "Agataliiko Nfuufu",
+        link: "3e355ebc106e6a8d1ef03eeb717e5f94.mp4"
+    },
+    {
+        title: "Midday News",
+        link: "tv.mp4"
+    }
+    // Add more videos as needed
+];
 
 const videoPlayer = document.getElementById('videoPlayer');
-const playPauseBtn = document.getElementById('playPauseBtn');
-const progressBar = document.getElementById('progressBar');
-const currentTimeSpan = document.getElementById('currentTime');
-const durationSpan = document.getElementById('duration');
 const muteBtn = document.getElementById('muteBtn');
 const volumeBar = document.getElementById('volumeBar');
 const pipBtn = document.getElementById('pipBtn');
 const fullscreenBtn = document.getElementById('fullscreenBtn');
 const programTable = document.getElementById('programTable');
-const missedProgramsList = document.getElementById('missedProgramsList');
 
-let currentProgramIndex = 0;
+let currentVideoIndex = 0;
 
-// Initialize progress bar and time displays
-progressBar.value = 0;
-currentTimeSpan.textContent = '0:00';
-durationSpan.textContent = '0:00';
-
-// Update progress bar and time displays when metadata is loaded
-videoPlayer.addEventListener('loadedmetadata', () => {
-    durationSpan.textContent = formatTime(videoPlayer.duration);
-});
-
-// Update progress bar and current time as the video plays
-videoPlayer.addEventListener('timeupdate', updateProgressBar);
-
-function updateProgressBar() {
-    if (!isNaN(videoPlayer.duration)) {
-        const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
-        progressBar.value = progress;
-        currentTimeSpan.textContent = formatTime(videoPlayer.currentTime);
+function playNextVideo() {
+    if (currentVideoIndex < videoList.length) {
+        videoPlayer.src = videoList[currentVideoIndex].link;
+        videoPlayer.play().catch(error => {
+            console.error("Error playing video:", error);
+        });
+        updateProgramInfo();
+        currentVideoIndex++;
+    } else {
+        currentVideoIndex = 0;
+        playNextVideo();
     }
-}
-
-// Allow seeking when user interacts with the progress bar
-progressBar.addEventListener('input', () => {
-    const time = (progressBar.value / 100) * videoPlayer.duration;
-    videoPlayer.currentTime = time;
-    currentTimeSpan.textContent = formatTime(time);
-});
-
-function formatTime(time) {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-}
-
-// Reset progress bar when a new video is loaded or when the video ends
-videoPlayer.addEventListener('loadstart', () => {
-    progressBar.value = 0;
-    currentTimeSpan.textContent = '0:00';
-});
-
-videoPlayer.addEventListener('ended', () => {
-    progressBar.value = 100;
-    currentTimeSpan.textContent = formatTime(videoPlayer.duration);
-});
-
-function updateProgram() {
-    const now = new Date();
-    const currentTime = now.getHours() * 60 + now.getMinutes();
-
-    for (let i = 0; i < programList.length; i++) {
-        const programTime = programList[i].time.split(':');
-        const programMinutes = parseInt(programTime[0]) * 60 + parseInt(programTime[1]);
-
-        if (currentTime < programMinutes) {
-            currentProgramIndex = i > 0 ? i - 1 : programList.length - 1;
-            break;
-        }
-    }
-
-    if (currentTime >= parseInt(programList[programList.length - 1].time.split(':')[0]) * 60 + parseInt(programList[programList.length - 1].time.split(':')[1])) {
-        currentProgramIndex = programList.length - 1;
-    }
-
-    playCurrentProgram();
-    updateProgramInfo();
-    updateMissedPrograms();
-}
-
-function playCurrentProgram() {
-    videoPlayer.src = programList[currentProgramIndex].link;
-    videoPlayer.play().catch(error => {
-        console.error("Error playing video:", error);
-        playPauseBtn.textContent = '▶';
-    });
 }
 
 function updateProgramInfo() {
     programTable.innerHTML = '';
-    programList.forEach((program, index) => {
+    videoList.forEach((video, index) => {
         const row = document.createElement('tr');
-        let nowPlayingIndicator = '';
-        if (index === currentProgramIndex) {
-            nowPlayingIndicator = '<span class="now-playing">🔴 LIVE</span>';
+        if (index === currentVideoIndex - 1) {
             row.classList.add('current-program');
         }
         row.innerHTML = `
-            <td>${program.time} ${nowPlayingIndicator}</td>
-            <td>${program.name}</td>
-            <td>${program.presenter}</td>
+            <td>${index + 1}</td>
+            <td>${video.title} ${index === currentVideoIndex - 1 ? '<span class="now-playing">🔴 LIVE</span>' : ''}</td>
         `;
         programTable.appendChild(row);
     });
 }
-
-function togglePlayPause() {
-    if (videoPlayer.readyState === 4) { // HAVE_ENOUGH_DATA
-        if (videoPlayer.paused) {
-            videoPlayer.play();
-            playPauseBtn.textContent = '❚❚';
-        } else {
-            videoPlayer.pause();
-            playPauseBtn.textContent = '▶';
-        }
-    } else {
-        // Video is not ready or not available
-        playPauseBtn.textContent = '▶';
-    }
-}
-
-function updateMissedPrograms() {
-    missedProgramsList.innerHTML = '';
-    for (let i = 0; i < currentProgramIndex; i++) {
-        const li = document.createElement('li');
-        li.textContent = `${programList[i].name} (${programList[i].time})`;
-        li.onclick = () => playMissedProgram(i);
-        missedProgramsList.appendChild(li);
-    }
-}
-
-function playMissedProgram(index) {
-    videoPlayer.src = programList[index].link;
-    videoPlayer.play().catch(error => {
-        console.error("Error playing missed program:", error);
-        playPauseBtn.textContent = '▶';
-    });
-}
-
-function formatTime(time) {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-}
-
-// Video player controls
-playPauseBtn.addEventListener('click', togglePlayPause);
-
-progressBar.addEventListener('input', () => {
-    const time = (progressBar.value / 100) * videoPlayer.duration;
-    videoPlayer.currentTime = time;
-});
-
-videoPlayer.addEventListener('timeupdate', () => {
-    const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
-    progressBar.value = progress;
-    currentTimeSpan.textContent = formatTime(videoPlayer.currentTime);
-});
-
-videoPlayer.addEventListener('loadedmetadata', () => {
-    durationSpan.textContent = formatTime(videoPlayer.duration);
-});
 
 muteBtn.addEventListener('click', () => {
     videoPlayer.muted = !videoPlayer.muted;
@@ -646,7 +472,6 @@ function toggleFullscreen() {
     }
 }
 
-// Listen for fullscreen change events
 document.addEventListener('fullscreenchange', updateFullscreenButton);
 document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
 document.addEventListener('mozfullscreenchange', updateFullscreenButton);
@@ -654,13 +479,12 @@ document.addEventListener('MSFullscreenChange', updateFullscreenButton);
 
 function updateFullscreenButton() {
     if (document.fullscreenElement) {
-        fullscreenBtn.textContent = '↙'; // or use an "exit fullscreen" icon
+        fullscreenBtn.textContent = '↙';
     } else {
-        fullscreenBtn.textContent = '⛶'; // or use your "enter fullscreen" icon
+        fullscreenBtn.textContent = '⛶';
     }
 }
 
-// New features
 pipBtn.addEventListener('click', () => {
     if (document.pictureInPictureElement) {
         document.exitPictureInPicture();
@@ -669,22 +493,10 @@ pipBtn.addEventListener('click', () => {
     }
 });
 
-// Event listeners
-videoPlayer.addEventListener('play', () => {
-    playPauseBtn.textContent = '❚❚';
-});
+videoPlayer.addEventListener('ended', playNextVideo);
 
-videoPlayer.addEventListener('pause', () => {
-    playPauseBtn.textContent = '▶';
-});
-
-videoPlayer.addEventListener('error', () => {
-    playPauseBtn.textContent = '▶';
-});
-
-// Initialize
-updateProgram();
-// setInterval(updateProgram, 60000); // Check for program updates every minute  
+// Start playing videos
+playNextVideo();
   </script>
 </body>
 </html>
