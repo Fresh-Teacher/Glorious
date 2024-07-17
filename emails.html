@@ -37,11 +37,18 @@
             background-color: #218838;
         }
 
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
         .email-list {
             margin-top: 20px;
             text-align: left;
         }
-
     </style>
 </head>
 <body>
@@ -49,10 +56,12 @@
         <h1>Email Address Generator</h1>
         <button onclick="generateEmails()">Generate Emails</button>
         <button onclick="saveAsJSON()">Save as JSON</button>
+        <br>
+        <input type="text" id="searchInput" placeholder="Search for your name..." onkeyup="searchEmails()">
         <div id="emailList" class="email-list"></div>
     </div>
     <script>
-        const students = [
+        const students =  [
             'AHEREZA HONOUR',
             'ALIYAH ADAMS K.',
             'AKARABO GOLDA',
@@ -1386,6 +1395,21 @@
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
+        }
+
+        function searchEmails() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const emailList = document.getElementById('emailList');
+            emailList.innerHTML = ''; // Clear previous results
+
+            students.forEach(student => {
+                if (student.toLowerCase().includes(input)) {
+                    let email = student.replace(/ /g, '').replace(/\.+$/, '').toLowerCase() + '@glorious.com';
+                    const emailItem = document.createElement('div');
+                    emailItem.textContent = email;
+                    emailList.appendChild(emailItem);
+                }
+            });
         }
     </script>
 </body>
