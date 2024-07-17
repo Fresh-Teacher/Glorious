@@ -342,7 +342,7 @@
     <div class="content-container" id="content-container">
         <div class="content">
             <h1>Welcome to Glorious Schools ☺</h1>
-            <p>GIVE YOUR CHILD THE BEST!</p>
+            <h2 id="greeting"></h2>
             <div class="resource-container">
                 <div class="resource-item">
                     <img src="5cc2c82aeb804d30302c7ca3f12b7308.gif" alt="Library">
@@ -1681,35 +1681,47 @@
 
         ];
 
-    function generateEmail(name) {
+
+        function generateEmail(name) {
         return name.toLowerCase().replace(/[^a-z]/g, '') + '@glorious.com';
+    }
+
+    function getSecondName(fullName) {
+        const names = fullName.split(' ');
+        if (names.length > 1) {
+            return names[1].charAt(0).toUpperCase() + names[1].slice(1).toLowerCase();
+        }
+        return fullName;
     }
 
     const validUsers = studentNames.map(name => ({
         email: generateEmail(name),
-        password: "123" // Default password for all students
+        password: "123", // Default password for all students
+        name: name,
+        secondName: getSecondName(name)
     }));
 
-    
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('needLogin') === 'true') {
-            document.getElementById("login-message").style.display = "block";
+    function getGreeting() {
+        const hour = new Date().getHours();
+        if (hour >= 5 && hour < 12) {
+            return "Good morning";
+        } else if (hour >= 12 && hour < 18) {
+            return "Good afternoon";
+        } else {
+            return "Good evening";
         }
+    }
 
-        const isRemembered = localStorage.getItem("rememberMe") === "true";
-        const sessionEmail = sessionStorage.getItem("email");
-        const localEmail = localStorage.getItem("email");
-        const email = isRemembered ? localEmail : sessionEmail;
-
-        if (isUserValid(email, isRemembered ? localStorage.getItem("password") : sessionStorage.getItem("password"))) {
-            showContent();
+    function getGreetingEmoji() {
+        const hour = new Date().getHours();
+        if (hour >= 5 && hour < 12) {
+            return "🌞";
+        } else if (hour >= 12 && hour < 18) {
+            return "🌤️";
+        } else {
+            return "🌝";
         }
-
-        checkAuthStatus();
-        setCurrentYear();
-    });
+    }
 
     function login() {
         const email = document.getElementById("email").value;
@@ -1717,21 +1729,27 @@
         const rememberMe = document.getElementById("rememberMe").checked;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (isUserValid(email, password) && emailRegex.test(email)) {
+        const user = validUsers.find(u => u.email === email && u.password === password);
+
+        if (user && emailRegex.test(email)) {
             if (rememberMe) {
                 localStorage.setItem("rememberMe", "true");
                 localStorage.setItem("email", email);
                 localStorage.setItem("password", password);
                 localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("secondName", user.secondName);
                 sessionStorage.removeItem("email");
                 sessionStorage.removeItem("password");
+                sessionStorage.removeItem("secondName");
             } else {
                 sessionStorage.setItem("email", email);
                 sessionStorage.setItem("password", password);
                 sessionStorage.setItem("isLoggedIn", "true");
+                sessionStorage.setItem("secondName", user.secondName);
                 localStorage.removeItem("rememberMe");
                 localStorage.removeItem("email");
                 localStorage.removeItem("password");
+                localStorage.removeItem("secondName");
             }
             
             const intendedPage = sessionStorage.getItem("intendedPage");
@@ -1767,6 +1785,11 @@
         document.getElementById("content-container").classList.add("active");
         document.getElementById("logout-nav").style.display = "block";
         document.getElementById("login-message").style.display = "none";
+        
+        const secondName = localStorage.getItem("secondName") || sessionStorage.getItem("secondName") || "Adams";
+        const greeting = getGreeting();
+        const emoji = getGreetingEmoji();
+        document.getElementById("greeting").textContent = `${greeting} ${secondName} ${emoji}`;
     }
 
     function showLogin() {
