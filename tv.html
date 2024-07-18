@@ -319,18 +319,78 @@ header h1 {
     z-index: 10;
 }
 
+.start-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 140, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
 .start-watching-btn {
-    padding: 15px 30px;
-    font-size: 1.2em;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(255, 140, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    background: linear-gradient(45deg, #ff8c00, #ffa500, #ff6347);
-    background-size: 200% 200%;
-    animation: gradientShift 3s ease infinite, pulse 2s infinite;
-    box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+    position: relative;
+    overflow: visible;
+}
+
+.play-icon {
+    color: white;
+    font-size: 40px;
+    z-index: 2;
+}
+
+.start-watching-btn::before,
+.start-watching-btn::after,
+.start-watching-btn .ripple {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    background: rgba(255, 165, 0, 0.7); /* Orange */
+    opacity: 0;
+    animation: flash-ripple 2s linear infinite;
+}
+
+.start-watching-btn::after {
+    animation-delay: 0.6s;
+    background: rgba(255, 103, 0, 0.7); /* Dark Orange */
+}
+
+.start-watching-btn .ripple {
+    animation-delay: 1.2s;
+    background: rgba(255, 69, 0, 0.7); /* Red-Orange */
+}
+
+@keyframes flash-ripple {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.start-watching-btn:hover::before,
+.start-watching-btn:hover::after,
+.start-watching-btn:hover .ripple {
+    animation-duration: 1.5s;
 }
 
 .start-watching-btn:hover {
@@ -378,10 +438,6 @@ header h1 {
         font-size: 0.9em;
     }
 
-    .start-watching-btn {
-        padding: 10px 20px;
-        font-size: 1em;
-    }
 }
     </style>
 </head>
@@ -397,7 +453,9 @@ header h1 {
             <div id="currentTime"></div>  <!-- Add this line here -->
             <div id="videoContainer" class="video-container">
                 <div id="startOverlay" class="start-overlay" style="display: none;">
-                    <button id="startWatchingBtn" class="start-watching-btn">START WATCHING</button>
+                    <div id="startWatchingBtn" class="start-watching-btn">
+                        <div class="play-icon">▶</div>
+                    </div>
                 </div>
                 <video id="videoPlayer">    
                 </video>
@@ -430,8 +488,8 @@ header h1 {
 
     <script>
 const videoList = [
-{ title: "Tour Day", link: "arrival.mp4", startTime: "3:18 PM", duration: "1:00:00" },
 { title: "Boat Cruise", link: "boat.mp4", startTime: "4:18 PM", duration: "2:00:00" },
+{ title: "Tour Day", link: "arrival.mp4", startTime: "3:18 PM", duration: "1:00:00" },
     { title: "Agataliiko Nfuufu", link: "news.mp4", startTime: "9:00 AM", duration: "1:00:00" },
     { title: "Entertainment Show", link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4", startTime: "10:00 AM", duration: "2:00:00" },
     { title: "Midday News", link: "c3dfb9b91256165f2f58326519cdd28e.mp4", startTime: "12:00 PM", duration: "1:00:00" },
