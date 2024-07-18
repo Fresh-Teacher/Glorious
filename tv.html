@@ -2,156 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    <title>Glorious TV</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glorious TV</title>
     <style>
-:root {
-    --primary-color: #ff8c00;
-    --secondary-color: #ffa500;
-    --background-color: #fff3e0;
-    --text-color: #333;
-}
+        :root {
+            --primary-color: #ff8c00;
+            --secondary-color: #ffa500;
+            --background-color: #fff3e0;
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--background-color);
-    color: var(--text-color);
-}
-
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 10px 0;
-    z-index: 1000;
-}
-
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0 20px;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 1.5em;
-}
-
-#currentTime {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-top: 5px;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding-top: 80px;
-}
-
-@media (min-width: 768px) {
-    .container {
-        grid-template-columns: 2fr 1fr;
-    }
-}
-
-.video-container {
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .video-container {
     position: relative;
     width: 100%;
-    padding-top: 56.25%;
+    max-width: 800px; /* Adjust this value as needed */
+    margin: 0 auto;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
     background-color: #000;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-#videoPlayer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+@media (max-width: 850px) {
+    .video-container {
+        max-width: 100%;
+    }
 }
-
-.video-container:fullscreen {
-    padding-top: 0;
-    display: flex;
+        #videoPlayer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .video-controls {
+            flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-}
-
-.video-container:fullscreen #videoPlayer {
-    width: 100vw;
-    height: 100vh;
-}
-
-/* For webkit browsers */
-.video-container:-webkit-full-screen {
-    padding-top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.video-container:-webkit-full-screen #videoPlayer {
-    width: 100vw;
-    height: 100vh;
-}
-
-.video-controls {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.video-container:hover .video-controls,
-.video-container:fullscreen .video-controls,
-.video-container:-webkit-full-screen .video-controls {
-    opacity: 1;
-}
-
-.video-controls {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.video-container:hover .video-controls {
-    opacity: 1;
-}
-
-.video-controls button,
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .video-controls button,
 .video-controls select {
     background: none;
     border: none;
@@ -203,65 +121,183 @@ header h1 {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-#programInfo {
+#currentTime,
+#duration {
+    color: white;
+    font-size: 0.9em;
+    margin: 0 5px;
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    #programInfo {
+        max-height: none;
+    }
+    .video-controls {
+        padding: 5px;
+    }
+
+    .video-controls button,
+    .video-controls select {
+        font-size: 0.9em;
+        margin: 2px;
+    }
+
+    .video-controls input[type="range"] {
+        margin: 0 5px;
+    }
+}
+        .video-container:hover .video-controls {
+            opacity: 1;
+        }
+        .video-controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        .video-controls input[type="range"] {
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+        #programInfo {
+    flex: 1;
     background-color: white;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    overflow-x: auto;
+    max-height: 600px; /* Adjust as needed */
+    overflow-y: auto;
 }
 
-#programInfo table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        #missedPrograms {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #missedProgramsList {
+            list-style-type: none;
+            padding: 0;
+        }
+        #missedProgramsList li {
+            background-color: var(--background-color);
+            border: 1px solid var(--secondary-color);
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #missedProgramsList li:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        #programInfo {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
 
-#programInfo th, #programInfo td {
+        #programInfo table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #programInfo th, #programInfo td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-#programInfo th {
-    background-color: var(--primary-color);
-    color: white;
-}
+        #programInfo th {
+            background-color: var(--primary-color);
+            color: white;
+        }
 
-#programInfo tr:nth-child(even) {
-    background-color: var(--background-color);
-}
+        #programInfo tr:nth-child(even) {
+            background-color: var(--background-color);
+        }
 
-#programInfo tr:hover {
-    background-color: var(--secondary-color);
-    color: white;
+        #programInfo tr:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            #programInfo th, #programInfo td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+        }
+        #programInfo .current-program {
+        font-weight: bold;
+        background-color: var(--primary-color);
+        color: white;
+    }
+    @keyframes flashAnimation {
+    0%, 100% {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    50% {
+        background-color: var(--secondary-color);
+        color: var(--text-color);
+    }
 }
 
 #programInfo .current-program {
-    font-weight: bold;
-    background-color: var(--primary-color);
-    color: white;
     animation: flashAnimation 5s ease-in-out infinite;
 }
 
 #programInfo .current-program:hover {
     animation: none;
     background-color: var(--secondary-color);
+    color: white;
 }
-
 .now-playing {
     font-size: 0.8em;
     font-weight: bold;
-    color: red;
+    color: var(--primary-color);
     margin-left: 5px;
-    animation: liveAnimation 2s ease-in-out infinite;
 }
 
-@keyframes liveAnimation {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+#programInfo .current-program .now-playing {
+    color: white;
+}
+.video-container:fullscreen .video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2147483647; /* Maximum z-index value */
 }
 
-.video-container:fullscreen .video-controls,
+/* For webkit browsers */
 .video-container:-webkit-full-screen .video-controls {
     position: absolute;
     bottom: 0;
@@ -269,7 +305,6 @@ header h1 {
     right: 0;
     z-index: 2147483647;
 }
-
 #progressBar {
     -webkit-appearance: none;
     width: 100%;
@@ -301,164 +336,17 @@ header h1 {
     cursor: pointer;
     border-radius: 50%;
 }
-
 #progressBar, #currentTime, #duration, #playPauseBtn {
     display: none;
-}
-
-.start-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-}
-
-.start-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 140, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-}
-
-.start-watching-btn {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: rgba(255, 140, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-    overflow: visible;
-}
-
-.play-icon {
-    color: white;
-    font-size: 40px;
-    z-index: 2;
-}
-
-.start-watching-btn::before,
-.start-watching-btn::after,
-.start-watching-btn .ripple {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-radius: 50%;
-    background: rgba(255, 165, 0, 0.7); /* Orange */
-    opacity: 0;
-    animation: flash-ripple 2s linear infinite;
-}
-
-.start-watching-btn::after {
-    animation-delay: 0.6s;
-    background: rgba(255, 103, 0, 0.7); /* Dark Orange */
-}
-
-.start-watching-btn .ripple {
-    animation-delay: 1.2s;
-    background: rgba(255, 69, 0, 0.7); /* Red-Orange */
-}
-
-@keyframes flash-ripple {
-    0% {
-        transform: scale(1);
-        opacity: 0.7;
-    }
-    100% {
-        transform: scale(2);
-        opacity: 0;
-    }
-}
-
-.start-watching-btn:hover::before,
-.start-watching-btn:hover::after,
-.start-watching-btn:hover .ripple {
-    animation-duration: 1.5s;
-}
-
-.start-watching-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
-}
-
-@keyframes gradientShift {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(255, 140, 0, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0); }
-}
-
-@media (max-width: 768px) {
-    .header-content h1 {
-        font-size: 1.2em;
-    }
-
-    #currentTime {
-        font-size: 1em;
-    }
-
-    .video-controls {
-        padding: 5px;
-    }
-
-    .video-controls button,
-    .video-controls select {
-        font-size: 0.9em;
-        margin: 2px;
-    }
-
-    .video-controls input[type="range"] {
-        margin: 0 5px;
-    }
-
-    #programInfo th, #programInfo td {
-        padding: 8px;
-        font-size: 0.9em;
-    }
-
 }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1>Glorious TV 📺</h1>
-            <div id="currentTime"></div>
-        </div>
-    </header>
+
     <div class="container">
         <div class="main-content">
-            <div id="currentTime"></div>  <!-- Add this line here -->
             <div id="videoContainer" class="video-container">
-                <div id="startOverlay" class="start-overlay" style="display: none;">
-                    <div id="startWatchingBtn" class="start-watching-btn">
-                        <div class="play-icon">▶</div>
-                    </div>
-                </div>
-                <video id="videoPlayer">    
-                </video>
+                <video id="videoPlayer"></video>
                 <div class="video-controls">
                     <button id="muteBtn">🔊</button>
                     <input type="range" id="volumeBar" min="0" max="100" value="100">
@@ -472,7 +360,7 @@ header h1 {
             <table>
                 <thead>
                     <tr>
-                        <th>Time</th>
+                        <th>No.</th>
                         <th>Program</th>
                     </tr>
                 </thead>
@@ -482,51 +370,47 @@ header h1 {
             </table>
         </div>
     </div>
-    
        
     </div>
 
     <script>
 const videoList = [
-{ title: "Boat Cruise", link: "boat.mp4", startTime: "4:18 PM", duration: "2:00:00" },
-{ title: "Tour Day", link: "arrival.mp4", startTime: "3:18 PM", duration: "1:00:00" },
-    { title: "Agataliiko Nfuufu", link: "news.mp4", startTime: "9:00 AM", duration: "1:00:00" },
-    { title: "Entertainment Show", link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4", startTime: "10:00 AM", duration: "2:00:00" },
-    { title: "Midday News", link: "c3dfb9b91256165f2f58326519cdd28e.mp4", startTime: "12:00 PM", duration: "1:00:00" },
-    { title: "Afternoon Drama", link: "1813ef9accab0fdc282c9bb9d8c9924a.mp4", startTime: "1:00 PM", duration: "1:30:00" },
-    { title: "Evening Talk Show", link: "a7a2db2155b82abbbd58a753349e913c.mp4", startTime: "2:30 PM", duration: "1:30:00" },
-    { title: "Evening News", link: "925d1f65256112e69ddb85760e670fa5.mp4", startTime: "4:00 PM", duration: "1:00:00" },
-    { title: "Prime Time Movie", link: "c194ce16dcb733361d9139d20ea8fd1d.mp4", startTime: "5:00 PM", duration: "2:00:00" },
-    { title: "Late Night Show", link: "de885fe4f8d765e5939656e9f3647e34.mp4", startTime: "7:00 PM", duration: "1:00:00" },
-];
-
-function timeToMinutes(time) {
-    const [hours, minutes] = time.split(':').map(Number);
-    return hours * 60 + minutes;
-}
-
-function getCurrentTimeInMinutes() {
-    const now = new Date();
-    return now.getHours() * 60 + now.getMinutes();
-}
-
-function durationToMinutes(duration) {
-    const parts = duration.split(':').map(Number);
-    return parts[0] * 60 + (parts[1] || 0);
-}
-
-
-
-function durationToSeconds(duration) {
-    const parts = duration.split(':').map(part => parseInt(part, 10));
-    if (parts.length === 3) {
-        return parts[0] * 3600 + parts[1] * 60 + parts[2];
-    } else if (parts.length === 2) {
-        return parts[0] * 60 + parts[1];
-    } else {
-        return parts[0];
+    {
+        title: "Boat Cruise",
+        link: "boat.mp4"
+    },
+    {
+        title: "Freedom City",
+        link: "arrival.mp4"
+    },
+    {
+        title: "Agataliiko Nkyakya",
+        link: "news.mp4"
+    },
+    {
+        title: "Advert",
+        link: "c3dfb9b91256165f2f58326519cdd28e.mp4"
+    },
+    {
+        title: "Birthday Moment",
+        link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4"
+    },
+    {
+        title: "Advert",
+        link: "8a56230c1328278e218e1ed54d8e93b2"
+    },
+    {
+        title: "Agataliiko Nkyakya",
+        link: "3e355ebc106e6a8d1ef03eeb717e5f94.mp4"
+    },
+    {
+        title: "Katandika Butandisi",
+        link: "https://mobifliks.info/downloadmp4.php?file=luganda/Guardians%20of%20the%20Galaxy%20Vol.%203%20Part-%201%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4"
     }
-}
+
+    
+    // Add more videos as needed
+];
 
 const videoPlayer = document.getElementById('videoPlayer');
 const muteBtn = document.getElementById('muteBtn');
@@ -536,94 +420,51 @@ const fullscreenBtn = document.getElementById('fullscreenBtn');
 const programTable = document.getElementById('programTable');
 
 let currentVideoIndex = 0;
+let playingTransition = false;
 
-function getCurrentVideoAndTime() {
-    const currentTimeInMinutes = getCurrentTimeInMinutes();
-    
-    for (let i = 0; i < videoList.length; i++) {
-        const startTimeInMinutes = timeToMinutes(videoList[i].startTime);
-        const durationInMinutes = durationToMinutes(videoList[i].duration);
-        const endTimeInMinutes = startTimeInMinutes + durationInMinutes;
-        
-        if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < endTimeInMinutes) {
-            const progress = (currentTimeInMinutes - startTimeInMinutes) * 60; // in seconds
-            return { index: i, progress: progress };
+function playNextVideo() {
+    if (currentVideoIndex < videoList.length) {
+        if (!playingTransition && videoList[currentVideoIndex].link !== "tv.mp4") {
+            playingTransition = true;
+            videoPlayer.src = "tv.mp4";
+            videoPlayer.play().catch(error => {
+                console.error("Error playing transition video:", error);
+                playMainVideo();
+            });
+        } else {
+            playMainVideo();
         }
-    }
-    
-    // If current time is outside all program times, return the first video
-    return { index: 0, progress: 0 };
-}
-
-
-function formatDuration(seconds) {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-
-    if (hours > 0) {
-        return `${hours}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     } else {
-        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        currentVideoIndex = 0;
+        playNextVideo();
     }
 }
 
-function playCurrentVideo() {
-    const { index, progress } = getCurrentVideoAndTime();
-    currentVideoIndex = index;
+function playMainVideo() {
     videoPlayer.src = videoList[currentVideoIndex].link;
-    videoPlayer.currentTime = progress;
-    
-    videoPlayer.play().then(() => {
-        document.getElementById('startOverlay').style.display = 'none';
-    }).catch(error => {
-        console.error("Autoplay failed:", error);
-        document.getElementById('startOverlay').style.display = 'flex';
-    });
-
-    updateProgramInfo();
-}
-
-
-
-function startWatching() {
-    videoPlayer.play().then(() => {
-        document.getElementById('startOverlay').style.display = 'none';
-    }).catch(error => {
+    videoPlayer.play().catch(error => {
         console.error("Error playing video:", error);
     });
+    updateProgramInfo();
+    playingTransition = false;
+    currentVideoIndex++;
 }
 
-// Add this event listener at the end of your script
-document.getElementById('startWatchingBtn').addEventListener('click', startWatching);
 function updateProgramInfo() {
     programTable.innerHTML = '';
-    const { index } = getCurrentVideoAndTime();
-    videoList.forEach((video, i) => {
+    videoList.forEach((video, index) => {
         const row = document.createElement('tr');
-        if (i === index) {
+        if (index === currentVideoIndex - 1) {
             row.classList.add('current-program');
         }
         row.innerHTML = `
-            <td>${video.startTime}</td>
-            <td>
-                ${video.title} 
-                ${i === index ? '<span class="now-playing">🔴 LIVE</span>' : ''}
-            </td>
+            <td>${index + 1}</td>
+            <td>${video.title} ${index === currentVideoIndex - 1 ? '<span class="now-playing">🔴 LIVE</span>' : ''}</td>
         `;
         programTable.appendChild(row);
     });
 }
 
-function updateCurrentTime() {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-    document.getElementById('currentTime').textContent = `Current Time: ${timeString}`;
-}
-
-
-// Call this function every second to update the displayed time
-setInterval(updateCurrentTime, 1000);
 
 muteBtn.addEventListener('click', () => {
     videoPlayer.muted = !videoPlayer.muted;
@@ -639,16 +480,15 @@ fullscreenBtn.addEventListener('click', toggleFullscreen);
 
 function toggleFullscreen() {
     const container = document.getElementById('videoContainer');
-    const video = document.getElementById('videoPlayer');
-
+    
     if (!document.fullscreenElement) {
         if (container.requestFullscreen) {
             container.requestFullscreen();
-        } else if (container.mozRequestFullScreen) {
+        } else if (container.mozRequestFullScreen) { // Firefox
             container.mozRequestFullScreen();
-        } else if (container.webkitRequestFullscreen) {
+        } else if (container.webkitRequestFullscreen) { // Chrome, Safari and Opera
             container.webkitRequestFullscreen();
-        } else if (container.msRequestFullscreen) {
+        } else if (container.msRequestFullscreen) { // IE/Edge
             container.msRequestFullscreen();
         }
     } else {
@@ -664,46 +504,18 @@ function toggleFullscreen() {
     }
 }
 
-document.addEventListener('fullscreenchange', handleFullscreenChange);
-document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-document.addEventListener('MSFullscreenChange', handleFullscreenChange);
-
-function handleFullscreenChange() {
-    const container = document.getElementById('videoContainer');
-    const video = document.getElementById('videoPlayer');
-
-    updateFullscreenButton();
-
-    if (document.fullscreenElement) {
-        container.style.width = '100%';
-        container.style.height = '100%';
-        video.style.width = '100%';
-        video.style.height = '100%';
-    } else {
-        container.style.width = '';
-        container.style.height = '';
-        video.style.width = '';
-        video.style.height = '';
-    }
-}
+document.addEventListener('fullscreenchange', updateFullscreenButton);
+document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+document.addEventListener('mozfullscreenchange', updateFullscreenButton);
+document.addEventListener('MSFullscreenChange', updateFullscreenButton);
 
 function updateFullscreenButton() {
-    fullscreenBtn.textContent = document.fullscreenElement ? '↙' : '⛶';
-}
-
-window.addEventListener('orientationchange', function() {
     if (document.fullscreenElement) {
-        setTimeout(function() {
-            const container = document.getElementById('videoContainer');
-            const video = document.getElementById('videoPlayer');
-            container.style.width = '100%';
-            container.style.height = '100%';
-            video.style.width = '100%';
-            video.style.height = '100%';
-        }, 100);
+        fullscreenBtn.textContent = '↙';
+    } else {
+        fullscreenBtn.textContent = '⛶';
     }
-});
+}
 
 pipBtn.addEventListener('click', () => {
     if (document.pictureInPictureElement) {
@@ -713,17 +525,10 @@ pipBtn.addEventListener('click', () => {
     }
 });
 
-videoPlayer.addEventListener('ended', () => {
-    currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
-    playCurrentVideo();
-});
+videoPlayer.addEventListener('ended', playNextVideo);
 
-// Start playing the current video
-playCurrentVideo();
-
-// At the end of your script
-updateCurrentTime(); // Call immediately to display the time
-setInterval(updateCurrentTime, 1000); // Update every second
+// Start playing videos
+playNextVideo();
   </script>
 </body>
 </html>
