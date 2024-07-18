@@ -451,8 +451,8 @@ header h1 {
 
     <script>
 const videoList = [
-    { title: "Morning News", link: "news.mp4", startTime: "6:00 AM", duration: "1:00:00" },
-    { title: "Morning Talk", link: "8a56230c1328278e218e1ed54d8e93b2.mp4", startTime: "7:00 AM", duration: "2:00:00" },
+    { title: "Morning News", link: "news.mp4", startTime: "3:18 PM", duration: "1:00:00" },
+    { title: "Morning Talk", link: "8a56230c1328278e218e1ed54d8e93b2.mp4", startTime: "4:18 PM", duration: "2:00:00" },
     { title: "Agataliiko Nfuufu", link: "3e355ebc106e6a8d1ef03eeb717e5f94.mp4", startTime: "9:00 AM", duration: "1:00:00" },
     { title: "Entertainment Show", link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4", startTime: "10:00 AM", duration: "2:00:00" },
     { title: "Midday News", link: "c3dfb9b91256165f2f58326519cdd28e.mp4", startTime: "12:00 PM", duration: "1:00:00" },
@@ -636,6 +636,7 @@ playCurrentVideo();
 
 // At the end of your script
 updateCurrentTime(); // Call immediately to display the time
+setInterval(updateCurrentTime, 1000); // Update every second
   </script>
 </body>
 </html>
