@@ -362,36 +362,95 @@
 #progressBar, #currentTime, #duration, #playPauseBtn {
     display: none;
 }
-.watch-now-overlay {
+.start-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(255, 140, 0, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10;
 }
 
-.watch-now-btn {
-    padding: 15px 30px;
-    font-size: 1.2em;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 5px;
+.start-watching-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(255, 140, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.1s;
+    position: relative;
+    overflow: visible;
 }
 
-.watch-now-btn:hover {
-    background-color: var(--secondary-color);
+.play-icon {
+    color: white;
+    font-size: 40px;
+    z-index: 2;
 }
 
-.watch-now-btn:active {
-    transform: scale(0.98);
+.start-watching-btn::before,
+.start-watching-btn::after,
+.start-watching-btn .ripple {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    background: rgba(255, 165, 0, 0.7);
+    opacity: 0;
+    animation: flash-ripple 2s linear infinite;
+}
+
+.start-watching-btn::after {
+    animation-delay: 0.6s;
+    background: rgba(255, 103, 0, 0.7);
+}
+
+.start-watching-btn .ripple {
+    animation-delay: 1.2s;
+    background: rgba(255, 69, 0, 0.7);
+}
+
+@keyframes flash-ripple {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.start-watching-btn:hover::before,
+.start-watching-btn:hover::after,
+.start-watching-btn:hover .ripple {
+    animation-duration: 1.5s;
+}
+
+.start-watching-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+}
+
+@keyframes gradientShift {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 140, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0); }
 }
     </style>
 </head>
@@ -400,6 +459,11 @@
     <div class="container">
         <div class="main-content">
             <div id="videoContainer" class="video-container">
+                <div id="startOverlay" class="start-overlay">
+                    <div id="startWatchingBtn" class="start-watching-btn">
+                        <div class="play-icon">▶</div>
+                    </div>
+                </div>
                 <video id="videoPlayer"></video>
                 <div class="video-controls">
                     <button id="muteBtn">🔊</button>
@@ -407,9 +471,6 @@
                     <button id="pipBtn">&#x2398;</button>                 
                     <button id="fullscreenBtn">⛶</button>
                 </div>
-            </div>
-            <div id="watchNowOverlay" class="watch-now-overlay">
-                <button id="watchNowBtn" class="watch-now-btn">WATCH NOW</button>
             </div>
         </div>
         <div id="programInfo">
@@ -431,122 +492,111 @@
     </div>
 
     <script>
-const videoList = [
-    {
-        title: "Freedom City",
-        link: "boat.mp4"
-    },
-    {
-        title: "Boat Cruise ",
-        link: "arrival.mp4"
-    },
-    {
-        title: "Agataliiko Nkyakya",
-        link: "news.mp4"
-    },
-    {
-        title: "Advert",
-        link: "c3dfb9b91256165f2f58326519cdd28e.mp4"
-    },
-    {
-        title: "Birthday Moment",
-        link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4"
-    },
-    {
-        title: "Advert",
-        link: "8a56230c1328278e218e1ed54d8e93b2"
-    },
-    {
-        title: "Agataliiko Nkyakya",
-        link: "3e355ebc106e6a8d1ef03eeb717e5f94.mp4"
-    },
-    {
-        title: "Katandika Butandisi",
-        link: "https://mobifliks.info/downloadmp4.php?file=luganda/Guardians%20of%20the%20Galaxy%20Vol.%203%20Part-%201%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4"
-    }
-
-    
-    // Add more videos as needed
-];
-
 const videoPlayer = document.getElementById('videoPlayer');
 const muteBtn = document.getElementById('muteBtn');
 const volumeBar = document.getElementById('volumeBar');
 const pipBtn = document.getElementById('pipBtn');
 const fullscreenBtn = document.getElementById('fullscreenBtn');
 const programTable = document.getElementById('programTable');
+const startOverlay = document.getElementById('startOverlay');
+const startWatchingBtn = document.getElementById('startWatchingBtn');
 
 let currentVideoIndex = 0;
-let playingTransition = false;
 
-const watchNowOverlay = document.getElementById('watchNowOverlay');
-const watchNowBtn = document.getElementById('watchNowBtn');
+const videoList = [
+    { title: "Boat Cruise", link: "boat.mp4", startTime: "4:18 PM", duration: "2:00:00" },
+    { title: "Tour Day", link: "arrival.mp4", startTime: "3:18 PM", duration: "1:00:00" },
+    { title: "Agataliiko Nfuufu", link: "news.mp4", startTime: "9:00 AM", duration: "1:00:00" },
+    { title: "Entertainment Show", link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4", startTime: "10:00 AM", duration: "2:00:00" },
+    { title: "Midday News", link: "c3dfb9b91256165f2f58326519cdd28e.mp4", startTime: "12:00 PM", duration: "1:00:00" },
+    { title: "Afternoon Drama", link: "1813ef9accab0fdc282c9bb9d8c9924a.mp4", startTime: "1:00 PM", duration: "1:30:00" },
+    { title: "Evening Talk Show", link: "a7a2db2155b82abbbd58a753349e913c.mp4", startTime: "2:30 PM", duration: "1:30:00" },
+    { title: "Evening News", link: "925d1f65256112e69ddb85760e670fa5.mp4", startTime: "4:00 PM", duration: "1:00:00" },
+    { title: "Prime Time Movie", link: "c194ce16dcb733361d9139d20ea8fd1d.mp4", startTime: "5:00 PM", duration: "2:00:00" },
+    { title: "Late Night Show", link: "de885fe4f8d765e5939656e9f3647e34.mp4", startTime: "7:00 PM", duration: "1:00:00" },
+];
 
-watchNowBtn.addEventListener('click', () => {
-    watchNowOverlay.style.display = 'none';
-    playNextVideo();
-});
+function timeToMinutes(time) {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
+}
 
-// Modify the playNextVideo function
-function playNextVideo() {
-    if (currentVideoIndex < videoList.length) {
-        if (!playingTransition && videoList[currentVideoIndex].link !== "tv.mp4") {
-            playingTransition = true;
-            videoPlayer.src = "tv.mp4";
-            videoPlayer.play().catch(error => {
-                console.error("Error playing transition video:", error);
-                playMainVideo();
-            });
-        } else {
-            playMainVideo();
+function getCurrentTimeInMinutes() {
+    const now = new Date();
+    return now.getHours() * 60 + now.getMinutes();
+}
+
+function durationToMinutes(duration) {
+    const [hours, minutes] = duration.split(':').map(Number);
+    return hours * 60 + minutes;
+}
+
+function getCurrentVideoAndTime() {
+    const currentTimeInMinutes = getCurrentTimeInMinutes();
+    
+    for (let i = 0; i < videoList.length; i++) {
+        const startTimeInMinutes = timeToMinutes(videoList[i].startTime);
+        const durationInMinutes = durationToMinutes(videoList[i].duration);
+        const endTimeInMinutes = startTimeInMinutes + durationInMinutes;
+        
+        if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < endTimeInMinutes) {
+            const progress = (currentTimeInMinutes - startTimeInMinutes) * 60; // in seconds
+            return { index: i, progress: progress };
         }
-    } else {
-        currentVideoIndex = 0;
-        playNextVideo();
     }
+    
+    // If current time is outside all program times, return the first video
+    return { index: 0, progress: 0 };
 }
 
-function playMainVideo() {
+function playCurrentVideo() {
+    const { index, progress } = getCurrentVideoAndTime();
+    currentVideoIndex = index;
     videoPlayer.src = videoList[currentVideoIndex].link;
-    videoPlayer.play().catch(error => {
-        console.error("Error playing video:", error);
+    videoPlayer.currentTime = progress;
+    
+    videoPlayer.play().then(() => {
+        startOverlay.style.display = 'none';
+    }).catch(error => {
+        console.error("Autoplay failed:", error);
+        startOverlay.style.display = 'flex';
     });
-    updateProgramInfo();
-    playingTransition = false;
-    currentVideoIndex++;
-}
 
-// Remove the initial call to playNextVideo() at the end of your script
-// Instead, we'll show the overlay
-watchNowOverlay.style.display = 'flex';
+    updateProgramInfo();
+}
 
 function updateProgramInfo() {
     programTable.innerHTML = '';
-    videoList.forEach((video, index) => {
+    const { index } = getCurrentVideoAndTime();
+    videoList.forEach((video, i) => {
         const row = document.createElement('tr');
-        if (index === currentVideoIndex - 1) {
+        if (i === index) {
             row.classList.add('current-program');
         }
         row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${video.title} ${index === currentVideoIndex - 1 ? '<span class="now-playing">🔴 LIVE</span>' : ''}</td>
+            <td>${video.startTime}</td>
+            <td>
+                ${video.title} 
+                ${i === index ? '<span class="now-playing">🔴 LIVE</span>' : ''}
+            </td>
         `;
         programTable.appendChild(row);
     });
 }
 
+function updateCurrentTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    document.getElementById('currentTime').textContent = `Current Time: ${timeString}`;
+}
 
-muteBtn.addEventListener('click', () => {
-    videoPlayer.muted = !videoPlayer.muted;
-    muteBtn.textContent = videoPlayer.muted ? '🔇' : '🔊';
-});
-
-volumeBar.addEventListener('input', () => {
-    videoPlayer.volume = volumeBar.value / 100;
-    muteBtn.textContent = videoPlayer.volume === 0 ? '🔇' : '🔊';
-});
-
-fullscreenBtn.addEventListener('click', toggleFullscreen);
+function startWatching() {
+    videoPlayer.play().then(() => {
+        startOverlay.style.display = 'none';
+    }).catch(error => {
+        console.error("Error playing video:", error);
+    });
+}
 
 function toggleFullscreen() {
     const container = document.getElementById('videoContainer');
@@ -554,11 +604,11 @@ function toggleFullscreen() {
     if (!document.fullscreenElement) {
         if (container.requestFullscreen) {
             container.requestFullscreen();
-        } else if (container.mozRequestFullScreen) { // Firefox
+        } else if (container.mozRequestFullScreen) {
             container.mozRequestFullScreen();
-        } else if (container.webkitRequestFullscreen) { // Chrome, Safari and Opera
+        } else if (container.webkitRequestFullscreen) {
             container.webkitRequestFullscreen();
-        } else if (container.msRequestFullscreen) { // IE/Edge
+        } else if (container.msRequestFullscreen) {
             container.msRequestFullscreen();
         }
     } else {
@@ -574,18 +624,36 @@ function toggleFullscreen() {
     }
 }
 
-document.addEventListener('fullscreenchange', updateFullscreenButton);
-document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
-document.addEventListener('mozfullscreenchange', updateFullscreenButton);
-document.addEventListener('MSFullscreenChange', updateFullscreenButton);
+function handleFullscreenChange() {
+    const container = document.getElementById('videoContainer');
 
-function updateFullscreenButton() {
+    fullscreenBtn.textContent = document.fullscreenElement ? '↙' : '⛶';
+
     if (document.fullscreenElement) {
-        fullscreenBtn.textContent = '↙';
+        container.style.width = '100%';
+        container.style.height = '100%';
+        videoPlayer.style.width = '100%';
+        videoPlayer.style.height = '100%';
     } else {
-        fullscreenBtn.textContent = '⛶';
+        container.style.width = '';
+        container.style.height = '';
+        videoPlayer.style.width = '';
+        videoPlayer.style.height = '';
     }
 }
+
+// Event Listeners
+muteBtn.addEventListener('click', () => {
+    videoPlayer.muted = !videoPlayer.muted;
+    muteBtn.textContent = videoPlayer.muted ? '🔇' : '🔊';
+});
+
+volumeBar.addEventListener('input', () => {
+    videoPlayer.volume = volumeBar.value / 100;
+    muteBtn.textContent = videoPlayer.volume === 0 ? '🔇' : '🔊';
+});
+
+fullscreenBtn.addEventListener('click', toggleFullscreen);
 
 pipBtn.addEventListener('click', () => {
     if (document.pictureInPictureElement) {
@@ -595,10 +663,32 @@ pipBtn.addEventListener('click', () => {
     }
 });
 
-videoPlayer.addEventListener('ended', playNextVideo);
+videoPlayer.addEventListener('ended', playCurrentVideo);
 
-// Start playing videos
-playNextVideo();
+startWatchingBtn.addEventListener('click', startWatching);
+
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+window.addEventListener('orientationchange', function() {
+    if (document.fullscreenElement) {
+        setTimeout(function() {
+            const container = document.getElementById('videoContainer');
+            container.style.width = '100%';
+            container.style.height = '100%';
+            videoPlayer.style.width = '100%';
+            videoPlayer.style.height = '100%';
+        }, 100);
+    }
+});
+
+// Initialize
+playCurrentVideo();
+updateCurrentTime();
+setInterval(updateCurrentTime, 1000);
+setInterval(playCurrentVideo, 60000); // Check and update current video every minute
   </script>
 </body>
 </html>
