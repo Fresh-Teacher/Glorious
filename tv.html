@@ -488,16 +488,7 @@ header h1 {
 
     <script>
 const videoList = [
-{ title: "Boat Cruise", link: "boat.mp4", startTime: "4:18 PM", duration: "2:00:00" },
-{ title: "Tour Day", link: "arrival.mp4", startTime: "3:18 PM", duration: "1:00:00" },
-    { title: "Agataliiko Nfuufu", link: "news.mp4", startTime: "9:00 AM", duration: "1:00:00" },
-    { title: "Entertainment Show", link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4", startTime: "10:00 AM", duration: "2:00:00" },
-    { title: "Midday News", link: "c3dfb9b91256165f2f58326519cdd28e.mp4", startTime: "12:00 PM", duration: "1:00:00" },
-    { title: "Afternoon Drama", link: "1813ef9accab0fdc282c9bb9d8c9924a.mp4", startTime: "1:00 PM", duration: "1:30:00" },
-    { title: "Evening Talk Show", link: "a7a2db2155b82abbbd58a753349e913c.mp4", startTime: "2:30 PM", duration: "1:30:00" },
-    { title: "Evening News", link: "925d1f65256112e69ddb85760e670fa5.mp4", startTime: "4:00 PM", duration: "1:00:00" },
-    { title: "Prime Time Movie", link: "c194ce16dcb733361d9139d20ea8fd1d.mp4", startTime: "5:00 PM", duration: "2:00:00" },
-    { title: "Late Night Show", link: "de885fe4f8d765e5939656e9f3647e34.mp4", startTime: "7:00 PM", duration: "1:00:00" },
+{ title: "Boat Cruise", link: "boat.mp4", startTime: "8:23 PM", duration: "2:00:00" },
 ];
 
 function timeToMinutes(time) {
@@ -536,8 +527,6 @@ const fullscreenBtn = document.getElementById('fullscreenBtn');
 const programTable = document.getElementById('programTable');
 
 let currentVideoIndex = 0;
-let dailyScheduleStart = new Date();
-dailyScheduleStart.setHours(6, 0, 0, 0); // Assume the TV schedule starts at 6 AM
 
 function getCurrentVideoAndTime() {
     const currentTimeInMinutes = getCurrentTimeInMinutes();
@@ -553,9 +542,10 @@ function getCurrentVideoAndTime() {
         }
     }
     
-    // If current time is outside all program times, return the first video
-    return { index: 0, progress: 0 };
+    // If no program is currently playing
+    return { index: -1, progress: 0 };
 }
+
 
 function formatDuration(seconds) {
     const hours = Math.floor(seconds / 3600);
@@ -571,28 +561,65 @@ function formatDuration(seconds) {
 
 function playCurrentVideo() {
     const { index, progress } = getCurrentVideoAndTime();
-    currentVideoIndex = index;
-    videoPlayer.src = videoList[currentVideoIndex].link;
-    videoPlayer.currentTime = progress;
     
-    videoPlayer.play().then(() => {
-        // Autoplay successful
-        document.getElementById('startOverlay').style.display = 'none';
-    }).catch(error => {
-        console.error("Autoplay failed:", error);
-        // Show the start button if autoplay fails
+    if (index === -1) {
+        // No program available
+        videoPlayer.pause();
+        videoPlayer.src = '';
         document.getElementById('startOverlay').style.display = 'flex';
-    });
+        document.getElementById('startOverlay').innerHTML = '<div class="no-program-message">No program available at the moment.</div>';
+    } else {
+        currentVideoIndex = index;
+        videoPlayer.src = videoList[currentVideoIndex].link;
+        videoPlayer.currentTime = progress;
+        
+        videoPlayer.play().then(() => {
+            document.getElementById('startOverlay').style.display = 'none';
+        }).catch(error => {
+            console.error("Autoplay failed:", error);
+            document.getElementById('startOverlay').style.display = 'flex';
+            document.getElementById('startOverlay').innerHTML = '<div class="start-watching-btn"><div class="play-icon">▶</div></div>';
+        });
+    }
 
     updateProgramInfo();
 }
 
+
+function checkAndUpdateCurrentVideo() {
+    const { index, progress } = getCurrentVideoAndTime();
+    
+    if (index === -1) {
+        // No program available
+        if (videoPlayer.src !== '') {
+            playCurrentVideo(); // This will display the "No program available" message
+        }
+    } else if (index !== currentVideoIndex) {
+        // If the current video has changed, play the new video
+        playCurrentVideo();
+    } else {
+        // If it's the same video, just update the current time if needed
+        if (Math.abs(videoPlayer.currentTime - progress) > 1) {
+            videoPlayer.currentTime = progress;
+        }
+    }
+    
+    updateProgramInfo();
+}
+
+setInterval(checkAndUpdateCurrentVideo, 1000); // Check every second
+
+
+// Modify the startWatching function
 function startWatching() {
-    videoPlayer.play().then(() => {
-        document.getElementById('startOverlay').style.display = 'none';
-    }).catch(error => {
-        console.error("Error playing video:", error);
-    });
+    const { index } = getCurrentVideoAndTime();
+    if (index !== -1) {
+        videoPlayer.play().then(() => {
+            document.getElementById('startOverlay').style.display = 'none';
+        }).catch(error => {
+            console.error("Error playing video:", error);
+        });
+    }
 }
 
 // Add this event listener at the end of your script
@@ -614,6 +641,14 @@ function updateProgramInfo() {
         `;
         programTable.appendChild(row);
     });
+
+    if (index === -1) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td colspan="2">No program currently airing</td>
+        `;
+        programTable.appendChild(row);
+    }
 }
 
 function updateCurrentTime() {
@@ -722,9 +757,9 @@ videoPlayer.addEventListener('ended', () => {
 // Start playing the current video
 playCurrentVideo();
 
-// At the end of your script
-updateCurrentTime(); // Call immediately to display the time
-setInterval(updateCurrentTime, 1000); // Update every second
+// Add these at the end of your script
+setInterval(checkAndUpdateCurrentVideo, 1000); // Check every second
+playCurrentVideo(); // Initial call to set up the correct state
   </script>
 </body>
 </html>
