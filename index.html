@@ -328,14 +328,14 @@
         <div class="login-box">
             <img src="schoologo-2-150x150.png" alt="School Logo">
             <h2>Login</h2>
-            <input type="email" id="email" placeholder="School Email">
+            <input type="email" id="email" placeholder="School e-mail">
             <input type="password" id="password" placeholder="Password">
             <div>
                 <input type="checkbox" id="rememberMe">
                 <label for="rememberMe">Remember Me</label>
             </div>
             <button onclick="login()">Login</button>
-            <p id="error-message" style="color:red; display:none;">Wrong email or password. Please try again.</p>
+            <p id="error-message" style="color:red; display:none;">Wrong e-mail or password. Please try again.</p>
         </div>
     </div><br><br><br>
 
@@ -350,7 +350,7 @@
                 </div>
 
                 <div class="resource-item">
-                    <img src="glorious.gif" alt="Educational Games">
+                    <img src="tv.gif" alt="Educational Games">
                     <a href="tv.html"> Glorious TV</a>
                 </div>          
 
@@ -1678,155 +1678,170 @@
       'NANYONJO PATIENCE',
       'KYENYINI COSSILINE',
       'NAKASUMBA ANITAH',
-      'NAMIREMBE PENINAH'
+      'NAMIREMBE PENINAH',
+      'James'
 
         ];
 
-
-        function generateEmail(name) {
-        return name.toLowerCase().replace(/[^a-z]/g, '') + '@glorious.com';
+        const specialUsers = [
+    {
+        "email": "admin@glorious.com",
+        "password": "Inc0rrect."
     }
+];
 
-    function getSecondName(fullName) {
-        const names = fullName.split(' ');
-        if (names.length > 1) {
-            return names[1].charAt(0).toUpperCase() + names[1].slice(1).toLowerCase();
-        }
-        return fullName;
+function generateEmail(name) {
+    return name.toLowerCase().replace(/[^a-z]/g, '') + '@glorious.com';
+}
+
+function getSecondName(fullName) {
+    const names = fullName.split(' ');
+    if (names.length > 1) {
+        return names[1].charAt(0).toUpperCase() + names[1].slice(1).toLowerCase();
     }
+    return fullName;
+}
 
-    const validUsers = studentNames.map(name => ({
-        email: generateEmail(name),
-        password: "123", // Default password for all students
+const validUsers = studentNames.map(name => {
+    const email = generateEmail(name);
+    const specialUser = specialUsers.find(u => u.email === email);
+    return {
+        email: email,
+        password: specialUser ? specialUser.password : "123",
         name: name,
         secondName: getSecondName(name)
-    }));
+    };
+});
 
-    function getGreeting() {
-        const hour = new Date().getHours();
-        if (hour >= 5 && hour < 12) {
-            return "Good morning";
-        } else if (hour >= 12 && hour < 18) {
-            return "Good afternoon";
+function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) {
+        return "Good morning";
+    } else if (hour >= 12 && hour < 18) {
+        return "Good afternoon";
+    } else {
+        return "Good evening";
+    }
+}
+
+function getGreetingEmoji() {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) {
+        return "🌞";
+    } else if (hour >= 12 && hour < 18) {
+        return "🌤️";
+    } else {
+        return "🌝";
+    }
+}
+
+function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const rememberMe = document.getElementById("rememberMe").checked;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const user = validUsers.find(u => u.email === email && u.password === password);
+
+    if (user && emailRegex.test(email)) {
+        if (rememberMe) {
+            localStorage.setItem("rememberMe", "true");
+            localStorage.setItem("email", email);
+            localStorage.setItem("password", password);
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("secondName", user.secondName);
+            sessionStorage.removeItem("email");
+            sessionStorage.removeItem("password");
+            sessionStorage.removeItem("secondName");
         } else {
-            return "Good evening";
+            sessionStorage.setItem("email", email);
+            sessionStorage.setItem("password", password);
+            sessionStorage.setItem("isLoggedIn", "true");
+            sessionStorage.setItem("secondName", user.secondName);
+            localStorage.removeItem("rememberMe");
+            localStorage.removeItem("email");
+            localStorage.removeItem("password");
+            localStorage.removeItem("secondName");
         }
-    }
-
-    function getGreetingEmoji() {
-        const hour = new Date().getHours();
-        if (hour >= 5 && hour < 12) {
-            return "🌞";
-        } else if (hour >= 12 && hour < 18) {
-            return "🌤️";
-        } else {
-            return "🌝";
-        }
-    }
-
-    function login() {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const rememberMe = document.getElementById("rememberMe").checked;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        const user = validUsers.find(u => u.email === email && u.password === password);
-
-        if (user && emailRegex.test(email)) {
-            if (rememberMe) {
-                localStorage.setItem("rememberMe", "true");
-                localStorage.setItem("email", email);
-                localStorage.setItem("password", password);
-                localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("secondName", user.secondName);
-                sessionStorage.removeItem("email");
-                sessionStorage.removeItem("password");
-                sessionStorage.removeItem("secondName");
-            } else {
-                sessionStorage.setItem("email", email);
-                sessionStorage.setItem("password", password);
-                sessionStorage.setItem("isLoggedIn", "true");
-                sessionStorage.setItem("secondName", user.secondName);
-                localStorage.removeItem("rememberMe");
-                localStorage.removeItem("email");
-                localStorage.removeItem("password");
-                localStorage.removeItem("secondName");
-            }
-            
-            const intendedPage = sessionStorage.getItem("intendedPage");
-            if (intendedPage && intendedPage !== window.location.href) {
-                sessionStorage.removeItem("intendedPage");
-                window.location.href = intendedPage;
-            } else {
-                showContent();
-            }
-        } else {
-            document.getElementById("error-message").style.display = "block";
-        }
-    }
-
-    function isUserValid(email, password) {
-        return validUsers.some(user => user.email === email && user.password === password);
-    }
-
-    function logout() {
-        localStorage.removeItem("rememberMe");
-        localStorage.removeItem("email");
-        localStorage.removeItem("password");
-        localStorage.removeItem("isLoggedIn");
-        sessionStorage.removeItem("email");
-        sessionStorage.removeItem("password");
-        sessionStorage.removeItem("isLoggedIn");
-        sessionStorage.removeItem("intendedPage");
-        showLogin();
-    }
-
-    function showContent() {
-        document.getElementById("login-container").classList.remove("active");
-        document.getElementById("content-container").classList.add("active");
-        document.getElementById("logout-nav").style.display = "block";
-        document.getElementById("login-message").style.display = "none";
         
-        const secondName = localStorage.getItem("secondName") || sessionStorage.getItem("secondName") || "Adams";
-        const greeting = getGreeting();
-        const emoji = getGreetingEmoji();
-        document.getElementById("greeting").textContent = `${greeting} ${secondName} ${emoji}`;
-    }
-
-    function showLogin() {
-        document.getElementById("login-container").classList.add("active");
-        document.getElementById("content-container").classList.remove("active");
-        document.getElementById("logout-nav").style.display = "none";
-        document.getElementById("login-message").style.display = "none";
-    }
-
-    function toggleMenu() {
-        const navLinks = document.getElementById("nav-links");
-        navLinks.classList.toggle("show");
-    }
-
-    function setCurrentYear() {
-        const currentYear = new Date().getFullYear();
-        document.getElementById('currentYear').textContent = currentYear;
-    }
-
-    function checkAuth(page) {
-        if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
-            window.location.href = page;
+        const intendedPage = sessionStorage.getItem("intendedPage");
+        if (intendedPage && intendedPage !== window.location.href) {
+            sessionStorage.removeItem("intendedPage");
+            window.location.href = intendedPage;
         } else {
-            sessionStorage.setItem("intendedPage", page);
-            showLoginMessage();
+            showContent();
         }
+    } else {
+        document.getElementById("error-message").style.display = "block";
     }
+}
 
-    function showLoginMessage() {
-        document.getElementById("login-message").style.display = "block";
-    }
+function showContent() {
+    document.getElementById("login-container").classList.remove("active");
+    document.getElementById("content-container").classList.add("active");
+    document.getElementById("logout-nav").style.display = "block";
+    document.getElementById("login-message").style.display = "none";
+    
+    const secondName = localStorage.getItem("secondName") || sessionStorage.getItem("secondName") || "Adams";
+    const greeting = getGreeting();
+    const emoji = getGreetingEmoji();
+    document.getElementById("greeting").textContent = `${greeting} ${secondName} ${emoji}`;
+}
 
-    function checkAuthStatus() {
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
-        document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+function showLogin() {
+    document.getElementById("login-container").classList.add("active");
+    document.getElementById("content-container").classList.remove("active");
+    document.getElementById("logout-nav").style.display = "none";
+    document.getElementById("login-message").style.display = "none";
+    document.getElementById("email").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("error-message").style.display = "none";
+}
+
+function logout() {
+    localStorage.removeItem("rememberMe");
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("secondName");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("password");
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("secondName");
+    sessionStorage.removeItem("intendedPage");
+    showLogin();
+}
+
+function toggleMenu() {
+    const navLinks = document.getElementById("nav-links");
+    navLinks.classList.toggle("show");
+}
+
+function setCurrentYear() {
+    const currentYear = new Date().getFullYear();
+    document.getElementById('currentYear').textContent = currentYear;
+}
+
+function checkAuth(page) {
+    if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+        window.location.href = page;
+    } else {
+        sessionStorage.setItem("intendedPage", page);
+        showLoginMessage();
     }
+}
+
+function showLoginMessage() {
+    document.getElementById("login-message").style.display = "block";
+}
+
+function checkAuthStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+    document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+}
+
+// Add this line to ensure the auth status is checked when the page loads
+document.addEventListener("DOMContentLoaded", checkAuthStatus);
     </script>
 </body>
 
