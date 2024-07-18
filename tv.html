@@ -374,64 +374,6 @@
     </div>
 
     <script>
-const videoList = [
-    {
-        title: "Advert",
-        link: "c3dfb9b91256165f2f58326519cdd28e.mp4"
-    },
-    {
-        title: "Morning Talk",
-        link: "8a56230c1328278e218e1ed54d8e93b2.mp4"
-    },
-    {
-        title: "Agataliiko Nfuufu",
-        link: "3e355ebc106e6a8d1ef03eeb717e5f94.mp4"
-    },
-    {
-        title: "Katandika Butandisi",
-        link: "https://mobifliks.info/downloadmp4.php?file=luganda/Journey%20to%20the%20West%20-%20Red%20Boy%20by%20Vj%20Muba%20-%20Mobifliks.com.mp4"
-    },
-    {
-        title: "Entertainment",
-        link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4"
-    },
-    {
-        title: "Katandika Butandisi",
-        link: "https://mobifliks.info/downloadmp4.php?file=luganda/The%20Boss%20Baby-%20Christmas%20Bonus%20by%20Vj%20Kevo%20-%20Mobifliks.com.mov"
-    },
-    {
-        title: "Entertainment",
-        link: "news.mp4"
-    },
-    {
-        title: "Entertainment",
-        link: "1813ef9accab0fdc282c9bb9d8c9924a.mp4"
-    },
-    {
-        title: "Entertainment",
-        link: "a7a2db2155b82abbbd58a753349e913c.mp4"
-    },
-    {
-        title: "Entertainment",
-        link: "925d1f65256112e69ddb85760e670fa5.mp4"
-    },
-    {
-        title: "Entertainment",
-        link: "c194ce16dcb733361d9139d20ea8fd1d.mp4"
-    },
-    {
-        title: "Entertainment",
-        link: "de885fe4f8d765e5939656e9f3647e34.mp4"
-    },
-    {
-        title: "Katandika Butandisi",
-        link: "https://mobifliks.info/downloadmp4.php?file=luganda/Dr.%20Dolittle%202%20by%20Vj%20Emmy%20-%20Mobifliks.com.mp4"
-    }
-
-    
-    // Add more videos as needed
-];
-
 const videoPlayer = document.getElementById('videoPlayer');
 const muteBtn = document.getElementById('muteBtn');
 const volumeBar = document.getElementById('volumeBar');
@@ -439,52 +381,122 @@ const pipBtn = document.getElementById('pipBtn');
 const fullscreenBtn = document.getElementById('fullscreenBtn');
 const programTable = document.getElementById('programTable');
 
-let currentVideoIndex = 0;
-let playingTransition = false;
+const videoList = [
+    {
+        title: "Advert",
+        link: "https://mobifliks.info/downloadmp4.php?file=luganda/Journey%20to%20the%20West%20-%20Red%20Boy%20by%20Vj%20Muba%20-%20Mobifliks.com.mp4",
+        startTime: "08:00 AM",
+        duration: 300 // duration in seconds
+    },
+    {
+        title: "Morning Talk",
+        link: "8a56230c1328278e218e1ed54d8e93b2.mp4",
+        startTime: "12:05 AM",
+        duration: 1800
+    },
+    {
+        title: "Agataliiko Nfuufu",
+        link: "3e355ebc106e6a8d1ef03eeb717e5f94.mp4",
+        startTime: "12:35 AM",
+        duration: 1800
+    },
+    // ... add more videos with start times and durations
+];
 
-function playNextVideo() {
-    if (currentVideoIndex < videoList.length) {
-        if (!playingTransition && videoList[currentVideoIndex].link !== "tv.mp4") {
-            playingTransition = true;
-            videoPlayer.src = "tv.mp4";
-            videoPlayer.play().catch(error => {
-                console.error("Error playing transition video:", error);
-                playMainVideo();
-            });
-        } else {
-            playMainVideo();
-        }
-    } else {
-        currentVideoIndex = 0;
-        playNextVideo();
+function convertTo24Hour(time12h) {
+    const [time, modifier] = time12h.split(' ');
+    let [hours, minutes] = time.split(':');
+    if (hours === '12') {
+        hours = '00';
     }
+    if (modifier === 'PM') {
+        hours = parseInt(hours, 10) + 12;
+    }
+    return `${hours.padStart(2, '0')}:${minutes}`;
 }
 
-function playMainVideo() {
-    videoPlayer.src = videoList[currentVideoIndex].link;
+function getCurrentProgramIndex() {
+    const now = new Date();
+    const currentTime = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+    
+    let totalSeconds = 0;
+    for (let i = 0; i < videoList.length; i++) {
+        const [hours, minutes] = convertTo24Hour(videoList[i].startTime).split(':').map(Number);
+        const programStartSeconds = hours * 3600 + minutes * 60;
+        
+        if (currentTime >= programStartSeconds && currentTime < programStartSeconds + videoList[i].duration) {
+            return i;
+        }
+        
+        totalSeconds += videoList[i].duration;
+        if (totalSeconds > 86400) break; // End of 24-hour cycle
+    }
+    
+    return 0; // Default to first program if no match found
+}
+
+function playCurrentProgram() {
+    const index = getCurrentProgramIndex();
+    const program = videoList[index];
+    const now = new Date();
+    const currentTime = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+    const [hours, minutes] = convertTo24Hour(program.startTime).split(':').map(Number);
+    const programStartSeconds = hours * 3600 + minutes * 60;
+    const elapsedTime = currentTime - programStartSeconds;
+    
+    videoPlayer.src = program.link;
+    videoPlayer.currentTime = elapsedTime;
     videoPlayer.play().catch(error => {
         console.error("Error playing video:", error);
     });
-    updateProgramInfo();
-    playingTransition = false;
-    currentVideoIndex++;
+    
+    updateProgramInfo(index);
+    scheduleNextProgram(index);
 }
 
-function updateProgramInfo() {
+function scheduleNextProgram(currentIndex) {
+    const nextIndex = (currentIndex + 1) % videoList.length;
+    const currentProgram = videoList[currentIndex];
+    const timeUntilNext = currentProgram.duration - (videoPlayer.currentTime % currentProgram.duration);
+    
+    setTimeout(() => {
+        playCurrentProgram();
+    }, timeUntilNext * 1000);
+}
+
+function formatTime(date) {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    return hours + ':' + minutes + ' ' + ampm;
+}
+
+function updateProgramInfo(currentIndex) {
     programTable.innerHTML = '';
+    const now = new Date();
     videoList.forEach((video, index) => {
         const row = document.createElement('tr');
-        if (index === currentVideoIndex - 1) {
+        if (index === currentIndex) {
             row.classList.add('current-program');
         }
         row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${video.title} ${index === currentVideoIndex - 1 ? '<span class="now-playing">🔴 LIVE</span>' : ''}</td>
+            <td>${video.startTime}</td>
+            <td>${video.title} ${index === currentIndex ? '<span class="now-playing">🔴 LIVE</span>' : ''}</td>
         `;
         programTable.appendChild(row);
     });
+    
+    // Add current time display
+    const timeRow = document.createElement('tr');
+    timeRow.innerHTML = `
+        <td colspan="3">Current Time: ${formatTime(now)}</td>
+    `;
+    programTable.appendChild(timeRow);
 }
-
 
 muteBtn.addEventListener('click', () => {
     videoPlayer.muted = !videoPlayer.muted;
@@ -545,10 +557,17 @@ pipBtn.addEventListener('click', () => {
     }
 });
 
-videoPlayer.addEventListener('ended', playNextVideo);
+videoPlayer.addEventListener('ended', () => {
+    playCurrentProgram();
+});
 
-// Start playing videos
-playNextVideo();
+// Start the TV when the page loads
+window.addEventListener('load', playCurrentProgram);
+
+// Update program info every minute to keep current time updated
+setInterval(() => {
+    updateProgramInfo(getCurrentProgramIndex());
+}, 60000);
   </script>
 </body>
 </html>
