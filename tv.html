@@ -362,6 +362,37 @@
 #progressBar, #currentTime, #duration, #playPauseBtn {
     display: none;
 }
+.watch-now-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.watch-now-btn {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.watch-now-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.watch-now-btn:active {
+    transform: scale(0.98);
+}
     </style>
 </head>
 <body>
@@ -376,6 +407,9 @@
                     <button id="pipBtn">&#x2398;</button>                 
                     <button id="fullscreenBtn">⛶</button>
                 </div>
+            </div>
+            <div id="watchNowOverlay" class="watch-now-overlay">
+                <button id="watchNowBtn" class="watch-now-btn">WATCH NOW</button>
             </div>
         </div>
         <div id="programInfo">
@@ -445,6 +479,15 @@ const programTable = document.getElementById('programTable');
 let currentVideoIndex = 0;
 let playingTransition = false;
 
+const watchNowOverlay = document.getElementById('watchNowOverlay');
+const watchNowBtn = document.getElementById('watchNowBtn');
+
+watchNowBtn.addEventListener('click', () => {
+    watchNowOverlay.style.display = 'none';
+    playNextVideo();
+});
+
+// Modify the playNextVideo function
 function playNextVideo() {
     if (currentVideoIndex < videoList.length) {
         if (!playingTransition && videoList[currentVideoIndex].link !== "tv.mp4") {
@@ -472,6 +515,10 @@ function playMainVideo() {
     playingTransition = false;
     currentVideoIndex++;
 }
+
+// Remove the initial call to playNextVideo() at the end of your script
+// Instead, we'll show the overlay
+watchNowOverlay.style.display = 'flex';
 
 function updateProgramInfo() {
     programTable.innerHTML = '';
