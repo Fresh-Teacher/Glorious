@@ -452,13 +452,48 @@
     70% { box-shadow: 0 0 0 15px rgba(255, 140, 0, 0); }
     100% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0); }
 }
+#logoImage {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    max-width: 80px;
+    max-height: 40px;
+    z-index: 10;
+}
+
+#timerContainer {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    z-index: 10;
+}
+
+#currentDate, #currentTime {
+    display: block;
+}
+
+#currentTime {
+    font-size: 1.2em;
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
 
     <div class="container">
+        
         <div class="main-content">
+
             <div id="videoContainer" class="video-container">
+                <img id="logoImage" src="schoologo-2-150x150.png" alt="Logo">
+                <div id="timerContainer">
+                    <span id="currentTime"></span>
+                </div>
                 <div id="startOverlay" class="start-overlay">
                     <div id="startWatchingBtn" class="start-watching-btn">
                         <div class="play-icon">▶</div>
@@ -475,6 +510,8 @@
         </div>
         <div id="programInfo">
             <h2>Program Schedule</h2>
+            <span id="currentDate"></span>
+
             <table>
                 <thead>
                     <tr>
@@ -492,7 +529,18 @@
     </div>
 
     <script>
-        
+        function updateTimer() {
+    const now = new Date();
+    const dateOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+    
+    document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', dateOptions);
+    document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', timeOptions);
+}
+
+// Update the timer immediately and then every second
+updateTimer();
+setInterval(updateTimer, 1000);
 const videoList = [
     {
         title: "Freedom City",
