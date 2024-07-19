@@ -9,7 +9,8 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f0f0f0;
+            background-color: #fff7e6; /* Light orange background */
+            color: #ff704d; /* Orange text color */
         }
         .gallery {
             display: grid;
@@ -17,7 +18,8 @@
             gap: 20px;
         }
         .media-item {
-            background-color: #fff;
+            background-color: #ffffff;
+            border: 2px solid #ffa366; /* Light orange border */
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             overflow: hidden;
@@ -37,14 +39,18 @@
         .pagination button, .pagination span {
             margin: 0 5px;
             padding: 5px 10px;
-            background-color: #007bff;
-            color: #fff;
+            background-color: #ff704d; /* Orange background for buttons */
+            color: #ffffff;
             border: none;
             border-radius: 3px;
             cursor: pointer;
         }
+        .pagination span {
+            background-color: transparent; /* Plain text */
+            color: #ff704d;
+        }
         .pagination button:disabled {
-            background-color: #ccc;
+            background-color: #ffcc99; /* Lighter orange for disabled buttons */
             cursor: not-allowed;
         }
         .modal {
@@ -91,6 +97,45 @@
         .next {
             right: 20px;
         }
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            color: #ffffff;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            margin: 0 10px; /* Margin between buttons */
+        }
+        .btn-cancel {
+            background-color: #ff704d; /* Orange background */
+            border-color: #ff704d; /* Orange border */
+        }
+        .btn-cancel:hover {
+            background-color: #e6603d; /* Darker orange on hover */
+            border-color: #e6603d; /* Darker orange border on hover */
+        }
+        .btn-continue {
+            background-color: #ffa366; /* Lighter orange background */
+            border-color: #ffa366; /* Lighter orange border */
+        }
+        .btn-continue:hover {
+            background-color: #e69356; /* Darker lighter orange on hover */
+            border-color: #e69356; /* Darker lighter orange border on hover */
+        }
+        .modal-content {
+            text-align: center; /* Center align text inside modal */
+        }
+        .button-container {
+            display: flex;
+            justify-content: center; /* Center align buttons */
+            margin-top: 20px; /* Space above buttons */
+        }
     </style>
 </head>
 <body>
@@ -107,6 +152,14 @@
             <span class="nav-button prev">&#10094;</span>
             <div id="modalMedia"></div>
             <span class="nav-button next">&#10095;</span>
+        </div>
+    </div>
+
+    <div id="endModal" class="modal">
+        <div class="modal-content">
+            <p>There are more photos on Google Photos. Would you like to continue?<br>
+           <center> <button id="continueBtn" class="btn btn-continue">Continue</button>
+            <button id="cancelBtn" class="btn btn-cancel">Cancel</button></center>
         </div>
     </div>
 
@@ -245,6 +298,11 @@
 
             const totalPages = Math.ceil(mediaItems.length / itemsPerPage);
             pageNumbers.textContent = `Page ${currentPage} of ${totalPages}`;
+
+            // Show end modal if on the last page
+            if (currentPage === totalPages) {
+                showEndModal();
+            }
         }
 
         function openModal(index) {
@@ -285,6 +343,16 @@
             updateModalContent();
         }
 
+        function showEndModal() {
+            const endModal = document.getElementById('endModal');
+            endModal.style.display = 'block';
+        }
+
+        function closeEndModal() {
+            const endModal = document.getElementById('endModal');
+            endModal.style.display = 'none';
+        }
+
         document.getElementById('prevBtn').addEventListener('click', () => {
             if (currentPage > 1) {
                 currentPage--;
@@ -298,12 +366,20 @@
                 currentPage++;
                 displayMedia(currentPage);
                 window.scrollTo(0, 0); // Scroll to the top of the page
+            } else {
+                showEndModal();
             }
         });
 
         document.querySelector('.close').addEventListener('click', closeModal);
         document.querySelector('.prev').addEventListener('click', () => navigateModal(-1));
         document.querySelector('.next').addEventListener('click', () => navigateModal(1));
+
+        document.getElementById('continueBtn').addEventListener('click', () => {
+            window.location.href = 'https://photos.app.goo.gl/YUZVoYLqtpaomf7n6';
+        });
+
+        document.getElementById('cancelBtn').addEventListener('click', closeEndModal);
 
         let touchStartX = 0;
         let touchEndX = 0;
