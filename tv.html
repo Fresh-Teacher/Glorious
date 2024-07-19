@@ -19,7 +19,7 @@
     <style>
         :root {
             --primary-color: #ff8c00;
-            --secondary-color: #ffa500;
+            --secondary-color: #ff1e00;
             --background-color: #fff3e0;
             --text-color: #333;
         }
@@ -479,6 +479,38 @@
     font-size: 1.2em;
     font-weight: bold;
 }
+#finishedPrograms {
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#finishedPrograms table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#finishedPrograms th, #finishedPrograms td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#finishedPrograms th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#finishedPrograms tr:nth-child(even) {
+    background-color: var(--background-color);
+}
+
+#finishedPrograms tr:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
     </style>
 </head>
 <body>
@@ -506,6 +538,20 @@
                 </div>
             </div>
         </div>
+        <div id="finishedPrograms">
+            <h2>Finished Programs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Program</th>
+                    </tr>
+                </thead>
+                <tbody id="finishedProgramsTable">
+                    <!-- Finished program data will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
         <div id="programInfo">
             <h2>Program Schedule</h2>
             <span id="currentDate"></span>
@@ -522,6 +568,7 @@
                 </tbody>
             </table>
         </div>
+       
     </div>
        
     </div>
@@ -606,6 +653,7 @@ function playNextVideo() {
         }
     } else {
         currentVideoIndex = 0;
+        finishedPrograms = []; // Reset finished programs when playlist restarts
         playNextVideo();
     }
 }
@@ -623,18 +671,39 @@ function playMainVideo() {
     currentVideoIndex++;
 }
 
+let finishedPrograms = [];
+
 function updateProgramInfo() {
     programTable.innerHTML = '';
+    finishedProgramsTable.innerHTML = '';
+    
     videoList.forEach((video, index) => {
-        const row = document.createElement('tr');
-        if (index === currentVideoIndex - 1) {
-            row.classList.add('current-program');
+        if (index < currentVideoIndex) {
+            // Add to finished programs
+            finishedPrograms.push(video);
+        } else {
+            // Add to program schedule
+            const row = document.createElement('tr');
+            if (index === currentVideoIndex) {
+                row.classList.add('current-program');
+            }
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${video.title}</td>
+                <td>${index === currentVideoIndex ? '<span class="now-playing">🔴 LIVE</span>' : 'Upcoming'}</td>
+            `;
+            programTable.appendChild(row);
         }
+    });
+
+    // Update finished programs table
+    finishedPrograms.forEach((video, index) => {
+        const row = document.createElement('tr');
         row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${video.title} ${index === currentVideoIndex - 1 ? '<span class="now-playing">🔴 LIVE</span>' : ''}</td>
+            <td>${video.title}</td>
         `;
-        programTable.appendChild(row);
+        finishedProgramsTable.appendChild(row);
     });
 }
 
