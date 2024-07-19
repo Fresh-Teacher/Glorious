@@ -590,7 +590,7 @@ const videoList = [
     {
         title: "Freedom City",
         link: "boat.mp4",
-        scheduledTime: "06:00:00"
+        scheduledTime: "08:00:00"
     },
     {
         title: "Boat Cruise ",
@@ -743,6 +743,12 @@ function updateProgramInfo(currentProgram) {
     const currentTime = new Date();
     const currentTimeString = currentTime.toTimeString().split(' ')[0];
     
+    // Move finished programs to finishedPrograms array
+    while (videoList.length > 0 && videoList[0].scheduledTime <= currentTimeString) {
+        finishedPrograms.push(videoList.shift());
+    }
+    
+    // Update program schedule
     videoList.forEach((video, index) => {
         const row = document.createElement('tr');
         if (video === currentProgram) {
@@ -752,20 +758,20 @@ function updateProgramInfo(currentProgram) {
             <td>${index + 1}</td>
             <td>${video.title}</td>
             <td>${video.scheduledTime}</td>
-            <td>${video === currentProgram ? '<span class="now-playing">🔴 LIVE</span>' : 
-                 (video.scheduledTime <= currentTimeString ? 'Finished' : 'Upcoming')}</td>
+            <td>${video === currentProgram ? '<span class="now-playing">🔴 LIVE</span>' : 'Upcoming'}</td>
         `;
         programTable.appendChild(row);
-        
-        if (video.scheduledTime <= currentTimeString && video !== currentProgram) {
-            const finishedRow = document.createElement('tr');
-            finishedRow.innerHTML = `
-                <td>${finishedProgramsTable.children.length + 1}</td>
-                <td>${video.title}</td>
-                <td>${video.scheduledTime}</td>
-            `;
-            finishedProgramsTable.appendChild(finishedRow);
-        }
+    });
+    
+    // Update finished programs table
+    finishedPrograms.forEach((video, index) => {
+        const finishedRow = document.createElement('tr');
+        finishedRow.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${video.title}</td>
+            <td>${video.scheduledTime}</td>
+        `;
+        finishedProgramsTable.appendChild(finishedRow);
     });
 }
 
