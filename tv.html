@@ -72,21 +72,21 @@
     width: 100%;
     height: 100%;
 }
-        .video-controls {
-            flex-wrap: wrap;
-    justify-content: center;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .video-controls button,
+.video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    width: auto; /* Change from 100% to auto */
+    border-top-right-radius: 10px; /* Optional: adds some rounding to the top-right corner */
+}
+
+.video-controls button,
 .video-controls select {
     background: none;
     border: none;
@@ -105,9 +105,7 @@
 }
 
 .video-controls input[type="range"] {
-    width: 100px;
-    max-width: 10%;
-    flex-grow: 1;
+    width: 80px; /* Adjust as needed */
     margin: 0 10px;
     height: 5px;
     background: rgba(255, 255, 255, 0.6);
@@ -454,17 +452,17 @@
 }
 #logoImage {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    max-width: 80px;
-    max-height: 40px;
+    top: 1px;
+    right: 1px;
+    max-width: 100px;
+    max-height: 80px;
     z-index: 10;
 }
 
 #timerContainer {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 1px;
+    right: 1px;
     background-color: rgba(0, 0, 0, 0.6);
     color: white;
     padding: 5px 10px;
