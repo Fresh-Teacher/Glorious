@@ -590,6 +590,8 @@
         </div>
         <div id="finishedPrograms">
             <h2>Finished Programs</h2>
+            <h5><em>Click on a program name to rewind</em> ⏪</h5>
+
             <table>
                 <thead>
                     <tr>
@@ -610,8 +612,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th>No.</th>
                         <th>Program</th>
+                        <th>Time</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -626,6 +628,7 @@
     </div>
 
     <script>
+        
 const videoPlayer = document.getElementById('videoPlayer');
 const muteBtn = document.getElementById('muteBtn');
 const volumeBar = document.getElementById('volumeBar');
@@ -638,12 +641,17 @@ const finishedProgramsTable = document.getElementById('finishedProgramsTable');
 
 const videoList = [
     {
+        title: "Morning Inspiration",
+        link: "morning_inspiration.mp4",
+        scheduledTime: "05:00:00"
+    },
+    {
         title: "Freedom City",
         link: "boat.mp4",
         scheduledTime: "06:00:00"
     },
     {
-        title: "Boat Cruise ",
+        title: "Boat Cruise",
         link: "arrival.mp4",
         scheduledTime: "07:00:00"
     },
@@ -653,9 +661,14 @@ const videoList = [
         scheduledTime: "08:00:00"
     },
     {
+        title: "Kids' Hour",
+        link: "kids_show.mp4",
+        scheduledTime: "09:00:00"
+    },
+    {
         title: "Birthday Moment",
         link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4",
-        scheduledTime: "09:30:00"
+        scheduledTime: "10:00:00"
     },
     {
         title: "Agataliiko Nkyakya",
@@ -664,8 +677,58 @@ const videoList = [
     },
     {
         title: "Katandika Butandisi",
-        link: "https://mobifliks.info/downloadmp4.php?file=luganda/Guardians%20of%20the%20Galaxy%20Vol.%203%20Part-%201%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4",
+        link: "katandika_butandisi.mp4",
         scheduledTime: "12:00:00"
+    },
+    {
+        title: "Lunchtime News",
+        link: "news_midday.mp4",
+        scheduledTime: "13:00:00"
+    },
+    {
+        title: "Cooking Show",
+        link: "cooking_show.mp4",
+        scheduledTime: "14:00:00"
+    },
+    {
+        title: "Local Drama Series",
+        link: "drama_series.mp4",
+        scheduledTime: "15:00:00"
+    },
+    {
+        title: "Youth Talk Show",
+        link: "youth_talk.mp4",
+        scheduledTime: "16:00:00"
+    },
+    {
+        title: "Evening News",
+        link: "evening_news.mp4",
+        scheduledTime: "18:00:00"
+    },
+    {
+        title: "Prime Time Movie",
+        link: "prime_time_movie.mp4",
+        scheduledTime: "20:00:00"
+    },
+    {
+        title: "Late Night Talk Show",
+        link: "late_night_talk.mp4",
+        scheduledTime: "22:00:00"
+    },
+    {
+        title: "Midnight Music",
+        link: "midnight_music.mp4",
+        scheduledTime: "00:00:00"
+    },
+    {
+        title: "Late Night Movie",
+        link: "late_night_movie.mp4",
+        scheduledTime: "02:00:00"
+    },
+    {
+        title: "Early Morning Devotional",
+        link: "devotional.mp4",
+        scheduledTime: "04:00:00"
     }
 ];
 
@@ -681,7 +744,7 @@ const adverts = [
     },
     {
         title: "Advert 3",
-        link: "tv.mp4"
+        link: "c194ce16dcb733361d9139d20ea8fd1d.mp4"
     },
     {
         title: "Advert 4",
@@ -710,14 +773,15 @@ const adverts = [
     {
         title: "Advert 10",
         link: "a7a2db2155b82abbbd58a753349e913c.mp4"
-    },
-    {
-        title: "Advert 11",
-        link: "c194ce16dcb733361d9139d20ea8fd1d.mp4"
-    },
+    }
     
    
 ];
+
+const jingle = {
+    title: "TV Jingle",
+    link: "tv.mp4"
+};
 
 let currentVideoIndex = 0;
 let currentAdvertIndex = 0;
@@ -767,19 +831,42 @@ function playNextVideo() {
     }
 }
 
+function playJingleThenVideo(videoToPlay) {
+    videoPlayer.src = jingle.link;
+    videoPlayer.play().then(() => {
+        videoPlayer.onended = () => {
+            videoPlayer.src = videoToPlay.link;
+            videoPlayer.play().then(() => {
+                startOverlay.style.display = 'none';
+                videoPlayer.onended = playJingleThenNextVideo;
+            }).catch(error => {
+                console.error("Error playing video:", error);
+                startOverlay.style.display = 'flex';
+            });
+        };
+    }).catch(error => {
+        console.error("Error playing jingle:", error);
+        startOverlay.style.display = 'flex';
+    });
+}
+
+function playJingleThenNextVideo() {
+    videoPlayer.src = jingle.link;
+    videoPlayer.play().then(() => {
+        videoPlayer.onended = playNextVideo;
+    }).catch(error => {
+        console.error("Error playing jingle:", error);
+        playNextVideo();
+    });
+}
+
 function playScheduledProgram(program) {
     if (!program || !program.link) {
         console.warn("No valid program to play. Playing next advert instead.");
         playNextAdvert();
         return;
     }
-    videoPlayer.src = program.link;
-    videoPlayer.play().then(() => {
-        startOverlay.style.display = 'none';
-    }).catch(error => {
-        console.error("Error playing video:", error);
-        startOverlay.style.display = 'flex';
-    });
+    playJingleThenVideo(program);
 }
 
 function playNextAdvert() {
@@ -787,13 +874,7 @@ function playNextAdvert() {
         currentAdvertIndex = 0; // Reset to the first advert if we've played all
     }
     const advert = adverts[currentAdvertIndex];
-    videoPlayer.src = advert.link;
-    videoPlayer.play().then(() => {
-        startOverlay.style.display = 'none';
-    }).catch(error => {
-        console.error("Error playing advert:", error);
-        startOverlay.style.display = 'flex';
-    });
+    playJingleThenVideo(advert);
     currentAdvertIndex++;
 }
 
@@ -815,10 +896,14 @@ function updateProgramInfo(currentProgram) {
         if (video === currentProgram) {
             row.classList.add('current-program');
         }
+        
+        // Convert scheduledTime to 12-hour format
+        const scheduledTime = new Date(`2000-01-01T${video.scheduledTime}`);
+        const formattedTime = scheduledTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        
         row.innerHTML = `
-            <td>${index + 1}</td>
             <td>${video.title}</td>
-            <td>${video.scheduledTime}</td>
+            <td>${formattedTime}</td>
             <td>${video === currentProgram ? '<span class="now-playing">🔴 LIVE</span>' : 'Upcoming'}</td>
         `;
         row.title = "Click for more information";
@@ -826,13 +911,12 @@ function updateProgramInfo(currentProgram) {
         programTable.appendChild(row);
     });
     
-    // Update finished programs table
+    // Update finished programs table (no changes needed here)
     finishedPrograms.forEach((video, index) => {
         const finishedRow = document.createElement('tr');
         finishedRow.innerHTML = `
             <td>${index + 1}</td>
             <td>${video.title}</td>
-            <td>${video.scheduledTime}</td>
         `;
         finishedRow.title = "Click to watch this program";
         finishedRow.addEventListener('click', () => playFinishedProgram(video));
@@ -860,21 +944,11 @@ function showNotification(message) {
 }
 
 function playFinishedProgram(program) {
-    videoPlayer.src = program.link;
-    videoPlayer.play().then(() => {
-        startOverlay.style.display = 'none';
-    }).catch(error => {
-        console.error("Error playing video:", error);
-        startOverlay.style.display = 'flex';
-    });
+    playJingleThenVideo(program);
 }
 
 function startWatching() {
-    videoPlayer.play().then(() => {
-        startOverlay.style.display = 'none';
-    }).catch(error => {
-        console.error("Error playing video:", error);
-    });
+    playJingleThenNextVideo();
 }
 
 function toggleFullscreen() {
