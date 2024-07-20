@@ -74,7 +74,8 @@
 <body>
     <div class="container">
         <h1>Find Your E-mail Addresses</h1>
-   <button onclick="redirectToHomepage()">Back to Login</button>
+        <button onclick="redirectToHomepage()">Back to Login</button>
+        <button onclick="viewAllEmails()">View All Email Addresses</button>
         <br>
         <input type="text" id="searchInput" placeholder="Search for your name here..." onkeyup="searchEmails()">
         <div id="emailList" class="email-list"></div>
@@ -1400,11 +1401,7 @@
             students.forEach(student => {
                 if (student.toLowerCase().includes(input)) {
                     found = true;
-                    let email = student.replace(/ /g, '').replace(/\.+$/, '').toLowerCase() + '@glorious.com';
-                    const emailItem = document.createElement('div');
-                    emailItem.className = 'email-item';
-                    emailItem.innerHTML = `<div><strong>Name:</strong> ${student}</div><div><strong>E-mail:</strong> ${email}</div>`;
-                    emailList.appendChild(emailItem);
+                    displayEmailItem(student, emailList);
                 }
             });
 
@@ -1414,6 +1411,22 @@
                 message.textContent = 'No results found. Please try a different search.';
                 emailList.appendChild(message);
             }
+        }
+
+        function viewAllEmails() {
+            const emailList = document.getElementById('emailList');
+            emailList.innerHTML = ''; // Clear previous results
+            students.forEach(student => {
+                displayEmailItem(student, emailList);
+            });
+        }
+
+        function displayEmailItem(student, container) {
+            let email = student.replace(/ /g, '').replace(/\.+$/, '').toLowerCase() + '@glorious.com';
+            const emailItem = document.createElement('div');
+            emailItem.className = 'email-item';
+            emailItem.innerHTML = `<div><strong>Name:</strong> ${student}</div><div><strong>E-mail:</strong> ${email}</div>`;
+            container.appendChild(emailItem);
         }
 
         function redirectToHomepage() {
