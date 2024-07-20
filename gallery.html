@@ -136,10 +136,127 @@
             justify-content: center; /* Center align buttons */
             margin-top: 20px; /* Space above buttons */
         }
+        .slideshow-controls {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+}
+
+.play-btn-container {
+    position: relative;
+    display: inline-block;
+}
+
+.play-btn {
+    background-color: #ff704d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: relative;
+    z-index: 2;
+}
+
+.play-btn:hover {
+    background-color: #e6603d;
+}
+
+.play-btn.playing {
+    background-color: #ffa366;
+}
+
+.ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 2px solid #ff704d;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 1;
+    animation: ripple 4s linear infinite;
+}
+
+.ripple-1 {
+    animation-delay: 0s;
+}
+
+.ripple-2 {
+    animation-delay: 1.3s;
+}
+
+.ripple-3 {
+    animation-delay: 2.6s;
+}
+
+@keyframes ripple {
+    0% {
+        width: 50px;
+        height: 50px;
+        opacity: 1;
+    }
+    100% {
+        width: 100px;
+        height: 100px;
+        opacity: 0;
+    }
+}
+.play-btn.playing + .ripple {
+    animation: ripple 1.5s linear infinite;
+}
+.modal-content img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.modal-content img.fade-in {
+    opacity: 1;
+}
+
+.modal-content img.slide-in-right {
+    transform: translateX(100%);
+}
+
+.modal-content img.slide-in-left {
+    transform: translateX(-100%);
+}
+
+.modal-content img.drop-from-top {
+    transform: translateY(-100%);
+}
+
+.modal-content img.spin {
+    transform: rotate(360deg);
+}
+
+.modal-content img.slide-in,
+.modal-content img.drop-in,
+.modal-content img.spin-in {
+    opacity: 1;
+    transform: translate(0) rotate(0);
+}
     </style>
 </head>
+<div class="slideshow-controls">
+    <div class="play-btn-container">
+        <button id="playBtn" class="play-btn">▶</button>
+        <div class="ripple ripple-1"></div>
+        <div class="ripple ripple-2"></div>
+        <div class="ripple ripple-3"></div>
+    </div>
+</div>
 <body>
     <div id="gallery" class="gallery"></div>
+
     <div class="pagination">
         <button id="prevBtn">Previous</button>
         <span id="pageNumbers"></span>
@@ -256,168 +373,202 @@
 
     
         const itemsPerPage = 12;
-        let currentPage = 1;
-        let currentModalIndex = 0;
+let currentPage = 1;
+let currentPhotoIndex = 0;
+let slideshowDirection = 1; // 1 for forward, -1 for backward
 
-        function getMediaType(filename) {
-            const extension = filename.split('.').pop().toLowerCase();
-            return ['jpg', 'jpeg', 'png', 'gif'].includes(extension) ? 'image' : 'video';
-        }
+// Filter out video files
+const photoItems = mediaItems.filter(item => getMediaType(item) === 'image');
 
-        function displayMedia(page) {
-            const gallery = document.getElementById('gallery');
-            gallery.innerHTML = '';
+function getMediaType(filename) {
+    const extension = filename.split('.').pop().toLowerCase();
+    return ['jpg', 'jpeg', 'png', 'gif'].includes(extension) ? 'image' : 'video';
+}
 
-            const startIndex = (page - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const pageItems = mediaItems.slice(startIndex, endIndex);
+function getRandomTransition() {
+    const transitions = ['slide-in-right', 'slide-in-left', 'drop-from-top', 'spin', 'fade-in'];
+    return transitions[Math.floor(Math.random() * transitions.length)];
+}
 
-            pageItems.forEach((item, index) => {
-                const mediaItem = document.createElement('div');
-                mediaItem.className = 'media-item';
-                mediaItem.addEventListener('click', () => openModal(startIndex + index));
+function displayMedia(page) {
+    const gallery = document.getElementById('gallery');
+    gallery.innerHTML = '';
 
-                const mediaType = getMediaType(item);
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageItems = photoItems.slice(startIndex, endIndex);
 
-                if (mediaType === 'image') {
-                    const img = document.createElement('img');
-                    img.src = item;
-                    img.alt = 'Media item';
-                    mediaItem.appendChild(img);
-                } else {
-                    const video = document.createElement('video');
-                    video.src = item;
-                    video.controls = true;
-                    mediaItem.appendChild(video);
-                }
+    pageItems.forEach((item, index) => {
+        const mediaItem = document.createElement('div');
+        mediaItem.className = 'media-item';
+        mediaItem.addEventListener('click', () => openModal(startIndex + index));
 
-                gallery.appendChild(mediaItem);
-            });
+        const img = document.createElement('img');
+        img.src = item;
+        img.alt = 'Media item';
+        mediaItem.appendChild(img);
 
-            updatePaginationButtons();
-        }
+        gallery.appendChild(mediaItem);
+    });
 
-        function updatePaginationButtons() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const pageNumbers = document.getElementById('pageNumbers');
+    updatePaginationButtons();
+}
 
-            prevBtn.disabled = currentPage === 1;
-            nextBtn.disabled = currentPage === Math.ceil(mediaItems.length / itemsPerPage);
+function updatePaginationButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageNumbers = document.getElementById('pageNumbers');
 
-            const totalPages = Math.ceil(mediaItems.length / itemsPerPage);
-            pageNumbers.textContent = `Page ${currentPage} of ${totalPages}`;
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === Math.ceil(photoItems.length / itemsPerPage);
 
-            // Show end modal if on the last page
-            if (currentPage === totalPages) {
-                showEndModal();
-            }
-        }
+    const totalPages = Math.ceil(photoItems.length / itemsPerPage);
+    pageNumbers.textContent = `Page ${currentPage} of ${totalPages}`;
 
-        function openModal(index) {
-            currentModalIndex = index;
-            const modal = document.getElementById('modal');
-            const modalMedia = document.getElementById('modalMedia');
-            modal.style.display = 'block';
-            updateModalContent();
-        }
+    if (currentPage === totalPages) {
+        showEndModal();
+    }
+}
 
-        function updateModalContent() {
-            const modalMedia = document.getElementById('modalMedia');
-            modalMedia.innerHTML = '';
-            const item = mediaItems[currentModalIndex];
-            const mediaType = getMediaType(item);
+function openModal(index) {
+    currentPhotoIndex = index;
+    const modal = document.getElementById('modal');
+    modal.style.display = 'block';
+    updateModalContent();
+}
 
-            if (mediaType === 'image') {
-                const img = document.createElement('img');
-                img.src = item;
-                modalMedia.appendChild(img);
-            } else {
-                const video = document.createElement('video');
-                video.src = item;
-                video.controls = true;
-                modalMedia.appendChild(video);
-            }
-        }
+function updateModalContent() {
+    const modalMedia = document.getElementById('modalMedia');
+    modalMedia.innerHTML = '';
+    const item = photoItems[currentPhotoIndex];
 
-        function closeModal() {
-            const modal = document.getElementById('modal');
-            modal.style.display = 'none';
-        }
+    const img = document.createElement('img');
+    img.src = item;
+    
+    const transition = getRandomTransition();
+    img.classList.add(transition);
+    modalMedia.appendChild(img);
 
-        function navigateModal(direction) {
-            currentModalIndex += direction;
-            if (currentModalIndex < 0) currentModalIndex = mediaItems.length - 1;
-            if (currentModalIndex >= mediaItems.length) currentModalIndex = 0;
-            updateModalContent();
-        }
+    // Trigger reflow
+    void img.offsetWidth;
 
-        function showEndModal() {
-            const endModal = document.getElementById('endModal');
-            endModal.style.display = 'block';
-        }
+    if (transition === 'slide-in-right' || transition === 'slide-in-left') {
+        img.classList.add('slide-in');
+    } else if (transition === 'drop-from-top') {
+        img.classList.add('drop-in');
+    } else if (transition === 'spin') {
+        img.classList.add('spin-in');
+    } else {
+        img.classList.add('fade-in');
+    }
+}
 
-        function closeEndModal() {
-            const endModal = document.getElementById('endModal');
-            endModal.style.display = 'none';
-        }
+function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
+    if (isPlaying) {
+        toggleSlideshow();
+    }
+}
 
-        document.getElementById('prevBtn').addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayMedia(currentPage);
-                window.scrollTo(0, 0); // Scroll to the top of the page
-            }
-        });
+function navigateModal(direction) {
+    slideshowDirection = direction;
+    currentPhotoIndex += direction;
+    if (currentPhotoIndex < 0) currentPhotoIndex = photoItems.length - 1;
+    if (currentPhotoIndex >= photoItems.length) currentPhotoIndex = 0;
+    updateModalContent();
+}
 
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            if (currentPage < Math.ceil(mediaItems.length / itemsPerPage)) {
-                currentPage++;
-                displayMedia(currentPage);
-                window.scrollTo(0, 0); // Scroll to the top of the page
-            } else {
-                showEndModal();
-            }
-        });
+function showEndModal() {
+    const endModal = document.getElementById('endModal');
+    endModal.style.display = 'block';
+}
 
-        document.querySelector('.close').addEventListener('click', closeModal);
-        document.querySelector('.prev').addEventListener('click', () => navigateModal(-1));
-        document.querySelector('.next').addEventListener('click', () => navigateModal(1));
+function closeEndModal() {
+    const endModal = document.getElementById('endModal');
+    endModal.style.display = 'none';
+}
 
-        document.getElementById('continueBtn').addEventListener('click', () => {
-            window.location.href = 'https://photos.app.goo.gl/YUZVoYLqtpaomf7n6';
-        });
+let slideshowInterval;
+let isPlaying = false;
 
-        document.getElementById('cancelBtn').addEventListener('click', closeEndModal);
+function toggleSlideshow() {
+    const playBtn = document.getElementById('playBtn');
+    
+    if (isPlaying) {
+        clearInterval(slideshowInterval);
+        playBtn.textContent = '▶';
+        playBtn.classList.remove('playing');
+    } else {
+        slideshowInterval = setInterval(() => {
+            navigateModal(1); // Always move forward in slideshow
+        }, 3000); // Change slide every 3 seconds
+        playBtn.textContent = '⏸';
+        playBtn.classList.add('playing');
+        openModal(currentPhotoIndex);
+    }
+    isPlaying = !isPlaying;
+}
 
-        let touchStartX = 0;
-        let touchEndX = 0;
+function handleSwipe() {
+    if (touchEndX < touchStartX) navigateModal(1);
+    if (touchEndX > touchStartX) navigateModal(-1);
+}
 
-        document.getElementById('modal').addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        document.getElementById('modal').addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            if (touchEndX < touchStartX) navigateModal(1);
-            if (touchEndX > touchStartX) navigateModal(-1);
-        }
-
-        document.addEventListener('keydown', (event) => {
-            const key = event.key;
-            if (key === 'ArrowLeft') {
-                navigateModal(-1); // Left arrow key for previous
-            } else if (key === 'ArrowRight') {
-                navigateModal(1); // Right arrow key for next
-            }
-        });
-
-        // Initial display
+// Event Listeners
+document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
         displayMedia(currentPage);
+        window.scrollTo(0, 0);
+    }
+});
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentPage < Math.ceil(photoItems.length / itemsPerPage)) {
+        currentPage++;
+        displayMedia(currentPage);
+        window.scrollTo(0, 0);
+    } else {
+        showEndModal();
+    }
+});
+
+document.querySelector('.close').addEventListener('click', closeModal);
+document.querySelector('.prev').addEventListener('click', () => navigateModal(-1));
+document.querySelector('.next').addEventListener('click', () => navigateModal(1));
+
+document.getElementById('continueBtn').addEventListener('click', () => {
+    window.location.href = 'https://photos.app.goo.gl/YUZVoYLqtpaomf7n6';
+});
+
+document.getElementById('cancelBtn').addEventListener('click', closeEndModal);
+
+document.getElementById('playBtn').addEventListener('click', toggleSlideshow);
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.getElementById('modal').addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+document.getElementById('modal').addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+});
+
+document.addEventListener('keydown', (event) => {
+    const key = event.key;
+    if (key === 'ArrowLeft') {
+        navigateModal(-1);
+    } else if (key === 'ArrowRight') {
+        navigateModal(1);
+    }
+});
+
+// Initial display
+displayMedia(currentPage);
     </script>
 </body>
 </html>
