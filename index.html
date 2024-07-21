@@ -380,7 +380,6 @@
 
     <script>
     const studentNames = [
-        'Admin',
             'AHEREZA HONOUR',
             'ALIYAH ADAMS K.',
             'AKARABO GOLDA',
@@ -1684,26 +1683,20 @@
       'NAKASUMBA ANITAH',
       'NAMIREMBE PENINAH',
       'James',
-      'ODAGA ALEX'
-
+      'ODAGA ALEX',
+      'Admin'
         ];
 
         const specialUsers = [
     {
         "email": "admin@glorious.com",
-        "password": "Inc0rrect.",
+        "password": "Glorious."
+    },
+    {
         "email": "nakijjepriscaresty@glorious.com",
-        "password": "100",
-        "email": "",
-        "password": "",
-        "email": "",
-        "password": "",
-        "email": "",
-        "password": "",
-        "email": "",
-        "password": "",
-        
+        "password": "100"
     }
+    // Add other special users here
 ];
 
 function generateEmail(name) {
@@ -1757,7 +1750,8 @@ function login() {
     const rememberMe = document.getElementById("rememberMe").checked;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    const user = validUsers.find(u => u.email === email && u.password === password);
+    const user = validUsers.find(u => u.email === email && u.password === password) ||
+                 specialUsers.find(u => u.email === email && u.password === password);
 
     if (user && emailRegex.test(email)) {
         if (rememberMe) {
