@@ -642,93 +642,93 @@ const finishedProgramsTable = document.getElementById('finishedProgramsTable');
 const videoList = [
     {
         title: "Morning Inspiration",
-        link: "morning_inspiration.mp4",
-        scheduledTime: "05:00:00"
+        link: "news.mp4",
+        scheduledTime: "05:00 AM"
     },
     {
         title: "Freedom City",
         link: "boat.mp4",
-        scheduledTime: "06:00:00"
+        scheduledTime: "06:00 AM"
     },
     {
         title: "Boat Cruise",
         link: "arrival.mp4",
-        scheduledTime: "07:00:00"
+        scheduledTime: "07:00 AM"
     },
     {
         title: "Agataliiko Nkyakya",
         link: "news.mp4",
-        scheduledTime: "08:00:00"
+        scheduledTime: "08:00 AM"
     },
     {
         title: "Kids' Hour",
         link: "kids_show.mp4",
-        scheduledTime: "09:00:00"
+        scheduledTime: "09:00 AM"
     },
     {
         title: "Birthday Moment",
         link: "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4",
-        scheduledTime: "10:00:00"
+        scheduledTime: "10:00 AM"
     },
     {
         title: "Agataliiko Nkyakya",
         link: "3e355ebc106e6a8d1ef03eeb717e5f94.mp4",
-        scheduledTime: "11:00:00"
+        scheduledTime: "11:00 AM"
     },
     {
         title: "Katandika Butandisi",
         link: "katandika_butandisi.mp4",
-        scheduledTime: "12:00:00"
+        scheduledTime: "12:00 PM"
     },
     {
         title: "Lunchtime News",
         link: "news_midday.mp4",
-        scheduledTime: "13:00:00"
+        scheduledTime: "01:00 PM"
     },
     {
         title: "Cooking Show",
         link: "cooking_show.mp4",
-        scheduledTime: "14:00:00"
+        scheduledTime: "02:00 PM"
     },
     {
         title: "Local Drama Series",
         link: "drama_series.mp4",
-        scheduledTime: "15:00:00"
+        scheduledTime: "03:00 PM"
     },
     {
         title: "Youth Talk Show",
         link: "youth_talk.mp4",
-        scheduledTime: "16:00:00"
+        scheduledTime: "04:00 PM"
     },
     {
         title: "Evening News",
         link: "evening_news.mp4",
-        scheduledTime: "18:00:00"
+        scheduledTime: "06:00 PM"
     },
     {
         title: "Prime Time Movie",
         link: "prime_time_movie.mp4",
-        scheduledTime: "20:00:00"
+        scheduledTime: "08:00 PM"
     },
     {
         title: "Late Night Talk Show",
         link: "late_night_talk.mp4",
-        scheduledTime: "22:00:00"
+        scheduledTime: "10:00 PM"
     },
     {
         title: "Midnight Music",
         link: "midnight_music.mp4",
-        scheduledTime: "00:00:00"
+        scheduledTime: "12:00 AM"
     },
     {
         title: "Late Night Movie",
         link: "late_night_movie.mp4",
-        scheduledTime: "02:00:00"
+        scheduledTime: "02:00 AM"
     },
     {
         title: "Early Morning Devotional",
         link: "devotional.mp4",
-        scheduledTime: "04:00:00"
+        scheduledTime: "04:00 AM"
     }
 ];
 
@@ -786,6 +786,27 @@ const jingle = {
 let currentVideoIndex = 0;
 let currentAdvertIndex = 0;
 let finishedPrograms = [];
+let currentVideoStartTime = null;
+
+
+function getCurrentProgram(currentTime) {
+    const currentTimeDate = new Date(`1970/01/01 ${currentTime}`);
+    
+    let currentProgram = null;
+    for (let i = 0; i < videoList.length; i++) {
+        const programTime = new Date(`1970/01/01 ${videoList[i].scheduledTime}`);
+        if (currentTimeDate >= programTime) {
+            currentProgram = videoList[i];
+            // Check if it's the last program or if the next program hasn't started yet
+            if (i === videoList.length - 1 || currentTimeDate < new Date(`1970/01/01 ${videoList[i+1].scheduledTime}`)) {
+                break;
+            }
+        } else {
+            break;
+        }
+    }
+    return currentProgram;
+}
 
 function updateTimer() {
     const now = new Date();
@@ -793,37 +814,73 @@ function updateTimer() {
     const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
     
     document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', dateOptions);
-    document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', timeOptions);
+    const currentTimeElement = document.getElementById('currentTime');
+    currentTimeElement.textContent = now.toLocaleTimeString('en-US', timeOptions);
     
-    const currentTimeString = now.toTimeString().split(' ')[0];
-    const currentProgram = videoList.find(video => video.scheduledTime === currentTimeString);
+    const currentTimeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase();
+    
+    const currentProgram = getCurrentProgram(currentTimeString);
     
     if (currentProgram) {
-        playScheduledProgram(currentProgram);
+        if (!videoPlayer.src.includes(currentProgram.link)) {
+            playScheduledProgram(currentProgram);
+        }
     } else if (!videoPlayer.src || videoPlayer.ended) {
         playNextAdvert();
     }
 
-    updateProgramInfo(currentProgram);
+    updateProgramInfo(currentProgram, currentTimeString);
+}
+
+function playScheduledProgram(program, elapsedTime = 0) {
+    if (!program || !program.link) {
+        console.warn("No valid program to play. Playing next advert instead.");
+        playNextAdvert();
+        return;
+    }
+    playVideo(program, elapsedTime);
+}
+
+function playVideo(videoToPlay, elapsedTime = 0) {
+    startOverlay.style.display = 'none';
+    videoPlayer.src = videoToPlay.link;
+    videoPlayer.currentTime = elapsedTime;
+    videoPlayer.play().then(() => {
+        currentVideoStartTime = new Date() - (elapsedTime * 1000);
+        videoPlayer.onended = playNextVideo;
+    }).catch(handleAutoplayFailure);
 }
 
 function playNextVideo() {
-    const currentTime = new Date();
-    const currentTimeString = currentTime.toTimeString().split(' ')[0];
+    startOverlay.style.display = 'none';
+
+    const now = new Date();
+    const currentTimeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase();
     
-    let nextProgram = videoList.find(video => video.scheduledTime > currentTimeString);
-    
+    let nextProgram = videoList.find(video => {
+        const videoTime = new Date(`1970/01/01 ${video.scheduledTime}`);
+        const currentDateTime = new Date(`1970/01/01 ${currentTimeString}`);
+        return videoTime > currentDateTime;
+    });
+
     if (nextProgram) {
-        if (nextProgram.scheduledTime === currentTimeString) {
+        const timeDiff = getTimeDifferenceInSeconds(currentTimeString, nextProgram.scheduledTime);
+        if (timeDiff <= 0) {
             playScheduledProgram(nextProgram);
         } else {
             playNextAdvert();
         }
     } else {
-        // If no next program found, play the first program of the day
+        // If no next program found, play the first program of the next day
         nextProgram = videoList[0];
         if (nextProgram) {
-            playScheduledProgram(nextProgram);
+            const nextProgramTime = new Date(`1970/01/01 ${nextProgram.scheduledTime}`);
+            const currentDateTime = new Date(`1970/01/01 ${currentTimeString}`);
+            if (nextProgramTime <= currentDateTime) {
+                playScheduledProgram(nextProgram);
+            } else {
+                playNextAdvert();
+            }
         } else {
             console.warn("No programs available in the videoList.");
             playNextAdvert();
@@ -831,23 +888,104 @@ function playNextVideo() {
     }
 }
 
-function playJingleThenVideo(videoToPlay) {
-    videoPlayer.src = jingle.link;
-    videoPlayer.play().then(() => {
-        videoPlayer.onended = () => {
+function getTimeDifferenceInSeconds(time1, time2) {
+    const [hours1, minutes1, period1] = time1.match(/(\d+):(\d+) (AM|PM)/).slice(1);
+    const [hours2, minutes2, period2] = time2.match(/(\d+):(\d+) (AM|PM)/).slice(1);
+    
+    const date1 = new Date(2000, 0, 1, period1 === 'PM' ? parseInt(hours1) + 12 : hours1, minutes1);
+    const date2 = new Date(2000, 0, 1, period2 === 'PM' ? parseInt(hours2) + 12 : hours2, minutes2);
+    
+    return (date2 - date1) / 1000; // difference in seconds
+}
+
+function playScheduledProgram(program) {
+    if (!program || !program.link) {
+        console.warn("No valid program to play. Playing next advert instead.");
+        playNextAdvert();
+        return;
+    }
+    playJingleThenVideo(program, true);
+}
+
+function playNextVideo() {
+    startOverlay.style.display = 'none';
+
+    videoPlayer.addEventListener('play', () => {
+        startOverlay.style.display = 'none';
+    });
+
+    const currentTime = new Date();
+    const currentTimeString = currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase();
+    
+    let nextProgram = videoList.find(video => {
+        const videoTime = new Date(`1970/01/01 ${video.scheduledTime}`);
+        const currentDateTime = new Date(`1970/01/01 ${currentTimeString}`);
+        return videoTime > currentDateTime;
+    });
+
+    if (nextProgram) {
+        if (nextProgram.scheduledTime === currentTimeString) {
+            playScheduledProgram(nextProgram);
+        } else {
+            playNextAdvert();
+        }
+    } else {
+        nextProgram = videoList[0];
+        if (nextProgram) {
+            const nextProgramTime = new Date(`1970/01/01 ${nextProgram.scheduledTime}`);
+            const currentDateTime = new Date(`1970/01/01 ${currentTimeString}`);
+            if (nextProgramTime <= currentDateTime) {
+                playScheduledProgram(nextProgram);
+            } else {
+                playNextAdvert();
+            }
+        } else {
+            console.warn("No programs available in the videoList.");
+            playNextAdvert();
+        }
+    }
+}
+
+
+function handleAutoplayFailure(error) {
+    console.error("Autoplay failed:", error);
+    startOverlay.style.display = 'flex'; // Show overlay only when autoplay fails
+}
+
+function playJingleThenVideo(videoToPlay, isProgram = true) {
+    startOverlay.style.display = 'none';
+
+    function handleAutoplayFailure(error) {
+        console.error("Error playing video:", error);
+        startOverlay.style.display = 'flex';
+        if (isProgram) {
+            playNextAdvert();
+        }
+    }
+
+    if (isProgram) {
+        videoPlayer.src = jingle.link;
+        videoPlayer.play().then(() => {
+            videoPlayer.onended = () => {
+                videoPlayer.src = videoToPlay.link;
+                videoPlayer.play().then(() => {
+                    videoPlayer.onended = playJingleThenNextVideo;
+                }).catch(handleAutoplayFailure);
+            };
+        }).catch(() => {
+            // If jingle fails, try playing the main video directly
             videoPlayer.src = videoToPlay.link;
             videoPlayer.play().then(() => {
-                startOverlay.style.display = 'none';
                 videoPlayer.onended = playJingleThenNextVideo;
-            }).catch(error => {
-                console.error("Error playing video:", error);
-                startOverlay.style.display = 'flex';
-            });
-        };
-    }).catch(error => {
-        console.error("Error playing jingle:", error);
-        startOverlay.style.display = 'flex';
-    });
+            }).catch(handleAutoplayFailure);
+        });
+    } else {
+        // For adverts, play directly without jingle
+        videoPlayer.src = videoToPlay.link;
+        videoPlayer.play().then(() => {
+            videoPlayer.onended = playNextAdvert;
+        }).catch(handleAutoplayFailure);
+    }
 }
 
 function playJingleThenNextVideo() {
@@ -860,34 +998,73 @@ function playJingleThenNextVideo() {
     });
 }
 
-function playScheduledProgram(program) {
-    if (!program || !program.link) {
-        console.warn("No valid program to play. Playing next advert instead.");
-        playNextAdvert();
-        return;
-    }
-    playJingleThenVideo(program);
-}
-
 function playNextAdvert() {
     if (currentAdvertIndex >= adverts.length) {
         currentAdvertIndex = 0; // Reset to the first advert if we've played all
     }
     const advert = adverts[currentAdvertIndex];
-    playJingleThenVideo(advert);
+    videoPlayer.src = advert.link;
+    videoPlayer.play().then(() => {
+        videoPlayer.onended = playNextAdvert;
+    }).catch(handleAutoplayFailure);
     currentAdvertIndex++;
+}
+
+function playNextVideo() {
+    startOverlay.style.display = 'none';
+
+    videoPlayer.addEventListener('play', () => {
+        startOverlay.style.display = 'none';
+    });
+
+    const currentTime = new Date();
+    const currentTimeString = currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase();
+    
+    let nextProgram = videoList.find(video => {
+        const videoTime = new Date(`1970/01/01 ${video.scheduledTime}`);
+        const currentDateTime = new Date(`1970/01/01 ${currentTimeString}`);
+        return videoTime > currentDateTime;
+    });
+
+    if (nextProgram) {
+        if (nextProgram.scheduledTime === currentTimeString) {
+            playScheduledProgram(nextProgram);
+        } else {
+            playNextAdvert();
+        }
+    } else {
+        nextProgram = videoList[0];
+        if (nextProgram) {
+            const nextProgramTime = new Date(`1970/01/01 ${nextProgram.scheduledTime}`);
+            const currentDateTime = new Date(`1970/01/01 ${currentTimeString}`);
+            if (nextProgramTime <= currentDateTime) {
+                playScheduledProgram(nextProgram);
+            } else {
+                playNextAdvert();
+            }
+        } else {
+            console.warn("No programs available in the videoList.");
+            playNextAdvert();
+        }
+    }
 }
 
 function updateProgramInfo(currentProgram) {
     programTable.innerHTML = '';
     finishedProgramsTable.innerHTML = '';
     
-    const currentTime = new Date();
-    const currentTimeString = currentTime.toTimeString().split(' ')[0];
+    const currentTimeElement = document.getElementById('currentTime');
+    const currentTimeString = currentTimeElement.textContent;
     
     // Move finished programs to finishedPrograms array
-    while (videoList.length > 0 && videoList[0].scheduledTime <= currentTimeString) {
-        finishedPrograms.push(videoList.shift());
+    while (videoList.length > 0) {
+        const firstVideoTime = new Date(`1970/01/01 ${videoList[0].scheduledTime}`);
+        const currentDateTime = new Date(`1970/01/01 ${currentTimeString}`);
+        if (firstVideoTime < currentDateTime) {
+            finishedPrograms.push(videoList.shift());
+        } else {
+            break;
+        }
     }
     
     // Update program schedule
@@ -897,21 +1074,17 @@ function updateProgramInfo(currentProgram) {
             row.classList.add('current-program');
         }
         
-        // Convert scheduledTime to 12-hour format
-        const scheduledTime = new Date(`2000-01-01T${video.scheduledTime}`);
-        const formattedTime = scheduledTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-        
         row.innerHTML = `
             <td>${video.title}</td>
-            <td>${formattedTime}</td>
+            <td>${video.scheduledTime}</td>
             <td>${video === currentProgram ? '<span class="now-playing">🔴 LIVE</span>' : 'Upcoming'}</td>
         `;
         row.title = "Click for more information";
-        row.addEventListener('click', () => showNotification("This program is upcoming. You can only watch live or finished programs."));
+        row.addEventListener('click', () => showNotification(video === currentProgram ? "This program is currently live." : "This program is upcoming. You can only watch live or finished programs."));
         programTable.appendChild(row);
     });
     
-    // Update finished programs table (no changes needed here)
+    // Update finished programs table
     finishedPrograms.forEach((video, index) => {
         const finishedRow = document.createElement('tr');
         finishedRow.innerHTML = `
@@ -948,7 +1121,8 @@ function playFinishedProgram(program) {
 }
 
 function startWatching() {
-    playJingleThenNextVideo();
+    startOverlay.style.display = 'none';
+    videoPlayer.play().catch(handleAutoplayFailure); // Attempt to play current video
 }
 
 function toggleFullscreen() {
@@ -1018,8 +1192,12 @@ startWatchingBtn.addEventListener('click', startWatching);
 updateTimer();
 setInterval(updateTimer, 1000);
 
-// Start playing videos
-playNextVideo();
+// At the end of your script
+document.addEventListener('DOMContentLoaded', () => {
+    startOverlay.style.display = 'none';
+    playNextVideo();
+});
+
   </script>
 </body>
 </html>
