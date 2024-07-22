@@ -259,6 +259,41 @@
         background-color: var(--primary-color);
         color: white;
     }
+    #finishedPrograms, #programInfo {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+#finishedPrograms table, #programInfo table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#finishedPrograms th, #finishedPrograms td,
+#programInfo th, #programInfo td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#finishedPrograms th, #programInfo th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#finishedPrograms tr:nth-child(even),
+#programInfo tr:nth-child(even) {
+    background-color: var(--background-color);
+}
+
+#finishedPrograms tr:hover,
+#programInfo tr:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
     @keyframes flashAnimation {
     0%, 100% {
         background-color: var(--primary-color);
@@ -355,13 +390,30 @@
                 </div>
             </div>
         </div>
-        <div id="programInfo">
-            <h2>Program Schedule</h2>
+
+        <div id="finishedPrograms">
+            <h2>Finished Programs</h2>
             <table>
                 <thead>
                     <tr>
                         <th>No.</th>
                         <th>Program</th>
+                    </tr>
+                </thead>
+                <tbody id="finishedProgramsTable">
+                    <!-- Finished program data will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="programInfo">
+            <h2>Program Schedule</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Program</th>
+                        <th>Time</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id="programTable">
@@ -392,8 +444,8 @@ const programSchedule = [
     { startTime: '2:00 PM', title: 'Entertainment', duration: 60, link: '1813ef9accab0fdc282c9bb9d8c9924a.mp4' },
     { startTime: '3:00 PM', title: 'Entertainment', duration: 60, link: 'a7a2db2155b82abbbd58a753349e913c.mp4' },
     { startTime: '4:00 PM', title: 'Entertainment', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Dr.%20Dolittle%202%20by%20Vj%20Emmy%20-%20Mobifliks.com.mp4' },
-    { startTime: '5:00 PM', title: 'Entertainment', duration: 60, link: 'c194ce16dcb733361d9139d20ea8fd1d.mp4' },
-    { startTime: '6:00 PM', title: 'Entertainment', duration: 60, link: 'de885fe4f8d765e5939656e9f3647e34.mp4' },
+    { startTime: '5:00 PM', title: 'Entertainment', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Boss%20Baby-%20Christmas%20Bonus%20by%20Vj%20Kevo%20-%20Mobifliks.com.mov' },
+    { startTime: '6:00 PM', title: 'Entertainment', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Journey%20to%20the%20West%20-%20Red%20Boy%20by%20Vj%20Muba%20-%20Mobifliks.com.mp4' },
     { startTime: '7:00 PM', title: 'Katandika Butandisi', duration: 120, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Dr.%20Dolittle%202%20by%20Vj%20Emmy%20-%20Mobifliks.com.mp4' }
 ];
 
