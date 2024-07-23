@@ -528,18 +528,41 @@ const fullscreenBtn = document.getElementById('fullscreenBtn');
 const programTable = document.getElementById('programTable');
 
 const programSchedule = [
-    { startTime: '6:00 AM', title: 'Morning Talk', duration: 120, link: 'https://fresh-teacher.github.io/Computer-quiz/THANKS_GIVING__Glorious_Kindergarten___Primary_School_leads_prayers_on_17-MARCH-2024_[Anglican](144p).mp4' },
-    { startTime: '7:00 AM', title: 'Agataliiko Nfuufu', duration: 30, link: 'https://fresh-teacher.github.io/gloriouschool/LUBAGA_DIVISION__Primary_three_class_Excursion_Glorious_Kindergarten___Primary(144p).mp4' },
-    { startTime: '7:30 AM', title: 'Katandika Butandisi', duration: 90, link: 'https://fresh-teacher.github.io/gloriouschool/KALAMBI_MIXED_FARM___P.5_class_Science_Excursion_Glorious_Kindergarten___Primary_School(144p).mp4' },
-    { startTime: '9:00 AM', title: 'Entertainment', duration: 120, link: 'https://fresh-teacher.github.io/gloriouschool/Glorious_kindergarten___primary__PLE_RESULTS_2023(360p).mp4' },
-    { startTime: '9:25 AM', title: 'Advert', duration: 120, link: 'https://fresh-teacher.github.io/gloriouschool/Glorious_kindergarten___primary__PLE_RESULTS_2023(360p).mp4' },
-    { startTime: '9:50 AM', title: 'Katandika Butandisi', duration: 115, link: 'https://fresh-teacher.github.io/Computer-quiz/CLASS_BONDING__Glorious_Kindergarten_welcoming_party_of_year_2024(144p).mp4' },
-    { startTime: '1:00 PM', title: 'Entertainment', duration: 60, link: 'news.mp4' },
-    { startTime: '2:00 PM', title: 'Entertainment', duration: 60, link: 'https://fresh-teacher.github.io/Computer-quiz/COMPITION__Spelling_Bee__AT_GLORIOUS_KINDERGARTEN___PRIMARY_SCHOOL_P.1,_P.2,_P.3(144p).mp4' },
-    { startTime: '3:00 PM', title: 'Entertainment', duration: 60, link: 'https://fresh-teacher.github.io/Computer-quiz/CLASS_BONDING__Glorious_Kindergarten_welcoming_party_of_year_2024(144p).mp4' },
-    { startTime: '4:00 PM', title: 'Entertainment', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Dr.%20Dolittle%202%20by%20Vj%20Emmy%20-%20Mobifliks.com.mp4' },
-    { startTime: '6:00 PM', title: 'Entertainment', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Journey%20to%20the%20West%20-%20Red%20Boy%20by%20Vj%20Muba%20-%20Mobifliks.com.mp4' },
-    { startTime: '7:00 PM', title: 'Katandika Butandisi', duration: 120, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Dr.%20Dolittle%202%20by%20Vj%20Emmy%20-%20Mobifliks.com.mp4' }
+        // 26 minutes
+        { startTime: '9:40 AM', title: 'Entertainment', duration: 26, link: 'gloriouschool/Glorious_kindergarten___primary__PLE_RESULTS_2023(360p).mp4' },
+    
+    // 12 minutes
+    { startTime: '10:00 AM', title: 'Ash Wednesday Mass', duration: 12, link: 'gloriouschool/GLORIOUS_PRIMARY_SCHOOL_ATTENDED_ASH_WEDNESDAY_MASS_AT_ST.KIZITO_CHURCH_MASANAFU(360p).mp4' },
+   
+    // 46 minutes
+    { startTime: '10:12 AM', title: 'Morning Talk', duration: 46, link: 'Computer-quiz/THANKS_GIVING__Glorious_Kindergarten___Primary_School_leads_prayers_on_17-MARCH-2024_[Anglican](144p).mp4' },
+    
+    // 43 minutes
+    { startTime: '10:55 AM', title: 'Agataliiko Nfuufu', duration: 43, link: 'gloriouschool/LUBAGA_DIVISION__Primary_three_class_Excursion_Glorious_Kindergarten___Primary(144p).mp4' },
+    
+    // 60 minutes
+    { startTime: '12:00 PM', title: 'Katandika Butandisi', duration: 60, link: 'gloriouschool/KALAMBI_MIXED_FARM___P.5_class_Science_Excursion_Glorious_Kindergarten___Primary_School(144p).mp4' },
+     
+    // 40 minutes
+    { startTime: '1:00 PM', title: 'Class Bonding', duration: 40, link: 'Computer-quiz/CLASS_BONDING__Glorious_Kindergarten_welcoming_party_of_year_2024(144p).mp4' },
+    
+    // 22 minutes
+    { startTime: '1:40 AM', title: 'Spelling Bee Competition', duration: 22, link: 'Computer-quiz/COMPITION__Spelling_Bee__AT_GLORIOUS_KINDERGARTEN___PRIMARY_SCHOOL_P.1,_P.2,_P.3(144p).mp4' },
+    
+    // 26 minutes
+    { startTime: '2:00 PM', title: 'PLE Results', duration: 26, link: 'gloriouschool/Glorious_kindergarten___primary__PLE_RESULTS_2023(360p).mp4' },
+    
+    // 46 minutes
+    { startTime: '2:26 PM', title: 'Thanksgiving Prayers', duration: 46, link: 'Computer-quiz/THANKS_GIVING__Glorious_Kindergarten___Primary_School_leads_prayers_on_17-MARCH-2024_[Anglican](144p).mp4' },
+    
+    // 43 minutes
+    { startTime: '3:00 PM', title: 'Primary Three Excursion', duration: 43, link: 'gloriouschool/LUBAGA_DIVISION__Primary_three_class_Excursion_Glorious_Kindergarten___Primary(144p).mp4' },
+    
+    // 60 minutes
+    { startTime: '3:43 PM', title: 'P.5 Science Excursion', duration: 60, link: 'gloriouschool/KALAMBI_MIXED_FARM___P.5_class_Science_Excursion_Glorious_Kindergarten___Primary_School(144p).mp4' },
+    
+    // 40 minutes
+    { startTime: '5:00 PM', title: 'Class Bonding', duration: 40, link: 'Computer-quiz/CLASS_BONDING__Glorious_Kindergarten_welcoming_party_of_year_2024(144p).mp4' },
 ];
 
 let serverTimeOffset = 0;
