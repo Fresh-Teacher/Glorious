@@ -62,6 +62,7 @@
             bottom: 0;
             left: 0;
             right: 0;
+            background-color: rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             padding: 10px;
@@ -433,10 +434,10 @@
 
 #logoImage {
     position: absolute;
-    top: 1px;
-    right: 1px;
-    max-width: 80px;
-    max-height: 80px;
+    top: 10px;
+    right: 10px;
+    max-width: 200px;
+    max-height: 200px;
     z-index: 10;
 }
 
@@ -463,17 +464,16 @@
     <div class="container">
         <div class="main-content">
             <div id="videoContainer" class="video-container">
-                <img id="logoImage" src="schoologo-2-150x150.png" alt="Logo">
+                <img id="logoImage" src="thumbnail.png" alt="Logo">
                 <div id="timerContainer">
                     <span id="currentTime"></span>
                 </div>
-                <div id="startOverlay" class="start-overlay">
+                <div id="startOverlay" class="start-overlay" style="display: none;">
                     <div id="startWatchingBtn" class="start-watching-btn">
                         <div class="play-icon">▶</div>
                     </div>
                 </div>
                 <video id="videoPlayer"></video>
-            
                 <div class="video-controls">
                     <button id="muteBtn">🔊</button>
                     <input type="range" id="volumeBar" min="0" max="100" value="100">
@@ -528,40 +528,20 @@ const fullscreenBtn = document.getElementById('fullscreenBtn');
 const programTable = document.getElementById('programTable');
 
 const programSchedule = [
-        // 26 minutes
-        { startTime: '9:40 AM',  title: 'PLE Results', duration: 26, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%20by%20Vj%20Kevo_mobifliks.com.mp4' },
-    
-    // 12 minutes
-    { startTime: '11:00 AM', title: 'Ash Wednesday Mass', duration: 12, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%202%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
-    
-   
-    // 46 minutes
-    { startTime: '12:00 AM', title: 'Thanksgiving Prayers', duration: 46, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Ice%20Age%20Adventures%20of%20Buck%20Wild%20by%20Vj%20Kevo.mp4' },
-     
-    
-    // 43 minutes
-    { startTime: '10:55 AM', title: 'Primary Three Excursion', duration: 43, link: 'https://fresh-teacher.github.io/gloriouschool/LUBAGA_DIVISION__Primary_three_class_Excursion_Glorious_Kindergarten___Primary(144p).mp4' },
-    // 60 minutes
-    { startTime: '12:05 PM', title: 'P.5 Science Excursion', duration: 60, link: 'https://fresh-teacher.github.io/Computer-quiz/CLASS_BONDING__Glorious_Kindergarten_welcoming_party_of_year_2024(144p).mp4' },
-    
-    // 40 minutes
-    { startTime: '1:00 PM', title: 'Class Bonding', duration: 40, link: 'https://fresh-teacher.github.io/Computer-quiz/CLASS_BONDING__Glorious_Kindergarten_welcoming_party_of_year_2024(144p).mp4' },
-    
-    // 22 minutes
-    { startTime: '1:40 AM', title: 'Spelling Bee Competition', duration: 22, link: 'https://fresh-teacher.github.io/Computer-quiz/COMPITION__Spelling_Bee__AT_GLORIOUS_KINDERGARTEN___PRIMARY_SCHOOL_P.1,_P.2,_P.3(144p).mp4' },
-    
-    // 26 minutes
-    { startTime: '2:00 PM', title: 'PLE Results', duration: 26, link: 'https://fresh-teacher.github.io/gloriouschool/KALAMBI_MIXED_FARM___P.5_class_Science_Excursion_Glorious_Kindergarten___Primary_School(144p).mp4' },
-    
-    // 46 minutes
-    { startTime: '2:26 PM', title: 'Thanksgiving Prayers', duration: 46, link: 'https://fresh-teacher.github.io/Computer-quiz/THANKS_GIVING__Glorious_Kindergarten___Primary_School_leads_prayers_on_17-MARCH-2024_[Anglican](144p).mp4' },
-    
-    // 43 minutes
-    { startTime: '3:00 PM', title: 'Primary Three Excursion', duration: 43, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%202%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
-    // 60 minutes
-    { startTime: '3:43 PM', title: 'P.5 Science Excursion', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%20by%20Vj%20Kevo_mobifliks.com.mp4' },
-    
-   ];
+    { startTime: '6:00 AM', title: 'Morning Talk', duration: 60, link: '8a56230c1328278e218e1ed54d8e93b2.mp4' },
+    { startTime: '7:00 AM', title: 'Agataliiko Nfuufu', duration: 30, link: '3e355ebc106e6a8d1ef03eeb717e5f94.mp4' },
+    { startTime: '7:30 AM', title: 'Katandika Butandisi', duration: 90, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Journey%20to%20the%20West%20-%20Red%20Boy%20by%20Vj%20Muba%20-%20Mobifliks.com.mp4' },
+    { startTime: '9:00 AM', title: 'Entertainment', duration: 120, link: '54ad9efa3a2e0d71e21f6a29d50ecd48.mp4' },
+    { startTime: '11:00 AM', title: 'Advert', duration: 5, link: 'c3dfb9b91256165f2f58326519cdd28e.mp4' },
+    { startTime: '11:05 AM', title: 'Katandika Butandisi', duration: 115, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Boss%20Baby-%20Christmas%20Bonus%20by%20Vj%20Kevo%20-%20Mobifliks.com.mov' },
+    { startTime: '1:00 PM', title: 'Entertainment', duration: 60, link: 'news.mp4' },
+    { startTime: '2:00 PM', title: 'Entertainment', duration: 60, link: '1813ef9accab0fdc282c9bb9d8c9924a.mp4' },
+    { startTime: '3:00 PM', title: 'Entertainment', duration: 60, link: 'a7a2db2155b82abbbd58a753349e913c.mp4' },
+    { startTime: '4:00 PM', title: 'Entertainment', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Dr.%20Dolittle%202%20by%20Vj%20Emmy%20-%20Mobifliks.com.mp4' },
+    { startTime: '5:00 PM', title: 'Entertainment', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%202%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
+    { startTime: '6:00 PM', title: 'Entertainment', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Journey%20to%20the%20West%20-%20Red%20Boy%20by%20Vj%20Muba%20-%20Mobifliks.com.mp4' },
+    { startTime: '7:00 PM', title: 'Katandika Butandisi', duration: 120, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Dr.%20Dolittle%202%20by%20Vj%20Emmy%20-%20Mobifliks.com.mp4' }
+];
 
 let serverTimeOffset = 0;
 let preloadedVideos = new Map();
@@ -652,21 +632,6 @@ function preloadNextVideos() {
     });
 }
 
-const startOverlay = document.getElementById('startOverlay');
-const startWatchingBtn = document.getElementById('startWatchingBtn');
-
-function handleAutoplayFailure(error) {
-    console.error("Autoplay failed:", error);
-    startOverlay.style.display = 'flex'; // Show overlay only when autoplay fails
-}
-
-function startWatching() {
-    startOverlay.style.display = 'none';
-    videoPlayer.play().catch(handleAutoplayFailure);
-}
-
-startWatchingBtn.addEventListener('click', startWatching);
-
 function playCurrentProgram() {
     const { program, elapsedTime } = getCurrentProgram();
     
@@ -678,21 +643,14 @@ function playCurrentProgram() {
     videoPlayer.src = videoSource;
     videoPlayer.currentTime = elapsedTime * 60; // Convert to seconds
     
-    videoPlayer.play().catch(handleAutoplayFailure);
+    videoPlayer.play().catch(error => {
+        console.error("Error playing video:", error);
+        playFallbackContent();
+    });
     
     updateProgramInfo();
     preloadNextVideos();
 }
-
-videoPlayer.addEventListener('play', () => {
-    startOverlay.style.display = 'none';
-});
-
-// Modify your existing DOMContentLoaded event listener or add this if you don't have one
-document.addEventListener('DOMContentLoaded', () => {
-    startOverlay.style.display = 'none';
-    playCurrentProgram();
-});
 
 function playFallbackContent() {
     console.log("Playing fallback content");
