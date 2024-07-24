@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,6 +85,8 @@
             cursor: pointer;
         }
         .nav-button {
+            display: block; /* Default to visible */
+    transition: opacity 0.3s ease-in-out;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -91,6 +94,10 @@
             font-size: 30px;
             cursor: pointer;
         }
+        .nav-button.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
         .prev {
             left: 20px;
         }
@@ -137,124 +144,133 @@
             margin-top: 20px; /* Space above buttons */
         }
         .slideshow-controls {
-    text-align: center;
-    margin: 20px 0;
-    position: relative;
-}
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
 
-.play-btn-container {
-    position: relative;
-    display: inline-block;
-}
+        .play-btn-container {
+            display: block; /* Hidden by default */
 
-.play-btn {
-    background-color: #ff704d;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    position: relative;
-    z-index: 2;
-}
+            position: relative;
+            display: inline-block;
+        }
 
-.play-btn:hover {
-    background-color: #e6603d;
-}
+        .play-btn {
+            background-color: #ff704d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative;
+            z-index: 1010; /* Ensure play button is above other elements */
+        }
 
-.play-btn.playing {
-    background-color: #ffa366;
-}
+        .play-btn:hover {
+            background-color: #e6603d;
+        }
 
-.ripple {
-    position: absolute;
+        .play-btn.playing {
+            background-color: #ffa366;
+        }
+
+        .ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 2px solid #ff704d;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 1000;
+            animation: ripple 4s linear infinite;
+        }
+
+        .ripple-1 {
+            animation-delay: 0s;
+        }
+
+        .ripple-2 {
+            animation-delay: 1.3s;
+        }
+
+        .ripple-3 {
+            animation-delay: 2.6s;
+        }
+
+        @keyframes ripple {
+            0% {
+                width: 50px;
+                height: 50px;
+                opacity: 1;
+            }
+            100% {
+                width: 100px;
+                height: 100px;
+                opacity: 0;
+            }
+        }
+        .play-btn.playing + .ripple {
+            animation: ripple 1.5s linear infinite;
+        }
+        .modal-content img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .modal-content img.fade-in {
+            opacity: 1;
+        }
+
+        .modal-content img.slide-in-right {
+            transform: translateX(100%);
+        }
+
+        .modal-content img.slide-in-left {
+            transform: translateX(-100%);
+        }
+
+        .modal-content img.drop-from-top {
+            transform: translateY(-100%);
+        }
+
+        .modal-content img.spin {
+            transform: rotate(360deg);
+        }
+
+        .modal-content img.slide-in,
+        .modal-content img.drop-in,
+        .modal-content img.spin-in {
+            opacity: 1;
+            transform: translate(0) rotate(0);
+        }
+        .play-btn-container.moved {
+    position: fixed;
+    left: 20px;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
-    border: 2px solid #ff704d;
-    border-radius: 50%;
-    opacity: 0;
-    z-index: 1;
-    animation: ripple 4s linear infinite;
-}
-
-.ripple-1 {
-    animation-delay: 0s;
-}
-
-.ripple-2 {
-    animation-delay: 1.3s;
-}
-
-.ripple-3 {
-    animation-delay: 2.6s;
-}
-
-@keyframes ripple {
-    0% {
-        width: 50px;
-        height: 50px;
-        opacity: 1;
-    }
-    100% {
-        width: 100px;
-        height: 100px;
-        opacity: 0;
-    }
-}
-.play-btn.playing + .ripple {
-    animation: ripple 1.5s linear infinite;
-}
-.modal-content img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-}
-
-.modal-content img.fade-in {
-    opacity: 1;
-}
-
-.modal-content img.slide-in-right {
-    transform: translateX(100%);
-}
-
-.modal-content img.slide-in-left {
-    transform: translateX(-100%);
-}
-
-.modal-content img.drop-from-top {
-    transform: translateY(-100%);
-}
-
-.modal-content img.spin {
-    transform: rotate(360deg);
-}
-
-.modal-content img.slide-in,
-.modal-content img.drop-in,
-.modal-content img.spin-in {
-    opacity: 1;
-    transform: translate(0) rotate(0);
+    transform: translateY(-50%);
+    z-index: 1020;
 }
     </style>
 </head>
-<div class="slideshow-controls">
-    <div class="play-btn-container">
-        <button id="playBtn" class="play-btn">▶</button>
-        <div class="ripple ripple-1"></div>
-        <div class="ripple ripple-2"></div>
-        <div class="ripple ripple-3"></div>
-    </div>
-</div>
 <body>
+    <div class="slideshow-controls">
+        <div class="play-btn-container">
+            <button id="playBtn" class="play-btn">▶</button>
+            <div class="ripple ripple-1"></div>
+            <div class="ripple ripple-2"></div>
+            <div class="ripple ripple-3"></div>
+        </div>
+    </div>
     <div id="gallery" class="gallery"></div>
 
     <div class="pagination">
@@ -275,11 +291,10 @@
     <div id="endModal" class="modal">
         <div class="modal-content">
             <p>There are thousands of other photos and videos on Google. Would you like to see them?<br>
-           <center> <button id="continueBtn" class="btn btn-continue">VIEW</button>
+            <center> <button id="continueBtn" class="btn btn-continue">VIEW</button>
             <button id="cancelBtn" class="btn btn-cancel">CANCEL</button></center>
         </div>
     </div>
-
     <script>
         // Sample JSON array of media item filenames (replace with your actual data)
         const mediaItems = [
@@ -322,7 +337,6 @@
         "https://fresh-teacher.github.io/Video/photos/IMG-20240723-WA0091.jpg",
         "https://fresh-teacher.github.io/Video/photos/IMG-20240723-WA0092.jpg",
         "https://fresh-teacher.github.io/Video/photos/IMG-20240723-WA0093.jpg",
-        "https://fresh-teacher.github.io/Video/photos/IMG-20240723-WA0094.jpg",
         "https://fresh-teacher.github.io/Video/photos/IMG-20240723-WA0095.jpg",
         "https://fresh-teacher.github.io/Video/photos/IMG-20240723-WA0096.jpg",
         "https://fresh-teacher.github.io/Video/photos/IMG-20240723-WA0099.jpg",
@@ -783,10 +797,10 @@
         "/photos/IMG-20240719-WA0075.jpg",
         "/photos/IMG-20240719-WA0000.jpg",
         "c194ce16dcb733361d9139d20ea8fd1d.mp4",
-        "IMG-20240723-WA0482.jpg"
+        "https://fresh-teacher.github.io/Video/photos/IMG-20240723-WA0482.jpg"
         ];
 
-    
+   
         const itemsPerPage = 12;
 let currentPage = 1;
 let currentPhotoIndex = 0;
@@ -813,10 +827,12 @@ function displayMedia(page) {
     const endIndex = startIndex + itemsPerPage;
     const pageItems = photoItems.slice(startIndex, endIndex);
 
+    
+
     pageItems.forEach((item, index) => {
         const mediaItem = document.createElement('div');
         mediaItem.className = 'media-item';
-        mediaItem.addEventListener('click', () => openModal(startIndex + index));
+        mediaItem.addEventListener('click', () => openModal(startIndex + index, false));
 
         const img = document.createElement('img');
         img.src = item;
@@ -845,11 +861,29 @@ function updatePaginationButtons() {
     }
 }
 
-function openModal(index) {
+function openModal(index, isSlideshow = false) {
     currentPhotoIndex = index;
     const modal = document.getElementById('modal');
     modal.style.display = 'block';
     updateModalContent();
+    
+    const playBtnContainer = document.querySelector('.play-btn-container');
+    
+    if (isSlideshow) {
+        hideNavButtons();
+        playBtnContainer.style.display = 'block';
+        movePlayButton();
+    } else {
+        showNavButtons();
+        playBtnContainer.style.display = 'none'; // Hide play button for direct photo viewing
+    }
+}
+
+function hideNavButtons() {
+    const prevButton = document.querySelector('.nav-button.prev');
+    const nextButton = document.querySelector('.nav-button.next');
+    prevButton.classList.add('hidden');
+    nextButton.classList.add('hidden');
 }
 
 function updateModalContent() {
@@ -884,6 +918,30 @@ function closeModal() {
     if (isPlaying) {
         toggleSlideshow();
     }
+    isPlaying = false;
+    const playBtn = document.getElementById('playBtn');
+    playBtn.textContent = '▶';
+    playBtn.classList.remove('playing');
+    
+    // Reset navigation buttons
+    showNavButtons();
+    
+    // Reset play button
+    const playBtnContainer = document.querySelector('.play-btn-container');
+    playBtnContainer.classList.remove('moved');
+    playBtnContainer.style.display = 'block'; // Show play button on main gallery
+}
+
+function showNavButtons() {
+    const prevButton = document.querySelector('.nav-button.prev');
+    const nextButton = document.querySelector('.nav-button.next');
+    prevButton.classList.remove('hidden');
+    nextButton.classList.remove('hidden');
+}
+
+function movePlayButton() {
+    const playBtnContainer = document.querySelector('.play-btn-container');
+    playBtnContainer.classList.add('moved');
 }
 
 function navigateModal(direction) {
@@ -909,20 +967,33 @@ let isPlaying = false;
 
 function toggleSlideshow() {
     const playBtn = document.getElementById('playBtn');
+    const playBtnContainer = document.querySelector('.play-btn-container');
     
     if (isPlaying) {
         clearInterval(slideshowInterval);
         playBtn.textContent = '▶';
         playBtn.classList.remove('playing');
+        // Don't move the button back when paused
     } else {
         slideshowInterval = setInterval(() => {
-            navigateModal(1); // Always move forward in slideshow
-        }, 3000); // Change slide every 3 seconds
+            navigateModal(1);
+        }, 5000); // Change slide every 5 seconds
         playBtn.textContent = '⏸';
         playBtn.classList.add('playing');
-        openModal(currentPhotoIndex);
+        playBtnContainer.classList.add('moved');
+        openModal(currentPhotoIndex, true);
     }
     isPlaying = !isPlaying;
+}
+
+function showPlayButton() {
+    const playBtnContainer = document.querySelector('.play-btn-container');
+    playBtnContainer.style.display = 'block';
+}
+
+function hidePlayButton() {
+    const playBtnContainer = document.querySelector('.play-btn-container');
+    playBtnContainer.style.display = 'none';
 }
 
 function handleSwipe() {
