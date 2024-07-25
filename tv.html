@@ -527,31 +527,78 @@ const fullscreenBtn = document.getElementById('fullscreenBtn');
 const programTable = document.getElementById('programTable');
 
 const programSchedule = [
-    { startTime: '6:00 AM', title: 'Wonder Woman', duration: '2:10:33', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Wonder%20Woman_Luganda_264_www.mobifliks.com.mp4' },
-    { startTime: '8:10:33 AM', title: 'Spider-Man - Far from Home', duration: '1:58:15', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Spider-Man-%20Far%20from%20Home%20by%20Vj%20Junior%20-Mobifliks.com.mp4' },
-    { startTime: '10:08:48 AM', title: 'Sonic the Hedgehog', duration: '1:39:10', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%20by%20Vj%20Kevo_mobifliks.com.mp4' },
-    { startTime: '11:47:58 AM', title: 'Sonic the Hedgehog 2', duration: '1:59:36', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%202%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
-    { startTime: '1:47:34 PM', title: 'Captain America - Civil War', duration: '1:44:57', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Captain%20America%20Civir%20War_Luganda_264_www.mobifliks.com.mp4' },
-    { startTime: '3:32:31 PM', title: 'Avengers - Infinity War', duration: '2:21:12', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Avengerz%20Infinity%20War_Luganda_264_www.mobifliks.com.mp4' },
-    { startTime: '5:53:43 PM', title: 'Man of Steel', duration: '2:14:06', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Man%20of%20Steel%20-VJ%20Junior%20-%20Mobifliks.com.mp4' },
-    { startTime: '8:07:49 PM', title: 'Batman vs Superman', duration: '3:03:48', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Batman%20vs%20Suprman_VJ%20Junior%20-%20Mobifliks.com.mp4' },
-    { startTime: '11:11:37 PM', title: 'Guardians of the Galaxy Vol. 3 Part 1', duration: '1:28:35', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Guardians%20of%20the%20Galaxy%20Vol.%203%20Part-%201%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
-    { startTime: '12:40:12 AM', title: 'Transformers - Rise of the Beasts', duration: '1:59:33', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Transformers-%20Rise%20of%20the%20Beasts%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
-    { startTime: '2:39:45 AM', title: 'Knights of the Zodiac', duration: '1:45:19', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Knights%20of%20the%20Zodiac%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
-    { startTime: '4:25:04 AM', title: 'Fast X', duration: '2:13:39', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Fast%20X%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
-    { startTime: '6:38:43 AM', title: 'Chupa', duration: '1:30:36', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Chupa%20by%20Vj%20Emmy%20-%20Mobifliks.com.mp4' },
-    { startTime: '8:09:19 AM', title: 'The Super Mario Bros. Movie', duration: '1:26:13', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Super%20Mario%20Bros.%20Movie%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
-    { startTime: '9:35:32 AM', title: 'The Magician\'s Elephant', duration: '1:43:05', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Magicians%20Elephant%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
-    { startTime: '11:18:37 AM', title: 'Pete\'s Dragon', duration: '1:42:45', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Petes%20Dragon%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
-    { startTime: '1:01:22 PM', title: 'The Amazing Maurice', duration: '1:23:33', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Amazing%20Maurice%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
-    { startTime: '2:24:55 PM', title: 'Avatar - The Way of Water 2', duration: '1:46:43', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Avatar-%20The%20Way%20of%20Water%202%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
-    { startTime: '4:11:38 PM', title: 'Puss in Boots', duration: '1:30:14', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Puss%20in%20Boots%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
-    { startTime: '5:41:52 PM', title: 'Puss in Boots - The Last Wish', duration: '1:42:16', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Puss%20in%20Boots-%20The%20Last%20Wish%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
-    { startTime: '7:24:08 PM', title: 'Strange World', duration: '1:42:37', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Strange%20World%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
-    { startTime: '9:06:45 PM', title: 'The Ice Age Adventures of Buck Wild', duration: '1:20:55', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Ice%20Age%20Adventures%20of%20Buck%20Wild%20by%20Vj%20Kevo.mp4' },
-    { startTime: '10:27:40 PM', title: 'The Boss Baby - Family Business', duration: '1:37:57', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Boss%20Baby%20-%20Family%20Business%20-%20VJ%20Kevo%20-%20Mobifliks.com.mp4' },
-    { startTime: '12:05:37 AM', title: 'Hotel Transylvania - Transformania', duration: '1:27:31', link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Hotel%20Transylvania-%20Transformania%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' }
+    // Wonder Woman - 6:00 AM to 8:11 AM (131 minutes)
+    { startTime: '6:00 AM', title: 'Wonder Woman', duration: 131, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Wonder%20Woman_Luganda_264_www.mobifliks.com.mp4' },
+
+    // Spider-Man - Far from Home - 8:11 AM to 10:09 AM (118 minutes)
+    { startTime: '8:11 AM', title: 'Spider-Man - Far from Home', duration: 118, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Spider-Man-%20Far%20from%20Home%20by%20Vj%20Junior%20-Mobifliks.com.mp4' },
+
+    // Sonic the Hedgehog - 10:09 AM to 11:48 AM (99 minutes)
+    { startTime: '10:09 AM', title: 'Sonic the Hedgehog', duration: 99, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%20by%20Vj%20Kevo_mobifliks.com.mp4' },
+
+    // Sonic the Hedgehog 2 - 11:48 AM to 1:47 PM (119 minutes)
+    { startTime: '11:48 AM', title: 'Sonic the Hedgehog 2', duration: 119, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%202%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
+
+    // Captain America: Civil War - 1:47 PM to 3:32 PM (105 minutes)
+    { startTime: '1:47 PM', title: 'Captain America - Civil War', duration: 105, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Captain%20America%20Civir%20War_Luganda_264_www.mobifliks.com.mp4' },
+
+    // Avengers: Infinity War - 3:32 PM to 5:53 PM (141 minutes)
+    { startTime: '3:32 PM', title: 'Avengers - Infinity War', duration: 141, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Avengerz%20Infinity%20War_Luganda_264_www.mobifliks.com.mp4' },
+
+    // Man of Steel - 5:53 PM to 8:07 PM (134 minutes)
+    { startTime: '5:53 PM', title: 'Man of Steel', duration: 134, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Man%20of%20Steel%20-VJ%20Junior%20-%20Mobifliks.com.mp4' },
+
+    // Batman vs Superman - 8:07 PM to 11:11 PM (184 minutes)
+    { startTime: '8:07 PM', title: 'Batman vs Superman', duration: 184, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Batman%20vs%20Suprman_VJ%20Junior%20-%20Mobifliks.com.mp4' },
+
+    // Guardians of the Galaxy Vol. 3 - 11:11 PM to 12:40 AM (89 minutes)
+    { startTime: '11:11 PM', title: 'Guardians of the Galaxy Vol. 3', duration: 89, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Guardians%20of%20the%20Galaxy%20Vol.%203%20Part-%201%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
+
+    // Transformers: Rise of the Beasts - 12:40 AM to 2:39 AM (119 minutes)
+    { startTime: '12:40 AM', title: 'Transformers - Rise of the Beasts', duration: 119, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Transformers-%20Rise%20of%20the%20Beasts%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
+
+    // Knights of the Zodiac - 2:39 AM to 4:24 AM (105 minutes)
+    { startTime: '2:39 AM', title: 'Knights of the Zodiac', duration: 105, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Knights%20of%20the%20Zodiac%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
+
+    // Fast X - 4:24 AM to 6:37 AM (133 minutes)
+    { startTime: '4:24 AM', title: 'Fast X', duration: 133, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Fast%20X%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
+
+    // Chupa - 6:37 AM to 8:50 AM (133 minutes)
+    { startTime: '6:37 AM', title: 'Chupa', duration: 133, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Chupa%20by%20Vj%20Emmy%20-%20Mobifliks.com.mp4' },
+
+    // The Super Mario Bros. Movie - 8:50 AM to 10:20 AM (90 minutes)
+    { startTime: '8:50 AM', title: 'The Super Mario Bros. Movie', duration: 90, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Super%20Mario%20Bros.%20Movie%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
+
+    // The Magicians Elephant - 10:20 AM to 12:01 PM (101 minutes)
+    { startTime: '10:20 AM', title: 'The Magicians Elephant', duration: 101, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Magicians%20Elephant%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
+
+    // Pete's Dragon - 12:01 PM to 1:48 PM (107 minutes)
+    { startTime: '12:01 PM', title: 'Pete\'s Dragon', duration: 107, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Petes%20Dragon%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
+
+    // The Amazing Maurice - 1:48 PM to 3:27 PM (99 minutes)
+    { startTime: '1:48 PM', title: 'The Amazing Maurice', duration: 99, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Amazing%20Maurice%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
+
+    // Avatar: The Way of Water - 3:27 PM to 6:15 PM (168 minutes)
+    { startTime: '3:27 PM', title: 'Avatar - The Way of Water', duration: 168, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Avatar-%20The%20Way%20of%20Water%202%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
+
+    // Puss in Boots - 6:15 PM to 7:45 PM (90 minutes)
+    { startTime: '6:15 PM', title: 'Puss in Boots', duration: 90, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Puss%20in%20Boots%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
+
+    // Puss in Boots: The Last Wish - 7:45 PM to 9:27 PM (102 minutes)
+    { startTime: '7:45 PM', title: 'Puss in Boots - The Last Wish', duration: 102, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Puss%20in%20Boots-%20The%20Last%20Wish%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
+     // Strange World - 9:27 PM to 11:09 PM (102 minutes)
+     { startTime: '9:27 PM', title: 'Strange World', duration: 102, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Strange%20World%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
+
+// The Ice Age Adventures of Buck Wild - 11:09 PM to 1:13 AM (124 minutes)
+{ startTime: '11:09 PM', title: 'The Ice Age Adventures of Buck Wild', duration: 124, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Ice%20Age%20Adventures%20of%20Buck%20Wild%20by%20Vj%20Kevo.mp4' },
+
+// The Boss Baby: Family Business - 1:13 AM to 3:03 AM (110 minutes)
+{ startTime: '1:13 AM', title: 'The Boss Baby - Family Business', duration: 110, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/The%20Boss%20Baby%20-%20Family%20Business%20-%20VJ%20Kevo%20-%20Mobifliks.com.mp4' },
+
+// Hotel Transylvania: Transformania - 3:03 AM to 4:23 AM (80 minutes)
+{ startTime: '3:03 AM', title: 'Hotel Transylvania - Transformania', duration: 80, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Hotel%20Transylvania-%20Transformania%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' }
 ];
+
 
 let serverTimeOffset = 0;
 let preloadedVideos = new Map();
