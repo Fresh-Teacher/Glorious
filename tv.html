@@ -7,7 +7,7 @@
     <style>
         :root {
             --primary-color: #ff8c00;
-            --secondary-color: #7c4201;
+            --secondary-color: #ffa500;
             --background-color: #fff3e0;
             --text-color: #333;
         }
@@ -19,14 +19,13 @@
             color: var(--text-color);
         }
         .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-}
-
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
 
         h1 {
             margin: 0;
@@ -63,6 +62,7 @@
             bottom: 0;
             left: 0;
             right: 0;
+            background-color: rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             padding: 10px;
@@ -131,9 +131,8 @@
 
 @media (max-width: 768px) {
     .container {
-        grid-template-columns: 1fr;
+        flex-direction: column;
     }
-}
     
     #programInfo {
         max-height: none;
@@ -151,7 +150,7 @@
     .video-controls input[type="range"] {
         margin: 0 5px;
     }
-
+}
         .video-container:hover .video-controls {
             opacity: 1;
         }
@@ -458,275 +457,10 @@
     font-size: 1.2em;
     font-weight: bold;
 }
-#finishedPrograms, #programInfo {
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
-
-.table-wrapper {
-    max-height: 300px; /* Adjust this value as needed */
-    overflow-y: auto;
-}
-
-.table-wrapper table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table-wrapper th, 
-.table-wrapper td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.table-wrapper th {
-    position: sticky;
-    top: 0;
-    background-color: var(--primary-color);
-    color: white;
-    z-index: 1;
-}
-
-.table-wrapper tr:nth-child(even) {
-    background-color: var(--background-color);
-}
-
-.table-wrapper tr:hover {
-    background-color: var(--secondary-color);
-    color: white;
-}
-
-/* For Webkit browsers */
-.table-wrapper::-webkit-scrollbar {
-    width: 8px;
-}
-
-.table-wrapper::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 4px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-color);
-}
-
-/* For Firefox */
-.table-wrapper {
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary-color) #f1f1f1;
-}
-
-#programInfo .current-program {
-    font-weight: bold;
-    background-color: var(--primary-color);
-    color: white;
-}
-
-@keyframes flashAnimation {
-    0%, 100% {
-        background-color: var(--primary-color);
-        color: white;
-    }
-    50% {
-        background-color: var(--secondary-color);
-        color: var(--text-color);
-    }
-}
-
-#programInfo .current-program {
-    animation: flashAnimation 5s ease-in-out infinite;
-}
-
-#programInfo .current-program:hover {
-    animation: none;
-    background-color: var(--secondary-color);
-    color: white;
-}
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-.live-indicator {
-    animation: blink 1s linear infinite;
-    display: inline-block;
-}
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#rewindButton {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#rewindButton:hover {
-    background-color: var(--secondary-color);
-}
-.touch-active .video-controls {
-    opacity: 1;
-}
-
-/* Existing styles */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-}
-
-.video-container {
-    position: relative;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding-top: 56.25%; /* 16:9 aspect ratio */
-    background-color: #000;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-#finishedPrograms, #programInfo {
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
-
-.table-wrapper {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-/* Responsive design for mobile devices */
-@media (max-width: 768px) {
-    .container {
-        grid-template-columns: 1fr;
-    }
-
-    .video-container {
-        max-width: 100%;
-        padding-top: 75%; /* 4:3 aspect ratio for better mobile viewing */
-    }
-
-    .table-wrapper {
-        max-height: 200px; /* Reduce table height on mobile */
-    }
-
-    #finishedPrograms, #programInfo {
-        padding: 10px;
-    }
-
-    .table-wrapper th, 
-    .table-wrapper td {
-        padding: 8px 5px;
-        font-size: 0.9em;
-    }
-
-    /* Adjust modal for mobile */
-    .modal-content {
-        width: 90%;
-        margin: 20% auto;
-        padding: 15px;
-    }
-}
-
-/* For very small screens */
-@media (max-width: 480px) {
-    .container {
-        padding: 10px;
-    }
-
-    .video-container {
-        padding-top: 100%; /* 1:1 aspect ratio for very small screens */
-    }
-
-    .table-wrapper {
-        max-height: 150px;
-    }
-
-    .table-wrapper th, 
-    .table-wrapper td {
-        padding: 6px 3px;
-        font-size: 0.8em;
-    }
-
-    h1 {
-        font-size: 1.8em;
-    }
-
-    h2 {
-        font-size: 1.5em;
-    }
-}
-
-/* Ensure video controls are usable on touch devices */
-@media (hover: none) {
-    .video-controls {
-        opacity: 1;
-    }
-}
     </style>
 </head>
 <body>
-    <div id="programModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <p id="modalMessage"></p>
-            <button id="rewindButton" style="display: none;">Rewind</button>
-        </div>
-    </div>
+
     <div class="container">
         <div class="main-content">
             <div id="videoContainer" class="video-container">
@@ -751,42 +485,41 @@
 
         <div id="finishedPrograms">
             <h2>Finished Programs</h2>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Program</th>
-                            <th>Time</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="finishedProgramsTable">
-                        <!-- Finished program data will be inserted here by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Program</th>
+                    </tr>
+                </thead>
+                <tbody id="finishedProgramsTable">
+                    <!-- Finished program data will be inserted here by JavaScript -->
+                </tbody>
+            </table>
         </div>
-        
         
         <div id="programInfo">
             <h2>Program Schedule</h2>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Program</th>
-                            <th>Time</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="programTable">
-                        <!-- Program data will be inserted here by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Program</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="programTable">
+                    <!-- Program data will be inserted here by JavaScript -->
+                </tbody>
+            </table>
         </div>
+    </div>
+       
+    </div>
 
-    <script>        
+    <script>
+
+        
 const videoPlayer = document.getElementById('videoPlayer');
 const muteBtn = document.getElementById('muteBtn');
 const volumeBar = document.getElementById('volumeBar');
@@ -795,10 +528,10 @@ const fullscreenBtn = document.getElementById('fullscreenBtn');
 const programTable = document.getElementById('programTable');
 
 const programSchedule = [
-    { startTime: '6:00 AM', title: 'Program 1', duration: 30, link: 'news.mp4' },
-    { startTime: '6:30 AM', title: 'Program 2', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Captain%20America%20Civir%20War_Luganda_264_www.mobifliks.com.mp4' },
-    { startTime: '8:00 AM', title: 'Program 3', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%202%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
-    { startTime: '9:00 AM', title: 'Program 4', duration: 60, link: 'program4.mp4' },
+    { startTime: '6:00 AM', title: 'Program 1', duration: 60, link: 'program1.mp4' },
+    { startTime: '7:00 AM', title: 'Program 2', duration: 60, link: 'program2.mp4' },
+    { startTime: '8:00 AM', title: 'Program 3', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%20by%20Vj%20Kevo_mobifliks.com.mp4' },
+    { startTime: '9:00 AM', title: 'Program 4', duration: 60, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%202%20by%20Vj%20Kevo%20-%20Mobifliks.com.mp4' },
     { startTime: '10:00 AM', title: 'Program 5', duration: 60, link: 'program5.mp4' },
     { startTime: '11:00 AM', title: 'Program 6', duration: 60, link: 'program6.mp4' },
     { startTime: '12:00 PM', title: 'Program 7', duration: 60, link: 'program7.mp4' },
@@ -821,11 +554,9 @@ const programSchedule = [
     { startTime: '5:00 AM', title: 'Program 24', duration: 60, link: 'program24.mp4' }
 ];
 
+
 let serverTimeOffset = 0;
 let preloadedVideos = new Map();
-let finishedPrograms = [];
-let currentVideoSource = null;
-let currentVideoTime = 0;
 
 function getServerTime() {
     return new Date(Date.now() + serverTimeOffset);
@@ -858,89 +589,20 @@ function getCurrentProgram() {
     return { program: programSchedule[0], index: 0, elapsedTime: 0 };
 }
 
-function handleProgramClick(program, status) {
-    const modal = document.getElementById('programModal');
-    const modalMessage = document.getElementById('modalMessage');
-    const rewindButton = document.getElementById('rewindButton');
-
-    if (status === 'Upcoming') {
-        modalMessage.textContent = "You cannot watch a program before its time.";
-        rewindButton.style.display = 'none';
-    } else if (status === '🔴 LIVE') {
-        modalMessage.textContent = "This program is live now.";
-        rewindButton.style.display = 'none';
-    } else if (status === 'Finished') {
-        modalMessage.textContent = "This program has ended. Would you like to rewind it?";
-        rewindButton.style.display = 'inline-block';
-        rewindButton.onclick = () => rewindProgram(program);
-    }
-
-    modal.style.display = 'block';
-}
-
-function rewindProgram(program) {
-    currentVideoSource = videoPlayer.src;
-    currentVideoTime = videoPlayer.currentTime;
-
-    videoPlayer.src = program.link;
-    videoPlayer.play();
-
-    videoPlayer.onended = resumeCurrentProgram;
-
-    document.getElementById('programModal').style.display = 'none';
-}
-
-function resumeCurrentProgram() {
-    videoPlayer.src = currentVideoSource;
-    videoPlayer.currentTime = currentVideoTime;
-    videoPlayer.play();
-
-    videoPlayer.onended = null;
-}
-
-function createProgramRow(program, status) {
-    const row = document.createElement('tr');
-    let statusHtml = status;
-    if (status === '🔴 LIVE') {
-        statusHtml = '<span class="live-indicator">🔴 LIVE</span>';
-    }
-    row.innerHTML = `
-        <td>${program.title}</td>
-        <td>${program.startTime}</td>
-        <td>${statusHtml}</td>
-    `;
-    row.onclick = () => handleProgramClick(program, status);
-    return row;
-}
-
 function updateProgramInfo() {
     programTable.innerHTML = '';
-    const finishedProgramsTable = document.getElementById('finishedProgramsTable');
-    finishedProgramsTable.innerHTML = '';
     const currentProgram = getCurrentProgram();
-    const now = getServerTime();
-    const currentTime = now.getHours() * 60 + now.getMinutes();
 
     programSchedule.forEach((program, index) => {
-        const programStartMinutes = parseTime(program.startTime);
-        const programEndMinutes = programStartMinutes + program.duration;
-        
-        let status = '';
-
-        if (currentTime > programEndMinutes) {
-            status = 'Finished';
-            if (!finishedPrograms.includes(program)) {
-                finishedPrograms.push(program);
-            }
-            finishedProgramsTable.appendChild(createProgramRow(program, status));
-        } else {
-            if (index === currentProgram.index) {
-                status = '🔴 LIVE';
-            } else if (currentTime < programStartMinutes) {
-                status = 'Upcoming';
-            }
-            programTable.appendChild(createProgramRow(program, status));
+        const row = document.createElement('tr');
+        if (index === currentProgram.index) {
+            row.classList.add('current-program');
         }
+        row.innerHTML = `
+            <td>${program.startTime}</td>
+            <td>${program.title} ${index === currentProgram.index ? '<span class="now-playing">🔴 LIVE</span>' : ''}</td>
+        `;
+        programTable.appendChild(row);
     });
 }
 
@@ -982,42 +644,9 @@ function preloadNextVideos() {
     });
 }
 
-function playProgram(program, elapsedTime = 0) {
-    let videoSource = program.link;
-    if (preloadedVideos.has(program.link)) {
-        videoSource = preloadedVideos.get(program.link);
-    }
-    
-    videoPlayer.src = videoSource;
-    videoPlayer.currentTime = elapsedTime * 60; // Convert to seconds
-    
-    videoPlayer.play().catch(error => {
-        console.error("Error playing video:", error);
-        playFallbackContent();
-    });
-}
-
 function playCurrentProgram() {
     const { program, elapsedTime } = getCurrentProgram();
     
-    if (elapsedTime >= program.duration) {
-        const nextProgramIndex = (programSchedule.indexOf(program) + 1) % programSchedule.length;
-        const nextProgram = programSchedule[nextProgramIndex];
-        
-        if (!finishedPrograms.includes(program)) {
-            finishedPrograms.push(program);
-        }
-        
-        playProgram(nextProgram);
-    } else {
-        playProgram(program, elapsedTime);
-    }
-    
-    updateProgramInfo();
-    preloadNextVideos();
-}
-
-function playProgram(program, elapsedTime = 0) {
     let videoSource = program.link;
     if (preloadedVideos.has(program.link)) {
         videoSource = preloadedVideos.get(program.link);
@@ -1030,6 +659,9 @@ function playProgram(program, elapsedTime = 0) {
         console.error("Error playing video:", error);
         playFallbackContent();
     });
+    
+    updateProgramInfo();
+    preloadNextVideos();
 }
 
 function playFallbackContent() {
@@ -1154,7 +786,8 @@ function syncServerTime() {
 // Initialize
 playCurrentProgram();
 scheduleNextProgramChange();
-setInterval(updateProgramInfo, 60000); // Update every minutesyncServerTime();
+setInterval(updateProgramInfo, 60000);
+syncServerTime();
 setInterval(syncServerTime, 300000);
 setInterval(cleanupPreloadedVideos, 5 * 60 * 1000);
 
@@ -1162,23 +795,6 @@ function updateTimer() {
     const now = new Date();
     const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
     document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', timeOptions);
-}
-
-// Add touch event listeners for mobile devices
-if ('ontouchstart' in window) {
-    const videoContainer = document.querySelector('.video-container');
-    let touchTimeout;
-
-    videoContainer.addEventListener('touchstart', () => {
-        clearTimeout(touchTimeout);
-        videoContainer.classList.add('touch-active');
-    });
-
-    videoContainer.addEventListener('touchend', () => {
-        touchTimeout = setTimeout(() => {
-            videoContainer.classList.remove('touch-active');
-        }, 3000); // Hide controls after 3 seconds
-    });
 }
 
 function showPlayButton() {
@@ -1196,21 +812,8 @@ videoPlayer.addEventListener('error', (e) => {
     showPlayButton();
 });
 
-// Event listeners for modal
-document.getElementsByClassName('close')[0].onclick = function() {
-    document.getElementById('programModal').style.display = 'none';
-}
-
-window.onclick = function(event) {
-    const modal = document.getElementById('programModal');
-    if (event.target == modal) {
-        modal.style.display = 'none';
-    }
-}
-
-// Initialize
-playCurrentProgram();
-setInterval(updateProgramInfo, 60000);
+// Start the timer
+setInterval(updateTimer, 1000);
   </script>
 </body>
 </html>
