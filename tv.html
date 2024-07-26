@@ -904,14 +904,6 @@ function parseTime(timeString) {
     return hours * 60 + minutes;
 }
 
-function switchToLiveProgram() {
-    isPlayingFinishedProgram = false;
-    playCurrentProgram();
-    showMessage("Switched back to live broadcast");
-}
-
-
-
 function getCurrentProgram() {
     const now = getServerTime();
     const currentTime = now.getHours() * 60 + now.getMinutes();
@@ -929,31 +921,42 @@ function getCurrentProgram() {
 }
 
 // Add this function to handle showing the modal
-function showModal(message, onAccept = null) {
-        const modal = document.getElementById('feedbackModal');
-        const modalMessage = document.getElementById('modalMessage');
-        const modalAccept = document.getElementById('modalAccept');
-        const modalCancel = document.getElementById('modalCancel');
-        
-        modalMessage.textContent = message;
-        modal.style.display = 'block';
+function showModal(message, onAccept = null, onOK = null) {
+    const modal = document.getElementById('feedbackModal');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalAccept = document.getElementById('modalAccept');
+    const modalCancel = document.getElementById('modalCancel');
+    
+    modalMessage.textContent = message;
+    modal.style.display = 'block';
 
-        if (onAccept) {
-            modalAccept.style.display = 'inline-block';
-            modalCancel.style.display = 'inline-block';
-            modalAccept.onclick = () => {
-                onAccept();
-                modal.style.display = 'none';
-            };
-            modalCancel.onclick = () => {
-                modal.style.display = 'none';
-            };
-        } else {
-            modalAccept.style.display = 'none';
-            modalCancel.style.display = 'none';
-        }
+    if (onAccept) {
+        modalAccept.style.display = 'inline-block';
+        modalCancel.style.display = 'inline-block';
+        modalAccept.textContent = 'Yes';
+        modalCancel.textContent = 'No';
+        modalAccept.onclick = () => {
+            onAccept();
+            modal.style.display = 'none';
+        };
+        modalCancel.onclick = () => {
+            modal.style.display = 'none';
+        };
+    } else {
+        modalAccept.style.display = 'inline-block';
+        modalCancel.style.display = 'none';
+        modalAccept.textContent = 'OK';
+        modalAccept.onclick = () => {
+            modal.style.display = 'none';
+            if (onOK) onOK();
+        };
     }
+}
 
+function scrollToVideoContainer() {
+    const videoContainer = document.getElementById('videoContainer');
+    videoContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 // Modify the updateProgramInfo function
 function updateProgramInfo() {
@@ -988,13 +991,13 @@ function updateProgramInfo() {
             // Add click event listener to the row
             row.addEventListener('click', () => {
                 if (index === currentProgram.index) {
-                    if (isPlayingFinishedProgram) {
-                        showModal('Do you want to switch back to the live broadcast?', switchToLiveProgram);
-                    } else {
-                        showModal('This program is currently playing live.');
-                    }
+                    const endTime = new Date(now.getTime() + (programEndMinutes - currentTime) * 60000);
+                    const endTimeString = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    showModal(`${program.title} is currently running and it will end at ${endTimeString}.`, null, scrollToVideoContainer);
                 } else if (currentTime < programStartMinutes) {
-                    showModal('You cannot watch this program before its scheduled time.');
+                    const endTime = new Date(now.getTime() + (programEndMinutes - programStartMinutes) * 60000);
+                    const endTimeString = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    showModal(`Unfortunately, you cannot watch ${program.title} at this time. This program will be aired from ${program.startTime} to ${endTimeString}.`);
                 }
             });
             
@@ -1007,56 +1010,53 @@ function updateProgramInfo() {
 
 // Modify the updateFinishedPrograms function
 function updateFinishedPrograms() {
-        const finishedProgramsTable = document.getElementById('finishedProgramsTable');
-        finishedProgramsTable.innerHTML = '';
-        const now = getServerTime();
-        const currentTime = now.getHours() * 60 + now.getMinutes();
+    const finishedProgramsTable = document.getElementById('finishedProgramsTable');
+    finishedProgramsTable.innerHTML = '';
+    const now = getServerTime();
+    const currentTime = now.getHours() * 60 + now.getMinutes();
 
-        programSchedule.forEach((program, index) => {
-            const programStartMinutes = parseTime(program.startTime);
-            const programEndMinutes = programStartMinutes + program.duration;
+    programSchedule.forEach((program, index) => {
+        const programStartMinutes = parseTime(program.startTime);
+        const programEndMinutes = programStartMinutes + program.duration;
+        
+        if (currentTime > programEndMinutes) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${program.title}</td>
+            `;
             
-            if (currentTime > programEndMinutes) {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${program.title}</td>
-                `;
-                
-                row.addEventListener('click', () => {
-                    showModal('Would you like to rewind and watch this finished program?', () => playFinishedProgram(program));
-                });
-                
-                finishedProgramsTable.appendChild(row);
-            }
-        });
-    }
+            row.addEventListener('click', () => {
+                showModal('Would you like to rewind and watch this finished program?', () => playFinishedProgram(program));
+            });
+            
+            finishedProgramsTable.appendChild(row);
+        }
+    });
+}
 
     let isPlayingFinishedProgram = false;
 
     function playFinishedProgram(program) {
-    isPlayingFinishedProgram = true;
-    let videoSource = program.link;
-    if (preloadedVideos.has(program.link)) {
-        videoSource = preloadedVideos.get(program.link);
+        isPlayingFinishedProgram = true;
+        let videoSource = program.link;
+        if (preloadedVideos.has(program.link)) {
+            videoSource = preloadedVideos.get(program.link);
+        }
+        
+        videoPlayer.src = videoSource;
+        videoPlayer.currentTime = 0; // Start from the beginning
+        
+        videoPlayer.play().catch(error => {
+            console.error("Error playing video:", error);
+            playFallbackContent();
+        });
+
+        // Add an event listener for when the video ends
+        videoPlayer.addEventListener('ended', returnToLiveBroadcast, { once: true });
+
+        // Display a message indicating that a finished program is playing
+        showMessage("Playing finished program: " + program.title);
     }
-    
-    videoPlayer.src = videoSource;
-    videoPlayer.currentTime = 0; // Start from the beginning
-    
-    videoPlayer.play().catch(error => {
-        console.error("Error playing video:", error);
-        playFallbackContent();
-    });
-
-    // Add an event listener for when the video ends
-    videoPlayer.addEventListener('ended', returnToLiveBroadcast, { once: true });
-
-    // Display a message indicating that a finished program is playing
-    showMessage("Playing finished program: " + program.title);
-
-    // Update the UI to reflect that a finished program is playing
-    updateProgramInfo();
-}
 
     function returnToLiveBroadcast() {
         isPlayingFinishedProgram = false;
@@ -1065,24 +1065,9 @@ function updateFinishedPrograms() {
     }
 
     function showMessage(message) {
-    const messageElement = document.createElement('div');
-    messageElement.textContent = message;
-    messageElement.style.position = 'absolute';
-    messageElement.style.top = '10px';
-    messageElement.style.left = '50%';
-    messageElement.style.transform = 'translateX(-50%)';
-    messageElement.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    messageElement.style.color = 'white';
-    messageElement.style.padding = '10px';
-    messageElement.style.borderRadius = '5px';
-    messageElement.style.zIndex = '1000';
-
-    document.body.appendChild(messageElement);
-
-    setTimeout(() => {
-        document.body.removeChild(messageElement);
-    }, 3000);
-}
+        // You can implement this function to show a temporary message on the screen
+        console.log(message); // For now, we'll just log to console
+    }
 
 
 function preloadVideo(url) {
