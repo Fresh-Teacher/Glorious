@@ -889,6 +889,7 @@ const programSchedule = [
 let serverTimeOffset = 0;
 let preloadedVideos = new Map();
 
+
 function getServerTime() {
     return new Date(Date.now() + serverTimeOffset);
 }
@@ -991,9 +992,16 @@ function updateProgramInfo() {
             // Add click event listener to the row
             row.addEventListener('click', () => {
                 if (index === currentProgram.index) {
-                    const endTime = new Date(now.getTime() + (programEndMinutes - currentTime) * 60000);
-                    const endTimeString = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    showModal(`${program.title} is currently running and it will end at ${endTimeString}.`, null, scrollToVideoContainer);
+                    if (isPlayingFinishedProgram) {
+                        showModal('Are you sure you want to switch from the finished playing program to the current live program?', 
+                            returnToLiveBroadcast, 
+                            scrollToVideoContainer
+                        );
+                    } else {
+                        const endTime = new Date(now.getTime() + (programEndMinutes - currentTime) * 60000);
+                        const endTimeString = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                        showModal(`${program.title} is currently running and it will end at ${endTimeString}.`, null, scrollToVideoContainer);
+                    }
                 } else if (currentTime < programStartMinutes) {
                     const endTime = new Date(now.getTime() + (programEndMinutes - programStartMinutes) * 60000);
                     const endTimeString = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
@@ -1006,6 +1014,11 @@ function updateProgramInfo() {
     });
 
     updateFinishedPrograms();
+}
+
+function showMessage(message) {
+    // You can implement this function to show a temporary message on the screen
+    console.log(message); // For now, we'll just log to console
 }
 
 // Modify the updateFinishedPrograms function
@@ -1037,32 +1050,32 @@ function updateFinishedPrograms() {
     let isPlayingFinishedProgram = false;
 
     function playFinishedProgram(program) {
-        isPlayingFinishedProgram = true;
-        let videoSource = program.link;
-        if (preloadedVideos.has(program.link)) {
-            videoSource = preloadedVideos.get(program.link);
-        }
-        
-        videoPlayer.src = videoSource;
-        videoPlayer.currentTime = 0; // Start from the beginning
-        
-        videoPlayer.play().catch(error => {
-            console.error("Error playing video:", error);
-            playFallbackContent();
-        });
-
-        // Add an event listener for when the video ends
-        videoPlayer.addEventListener('ended', returnToLiveBroadcast, { once: true });
-
-        // Display a message indicating that a finished program is playing
-        showMessage("Playing finished program: " + program.title);
+    isPlayingFinishedProgram = true;
+    let videoSource = program.link;
+    if (preloadedVideos.has(program.link)) {
+        videoSource = preloadedVideos.get(program.link);
     }
+    
+    videoPlayer.src = videoSource;
+    videoPlayer.currentTime = 0; // Start from the beginning
+    
+    videoPlayer.play().catch(error => {
+        console.error("Error playing video:", error);
+        playFallbackContent();
+    });
 
-    function returnToLiveBroadcast() {
-        isPlayingFinishedProgram = false;
-        playCurrentProgram();
-        showMessage("Returning to live broadcast");
-    }
+    // Add an event listener for when the video ends
+    videoPlayer.addEventListener('ended', returnToLiveBroadcast, { once: true });
+
+    // Display a message indicating that a finished program is playing
+    showMessage("Playing finished program: " + program.title);
+}
+
+function returnToLiveBroadcast() {
+    isPlayingFinishedProgram = false;
+    playCurrentProgram();
+    showMessage("Returning to live broadcast");
+}
 
     function showMessage(message) {
         // You can implement this function to show a temporary message on the screen
@@ -1110,31 +1123,31 @@ function preloadNextVideos() {
 
 // Modify the playCurrentProgram function
 function playCurrentProgram() {
-        if (isPlayingFinishedProgram) {
-            return; // Don't interrupt a finished program that's playing
-        }
-
-        const { program, elapsedTime } = getCurrentProgram();
-        
-        let videoSource = program.link;
-        if (preloadedVideos.has(program.link)) {
-            videoSource = preloadedVideos.get(program.link);
-        }
-        
-        videoPlayer.src = videoSource;
-        videoPlayer.currentTime = elapsedTime * 60; // Convert to seconds
-        
-        videoPlayer.play().catch(error => {
-            console.error("Error playing video:", error);
-            playFallbackContent();
-        });
-        
-        updateProgramInfo();
-        preloadNextVideos();
-
-        // Remove any existing 'ended' event listeners
-        videoPlayer.removeEventListener('ended', returnToLiveBroadcast);
+    if (isPlayingFinishedProgram) {
+        return; // Don't interrupt a finished program that's playing
     }
+
+    const { program, elapsedTime } = getCurrentProgram();
+    
+    let videoSource = program.link;
+    if (preloadedVideos.has(program.link)) {
+        videoSource = preloadedVideos.get(program.link);
+    }
+    
+    videoPlayer.src = videoSource;
+    videoPlayer.currentTime = elapsedTime * 60; // Convert to seconds
+    
+    videoPlayer.play().catch(error => {
+        console.error("Error playing video:", error);
+        playFallbackContent();
+    });
+    
+    updateProgramInfo();
+    preloadNextVideos();
+
+    // Remove any existing 'ended' event listeners
+    videoPlayer.removeEventListener('ended', returnToLiveBroadcast);
+}
 
         // Modify the scheduleNextProgramChange function
         function scheduleNextProgramChange() {
