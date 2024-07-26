@@ -904,6 +904,14 @@ function parseTime(timeString) {
     return hours * 60 + minutes;
 }
 
+function switchToLiveProgram() {
+    isPlayingFinishedProgram = false;
+    playCurrentProgram();
+    showMessage("Switched back to live broadcast");
+}
+
+
+
 function getCurrentProgram() {
     const now = getServerTime();
     const currentTime = now.getHours() * 60 + now.getMinutes();
@@ -980,7 +988,11 @@ function updateProgramInfo() {
             // Add click event listener to the row
             row.addEventListener('click', () => {
                 if (index === currentProgram.index) {
-                    showModal('This program is currently playing.');
+                    if (isPlayingFinishedProgram) {
+                        showModal('Do you want to switch back to the live broadcast?', switchToLiveProgram);
+                    } else {
+                        showModal('This program is currently playing live.');
+                    }
                 } else if (currentTime < programStartMinutes) {
                     showModal('You cannot watch this program before its scheduled time.');
                 }
@@ -1022,26 +1034,29 @@ function updateFinishedPrograms() {
     let isPlayingFinishedProgram = false;
 
     function playFinishedProgram(program) {
-        isPlayingFinishedProgram = true;
-        let videoSource = program.link;
-        if (preloadedVideos.has(program.link)) {
-            videoSource = preloadedVideos.get(program.link);
-        }
-        
-        videoPlayer.src = videoSource;
-        videoPlayer.currentTime = 0; // Start from the beginning
-        
-        videoPlayer.play().catch(error => {
-            console.error("Error playing video:", error);
-            playFallbackContent();
-        });
-
-        // Add an event listener for when the video ends
-        videoPlayer.addEventListener('ended', returnToLiveBroadcast, { once: true });
-
-        // Display a message indicating that a finished program is playing
-        showMessage("Playing finished program: " + program.title);
+    isPlayingFinishedProgram = true;
+    let videoSource = program.link;
+    if (preloadedVideos.has(program.link)) {
+        videoSource = preloadedVideos.get(program.link);
     }
+    
+    videoPlayer.src = videoSource;
+    videoPlayer.currentTime = 0; // Start from the beginning
+    
+    videoPlayer.play().catch(error => {
+        console.error("Error playing video:", error);
+        playFallbackContent();
+    });
+
+    // Add an event listener for when the video ends
+    videoPlayer.addEventListener('ended', returnToLiveBroadcast, { once: true });
+
+    // Display a message indicating that a finished program is playing
+    showMessage("Playing finished program: " + program.title);
+
+    // Update the UI to reflect that a finished program is playing
+    updateProgramInfo();
+}
 
     function returnToLiveBroadcast() {
         isPlayingFinishedProgram = false;
@@ -1050,9 +1065,24 @@ function updateFinishedPrograms() {
     }
 
     function showMessage(message) {
-        // You can implement this function to show a temporary message on the screen
-        console.log(message); // For now, we'll just log to console
-    }
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    messageElement.style.position = 'absolute';
+    messageElement.style.top = '10px';
+    messageElement.style.left = '50%';
+    messageElement.style.transform = 'translateX(-50%)';
+    messageElement.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    messageElement.style.color = 'white';
+    messageElement.style.padding = '10px';
+    messageElement.style.borderRadius = '5px';
+    messageElement.style.zIndex = '1000';
+
+    document.body.appendChild(messageElement);
+
+    setTimeout(() => {
+        document.body.removeChild(messageElement);
+    }, 3000);
+}
 
 
 function preloadVideo(url) {
