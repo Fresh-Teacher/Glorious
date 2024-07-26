@@ -659,79 +659,61 @@
         font-size: 25px;
     }
 }
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
+#programInfo tr, #finishedPrograms tr {
+        cursor: pointer;
+    }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 5px;
-}
+    #programInfo thead tr, #finishedPrograms thead tr {
+        cursor: default;
+    }
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
 
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-#modalVideoContainer {
-    margin-top: 20px;
-    width: 100%;
-}
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
 
-#modalVideoPlayer {
-    width: 100%;
-    max-height: 300px;
-}
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 5px;
+        text-align: center;
+    }
 
-#rewindButton {
-    margin-top: 10px;
-    padding: 10px 15px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
 
-#rewindButton:hover {
-    background-color: var(--secondary-color);
-}
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
     </style>
 </head>
 <body>
-    <div id="feedbackModal" class="modal">
+    <div id="programModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <p id="modalMessage"></p>
-            <div id="modalVideoContainer" style="display: none;">
-                <video id="modalVideoPlayer" controls></video>
-            </div>
-            <button id="rewindButton" style="display: none;">Rewind and Watch</button>
         </div>
     </div>
-    
     <div class="container">
         <div class="main-content">
             <div id="videoContainer" class="video-container">
@@ -755,7 +737,7 @@
         </div>
 
         <div id="finishedPrograms">
-            <h2>Finished Programmes</h2>
+            <h2>Finished Programs</h2>
             <table>
                 <thead>
                     <tr>
@@ -770,7 +752,7 @@
         </div>
         
         <div id="programInfo">
-            <h2>Programmes Outline</h2>
+            <h2>Program Schedule</h2>
             <table>
                 <thead>
                     <tr>
@@ -800,7 +782,7 @@ const programTable = document.getElementById('programTable');
 
 const programSchedule = [
     // Wonder Woman - 6:00 AM to 8:11 AM (131 minutes)
-    { startTime: '6:00 AM', title: 'Wonder Woman', duration: 131, link: 'news.mp4' },
+    { startTime: '6:00 AM', title: 'Wonder Woman', duration: 131, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Wonder%20Woman_Luganda_264_www.mobifliks.com.mp4' },
 
     // Spider-Man - Far from Home - 8:11 AM to 10:09 AM (118 minutes)
     { startTime: '8:11 AM', title: 'Spider-Man - Far from Home', duration: 118, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Spider-Man-%20Far%20from%20Home%20by%20Vj%20Junior%20-Mobifliks.com.mp4' },
@@ -907,7 +889,8 @@ function getCurrentProgram() {
 }
 
 function updateProgramInfo() {
-    programTable.innerHTML = '';
+    const tbody = programTable.querySelector('tbody') || programTable;
+    tbody.innerHTML = '';
     const currentProgram = getCurrentProgram();
     const now = getServerTime();
     const currentTime = now.getHours() * 60 + now.getMinutes();
@@ -930,14 +913,13 @@ function updateProgramInfo() {
             }
 
             row.innerHTML = `
-                <td class="program-name">${program.title}</td>
+                <td>${program.title}</td>
                 <td>${program.startTime}</td>
                 <td>${status}</td>
             `;
-            
-            const programNameCell = row.querySelector('.program-name');
-            programNameCell.addEventListener('click', () => showFeedback(program, status));
-            
+
+            row.addEventListener('click', () => showProgramModal(program, status));
+
             programTable.appendChild(row);
         }
     });
@@ -945,101 +927,87 @@ function updateProgramInfo() {
     updateFinishedPrograms();
 }
 
+function showProgramModal(program, status) {
+    const modal = document.getElementById('programModal');
+    const modalMessage = document.getElementById('modalMessage');
+    
+    if (status === 'Ended') {
+        modalMessage.innerHTML = `
+            This program has already ended. 
+            <br><br>
+            <button id="rewindButton">Rewind and Watch</button>
+        `;
+        document.getElementById('rewindButton').addEventListener('click', () => {
+            rewindAndPlayProgram(program);
+            modal.style.display = "none";
+        });
+    } else if (status.includes('LIVE')) {
+        modalMessage.textContent = "This program is currently playing.";
+    } else if (status === 'Upcoming') {
+        modalMessage.textContent = "You cannot watch this program before its scheduled time.";
+    }
+    
+    modal.style.display = "block";
+}
+
+let originalProgram = null;
+let pauseTimestamp = 0;
+
+// Add this function to handle the end of a finished program
+function handleFinishedProgramEnd() {
+    if (originalProgram) {
+        console.log("Finished program ended. Switching back to live program.");
+        originalProgram = null;
+        pauseTimestamp = 0;
+        playCurrentProgram();
+    }
+}
+
+// Modify the rewindAndPlayProgram function
+function rewindAndPlayProgram(program) {
+    originalProgram = getCurrentProgram().program;
+    pauseTimestamp = Date.now();
+    
+    videoPlayer.src = program.link;
+    videoPlayer.currentTime = 0;
+    videoPlayer.play().catch(error => {
+        console.error("Error playing finished program:", error);
+        handleFinishedProgramEnd();
+    });
+}
+
+// Add these event listeners after initializing the videoPlayer
+videoPlayer.addEventListener('ended', handleFinishedProgramEnd);
+
+videoPlayer.addEventListener('error', (e) => {
+    console.error("Video error:", e);
+    if (originalProgram) {
+        handleFinishedProgramEnd();
+    } else {
+        playFallbackContent();
+    }
+});
+
 function updateFinishedPrograms() {
     const finishedProgramsTable = document.getElementById('finishedProgramsTable');
     finishedProgramsTable.innerHTML = '';
     const now = getServerTime();
     const currentTime = now.getHours() * 60 + now.getMinutes();
 
-    programSchedule.forEach((program) => {
+    programSchedule.forEach((program, index) => {
         const programStartMinutes = parseTime(program.startTime);
         const programEndMinutes = programStartMinutes + program.duration;
         
         if (currentTime > programEndMinutes) {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td class="program-name">${program.title}</td>
+                <td>${program.title}</td>
             `;
-            
-            const programNameCell = row.querySelector('.program-name');
-            programNameCell.addEventListener('click', () => showFeedback(program, 'Finished'));
-            
+            row.addEventListener('click', () => showProgramModal(program, 'Ended'));
             finishedProgramsTable.appendChild(row);
         }
     });
 }
-
-let currentVideoPlayer;
-
-function showFeedback(program, status) {
-    const modal = document.getElementById('feedbackModal');
-    const modalMessage = document.getElementById('modalMessage');
-    const modalVideoContainer = document.getElementById('modalVideoContainer');
-    const modalVideoPlayer = document.getElementById('modalVideoPlayer');
-    const rewindButton = document.getElementById('rewindButton');
-    
-    let message;
-    if (status.includes('LIVE')) {
-        message = `${program.title} is currently showing. Enjoy watching!`;
-        modalVideoContainer.style.display = 'none';
-        rewindButton.style.display = 'none';
-    } else if (status === 'Upcoming') {
-        message = `${program.title} is scheduled for ${program.startTime}. You cannot watch a program before its time.`;
-        modalVideoContainer.style.display = 'none';
-        rewindButton.style.display = 'none';
-    } else if (status === 'Finished') {
-        message = `${program.title} has already finished. Would you like to rewind and watch it?`;
-        rewindButton.style.display = 'block';
-        modalVideoContainer.style.display = 'none';
-        
-        rewindButton.onclick = function() {
-            modalVideoContainer.style.display = 'block';
-            modalVideoPlayer.src = program.link;
-            modalVideoPlayer.load();
-            
-            // Pause the current live video
-            currentVideoPlayer = document.getElementById('videoPlayer');
-            if (currentVideoPlayer) {
-                currentVideoPlayer.pause();
-            }
-        };
-    }
-    
-    modalMessage.textContent = message;
-    modal.style.display = 'block';
-}
-
-// Close modal when clicking on the close button or outside the modal
-window.onclick = function(event) {
-    const modal = document.getElementById('feedbackModal');
-    const modalVideoPlayer = document.getElementById('modalVideoPlayer');
-    if (event.target == modal || event.target.className == 'close') {
-        modal.style.display = 'none';
-        if (modalVideoPlayer) {
-            modalVideoPlayer.pause();
-            modalVideoPlayer.currentTime = 0;
-        }
-        // Resume the live video
-        if (currentVideoPlayer) {
-            currentVideoPlayer.play();
-        }
-    }
-}
-
-// Add this to your existing initialization code
-document.querySelector('.close').addEventListener('click', () => {
-    const modal = document.getElementById('feedbackModal');
-    const modalVideoPlayer = document.getElementById('modalVideoPlayer');
-    modal.style.display = 'none';
-    if (modalVideoPlayer) {
-        modalVideoPlayer.pause();
-        modalVideoPlayer.currentTime = 0;
-    }
-    // Resume the live video
-    if (currentVideoPlayer) {
-        currentVideoPlayer.play();
-    }
-});
 
 function preloadVideo(url) {
     return new Promise((resolve, reject) => {
@@ -1079,20 +1047,39 @@ function preloadNextVideos() {
     });
 }
 
+// Update the playCurrentProgram function
 function playCurrentProgram() {
     const { program, elapsedTime } = getCurrentProgram();
     
-    let videoSource = program.link;
-    if (preloadedVideos.has(program.link)) {
-        videoSource = preloadedVideos.get(program.link);
+    if (originalProgram && program !== originalProgram) {
+        // The original program has ended, play the current program
+        originalProgram = null;
+        pauseTimestamp = 0;
     }
     
-    videoPlayer.src = videoSource;
-    videoPlayer.currentTime = elapsedTime * 60; // Convert to seconds
+    let videoSource = originalProgram ? originalProgram.link : program.link;
+    if (preloadedVideos.has(videoSource)) {
+        videoSource = preloadedVideos.get(videoSource);
+    }
+    
+    if (videoPlayer.src !== videoSource) {
+        videoPlayer.src = videoSource;
+    }
+    
+    if (originalProgram) {
+        const elapsedSinceSwitch = (Date.now() - pauseTimestamp) / 1000;
+        videoPlayer.currentTime = Math.min(originalProgram.duration * 60, elapsedTime * 60 + elapsedSinceSwitch);
+    } else {
+        videoPlayer.currentTime = elapsedTime * 60; // Convert to seconds
+    }
     
     videoPlayer.play().catch(error => {
         console.error("Error playing video:", error);
-        playFallbackContent();
+        if (originalProgram) {
+            handleFinishedProgramEnd();
+        } else {
+            playFallbackContent();
+        }
     });
     
     updateProgramInfo();
@@ -1108,7 +1095,9 @@ function scheduleNextProgramChange() {
     const { program, elapsedTime } = getCurrentProgram();
     const timeUntilNextProgram = (program.duration - elapsedTime) * 60 * 1000; // Convert to milliseconds
     setTimeout(() => {
-        playCurrentProgram();
+        if (!originalProgram) {
+            playCurrentProgram();
+        }
         scheduleNextProgramChange();
     }, timeUntilNextProgram);
 }
