@@ -888,7 +888,7 @@ const programSchedule = [
 
 let serverTimeOffset = 0;
 let preloadedVideos = new Map();
-
+let currentFinishedProgram = null;
 
 function getServerTime() {
     return new Date(Date.now() + serverTimeOffset);
@@ -992,8 +992,8 @@ function updateProgramInfo() {
             // Add click event listener to the row
             row.addEventListener('click', () => {
                 if (index === currentProgram.index) {
-                    if (isPlayingFinishedProgram) {
-                        showModal('Are you sure you want to switch from the finished playing program to the current live program?', 
+                    if (isPlayingFinishedProgram && currentFinishedProgram) {
+                        showModal(`Are you sure you want to switch from "${currentFinishedProgram.title}" to "${program.title}"?`, 
                             returnToLiveBroadcast, 
                             scrollToVideoContainer
                         );
@@ -1051,6 +1051,7 @@ function updateFinishedPrograms() {
 
     function playFinishedProgram(program) {
     isPlayingFinishedProgram = true;
+    currentFinishedProgram = program;
     let videoSource = program.link;
     if (preloadedVideos.has(program.link)) {
         videoSource = preloadedVideos.get(program.link);
@@ -1068,13 +1069,14 @@ function updateFinishedPrograms() {
     videoPlayer.addEventListener('ended', returnToLiveBroadcast, { once: true });
 
     // Display a message indicating that a finished program is playing
-    showMessage("Playing finished program: " + program.title);
+    showMessage("Playing finished program: " + program.title, 'info');
 }
 
 function returnToLiveBroadcast() {
     isPlayingFinishedProgram = false;
+    currentFinishedProgram = null;
     playCurrentProgram();
-    showMessage("Returning to live broadcast");
+    showMessage("Returning to live broadcast", 'info');
 }
 
     function showMessage(message) {
