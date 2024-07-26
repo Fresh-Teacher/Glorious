@@ -659,59 +659,91 @@
         font-size: 25px;
     }
 }
-#programInfo tr, #finishedPrograms tr {
-        cursor: pointer;
-    }
+/* Update this CSS rule to target both tables */
+#programTable tr, #finishedProgramsTable tr {
+    cursor: pointer;
+}
 
-    #programInfo thead tr, #finishedPrograms thead tr {
-        cursor: default;
-    }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
 
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 5px;
+    text-align: center;
+}
 
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.4);
-    }
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 500px;
-        border-radius: 5px;
-        text-align: center;
-    }
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
+.modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 5px;
+            text-align: center;
+        }
 
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
+        .modal-buttons {
+            margin-top: 20px;
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-button.accept {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .modal-button.cancel {
+            background-color: #f44336;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <div id="programModal" class="modal">
+    <div id="feedbackModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
             <p id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button id="modalAccept" class="modal-button accept">Yes</button>
+                <button id="modalCancel" class="modal-button cancel">No</button>
+            </div>
         </div>
     </div>
     <div class="container">
@@ -888,9 +920,36 @@ function getCurrentProgram() {
     return { program: programSchedule[0], index: 0, elapsedTime: 0 };
 }
 
+// Add this function to handle showing the modal
+function showModal(message, onAccept = null) {
+        const modal = document.getElementById('feedbackModal');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalAccept = document.getElementById('modalAccept');
+        const modalCancel = document.getElementById('modalCancel');
+        
+        modalMessage.textContent = message;
+        modal.style.display = 'block';
+
+        if (onAccept) {
+            modalAccept.style.display = 'inline-block';
+            modalCancel.style.display = 'inline-block';
+            modalAccept.onclick = () => {
+                onAccept();
+                modal.style.display = 'none';
+            };
+            modalCancel.onclick = () => {
+                modal.style.display = 'none';
+            };
+        } else {
+            modalAccept.style.display = 'none';
+            modalCancel.style.display = 'none';
+        }
+    }
+
+
+// Modify the updateProgramInfo function
 function updateProgramInfo() {
-    const tbody = programTable.querySelector('tbody') || programTable;
-    tbody.innerHTML = '';
+    programTable.innerHTML = '';
     const currentProgram = getCurrentProgram();
     const now = getServerTime();
     const currentTime = now.getHours() * 60 + now.getMinutes();
@@ -917,9 +976,16 @@ function updateProgramInfo() {
                 <td>${program.startTime}</td>
                 <td>${status}</td>
             `;
-
-            row.addEventListener('click', () => showProgramModal(program, status));
-
+            
+            // Add click event listener to the row
+            row.addEventListener('click', () => {
+                if (index === currentProgram.index) {
+                    showModal('This program is currently playing.');
+                } else if (currentTime < programStartMinutes) {
+                    showModal('You cannot watch this program before its scheduled time.');
+                }
+            });
+            
             programTable.appendChild(row);
         }
     });
@@ -927,87 +993,67 @@ function updateProgramInfo() {
     updateFinishedPrograms();
 }
 
-function showProgramModal(program, status) {
-    const modal = document.getElementById('programModal');
-    const modalMessage = document.getElementById('modalMessage');
-    
-    if (status === 'Ended') {
-        modalMessage.innerHTML = `
-            This program has already ended. 
-            <br><br>
-            <button id="rewindButton">Rewind and Watch</button>
-        `;
-        document.getElementById('rewindButton').addEventListener('click', () => {
-            rewindAndPlayProgram(program);
-            modal.style.display = "none";
-        });
-    } else if (status.includes('LIVE')) {
-        modalMessage.textContent = "This program is currently playing.";
-    } else if (status === 'Upcoming') {
-        modalMessage.textContent = "You cannot watch this program before its scheduled time.";
-    }
-    
-    modal.style.display = "block";
-}
-
-let originalProgram = null;
-let pauseTimestamp = 0;
-
-// Add this function to handle the end of a finished program
-function handleFinishedProgramEnd() {
-    if (originalProgram) {
-        console.log("Finished program ended. Switching back to live program.");
-        originalProgram = null;
-        pauseTimestamp = 0;
-        playCurrentProgram();
-    }
-}
-
-// Modify the rewindAndPlayProgram function
-function rewindAndPlayProgram(program) {
-    originalProgram = getCurrentProgram().program;
-    pauseTimestamp = Date.now();
-    
-    videoPlayer.src = program.link;
-    videoPlayer.currentTime = 0;
-    videoPlayer.play().catch(error => {
-        console.error("Error playing finished program:", error);
-        handleFinishedProgramEnd();
-    });
-}
-
-// Add these event listeners after initializing the videoPlayer
-videoPlayer.addEventListener('ended', handleFinishedProgramEnd);
-
-videoPlayer.addEventListener('error', (e) => {
-    console.error("Video error:", e);
-    if (originalProgram) {
-        handleFinishedProgramEnd();
-    } else {
-        playFallbackContent();
-    }
-});
-
+// Modify the updateFinishedPrograms function
 function updateFinishedPrograms() {
-    const finishedProgramsTable = document.getElementById('finishedProgramsTable');
-    finishedProgramsTable.innerHTML = '';
-    const now = getServerTime();
-    const currentTime = now.getHours() * 60 + now.getMinutes();
+        const finishedProgramsTable = document.getElementById('finishedProgramsTable');
+        finishedProgramsTable.innerHTML = '';
+        const now = getServerTime();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
 
-    programSchedule.forEach((program, index) => {
-        const programStartMinutes = parseTime(program.startTime);
-        const programEndMinutes = programStartMinutes + program.duration;
-        
-        if (currentTime > programEndMinutes) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${program.title}</td>
-            `;
-            row.addEventListener('click', () => showProgramModal(program, 'Ended'));
-            finishedProgramsTable.appendChild(row);
+        programSchedule.forEach((program, index) => {
+            const programStartMinutes = parseTime(program.startTime);
+            const programEndMinutes = programStartMinutes + program.duration;
+            
+            if (currentTime > programEndMinutes) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${program.title}</td>
+                `;
+                
+                row.addEventListener('click', () => {
+                    showModal('Would you like to rewind and watch this finished program?', () => playFinishedProgram(program));
+                });
+                
+                finishedProgramsTable.appendChild(row);
+            }
+        });
+    }
+
+    let isPlayingFinishedProgram = false;
+
+    function playFinishedProgram(program) {
+        isPlayingFinishedProgram = true;
+        let videoSource = program.link;
+        if (preloadedVideos.has(program.link)) {
+            videoSource = preloadedVideos.get(program.link);
         }
-    });
-}
+        
+        videoPlayer.src = videoSource;
+        videoPlayer.currentTime = 0; // Start from the beginning
+        
+        videoPlayer.play().catch(error => {
+            console.error("Error playing video:", error);
+            playFallbackContent();
+        });
+
+        // Add an event listener for when the video ends
+        videoPlayer.addEventListener('ended', returnToLiveBroadcast, { once: true });
+
+        // Display a message indicating that a finished program is playing
+        showMessage("Playing finished program: " + program.title);
+    }
+
+    function returnToLiveBroadcast() {
+        isPlayingFinishedProgram = false;
+        playCurrentProgram();
+        showMessage("Returning to live broadcast");
+    }
+
+    function showMessage(message) {
+        // You can implement this function to show a temporary message on the screen
+        console.log(message); // For now, we'll just log to console
+    }
+
 
 function preloadVideo(url) {
     return new Promise((resolve, reject) => {
@@ -1047,44 +1093,45 @@ function preloadNextVideos() {
     });
 }
 
-// Update the playCurrentProgram function
+// Modify the playCurrentProgram function
 function playCurrentProgram() {
-    const { program, elapsedTime } = getCurrentProgram();
-    
-    if (originalProgram && program !== originalProgram) {
-        // The original program has ended, play the current program
-        originalProgram = null;
-        pauseTimestamp = 0;
-    }
-    
-    let videoSource = originalProgram ? originalProgram.link : program.link;
-    if (preloadedVideos.has(videoSource)) {
-        videoSource = preloadedVideos.get(videoSource);
-    }
-    
-    if (videoPlayer.src !== videoSource) {
-        videoPlayer.src = videoSource;
-    }
-    
-    if (originalProgram) {
-        const elapsedSinceSwitch = (Date.now() - pauseTimestamp) / 1000;
-        videoPlayer.currentTime = Math.min(originalProgram.duration * 60, elapsedTime * 60 + elapsedSinceSwitch);
-    } else {
-        videoPlayer.currentTime = elapsedTime * 60; // Convert to seconds
-    }
-    
-    videoPlayer.play().catch(error => {
-        console.error("Error playing video:", error);
-        if (originalProgram) {
-            handleFinishedProgramEnd();
-        } else {
-            playFallbackContent();
+        if (isPlayingFinishedProgram) {
+            return; // Don't interrupt a finished program that's playing
         }
-    });
-    
-    updateProgramInfo();
-    preloadNextVideos();
-}
+
+        const { program, elapsedTime } = getCurrentProgram();
+        
+        let videoSource = program.link;
+        if (preloadedVideos.has(program.link)) {
+            videoSource = preloadedVideos.get(program.link);
+        }
+        
+        videoPlayer.src = videoSource;
+        videoPlayer.currentTime = elapsedTime * 60; // Convert to seconds
+        
+        videoPlayer.play().catch(error => {
+            console.error("Error playing video:", error);
+            playFallbackContent();
+        });
+        
+        updateProgramInfo();
+        preloadNextVideos();
+
+        // Remove any existing 'ended' event listeners
+        videoPlayer.removeEventListener('ended', returnToLiveBroadcast);
+    }
+
+        // Modify the scheduleNextProgramChange function
+        function scheduleNextProgramChange() {
+        const { program, elapsedTime } = getCurrentProgram();
+        const timeUntilNextProgram = (program.duration - elapsedTime) * 60 * 1000; // Convert to milliseconds
+        setTimeout(() => {
+            if (!isPlayingFinishedProgram) {
+                playCurrentProgram();
+            }
+            scheduleNextProgramChange();
+        }, timeUntilNextProgram);
+    }
 
 function playFallbackContent() {
     console.log("Playing fallback content");
@@ -1095,9 +1142,7 @@ function scheduleNextProgramChange() {
     const { program, elapsedTime } = getCurrentProgram();
     const timeUntilNextProgram = (program.duration - elapsedTime) * 60 * 1000; // Convert to milliseconds
     setTimeout(() => {
-        if (!originalProgram) {
-            playCurrentProgram();
-        }
+        playCurrentProgram();
         scheduleNextProgramChange();
     }, timeUntilNextProgram);
 }
