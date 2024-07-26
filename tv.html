@@ -7,7 +7,7 @@
     <style>
         :root {
             --primary-color: #ff8c00;
-            --secondary-color: #ffa500;
+            --secondary-color: #b97a05;
             --background-color: #fff3e0;
             --text-color: #333;
         }
@@ -293,26 +293,55 @@
     background-color: var(--secondary-color);
     color: white;
 }
-    @keyframes flashAnimation {
-    0%, 100% {
-        background-color: var(--primary-color);
-        color: white;
-    }
-    50% {
-        background-color: var(--secondary-color);
-        color: var(--text-color);
-    }
+@keyframes blinkAnimation {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
-#programInfo .current-program {
+.live-text {
+    animation: blinkAnimation 1s ease-in-out infinite;
+}
+@keyframes flashAnimation {
+        0%, 100% {
+            background-color: #8B4513; /* SaddleBrown */
+            color: white;
+        }
+        50% {
+            background-color: #A0522D; /* Sienna - a lighter brown */
+            color: #FFF8DC; /* Cornsilk - a light color for contrast */
+        }
+    }
+    .live-status {
+    display: inline-block;
+    padding: 2px 5px;
+    border-radius: 3px;
     animation: flashAnimation 5s ease-in-out infinite;
 }
 
-#programInfo .current-program:hover {
-    animation: none;
-    background-color: var(--secondary-color);
-    color: white;
+.live-status .live-dot {
+    animation: blinkAnimation 1s ease-in-out infinite;
 }
+    #programInfo table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    #programInfo th {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px;
+        text-align: left;
+    }
+    #programInfo td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+    #programInfo .current-program {
+        background-color: #8B4513; /* SaddleBrown */
+        color: white;
+    }
+    #programInfo .current-program:hover {
+        background-color: #A0522D; /* Sienna - a lighter brown */
+    }
 .now-playing {
     font-size: 0.8em;
     font-weight: bold;
@@ -456,6 +485,91 @@
     font-size: 1.2em;
     font-weight: bold;
 }
+#programInfo, #finishedPrograms {
+    max-height: 300px; /* Adjust this value as needed */
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+#programInfo table, #finishedPrograms table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#programInfo th, #programInfo td,
+#finishedPrograms th, #finishedPrograms td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#programInfo th, #finishedPrograms th {
+    position: sticky;
+    top: 0;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#programInfo tr:nth-child(even),
+#finishedPrograms tr:nth-child(even) {
+    background-color: var(--background-color);
+}
+
+#programInfo tr:hover,
+#finishedPrograms tr:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* Ensure that five rows are visible */
+#programInfo tbody tr,
+#finishedPrograms tbody tr {
+    height: 50px; /* Adjust this value to match your desired row height */
+}
+.table-container {
+    margin-bottom: 20px;
+}
+
+.table-container h2 {
+    margin-bottom: 10px;
+}
+
+/* Scrollbar styles for WebKit browsers (Chrome, Safari, Edge) */
+#programInfo::-webkit-scrollbar,
+#finishedPrograms::-webkit-scrollbar {
+    width: 12px;
+}
+
+#programInfo::-webkit-scrollbar-track,
+#finishedPrograms::-webkit-scrollbar-track {
+    background: #ffe0b2; /* Light orange */
+    border-radius: 10px;
+}
+
+#programInfo::-webkit-scrollbar-thumb,
+#finishedPrograms::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #ff8c00, #8b4513); /* Orange to brown gradient */
+    border-radius: 10px;
+    border: 3px solid #ffe0b2; /* Light orange border */
+}
+
+#programInfo::-webkit-scrollbar-thumb:hover,
+#finishedPrograms::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #ff7300, #6b3609); /* Darker orange to brown gradient on hover */
+}
+
+/* Scrollbar styles for Firefox */
+#programInfo,
+#finishedPrograms {
+    scrollbar-width: thin;
+    scrollbar-color: #ff8c00 #ffe0b2; /* thumb and track colors */
+}
+
+/* Ensure the tables don't overlap with the scrollbar */
+#programInfo table,
+#finishedPrograms table {
+    width: calc(100% - 12px);
+}
     </style>
 </head>
 <body>
@@ -487,7 +601,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>No.</th>
+                        
                         <th>Program</th>
                     </tr>
                 </thead>
@@ -637,17 +751,55 @@ function getCurrentProgram() {
 function updateProgramInfo() {
     programTable.innerHTML = '';
     const currentProgram = getCurrentProgram();
+    const now = getServerTime();
+    const currentTime = now.getHours() * 60 + now.getMinutes();
 
     programSchedule.forEach((program, index) => {
-        const row = document.createElement('tr');
-        if (index === currentProgram.index) {
-            row.classList.add('current-program');
+        const programStartMinutes = parseTime(program.startTime);
+        const programEndMinutes = programStartMinutes + program.duration;
+        
+        if (currentTime <= programEndMinutes) {
+            const row = document.createElement('tr');
+            
+            let status;
+            if (index === currentProgram.index) {
+                status = '<span class="live-status"><span class="live-dot">🔴</span> <span class="live-text">LIVE</span></span>';
+                row.classList.add('current-program');
+            } else if (currentTime < programStartMinutes) {
+                status = 'Upcoming';
+            } else {
+                return; // Skip finished programs
+            }
+
+            row.innerHTML = `
+                <td>${program.title}</td>
+                <td>${program.startTime}</td>
+                <td>${status}</td>
+            `;
+            programTable.appendChild(row);
         }
-        row.innerHTML = `
-            <td>${program.startTime}</td>
-            <td>${program.title} ${index === currentProgram.index ? '<span class="now-playing">🔴 LIVE</span>' : ''}</td>
-        `;
-        programTable.appendChild(row);
+    });
+
+    updateFinishedPrograms();
+}
+
+function updateFinishedPrograms() {
+    const finishedProgramsTable = document.getElementById('finishedProgramsTable');
+    finishedProgramsTable.innerHTML = '';
+    const now = getServerTime();
+    const currentTime = now.getHours() * 60 + now.getMinutes();
+
+    programSchedule.forEach((program, index) => {
+        const programStartMinutes = parseTime(program.startTime);
+        const programEndMinutes = programStartMinutes + program.duration;
+        
+        if (currentTime > programEndMinutes) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${program.title}</td>
+            `;
+            finishedProgramsTable.appendChild(row);
+        }
     });
 }
 
