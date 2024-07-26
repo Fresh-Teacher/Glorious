@@ -922,7 +922,7 @@ function getCurrentProgram() {
 }
 
 // Add this function to handle showing the modal
-function showModal(message, onAccept = null, onOK = null) {
+function showModal(message, onAccept = null, onDecline = null) {
     const modal = document.getElementById('feedbackModal');
     const modalMessage = document.getElementById('modalMessage');
     const modalAccept = document.getElementById('modalAccept');
@@ -931,17 +931,18 @@ function showModal(message, onAccept = null, onOK = null) {
     modalMessage.textContent = message;
     modal.style.display = 'block';
 
-    if (onAccept) {
+    if (onAccept || onDecline) {
         modalAccept.style.display = 'inline-block';
         modalCancel.style.display = 'inline-block';
         modalAccept.textContent = 'Yes';
         modalCancel.textContent = 'No';
         modalAccept.onclick = () => {
-            onAccept();
             modal.style.display = 'none';
+            if (onAccept) onAccept();
         };
         modalCancel.onclick = () => {
             modal.style.display = 'none';
+            if (onDecline) onDecline();
         };
     } else {
         modalAccept.style.display = 'inline-block';
@@ -949,7 +950,7 @@ function showModal(message, onAccept = null, onOK = null) {
         modalAccept.textContent = 'OK';
         modalAccept.onclick = () => {
             modal.style.display = 'none';
-            if (onOK) onOK();
+            scrollToVideoContainer();
         };
     }
 }
@@ -993,19 +994,23 @@ function updateProgramInfo() {
             row.addEventListener('click', () => {
                 if (index === currentProgram.index) {
                     if (isPlayingFinishedProgram && currentFinishedProgram) {
-                        showModal(`Are you sure you want to switch from "${currentFinishedProgram.title}" to "${program.title}"?`, 
-                            returnToLiveBroadcast, 
+                        showModal(
+                            `Are you sure you want to switch from "${currentFinishedProgram.title}" to the current live program "${program.title}"?`, 
+                            () => {
+                                returnToLiveBroadcast();
+                                scrollToVideoContainer();
+                            },
                             scrollToVideoContainer
                         );
                     } else {
                         const endTime = new Date(now.getTime() + (programEndMinutes - currentTime) * 60000);
                         const endTimeString = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                        showModal(`${program.title} is currently running and it will end at ${endTimeString}.`, null, scrollToVideoContainer);
+                        showModal(`${program.title} is currently running and it will end at ${endTimeString}.`);
                     }
                 } else if (currentTime < programStartMinutes) {
                     const endTime = new Date(now.getTime() + (programEndMinutes - programStartMinutes) * 60000);
                     const endTimeString = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    showModal(`Unfortunately, you cannot watch ${program.title} at this time. This program will be aired from ${program.startTime} to ${endTimeString}.`, null, scrollToVideoContainer);
+                    showModal(`Unfortunately, you cannot watch ${program.title} at this time. This program will be aired from ${program.startTime} to ${endTimeString}.`);
                 }
             });
             
