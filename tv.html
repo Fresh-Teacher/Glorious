@@ -997,7 +997,7 @@ function updateProgramInfo() {
                 } else if (currentTime < programStartMinutes) {
                     const endTime = new Date(now.getTime() + (programEndMinutes - programStartMinutes) * 60000);
                     const endTimeString = endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    showModal(`Unfortunately, you cannot watch ${program.title} at this time. This program will be aired from ${program.startTime} to ${endTimeString}.`);
+                    showModal(`Unfortunately, you cannot watch ${program.title} at this time. This program will be aired from ${program.startTime} to ${endTimeString}.`, null, scrollToVideoContainer);
                 }
             });
             
