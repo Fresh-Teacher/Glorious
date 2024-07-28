@@ -449,6 +449,16 @@
     animation: flash-ripple 2s linear infinite;
 }
 
+.start-watching-btn::after {
+    animation-delay: 0.6s;
+    background: rgba(255, 103, 0, 0.7);
+}
+
+.start-watching-btn .ripple {
+    animation-delay: 1.2s;
+    background: rgba(255, 69, 0, 0.7);
+}
+
 @keyframes flash-ripple {
     0% {
         transform: scale(1);
@@ -458,6 +468,29 @@
         transform: scale(2);
         opacity: 0;
     }
+}
+
+.start-watching-btn:hover::before,
+.start-watching-btn:hover::after,
+.start-watching-btn:hover .ripple {
+    animation-duration: 1.5s;
+}
+
+.start-watching-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+}
+
+@keyframes gradientShift {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 140, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0); }
 }
 
 #logoImage {
@@ -753,7 +786,7 @@
                 <div id="timerContainer">
                     <span id="currentTime"></span>
                 </div>
-                <div id="startOverlay" class="start-overlay" style="display: none;">
+                <div id="startOverlay" class="start-overlay">
                     <div id="startWatchingBtn" class="start-watching-btn">
                         <div class="play-icon">▶</div>
                     </div>
@@ -1131,7 +1164,7 @@ function preloadNextVideos() {
 // Modify the playCurrentProgram function
 function playCurrentProgram() {
     if (isPlayingFinishedProgram) {
-        return; // Don't interrupt a finished program that's playing
+        return;
     }
 
     const { program, elapsedTime } = getCurrentProgram();
@@ -1144,15 +1177,16 @@ function playCurrentProgram() {
     videoPlayer.src = videoSource;
     videoPlayer.currentTime = elapsedTime * 60; // Convert to seconds
     
-    videoPlayer.play().catch(error => {
+    videoPlayer.play().then(() => {
+        document.getElementById('startOverlay').style.display = 'none';
+    }).catch(error => {
         console.error("Error playing video:", error);
-        playFallbackContent();
+        showPlayButton();
     });
     
     updateProgramInfo();
     preloadNextVideos();
 
-    // Remove any existing 'ended' event listeners
     videoPlayer.removeEventListener('ended', returnToLiveBroadcast);
 }
 
@@ -1305,10 +1339,15 @@ function showPlayButton() {
     document.getElementById('startOverlay').style.display = 'flex';
 }
 
-document.getElementById('startWatchingBtn').addEventListener('click', () => {
-    document.getElementById('startOverlay').style.display = 'none';
-    playCurrentProgram();
-});
+document.getElementById('startWatchingBtn').addEventListener('click', startWatching);
+
+function startWatching() {
+    videoPlayer.play().then(() => {
+        document.getElementById('startOverlay').style.display = 'none';
+    }).catch(error => {
+        console.error("Error playing video:", error);
+    });
+}
 
 // Update the existing error handling to show the play button
 videoPlayer.addEventListener('error', (e) => {
