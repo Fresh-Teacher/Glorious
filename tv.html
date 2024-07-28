@@ -519,8 +519,6 @@
     font-weight: bold;
 }
 #programInfo, #finishedPrograms {
-    max-height: 300px; /* Adjust this value as needed */
-    overflow-y: auto;
     margin-bottom: 20px;
 }
 
@@ -537,8 +535,6 @@
 }
 
 #programInfo th, #finishedPrograms th {
-    position: sticky;
-    top: 0;
     background-color: var(--primary-color);
     color: white;
 }
@@ -554,11 +550,107 @@
     color: white;
 }
 
-/* Ensure that five rows are visible */
-#programInfo tbody tr,
-#finishedPrograms tbody tr {
-    height: 50px; /* Adjust this value to match your desired row height */
+@media (min-width: 769px) {
+    #programInfo, #finishedPrograms {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    #programInfo th, #finishedPrograms th {
+        position: sticky;
+        top: 0;
+    }
+
+    /* Scrollbar styles for WebKit browsers (Chrome, Safari, Edge) */
+    #programInfo::-webkit-scrollbar,
+    #finishedPrograms::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    #programInfo::-webkit-scrollbar-track,
+    #finishedPrograms::-webkit-scrollbar-track {
+        background: #ffe0b2;
+        border-radius: 10px;
+    }
+
+    #programInfo::-webkit-scrollbar-thumb,
+    #finishedPrograms::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, #ff8c00, #8b4513);
+        border-radius: 10px;
+        border: 3px solid #ffe0b2;
+    }
+
+    #programInfo::-webkit-scrollbar-thumb:hover,
+    #finishedPrograms::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, #ff7300, #6b3609);
+    }
+
+    /* Scrollbar styles for Firefox */
+    #programInfo,
+    #finishedPrograms {
+        scrollbar-width: thin;
+        scrollbar-color: #ff8c00 #ffe0b2;
+    }
+
+    /* Ensure the tables don't overlap with the scrollbar */
+    #programInfo table,
+    #finishedPrograms table {
+        width: calc(100% - 12px);
+    }
 }
+
+@media (max-width: 768px) {
+    #programInfo, #finishedPrograms {
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    #programInfo th, #finishedPrograms th {
+        position: static;
+    }
+
+    #programInfo table,
+    #finishedPrograms table {
+        width: 100%;
+    }
+}
+
+#finishedPrograms, #programInfo {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    #finishedPrograms, #programInfo {
+        border: 2px solid var(--primary-color);
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    #finishedPrograms::after, #programInfo::after {
+        content: '';
+        display: block;
+        height: 10px;
+        background-color: var(--background-color);
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        right: 0;
+    }
+
+    #finishedPrograms h2, #programInfo h2 {
+        background-color: var(--primary-color);
+        color: white;
+        margin: -20px -20px 20px -20px;
+        padding: 10px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+}
+
 .table-container {
     margin-bottom: 20px;
 }
