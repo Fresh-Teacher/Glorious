@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Welcome To Glorious Media Library, the full collection of various school events.">
+    <meta name="keyword" content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
+    <meta name="author" content="Fresh Teacher">
+    <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
+    <link rel="manifest" href="/manifest.json" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta property="og:site_name" content="Fresh Teacher's Library" />
+    <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
+    <title>Glorious' Gallery 📺</title>
+    <style>
+        :root {
+            --orange-light: #FFF3E0;
+            --orange-medium: #FFB74D;
+            --orange-dark: #FF9800;
+            --orange-text: #E65100;
+        }
+
+        body {
+            background-color: var(--orange-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--orange-text);
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+        }
+
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: var(--orange-medium);
+        }
+
+        button {
+            background-color: var(--orange-dark);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        button:hover {
+            background-color: var(--orange-text);
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            flex: 0 0 auto;
+            width: auto;
+            min-width: 100px;
+            margin: 0 10px;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--orange-dark);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-to-top:hover {
+            background-color: var(--orange-text);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Glorious Video Library</h1>
+        <div class="video-grid" id="videoGrid"></div>
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <button class="scroll-to-top" id="scrollToTop">↑</button>
+
+    <script>
+       const programSchedule = [
+            { videoSrc: "VID-20240729-WA0028.mp4" },
+            { videoSrc: "VID-20240729-WA0029.mp4" },
+            { videoSrc: "VID-20240729-WA0030.mp4" },
+            { videoSrc: "VID-20240729-WA0031.mp4" },
+            { videoSrc: "VID-20240729-WA0032.mp4" },
+            { videoSrc: "VID-20240729-WA0033.mp4" },
+            { videoSrc: "VID-20240729-WA0034.mp4" },
+            { videoSrc: "VID-20240729-WA0035.mp4" },
+            { videoSrc: "VID-20240729-WA0036.mp4" },
+            { videoSrc: "VID-20240729-WA0037.mp4" },
+            { videoSrc: "VID-20240729-WA0038.mp4" },
+            { videoSrc: "VID-20240729-WA0039.mp4" },
+            { videoSrc: "VID-20240729-WA0040.mp4" },
+            { videoSrc: "VID-20240729-WA0041.mp4" },
+            { videoSrc: "VID-20240729-WA0042.mp4" },
+            { videoSrc: "VID-20240729-WA0043.mp4" },
+            { videoSrc: "VID-20240729-WA0044.mp4" },
+            { videoSrc: "VID-20240729-WA0045.mp4" },
+            { videoSrc: "VID-20240729-WA0046.mp4" },
+            { videoSrc: "VID-20240729-WA0047.mp4" },
+            { videoSrc: "VID-20240729-WA0048.mp4" },
+            { videoSrc: "VID-20240729-WA0049.mp4" },
+            { videoSrc: "VID-20240729-WA0050.mp4" },
+            { videoSrc: "VID-20240729-WA0051.mp4" },
+            { videoSrc: "VID-20240729-WA0052.mp4" },
+            { videoSrc: "VID-20240729-WA0053.mp4" },
+            { videoSrc: "VID-20240729-WA0054.mp4" },
+            { videoSrc: "VID-20240729-WA0055.mp4" },
+            { videoSrc: "VID-20240729-WA0056.mp4" },
+            { videoSrc: "VID-20240729-WA0057.mp4" },
+            { videoSrc: "VID-20240729-WA0058.mp4" },
+            { videoSrc: "VID-20240729-WA0059.mp4" },
+            { videoSrc: "VID-20240729-WA0060.mp4" },
+            { videoSrc: "VID-20240729-WA0061.mp4" },
+            { videoSrc: "VID-20240729-WA0062.mp4" },
+            { videoSrc: "VID-20240729-WA0063.mp4" },
+            { videoSrc: "VID-20240729-WA0064.mp4" },
+            { videoSrc: "VID-20240729-WA0065.mp4" },
+            { videoSrc: "VID-20240729-WA0066.mp4" },
+            { videoSrc: "VID-20240729-WA0067.mp4" },
+            { videoSrc: "VID-20240729-WA0068.mp4" },
+            { videoSrc: "VID-20240729-WA0069.mp4" },
+            { videoSrc: "VID-20240729-WA0070.mp4" },
+            { videoSrc: "VID-20240729-WA0071.mp4" },
+            { videoSrc: "VID-20240729-WA0072.mp4" },
+            { videoSrc: "VID-20240729-WA0073.mp4" },
+            { videoSrc: "VID-20240729-WA0074.mp4" },
+            { videoSrc: "VID-20240729-WA0075.mp4" },
+            { videoSrc: "VID-20240729-WA0076.mp4" },
+            { videoSrc: "VID-20240729-WA0077.mp4" },
+            { videoSrc: "VID-20240729-WA0078.mp4" },
+            { videoSrc: "VID-20240729-WA0079.mp4" },
+            { videoSrc: "VID-20240729-WA0080.mp4" },
+            { videoSrc: "VID-20240729-WA0081.mp4" },
+            { videoSrc: "VID-20240729-WA0082.mp4" },
+            { videoSrc: "VID-20240729-WA0084.mp4" },
+            { videoSrc: "VID-20240729-WA0085.mp4" },
+            { videoSrc: "VID-20240729-WA0086.mp4" },
+            { videoSrc: "VID-20240729-WA0087.mp4" },
+            { videoSrc: "VID-20240729-WA0088.mp4" },
+            {videoSrc: "2cca9fb16c4f8e613d0cb5fb09b617ca.mp4" },
+    { "videoSrc": "3d06fa2a73f5e4cdef18380f8ef4aec4.mp4" },
+    { "videoSrc": "3e355ebc106e6a8d1ef03eeb717e5f94.mp4" },
+    { "videoSrc": "8a56230c1328278e2185036507e2cf4a.mp4" },
+    { "videoSrc": "54ad9efa3a2e0d71e21f6a29d50ecd48.mp4" },
+    { "videoSrc": "74fdd3a7c64f3c6f50c6517600d92bcb.mp4" },
+    { "videoSrc": "925d1f65256112e69ddb85760e670fa5.mp4" },
+    { "videoSrc": "1813ef9accab0fdc282c9bb9d8c9924a.mp4" },
+    { "videoSrc": "a7a2db2155b82abbbd58a753349e913c.mp4" },
+    { "videoSrc": "ad9b30abc42bc3f3c34f74698eba1cd9.mp4" },
+    { "videoSrc": "c3dfb9b91256165f2f58326519cdd28e.mp4" },
+    { "videoSrc": "c194ce16dcb733361d9139d20ea8fd1d.mp4" },
+    { "videoSrc": "ddad261aa9585a5600cff02f5984657e.mp4" },
+    { "videoSrc": "de885fe4f8d765e5939656e9f3647e34.mp4" },
+    { "videoSrc": "f4c84ca2f5e03701338e3f573c34bd61.mp4" }
+        ];
+
+        let currentlyPlaying = null;
+        const videosPerPage = 12;
+        let currentPage = 1;
+
+        function createVideoCard(video) {
+            const videoCard = document.createElement('div');
+            videoCard.classList.add('video-card');
+
+            const videoContainer = document.createElement('div');
+            videoContainer.classList.add('video-container');
+
+            const videoElement = document.createElement('video');
+            videoElement.removeAttribute('controls');
+            const sourceElement = document.createElement('source');
+            sourceElement.setAttribute('src', video.videoSrc);
+            sourceElement.setAttribute('type', 'video/mp4');
+            videoElement.appendChild(sourceElement);
+            videoContainer.appendChild(videoElement);
+            videoCard.appendChild(videoContainer);
+
+            const controlsDiv = document.createElement('div');
+            controlsDiv.classList.add('controls');
+
+            const playButton = document.createElement('button');
+            playButton.innerText = 'Play ▷';
+            playButton.addEventListener('click', () => {
+                if (currentlyPlaying && currentlyPlaying !== videoElement) {
+                    currentlyPlaying.pause();
+                    currentlyPlaying.closest('.video-card').querySelector('button').innerText = 'Play ▷';
+                }
+                if (videoElement.paused) {
+                    videoElement.play();
+                    playButton.innerText = 'Pause ||';
+                    currentlyPlaying = videoElement;
+                } else {
+                    videoElement.pause();
+                    playButton.innerText = 'Play ▷';
+                    currentlyPlaying = null;
+                }
+            });
+            controlsDiv.appendChild(playButton);
+
+            const soundButton = document.createElement('button');
+            soundButton.innerText = 'Mute 🔇';
+            soundButton.addEventListener('click', () => {
+                videoElement.muted = !videoElement.muted;
+                soundButton.innerText = videoElement.muted ? 'Unmute 🔊' : 'Mute 🔇';
+            });
+            controlsDiv.appendChild(soundButton);
+
+            const fullscreenButton = document.createElement('button');
+            fullscreenButton.innerText = 'Fullscreen ⛶';
+            fullscreenButton.addEventListener('click', () => {
+                if (videoElement.requestFullscreen) {
+                    videoElement.requestFullscreen();
+                } else if (videoElement.mozRequestFullScreen) {
+                    videoElement.mozRequestFullScreen();
+                } else if (videoElement.webkitRequestFullscreen) {
+                    videoElement.webkitRequestFullscreen();
+                } else if (videoElement.msRequestFullscreen) {
+                    videoElement.msRequestFullscreen();
+                }
+            });
+            controlsDiv.appendChild(fullscreenButton);
+
+            videoElement.addEventListener('ended', () => {
+                playButton.innerText = 'Play';
+                currentlyPlaying = null;
+            });
+
+            videoCard.appendChild(controlsDiv);
+
+            return videoCard;
+        }
+
+        function displayVideos(page) {
+            const videoGrid = document.getElementById('videoGrid');
+            videoGrid.innerHTML = '';
+            const start = (page - 1) * videosPerPage;
+            const end = start + videosPerPage;
+            const videosToDisplay = programSchedule.slice(start, end);
+
+            videosToDisplay.forEach(video => {
+                const videoCard = createVideoCard(video);
+                videoGrid.appendChild(videoCard);
+            });
+
+            // Scroll to the top of the video grid
+            videoGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function setupPagination() {
+            const paginationDiv = document.getElementById('pagination');
+            paginationDiv.innerHTML = '';
+            const pageCount = Math.ceil(programSchedule.length / videosPerPage);
+
+            const prevButton = document.createElement('button');
+            prevButton.innerText = 'Previous';
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayVideos(currentPage);
+                    updatePaginationButtons();
+                }
+            });
+            paginationDiv.appendChild(prevButton);
+
+            const nextButton = document.createElement('button');
+            nextButton.innerText = 'Next';
+            nextButton.addEventListener('click', () => {
+                if (currentPage < pageCount) {
+                    currentPage++;
+                    displayVideos(currentPage);
+                    updatePaginationButtons();
+                }
+            });
+            paginationDiv.appendChild(nextButton);
+
+            updatePaginationButtons();
+        }
+
+        function updatePaginationButtons() {
+            const prevButton = document.querySelector('.pagination button:first-child');
+            const nextButton = document.querySelector('.pagination button:last-child');
+            const pageCount = Math.ceil(programSchedule.length / videosPerPage);
+
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage === pageCount;
+        }
+
+        // Scroll to top functionality
+        const scrollToTopButton = document.getElementById('scrollToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopButton.style.display = 'block';
+            } else {
+                scrollToTopButton.style.display = 'none';
+            }
+        });
+
+        scrollToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        displayVideos(currentPage);
+        setupPagination();
+    </script>
+</body>
+</html>

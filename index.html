@@ -7,6 +7,111 @@
     <title>Glorious Schools</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
+         /* Modal styles */
+         .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #FFF5E6;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #D2691E;
+            width: 300px;
+            text-align: center;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        /* Curtain effect */
+        .curtain-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .curtain {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, #8B4513, #D2691E);
+            transition: all 1.5s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .curtain::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(255,255,255,0.1),
+                rgba(255,255,255,0.1) 1px,
+                transparent 1px,
+                transparent 10px
+            );
+        }
+
+        .curtain-left {
+            left: 0;
+        }
+
+        .curtain-right {
+            right: 0;
+        }
+
+        .modal.show .curtain-left {
+            transform: translateX(-100%);
+        }
+
+        .modal.show .curtain-right {
+            transform: translateX(100%);
+        }
+
+        .modal.closing .curtain-left {
+            transform: translateX(0);
+        }
+
+        .modal.closing .curtain-right {
+            transform: translateX(0);
+        }
+
+        /* Button styles */
+        .gallery-btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #CD853F;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .gallery-btn:hover {
+            background-color: #8B4513;
+        }
+
+        h2 {
+            color: #8B4513;
+        }
         body {
             font-family: 'Comic Sans MS', Arial, sans-serif;
             margin: 0;
@@ -302,7 +407,32 @@
         font-weight: bold;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
-    
+    .email-input-container {
+    position: relative;
+}
+
+.email-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+}
+
+.email-suggestion {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.email-suggestion:hover {
+    background-color: #f0f0f0;
+}
     </style>
 </head>
 
@@ -316,7 +446,7 @@
         <ul id="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
-            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+            <li><a href="javascript:void(0);" onclick="checkAuth('player.html')">Videos</a></li>     
             <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
             <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
         </ul>
@@ -329,14 +459,15 @@
         <div class="login-box">
             <img src="schoologo-2-150x150.png" alt="School Logo">
             <h2>Login</h2>
-            <input type="email" id="email" placeholder="School e-mail">
-            <input type="password" id="password" placeholder="Password">
+            <div class="email-input-container">
+                <input type="email" id="email" placeholder="School e-mail">
+                <div id="email-suggestions" class="email-suggestions"></div>
+            </div>   <input type="password" id="password" placeholder="Password">
             <div>
                 <input type="checkbox" id="rememberMe">
                 <label for="rememberMe">Remember Me</label>
             </div>
-            <button onclick="login()">Login</button>
-            <p id="error-message" style="color:red; display:none;">Wrong e-mail or password. Please try again.</p>
+            <button id="loginButton" onclick="login()">Login</button>            <p id="error-message" style="color:red; display:none;">Wrong e-mail or password. Please try again.</p>
             <p><a href="emails.html" onclick="forgotPassword()">Forgot e-mail?</a></p>
         </div>
     </div><br><br><br>
@@ -350,9 +481,10 @@
                     <a href="library.html">Library</a>
                 </div>
                 <div class="resource-item">
-                    <img src="gallery.jpg" alt="Results">
-                    <a href="gallery.html">Gallery</a>
-                </div>    
+                    <img src="gallery.jpg" alt="Gallery">
+                    <a href="#" onclick="showGalleryModal()">Gallery</a>
+                </div>
+
                 <div class="resource-item">
                     <img src="tv.gif" alt="Educational Games">
                     <a href="tv.html"> Glorious TV</a>
@@ -368,7 +500,20 @@
                     <img src="Screenshot (782).png" alt="Results">
                     <a href="results.html">Results Centre</a>
                 </div>    
-               
+                <!-- Gallery Modal -->
+    <div id="galleryModal" class="modal">
+        <div class="modal-content">
+            <div class="curtain curtain-left"></div>
+            <div class="curtain curtain-right"></div>
+            <h2>Choose a Gallery</h2>
+            <a href="gallery.html" class="gallery-btn">Photo Gallery</a>
+            <a href="player.html" class="gallery-btn">Video Gallery</a>
+        </div>
+    </div>
+
+<!-- Add these audio elements to the HTML body -->
+<audio id="openSound" src="door.mp3"></audio>
+<audio id="closeSound" src="door.mp3"></audio>
             </div>
             <br><br><br>
         </div>
@@ -379,6 +524,86 @@
     </footer>
 
     <script>
+function filterEmailSuggestions() {
+    const input = document.getElementById('email');
+    const filter = input.value.toLowerCase();
+    const suggestionsContainer = document.getElementById('email-suggestions');
+    
+    // Clear existing suggestions
+    suggestionsContainer.innerHTML = '';
+    
+    // Filter and add suggestions
+    const filteredSuggestions = validUsers.filter(user => 
+        user.email.toLowerCase().includes(filter)
+    );
+    
+    if (filteredSuggestions.length > 0 && filter.length > 0) {
+        filteredSuggestions.forEach(user => {
+            const suggestion = document.createElement('div');
+            suggestion.className = 'email-suggestion';
+            suggestion.textContent = user.email;
+            suggestion.addEventListener('click', () => {
+                input.value = user.email;
+                suggestionsContainer.style.display = 'none';
+            });
+            suggestionsContainer.appendChild(suggestion);
+        });
+        suggestionsContainer.style.display = 'block';
+    } else {
+        suggestionsContainer.style.display = 'none';
+    }
+}
+
+function setupEmailAutocomplete() {
+    const input = document.getElementById('email');
+    const suggestionsContainer = document.getElementById('email-suggestions');
+
+    input.addEventListener('input', filterEmailSuggestions);
+    
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!input.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+            suggestionsContainer.style.display = 'none';
+        }
+    });
+}
+
+// Call this function when the page loads
+document.addEventListener("DOMContentLoaded", function() {
+    setupEmailAutocomplete();
+    // ... (other existing DOMContentLoaded code)
+});
+
+function showGalleryModal() {
+    var modal = document.getElementById("galleryModal");
+    var openSound = document.getElementById("openSound");
+    
+    modal.style.display = "block";
+    openSound.play(); // Play the opening sound
+    
+    setTimeout(() => {
+        modal.classList.add("show");
+    }, 10);
+}
+
+function closeGalleryModal() {
+    var modal = document.getElementById("galleryModal");
+    var closeSound = document.getElementById("closeSound");
+    
+    modal.classList.remove("show");
+    closeSound.play(); // Play the closing sound
+    
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 1000); // Match this to your animation duration
+}
+
+window.onclick = function(event) {
+    var modal = document.getElementById("galleryModal");
+    if (event.target == modal) {
+        closeGalleryModal();
+    }
+}
     const studentNames = [
             'AHEREZA HONOUR',
             'ALIYAH ADAMS K.',
@@ -1337,7 +1562,6 @@
       'Rashym Wahidah I.',
       'Nabukeera Shukran Y',
       'Nankubuge Shainah',
-      'Nakasiisa Sheilah K.',
       'Namuyiga Jovia',
       'Nassimbwa Grace H',
       'Nakiguli Shivan Pia',
@@ -1682,8 +1906,6 @@
       'KYENYINI COSSILINE',
       'NAKASUMBA ANITAH',
       'NAMIREMBE PENINAH',
-      'James',
-      'ODAGA ALEX',
       'Admin'
         ];
 
@@ -1948,8 +2170,15 @@
     {
         "email": "ahumuzapraise@glorious.com",
         "password": "841"
+    },
+    {
+        "email": "atukundagramia@glorious.com",
+        "password": "Ruth"
+    },
+    {
+        "email": "nakasiisasheilahk@glorious.com",
+        "password": "magi3c"
     }
-    
     
     // Add other special users here
 ];
@@ -2107,6 +2336,18 @@ function checkAuthStatus() {
 
 // Add this line to ensure the auth status is checked when the page loads
 document.addEventListener("DOMContentLoaded", checkAuthStatus);
+
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('password');
+    const loginButton = document.getElementById('loginButton');
+
+    passwordInput.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            loginButton.click();
+        }
+    });
+});
     </script>
 </body>
 
