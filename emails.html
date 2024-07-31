@@ -1388,7 +1388,61 @@
 
         ];
 
-        function searchEmails() {
+        const teachers = [
+    'KAMEREMBO GENEROUS KAHOMBATE',
+    'NAKITTO IMELDAH',
+    'NAMULINDWA SYLVIA',
+    'NAMPUNGU ZAHARAH MARIAM',
+    'NAMWANJE NOELYN',
+    'NAKANJAKO TEDDY',
+    'AKUKU NELVIN ANGELLA',
+    'ACHIENG GRACE',
+    'NAMULI MARTHA',
+    'NAJJEMBA ROSEMARY',
+    'NAMBOGO TEDDY',
+    'TAREMWA FLAVIA',
+    'NAMUKASA JUSTINE',
+    'NAKABONGE SAMALIE',
+    'NYAMATE AMPEREZA JUDITH',
+    'KARUNGI OLIVIA',
+    'ZEMEI MIRIAM',
+    'NAMUGERWA STELLAH',
+    'NANSUBUGA GLORIA',
+    'NAKAWUKA MARIA MARGARET RITAH',
+    'AKELLO SARAH ENUME',
+    'NAMUJJUMBI PROSSY',
+    'NITUMWIKIRIZA EDINAH',
+    'KUSAASIRA BARBRA',
+    'NAZZIWA SHARON',
+    'NAMUSAAZI BENITAH',
+    'KYOZIRA MARGRET',
+    'NAKAGGWA RUTH',
+    'NAMUGENYI LEIRAH A.',
+    'AJUNA MATHIAS',
+    'MIRIMU MANSUR',
+    'NKWASIBWE LABON',
+    'NSIIMIRE DENIS',
+    'ODAGA ALEX',
+    'KALIISA JOSEPH KATO',
+    'TURYOMURUGYENDO MOSES',
+    'NDAWULA SAM',
+    'WAISWA ISSA',
+    'MUKASA WALTER OJIAMBO',
+    'OKURUT CHARLES',
+    'SABAIDU ROBERT SMITH',
+    'TURINAWE JUSTUS',
+    'WATHUM HABERT',
+    'NIYOKINDI BENOIT',
+    'EPODOI GERALD BENJAMIN',
+    'TUHAIRWE JOSEPH',
+    'MUTUMBA JESSE PAUL',
+    'KIWANUKA EDWARD',
+    'BONGOMIN GABRIEL',
+    'ATWIINE EDMOND',
+    'KAYONGO SANTOS JOSEPH'
+];
+
+function searchEmails() {
             const input = document.getElementById('searchInput').value.toLowerCase();
             const emailList = document.getElementById('emailList');
             emailList.innerHTML = ''; // Clear previous results
@@ -1401,7 +1455,14 @@
             students.forEach(student => {
                 if (student.toLowerCase().includes(input)) {
                     found = true;
-                    displayEmailItem(student, emailList);
+                    displayEmailItem(student, emailList, false);
+                }
+            });
+
+            teachers.forEach(teacher => {
+                if (teacher.toLowerCase().includes(input)) {
+                    found = true;
+                    displayEmailItem(teacher, emailList, true);
                 }
             });
 
@@ -1417,15 +1478,25 @@
             const emailList = document.getElementById('emailList');
             emailList.innerHTML = ''; // Clear previous results
             students.forEach(student => {
-                displayEmailItem(student, emailList);
+                displayEmailItem(student, emailList, false);
+            });
+            teachers.forEach(teacher => {
+                displayEmailItem(teacher, emailList, true);
             });
         }
 
-        function displayEmailItem(student, container) {
-            let email = student.replace(/ /g, '').replace(/\.+$/, '').toLowerCase() + '@glorious.com';
+        function displayEmailItem(person, container, isTeacher) {
+            let email;
+            if (isTeacher) {
+                const names = person.split(' ');
+                email = (names[0] + names[1]).toLowerCase() + '@glorious.com';
+            } else {
+                email = person.replace(/ /g, '').replace(/\.+$/, '').toLowerCase() + '@glorious.com';
+            }
+            
             const emailItem = document.createElement('div');
             emailItem.className = 'email-item';
-            emailItem.innerHTML = `<div><strong>Name:</strong> ${student}</div><div><strong>E-mail:</strong> ${email}</div>`;
+            emailItem.innerHTML = `<div><strong>Name:</strong> ${person}</div><div><strong>E-mail:</strong> ${email}</div>`;
             container.appendChild(emailItem);
         }
 
