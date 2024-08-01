@@ -1,7 +1,7 @@
 {
-  "name": "Victoria University",
-  "short_name": "VU Website",
-  "description": "We are the University of YOU",
+  "name": "Glorious App",
+  "short_name": "Glorious App",
+  "description": "We will Always Shine",
   "icons": [
     {
       "src": "/_nuxt/icons/icon_64x64.3ed7d6.png",
