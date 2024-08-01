@@ -720,6 +720,33 @@
 .modal button:hover {
     background-color: #f0f0f0;
 }
+
+.modal-content.admin-warning {
+    background-color: #ffa500; /* Orange background for admin warnings */
+    animation: flash-admin 2s infinite;
+}
+
+@keyframes flash-admin {
+    0%, 50%, 100% { background-color: #ffa500; }
+    25%, 75% { background-color: #ffcc00; }
+}
+
+.modal-content.admin-warning h2 {
+    color: #800000; /* Dark red for the title in admin warnings */
+}
+
+.modal-content.admin-warning p {
+    color: #000000; /* Black text for better readability on orange background */
+}
+
+.modal-content.admin-warning button {
+    background-color: #800000; /* Dark red button for admin warnings */
+    color: white;
+}
+
+.modal-content.admin-warning button:hover {
+    background-color: #a52a2a; /* Lighter red on hover */
+}
     </style>
 </head>
 
@@ -868,63 +895,49 @@ function showProfile() {
         const photoSrc = user.photo || 'dp.png';
         const age = user.birthdate ? calculateAge(user.birthdate) : "Pending";
 
+        let profileHTML = `
+            <div class="profile-image-container" onclick="showFullsizeImage('${photoSrc}')">
+                <img src="${photoSrc}" alt="${user.name}" class="profile-image">
+                <div class="profile-image-overlay">
+                    <span class="profile-image-overlay-text">Click to Zoom 🔎</span>
+                </div>
+            </div>
+            <p><strong>Name:</strong> ${user.name}</p>
+            <p><strong>Email:</strong> ${user.email || '<i>Pending</i>'}</p>
+            <p><strong>Age:</strong> ${age === "Pending" ? '<i>Pending</i>' : age + ' years'}</p>
+        `;
+
         if (user.role === "student") {
             const studentDetail = studentDetails.find(s => s.name.toLowerCase() === user.name.toLowerCase());
-            
             if (studentDetail) {
-                profileContent.innerHTML = `
-                    <div class="profile-image-container" onclick="showFullsizeImage('${photoSrc}')">
-                        <img src="${photoSrc}" alt="${user.name}" class="profile-image">
-                        <div class="profile-image-overlay">
-                            <span class="profile-image-overlay-text">Click to Zoom 🔎</span>
-                        </div>
-                    </div>
-                    <p><strong>Name:</strong> ${user.name}</p>
-                    <p><strong>Email:</strong> ${user.email || '<i>Pending</i>'}</p>
+                profileHTML += `
                     <p><strong>School Pay Code:</strong> ${studentDetail.schoolPayCode || '<i>Pending</i>'}</p>
                     <p><strong>Sex:</strong> ${studentDetail.sex || '<i>Pending</i>'}</p>
                     <p><strong>Year:</strong> ${currentYear}</p>
                     <p><strong>House:</strong> ${studentDetail.house || '<i>Pending</i>'}</p>
                     <p><strong>Nationality:</strong> ${studentDetail.nationality || '<i>Pending</i>'}</p>
-                    <p><strong>D.O.B:</strong> ${age === "Pending" ? '<i>Pending</i>' : age + ' years'}</p>
                     <p><strong>Parent's contact:</strong> ${studentDetail.parentContact || '<i>Pending</i>'}</p>
                     <p><strong>Role:</strong> Student</p>
                 `;
-            } else {
-                profileContent.innerHTML = `
-                    <div class="profile-image-container" onclick="showFullsizeImage('${photoSrc}')">
-                        <img src="${photoSrc}" alt="${user.name}" class="profile-image">
-                        <div class="profile-image-overlay">
-                            <span class="profile-image-overlay-text">Click to Zoom 🔎</span>
-                        </div>
-                    </div>
-                    <p><strong>Name:</strong> ${user.name}</p>
-                    <p><strong>Email:</strong> ${user.email}</p>
-                    <p><strong>Role:</strong> Student</p>
-                    <p>No more information available.</p>
-                `;
             }
         } else if (user.role === "teacher") {
-            profileContent.innerHTML = `
-                <div class="profile-image-container" onclick="showFullsizeImage('${photoSrc}')">
-                    <img src="${photoSrc}" alt="${user.name}" class="profile-image">
-                    <div class="profile-image-overlay">
-                        <span class="profile-image-overlay-text">Click to Zoom 🔎</span>
-                    </div>
-                </div>
-                <p><strong>Name:</strong> ${user.name}</p>
-                <p><strong>Email:</strong> ${user.email}</p>
+            profileHTML += `
                 <p><strong>Sex:</strong> ${user.sex || '<i>Pending</i>'}</p>
                 <p><strong>Nationality:</strong> ${user.nationality || '<i>Pending</i>'}</p>
                 <p><strong>Marital Status:</strong> ${user.maritalStatus || '<i>Pending</i>'}</p>
                 <p><strong>Religion:</strong> ${user.religion || '<i>Pending</i>'}</p>
                 <p><strong>Subjects Taught:</strong> ${user.subjectsTaught && user.subjectsTaught.length > 0 ? user.subjectsTaught.join(', ') : '<i>Pending</i>'}</p>
                 <p><strong>Classes Taught:</strong> ${user.classesTaught && user.classesTaught.length > 0 ? user.classesTaught.join(', ') : '<i>Pending</i>'}</p>
-                <p><strong>Age:</strong> ${age === "Pending" ? '<i>Pending</i>' : age + ' years'}</p>
                 <p><strong>Contact Number:</strong> ${user.contactNumber && user.contactNumber.length > 0 ? user.contactNumber.join(', ') : '<i>Pending</i>'}</p>
                 <p><strong>Role:</strong> Teacher</p>
             `;
+        } else if (user.role === "administrator") {
+            profileHTML += `
+                <p><strong>Role:</strong> ${user.adminRole}</p>
+            `;
         }
+
+        profileContent.innerHTML = profileHTML;
     } else {
         profileContent.innerHTML = '<p>User information not available.</p>';
     }
@@ -3177,11 +3190,25 @@ const studentDetails = [
       'NAMIREMBE PENINAH',
         ];
 
-        const specialUsers = [
+        const Administrators = [
     {
-        "email": "admin@glorious.com",
-        "password": "Glorious."
+        email: "ssentongovincent@glorious.com",
+        name: "Ssentongo Vincent",
+        role: "Deputy Headteacher"
     },
+    {
+        email: "kainerugabajames@glorious.com",
+        name: "Kainerugaba James",
+        role: "Deputy Academics"
+    },
+    {
+        email: "tekuliwinnie@glorious.com",
+        name: "Tekuli Winnie",
+        role: "Headteacher"
+    }
+];
+
+        const specialUsers = [
     {
         "email": "nakijjepriscaresty@glorious.com",
         "password": "100"
@@ -3543,7 +3570,6 @@ const studentDetails = [
 ];
 
 const teacherNames = [
-    'Admin',
     'KAMEREMBO GENEROUS KAHOMBATE',
     'NAKITTO IMELDAH',
     'NAMULINDWA SYLVIA',
@@ -3611,32 +3637,37 @@ function getSecondName(fullName) {
 
 // Modify the validUsers creation to include teacher details
 const validUsers = [
-    ...studentNames.map(name => {
-        const email = generateEmail(name);
-        const specialUser = specialUsers.find(u => u.email === email);
-        return {
-            email: email,
-            password: specialUser ? specialUser.password : "123",
-            name: name,
-            secondName: getSecondName(name),
-            role: "student"
-        };
-    }),
+    ...studentNames.map(name => ({
+        email: generateEmail(name),
+        password: "123",
+        name: name,
+        secondName: getSecondName(name),
+        role: "student"
+    })),
     ...teacherNames.map(name => {
         const email = generateEmail(name);
         const teacherDetail = teacherDetails.find(t => t.name === name) || {};
-        const specialUser = specialUsers.find(u => u.email === email);
         return {
             email: email,
-            password: specialUser ? specialUser.password : "0123",
+            password: teacherDetail.password || "0123",
             name: name,
             secondName: getSecondName(name),
             role: "teacher",
             ...teacherDetail
         };
     }),
+    ...Administrators.map(admin => ({
+        email: admin.email,
+        password: "Glorious.", // Default password for administrators
+        name: admin.name,
+        secondName: getSecondName(admin.name),
+        role: "administrator",
+        adminRole: admin.role
+    })),
     ...specialUsers
-];
+].filter((user, index, self) => 
+    index === self.findIndex((t) => t.email === user.email)
+);
 
 // Function to update a user's password
 function updateUserPassword(email, newPassword) {
@@ -3666,8 +3697,7 @@ function updateUserPassword(email, newPassword) {
     return false;
 }
 
-
-function getGreeting(role, name) {
+function getGreeting(role, name, adminRole) {
     const hour = new Date().getHours();
     let timeGreeting;
     if (hour >= 5 && hour < 12) {
@@ -3682,6 +3712,8 @@ function getGreeting(role, name) {
     
     if (role === "teacher") {
         return `${timeGreeting} Tr. ${name} ${emoji}`;
+    } else if (role === "administrator") {
+        return `${timeGreeting} ${adminRole} ${name} ${emoji}`;
     } else {
         return `${timeGreeting} ${name} ${emoji}`;
     }
@@ -3717,11 +3749,18 @@ function login() {
                 showErrorMessage();
             }
         } else {
-            // User is using default password
-            if ((user.role === "student" && password === "123") || 
-                (user.role === "teacher" && password === "0123")) {
-                // Show warning modal
-                showWarningModal("Your password is too weak! Please contact the system administrator to change it.");
+            // Check password based on user role
+            if (
+                (user.role === "student" && password === "123") || 
+                (user.role === "teacher" && password === "0123") ||
+                (user.role === "administrator" && password === "Glorious.")
+            ) {
+                // Show warning modal for weak passwords
+                if (user.role === "administrator") {
+                    showWarningModal("The system has detected that this password is shared by multiple users. Please update it to a strong, unique password.");
+                } else {
+                    showWarningModal("Your password is weak. Please contact the system administrator to change to a strong password.");
+                }
                 performLogin(user, rememberMe);
             } else {
                 showErrorMessage();
@@ -3733,8 +3772,20 @@ function login() {
 }
 
 function showWarningModal(message) {
-    document.getElementById("warningMessage").textContent = message;
-    document.getElementById("warningModal").style.display = "block";
+    const user = getCurrentUser();
+    const warningModal = document.getElementById("warningModal");
+    const warningMessage = document.getElementById("warningMessage");
+    const modalContent = warningModal.querySelector(".modal-content");
+
+    warningMessage.textContent = message;
+    
+    if (user && user.role === "administrator") {
+        modalContent.classList.add("admin-warning");
+    } else {
+        modalContent.classList.remove("admin-warning");
+    }
+    
+    warningModal.style.display = "block";
 }
 
 function closeWarningModal() {
@@ -3781,11 +3832,16 @@ function showContent() {
     
     if (user) {
         const secondName = user.secondName || getSecondName(user.name);
-        const greeting = getGreeting(user.role, secondName);
+        const greeting = getGreeting(user.role, secondName, user.adminRole);
         document.getElementById("greeting").textContent = greeting;
     } else {
         document.getElementById("greeting").textContent = "Welcome to Glorious Schools";
     }
+}
+
+function getCurrentUser() {
+    const email = localStorage.getItem("email") || sessionStorage.getItem("email");
+    return validUsers.find(u => u.email === email);
 }
 
 function showLogin() {
