@@ -368,63 +368,125 @@ input.minor-subject {
 @media print {
     @page {
         size: landscape;
+        margin: 0;
     }
     body {
-        font-size: 10pt;
+        font-size: 14pt;
         font-family: 'Times New Roman', Georgia, serif;
         font-weight: bold;
+        margin: 1cm;
     }
     .container {
         width: 100%;
         margin: 0;
         padding: 0;
     }
-    button, input[type="file"] {
-        display: none !important;
-    }
     table {
         width: 100%;
         border-collapse: collapse;
-        table-layout: fixed;
+        table-layout: auto;
+        border: 2px solid black;
+        margin-bottom: 20px;
     }
     th, td {
-        border: 1px solid black;
-        padding: 2px;
-        font-size: 9pt;
+        border: 2px solid black;
+        padding: 4px;
+        font-size: 14pt;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        text-align: center; /* Center-align all cell content */
+    }
+    th {
         font-weight: bold;
-    }
-    /* Adjust column widths */
-    th:first-child, td:first-child {
-        width: 50%; /* Name column */
-    }
-    th:not(:first-child):not(:last-child), 
-    td:not(:first-child):not(:last-child) {
-        width: 10%; /* Subject columns */
-    }
-    th:last-child, td:last-child {
-        width: 10%; /* Agg column */
+        text-transform: capitalize;
+        background-color: white;
+        color: black;
     }
     input[type="text"] {
         border: none;
         background: none;
         font-family: inherit;
-        font-size: inherit;
-        font-weight: inherit;
+        font-size: 14pt;
+        font-weight: bold;
         width: 100%;
         padding: 0;
         margin: 0;
+        text-align: center; /* Center-align input text */
     }
     h1, h2, h3, p {
         margin: 5px 0;
         font-weight: bold;
+        font-size: 14pt;
+        color: black;
     }
-    /* Additional styles for headers */
-    th {
-        font-size: 10pt;
+    .pdf-title {
+        text-align: center;
+        font-size: 16pt;
+        font-weight: bold;
+        margin-bottom: 20px;
+        line-height: 1.4;
+        color: black;
+    }
+    .pdf-title h1, .pdf-title h2, .pdf-title h3 {
+        margin: 5px 0 0 0;
+        padding: 0;
+        text-transform: capitalize;
+        color: black;
+    }
+    .pdf-title h1 { font-size: 16pt; }
+    .pdf-title h2, .pdf-title h3 { font-size: 14pt; }
+
+    /* Make all table cells have the same font size and weight */
+    table td, table th {
+        font-family: "Times New Roman", serif;
+        font-size: 14pt;
+        font-weight: bold;
+    }
+
+    /* Keep the uppercase style for the first column */
+    table td:first-child {
         text-transform: uppercase;
+        text-align: left; /* Left-align names */
+    }
+
+    /* Specific styling for Division and Aggregate columns */
+    table td:nth-last-child(-n+3),
+    table th:nth-last-child(-n+3) {
+        font-size: 14pt; /* Ensure size is consistent */
+        font-weight: bold;
+    }
+
+  /* Hide specific buttons */
+  #saveJsonBtn,
+    #importJsonBtn,
+    #exportCsvBtn,
+    #importCsvBtn,
+    #generatePdfBtn,
+    #importDataBtn,
+    #saveDraftBtn,
+    #exportBtn {
+        display: none !important;
+    }
+
+    /* Hide all input elements of type file */
+    input[type="file"] {
+        display: none !important;
+    }
+
+
+    /* Styles for analysis tables */
+    .analysis-section table {
+        margin-top: 20px;
+    }
+    .analysis-section h3 {
+        page-break-before: always;
+        margin-top: 20px;
+    }
+
+    /* Ensure all table cells in all tables have thick borders */
+    table, th, td {
+        border: 2px solid black !important;
     }
 }
 
@@ -478,12 +540,273 @@ input.minor-subject {
         padding: 0;
         font-size: 12pt;
     }
+    #approvalTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#approvalTable th, #approvalTable td {
+    border: 1px solid var(--secondary-color);
+    padding: 8px;
+    text-align: left;
+}
+
+#approvalTable th {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    width: 30%;
+}
+
+#approvalTable td {
+    height: 30px; /* Provides space for handwritten entries */
+}
+
+@media print {
+    #approvalTable {
+        page-break-inside: avoid;
+    }
+
+    #approvalTable th, #approvalTable td {
+        border: 2px solid black;
+    }
+
+    #approvalTable th {
+        background-color: white;
+        color: black;
+    }
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ff8c00;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .logo img {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.navbar .logo .title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    margin-left: 1rem;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.navbar ul li a:hover {
+    background-color: #e06b00;
+}
+
+.navbar .toggle {
+    display: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.logout-button {
+    padding: 0.5rem 1rem;
+    background-color: #e06b00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #d65600;
+}
+
+/* Animated title */
+@keyframes colorChange {
+    0% { color: white; }
+    50% { color: #FFE0B2; }
+    100% { color: white; }
+}
+
+.animated-title {
+    animation: colorChange 4s infinite;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer styles */
+/* Footer styles */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ff8c00;
+    color: white;
+    text-align: center;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
 
 
-        </style>
-        
+.footer p {
+    margin: 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+    }
+
+    .navbar ul.show {
+        display: flex;
+    }
+
+    .navbar ul li {
+        margin: 0;
+        width: 100%;
+    }
+
+    .navbar ul li a {
+        padding: 1rem;
+        border-radius: 0;
+    }
+
+    .navbar .toggle {
+        display: block;
+        align-self: flex-end;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .navbar .logo {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Additional styles to ensure navbar doesn't overlap content and footer stays at bottom */
+body {
+    padding-top: 60px; /* Adjust this value based on your navbar height */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 100px; /* Increase padding for mobile view */
+    }
+}
+    </style>
 </head>
+<script>
+    // navbar-script.js
+function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    navLinks.classList.toggle('show');
+}
+
+function logout() {
+    localStorage.removeItem("rememberMe");
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("password");
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("intendedPage");
+    window.location.href = 'index.html';
+}
+
+function checkAuth(page) {
+    if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+        window.location.href = page;
+    } else {
+        sessionStorage.setItem("intendedPage", page);
+        showLoginMessage();
+    }
+}
+
+function showLoginMessage() {
+    // Implement this function if you want to show a login message
+    console.log("Please log in to access this page.");
+}
+
+function checkAuthStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+    document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    checkAuthStatus();
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+});
+</script>
 <body>
+     <!-- Add the navbar -->
+     <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title animated-title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+            <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
         <div class="pdf-title">
             <h2>GLORIOUS KINDERGARTEN AND PRIMARY SCHOOL</h2>
             <h2>MID TERM II EXAMS RESULTS 2024</h2>
@@ -534,7 +857,7 @@ input.minor-subject {
             <button id="exportBtn" style="display: none;">Export Results</button>
              </div>
 
-   <div class="analysis-section">
+             <div class="analysis-section">
                 <h3>Division Analysis</h3>
                 <table id="divisionAnalysisTable">
                     <thead>
@@ -549,50 +872,73 @@ input.minor-subject {
                 </table>
             
                 <h3>Aggregate Analysis</h3>
-<table id="aggregateAnalysisTable">
-    <thead>
-        <tr id="aggregateRow">
-            <th>AGGREGATE:</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr id="pupilCountRow">
-            <th>NUMBER OF PUPILS:</th>
-        </tr>
-    </tbody>
-</table>
+                <table id="aggregateAnalysisTable">
+                    <thead>
+                        <tr id="aggregateRow">
+                            <th>AGGREGATE:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="pupilCountRow">
+                            <th>NUMBER OF PUPILS:</th>
+                        </tr>
+                    </tbody>
+                </table>
             
-<h3>Subject Analysis</h3>
-<table id="subjectAnalysisTable">
-    <thead>
-        <tr>
-            <th>Subject</th>
-            <th>D1</th>
-            <th>D2</th>
-            <th>C3</th>
-            <th>C4</th>
-            <th>C5</th>
-            <th>C6</th>
-            <th>P7</th>
-            <th>P8</th>
-            <th>F9</th>
-            <th>X</th>
-            <th>1st Grades</th>
-            <th>%</th>
-            <th>POS</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Subject analysis rows will be added here dynamically -->
-    </tbody>
-</table>
+                <h3>Subject Analysis</h3>
+                <table id="subjectAnalysisTable">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>D1</th>
+                            <th>D2</th>
+                            <th>C3</th>
+                            <th>C4</th>
+                            <th>C5</th>
+                            <th>C6</th>
+                            <th>P7</th>
+                            <th>P8</th>
+                            <th>F9</th>
+                            <th>X</th>
+                            <th>1st Grades</th>
+                            <th>%</th>
+                            <th>POS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Subject analysis rows will be added here dynamically -->
+                    </tbody>
+                </table>
+                <h3>Approval Section</h3>
+                <table id="approvalTable">
+                    <tbody>
+                        <tr>
+                            <th>Class Teacher's Comment:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Class Teacher's Name:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Class Teacher's Signature:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Date of Submission:</th>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="info-section">
+<!-- Add the footer -->
+<br><br>
+<footer class="footer">
     
-            </div>
-        </div>
+    <div>
+        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
     </div>
-
+</footer>
     <script>
         // Function to import JSON
 function importJSON() {
@@ -1044,7 +1390,17 @@ function updateSubjectAnalysisTable() {
         const percentage = (firstGradesCount / totalPupils) * 100;
         row.insertCell().textContent = percentage.toFixed(2) + '%';
 
-        subjectData[subject] = firstGradesCount;
+        // Calculate POINTS for Primary Seven
+        const selectedClass = classSelect.value;
+        if (selectedClass === 'Primary Seven') {
+            const points = calculateSubjectPoints(counts, totalPupils);
+            row.insertCell().textContent = points.toFixed(2);
+        }
+
+        subjectData[subject] = {
+            firstGradesCount: firstGradesCount,
+            points: selectedClass === 'Primary Seven' ? calculateSubjectPoints(counts, totalPupils) : 0
+        };
     });
 
     const subjectPositions = calculateSubjectPositions(subjectData);
@@ -1056,6 +1412,18 @@ function updateSubjectAnalysisTable() {
     });
 }
 
+function calculateSubjectPoints(counts, totalPupils) {
+    const d1Count = counts[0];
+    const d2Count = counts[1];
+    const c3Count = counts[2];
+
+    const d1Points = (d1Count / totalPupils) * 1000;
+    const d2Points = ((d2Count / (totalPupils - d1Count)) * 500) || 0;
+    const c3Points = ((c3Count / (totalPupils - d1Count - d2Count)) * 300) || 0;
+
+    return d1Points + d2Points + c3Points;
+}
+
 function countGradesForSubject(subject, grade) {
     const subjectIndex = ['ENG', 'MTC', 'SCIE', 'SST'].indexOf(subject) * 2 + 2;
     const cells = document.querySelectorAll(`#gradeTable td:nth-child(${subjectIndex + 1})`);
@@ -1063,19 +1431,29 @@ function countGradesForSubject(subject, grade) {
 }
 
 function calculateSubjectPositions(subjectData) {
+    const selectedClass = classSelect.value;
+    const isPrimarySeven = selectedClass === 'Primary Seven';
+
     const sortedSubjects = Object.entries(subjectData)
-        .sort(([, a], [, b]) => b - a);
+        .sort(([, a], [, b]) => {
+            if (isPrimarySeven) {
+                return b.points - a.points;
+            } else {
+                return b.firstGradesCount - a.firstGradesCount;
+            }
+        });
 
     const positions = {};
     let currentPosition = 1;
     let previousScore = null;
 
-    sortedSubjects.forEach(([subject, score], index) => {
-        if (score !== previousScore) {
+    sortedSubjects.forEach(([subject, data], index) => {
+        const currentScore = isPrimarySeven ? data.points : data.firstGradesCount;
+        if (currentScore !== previousScore) {
             currentPosition = index + 1;
         }
         positions[subject] = currentPosition;
-        previousScore = score;
+        previousScore = currentScore;
     });
 
     return positions;
@@ -2113,21 +2491,35 @@ goToGradingBtn.addEventListener('click', function() {
 });
 
 // Function to calculate grade and aggregates based on marks
-function calculateGrade(marks) {
+function calculateGrade(marks, isPrimarySeven) {
     if (marks === "-") return { grade: "F9", aggregates: 9 };
     if (marks === "") return { grade: "", aggregates: 0 };
     marks = parseInt(marks);
     if (isNaN(marks) || marks < 0 || marks > 100) return { grade: "", aggregates: 0 };
     
-    if (marks >= 90) return { grade: "D1", aggregates: 1 };
-    if (marks >= 80) return { grade: "D2", aggregates: 2 };
-    if (marks >= 70) return { grade: "C3", aggregates: 3 };
-    if (marks >= 65) return { grade: "C4", aggregates: 4 };
-    if (marks >= 60) return { grade: "C5", aggregates: 5 };
-    if (marks >= 55) return { grade: "C6", aggregates: 6 };
-    if (marks >= 50) return { grade: "P7", aggregates: 7 };
-    if (marks >= 40) return { grade: "P8", aggregates: 8 };
-    return { grade: "F9", aggregates: 9 };
+    if (isPrimarySeven) {
+        // Special grading for Primary Seven
+        if (marks >= 95) return { grade: "D1", aggregates: 1 };
+        if (marks >= 85) return { grade: "D2", aggregates: 2 };
+        if (marks >= 70) return { grade: "C3", aggregates: 3 };
+        if (marks >= 65) return { grade: "C4", aggregates: 4 };
+        if (marks >= 60) return { grade: "C5", aggregates: 5 };
+        if (marks >= 55) return { grade: "C6", aggregates: 6 };
+        if (marks >= 50) return { grade: "P7", aggregates: 7 };
+        if (marks >= 40) return { grade: "P8", aggregates: 8 };
+        return { grade: "F9", aggregates: 9 };
+    } else {
+        // Original grading for other classes
+        if (marks >= 90) return { grade: "D1", aggregates: 1 };
+        if (marks >= 80) return { grade: "D2", aggregates: 2 };
+        if (marks >= 70) return { grade: "C3", aggregates: 3 };
+        if (marks >= 65) return { grade: "C4", aggregates: 4 };
+        if (marks >= 60) return { grade: "C5", aggregates: 5 };
+        if (marks >= 55) return { grade: "C6", aggregates: 6 };
+        if (marks >= 50) return { grade: "P7", aggregates: 7 };
+        if (marks >= 40) return { grade: "P8", aggregates: 8 };
+        return { grade: "F9", aggregates: 9 };
+    }
 }
 
 // Function to calculate division based on total aggregates
@@ -2166,10 +2558,13 @@ function updateResults(input) {
     const aggregateCell = input.parentElement.nextElementSibling;
     const marks = input.value.trim();
     
+    const selectedClass = classSelect.value;
+    const isPrimarySeven = selectedClass === 'Primary Seven';
+    
     if (marks === "") {
         aggregateCell.textContent = "";
     } else {
-        const { grade, aggregates } = calculateGrade(marks);
+        const { grade, aggregates } = calculateGrade(marks, isPrimarySeven);
         aggregateCell.textContent = grade;
     }
 
@@ -2251,6 +2646,7 @@ function createTableRows(studentList) {
     
     const selectedClass = classSelect.value;
     const isLowerPrimary = ['Primary One', 'Primary Two', 'Primary Three'].includes(selectedClass);
+    const isPrimarySeven = selectedClass === 'Primary Seven';
     
     // Update table header
     if (isLowerPrimary) {
@@ -2270,6 +2666,26 @@ function createTableRows(studentList) {
                 <th class="minor-subject">KISW</th>
                 <th class="minor-subject">Agg</th>
                 <th class="minor-subject">Writing</th>
+                <th class="minor-subject">Agg</th>
+                <th>TAG</th>
+                <th>Div</th>
+            </tr>
+        `;
+    } else if (isPrimarySeven) {
+        tableHeader.innerHTML = `
+            <tr>
+                <th>Name</th>
+                <th>ENG</th>
+                <th>Agg</th>
+                <th>MTC</th>
+                <th>Agg</th>
+                <th>SCIE</th>
+                <th>Agg</th>
+                <th>SST</th>
+                <th>Agg</th>
+                <th class="minor-subject">ICT</th>
+                <th class="minor-subject">Agg</th>
+                <th class="minor-subject">KISW</th>
                 <th class="minor-subject">Agg</th>
                 <th>TAG</th>
                 <th>Div</th>
@@ -2338,7 +2754,6 @@ function createTableRows(studentList) {
         tableBody.appendChild(row);
     });
 
-
     const allInputs = tableBody.querySelectorAll('.subject-mark');
     allInputs.forEach((input, index) => {
         input.addEventListener('input', function() {
@@ -2354,10 +2769,66 @@ function createTableRows(studentList) {
             }
         });
         input.addEventListener('keydown', function(e) {
-            // ... (keep the existing keydown event listener)
+            if (e.key === 'Enter' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                if (index < allInputs.length - 1) {
+                    allInputs[index + 1].focus();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (index > 0) {
+                    allInputs[index - 1].focus();
+                }
+            }
         });
         input.addEventListener('blur', () => validateAndUpdateResults(input));
     });
+
+    // Update the Subject Analysis table header for Primary Seven
+    const subjectAnalysisTable = document.getElementById('subjectAnalysisTable');
+    if (subjectAnalysisTable) {
+        const subjectHeader = subjectAnalysisTable.querySelector('thead');
+        if (isPrimarySeven) {
+            subjectHeader.innerHTML = `
+                <tr>
+                    <th>Subject</th>
+                    <th>D1</th>
+                    <th>D2</th>
+                    <th>C3</th>
+                    <th>C4</th>
+                    <th>C5</th>
+                    <th>C6</th>
+                    <th>P7</th>
+                    <th>P8</th>
+                    <th>F9</th>
+                    <th>X</th>
+                    <th>First Grades</th>
+                    <th>%</th>
+                    <th>POINTS</th>
+                    <th>POS</th>
+                </tr>
+            `;
+        } else {
+            subjectHeader.innerHTML = `
+                <tr>
+                    <th>Subject</th>
+                    <th>D1</th>
+                    <th>D2</th>
+                    <th>C3</th>
+                    <th>C4</th>
+                    <th>C5</th>
+                    <th>C6</th>
+                    <th>P7</th>
+                    <th>P8</th>
+                    <th>F9</th>
+                    <th>X</th>
+                    <th>First Grades</th>
+                    <th>%</th>
+                    <th>POS</th>
+                </tr>
+            `;
+        }
+    }
 }
 
 function handleInputChange(input) {

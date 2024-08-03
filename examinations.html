@@ -6,7 +6,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to ICT Examination</title>
     <style>
+.footer {
+    background-color: #ff8c00;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 0.8rem; /* Reduced from 0.9rem */
+}
 
+body {
+    padding-bottom: 40px; /* Reduced from 60px */
+}
+
+.container {
+    margin-bottom: 40px; /* Reduced from 60px */
+}
+
+        .welcome-card {
+            background-color: #ffffff;
+            /* White background for the card */
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #e65100;
+            /* Dark orange header text */
+        }
+
+        select,
+        .gender-select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #ffe0b2;
+            /* Light orange select background */
+        }
+
+        .gender-select {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gender-select label {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .gender-select label:hover {
+            background-color: #ffd180;
+        }
+
+        .gender-select input[type="radio"] {
+            display: none;
+        }
+
+        .gender-select input[type="radio"]:checked+label {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #ff9800;
+            /* Orange button */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e65100;
+            /* Dark orange button hover */
+        }
+
+        .school-logo {
+            max-width: 100px;
+            margin: 20px auto;
+        }
+        @keyframes colorChange {
+            0% { color: white; }
+            20% { color: #FFE0B2; }
+            40% { color: #FFCC80; }
+            60% { color: #FFA726; }
+            80% { color: #FF9800; }
+            100% { color: white; }
+        }
+
+        .animated-title {
+            animation: colorChange 6s infinite;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
 
 .navbar {
     display: flex;
@@ -141,118 +251,6 @@
         display: flex;
     }
 }
-
-.footer {
-    background-color: #ff8c00;
-    color: white;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    font-size: 0.8rem; /* Reduced from 0.9rem */
-}
-
-body {
-    padding-bottom: 40px; /* Reduced from 60px */
-}
-
-.container {
-    margin-bottom: 40px; /* Reduced from 60px */
-}
-
-        .welcome-card {
-            background-color: #ffffff;
-            /* White background for the card */
-            border-radius: 8px;
-            padding: 40px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        h1 {
-            color: #e65100;
-            /* Dark orange header text */
-        }
-
-        select,
-        .gender-select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            background-color: #ffe0b2;
-            /* Light orange select background */
-        }
-
-        .gender-select {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .gender-select label {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            cursor: pointer;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .gender-select label:hover {
-            background-color: #ffd180;
-        }
-
-        .gender-select input[type="radio"] {
-            display: none;
-        }
-
-        .gender-select input[type="radio"]:checked+label {
-            background-color: #ff9800;
-            color: white;
-        }
-
-        button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: #ff9800;
-            /* Orange button */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #e65100;
-            /* Dark orange button hover */
-        }
-
-        .school-logo {
-            max-width: 100px;
-            margin: 20px auto;
-        }
-        @keyframes colorChange {
-            0% { color: white; }
-            20% { color: #FFE0B2; }
-            40% { color: #FFCC80; }
-            60% { color: #FFA726; }
-            80% { color: #FF9800; }
-            100% { color: white; }
-        }
-
-        .animated-title {
-            animation: colorChange 6s infinite;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        }
     </style>
 </head>
 
@@ -279,23 +277,21 @@ body {
         <img src="schoologo-2-150x150.png" alt="School Logo" class="school-logo">
         <h1>Glorious Examinations Board</h1>
         <form id="credentialsForm">
-            <select id="classSelect" required>
+            <select id="classSelect">
                 <option value="" disabled selected>Select Class</option>
-                <option value="Primary Three">Primary Three</option>
-                <option value="Primary Four">Primary Four</option>
             </select>
             
-            <select id="streamSelect" required style="display:none;">
+            <select id="streamSelect" style="display:none;">
                 <option value="" disabled selected>Select Stream</option>
             </select>
             
-            <select id="genderSelect" required style="display:none;">
+            <select id="genderSelect" style="display:none;">
                 <option value="" disabled selected>Select Gender</option>
                 <option value="Boys">Male</option>
                 <option value="Girls">Female</option>
             </select>
             
-            <select id="nameSelect" required style="display:none;">
+            <select id="nameSelect" style="display:none;">
                 <option value="" disabled selected>Select Name</option>
             </select>
             <button type="submit">Start Examination</button>
@@ -305,6 +301,7 @@ body {
     <footer class="footer">
         <p>&copy; Glorious Schools <span id="currentYear"></span></p>
     </footer>
+
 
     <script>
  const studentData = {
@@ -701,80 +698,284 @@ body {
     'Mbabazi Cyroh',
     'Mpanga Fahad',
     'Rwomushana Omugisha G.'
-   
                 ]
+            },
+            'Primary Five': {
+            'Sunset': [
+            'AHABWE JOSIAH',
+    'AMUGE LYNDSEY MILES',
+    'ATULINDA AISHA',
+    'AYEBARE MELLISA',
+    'BATARINGAYA SHIMARO',
+    'BUKIRWA SHAMRA DDUMBA',
+    'BULEGA PIUS',
+    'JAZMINE BIDS',
+    'JJAGWE JOVAN',
+    'JJUMBA ANGELLO',
+    'KAKOOZA DIVINE MACKYLA',
+    'KALUNGI JONATHAN',
+    'KAREMERA ABDUL HANAN',
+    'KATENDE HAMIR',
+    'KATONO ALLAN',
+    'KAZIBA JOSHUA',
+    'KIGGUNDU LIA',
+    'KIMBUGWE HASSAN AWADH',
+    'KIRABO EVAS',
+    'KIZZA JOYCE MYER SEMPA',
+    'KYALIGONZA HARVEY RENATAH',
+    'LUBWAMA MARTIN WASSWA',
+    'LUKWAGO LUCKY AHMET',
+    'LWANGA WYCLIFF',
+    'MAKIKA MEEKSON',
+    'MUBIRU RAJAB',
+    'MUKISA PHILEMON',
+    'MULWANA JONATHAN',
+    'MUSASIZI ADRIAN',
+    'MUWONGE PENIEL',
+    'MWEBAZA PEACE DIVINE',
+    'NABWIRE GLORIA MICHELLE',
+    'NAGAWA ANTHONIA BEATRICE',
+    'NAKAWEKE JANE',
+    'NAKITTO MYRA REMEDY',
+    'NAKIYEMBA SHUKRAH',
+    'NAMAGANDA JULIANA TENDO',
+    'NAMARA REBECCA BLESSED',
+    'NAMAWEJJE ELIZABETH SHANTAL',
+    'NAMIREMBE KAHLAN MARTHA',
+    'NAMPIJJA PATRICIA',
+    'NAMUGENYI HELLEN',
+    'NAMUSISI MARIA FEDERESI',
+    'NAMWANJE MACRINAH',
+    'NANYONJO HALIMAH',
+    'NASSUUNA WILDER',
+    'NYIRANEZA VIVIAN',
+    'ODONG DAVID ISA',
+    'OPIO DANIEL OPOLOT',
+    'OWARUHANGA JONATHAN KAHIIRWA',
+    'SSERUNKUMA ABRIELLE PROSPER',
+    'TUMUSIIME ELIJAH'
+            ],
+            'Sunrise': [
+            'ADITE DIRAN',
+    'AKATUSIIMA RAVEN',
+    'ANZOA JOVANNAH',
+    'ATURINDA KELTON',
+    'BALUKU ELEUTHERIUS BROGAN',
+    'BUGINGO JORAM',
+    'BYEGANJE JOSEMARY ROVINSAH',
+    'ITUNGO ISOBEL AYETA',
+    'KAAZA JEMIMAH',
+    'KABISWA ISAAC',
+    'KALUNGI DAVID',
+    'KASULE GORDON',
+    'KATUMBA MARTHA',
+    'KIRABO MADRINE PRINCESS',
+    'KIWENDO CALVIN',
+    'KYOMUGISHA ETHEL HANNAH',
+    'LUYIGA RAHIM',
+    'MAYITTO CHRISTIAN',
+    'MIREMBE GIFT REBECCA',
+    'MIRIMU ELIJAH',
+    'MUGARURA PAXTON',
+    'MUGENYI RYAN',
+    'MUKIIBI JOSEPH',
+    'MUKISA JEFFRON',
+    'MUKISA SHAMMAH',
+    'MURUNGI AARON',
+    'MUSIIMENTA HANNAH AMITO',
+    'MUTEBI JORDAN DIEGO',
+    'MUWANGUZI ETHAN',
+    'NABACHWA SHIVAN',
+    'NABUKENYA TYRA',
+    'NAJJINGO RHONITAH LUCY',
+    'NAKAWUKI RIANAH',
+    'NAKAYENGA MARY KATEREGGA',
+    'NAKIBUULE SHEENAH',
+    'NAKIJJE PRISCA RESTY',
+    'NAKIMERA MARIA',
+    'NAKIMULI KATRINAH PEACE',
+    'NAMAGANDA LUISA JOY',
+    'NAMMANDA HAIFA',
+    'NANGENDO GABRIELLA',
+    'NANSAMBA ESTHER',
+    'NASSAAZI JACINTA KIZZA',
+    'NATYABA EVELYN TENDO',
+    'NAYIGA SHUDAT ZAHARA',
+    'NYANZI RAYAN',
+    'OSINDE AHMED',
+    'SSAAZI RAPHEAL',
+    'SSENDAGI SOLOMON',
+    'SSENUNGI TITUS',
+    'SSERUGO ASHLEY',
+    'YEBETE MARY SADAD ELIAS'
+            ],
+            'Skyhigh': [
+            'ABAHO FARRELL',
+    'AINEMBABAZI ELIANAH',
+    'AMAANI JEHEL KAISER',
+    'ARIHO CALVIN',
+    'ATUHAIRE COMFORT',
+    'ATUHAIRE PROMISE',
+    'ATWIINE RUTH',
+    'AYEBALE ABORIGINE',
+    'BUGANZA PATIENCE',
+    'BUKENYA HENRY SHADRACK',
+    'ELIANA TREASURE MUKISA',
+    'KABUYAYA TATIANA',
+    'KAKOOZA JUMA KAGGWA',
+    'KAYONDO MUSA HASHIM',
+    'KIDHUUDO PATRICIA GLADYS',
+    'KIMBUGWE TIMOTHY',
+    'KISAWUZI PROSPER JONATHAN',
+    'KIWANA GENEROUS SHAKRAN',
+    'KIYAGA TERRY ELIJAH',
+    'KIZITO ISAIAH',
+    'KYAZZE MARIA',
+    'LUBOWA SHANITAH',
+    'LUBUULWA MELLISA',
+    'LUZZE MARK IBRAHIM',
+    'MAGOMA BENSON',
+    'MURUNGI BETTINAH',
+    'MURUNGI SHAREEF RAUSHAN',
+    'MUTANDA LEON ARTHUR',
+    'MUWANGUZI JEREMIAH ANKUNDA',
+    'NAJJINGO TEOPISTA KALUNGI',
+    'NAKANDI ROCINTA',
+    'NAKINTU RAMLAH',
+    'NAKYANZI BENINA',
+    'NAMATA DIVINE HANNAH',
+    'NAMITALA TONNIA',
+    'NAMUTEBI LETICIA',
+    'NAMYALO CLARA KETRA',
+    'NANKYA NUSRAH',
+    'NANOZI KEISHA',
+    'NANTUME JAZMINE',
+    'NDAGIRE SALMAH ALYSON',
+    'NSUBUGA ERON',
+    'NSUBUGA MATILDA YULLIANA',
+    'OMAR ROSHEEN NSEGIMAANA',
+    'PARA PATRINA',
+    'RUGUMAYO JOSEPH REMIGIUS',
+    'SANGA FAITH LISA',
+    'SSEKATAWA CLANCY CALVIN',
+    'SSENYONJO SEAN ADRIAN',
+    'TALIDDA SARAH',
+    'WALUGEMBE JONATHAN',
+    'WAMALA CHESTNUT',
+    'YIGA INNOCENT'
+            ]
+        }
+    };
+
+    const classSelect = document.getElementById('classSelect');
+    const streamSelect = document.getElementById('streamSelect');
+    const genderSelect = document.getElementById('genderSelect');
+    const nameSelect = document.getElementById('nameSelect');
+
+    // Populate class select
+    for (const className in studentData) {
+        const option = document.createElement('option');
+        option.value = className;
+        option.textContent = className;
+        classSelect.appendChild(option);
+    }
+
+    classSelect.addEventListener('change', function () {
+        streamSelect.style.display = 'block';
+        streamSelect.innerHTML = '<option value="" disabled selected>Select Stream</option>';
+        genderSelect.style.display = this.value === 'Primary Five' ? 'none' : 'block';
+        nameSelect.style.display = 'none';
+
+        const selectedClass = this.value;
+        if (selectedClass in studentData) {
+            const streams = new Set();
+            for (let stream in studentData[selectedClass]) {
+                streams.add(stream.split(' ').pop()); // Add unique stream names
             }
-        };
+            streams.forEach(stream => {
+                const option = document.createElement('option');
+                option.value = stream;
+                option.textContent = stream;
+                streamSelect.appendChild(option);
+            });
+        }
+    });
 
-        const classSelect = document.getElementById('classSelect');
-        const streamSelect = document.getElementById('streamSelect');
-        const genderSelect = document.getElementById('genderSelect');
-        const nameSelect = document.getElementById('nameSelect');
-
-        classSelect.addEventListener('change', function () {
-            streamSelect.style.display = 'block';
-            streamSelect.innerHTML = '<option value="" disabled selected>Select Stream</option>';
-            genderSelect.style.display = 'none';
-            nameSelect.style.display = 'none';
-
-            const selectedClass = this.value;
-            if (selectedClass in studentData) {
-                const streams = new Set();
-                for (let stream in studentData[selectedClass]) {
-                    streams.add(stream.split(' ')[1]); // Add unique stream names
-                }
-                streams.forEach(stream => {
-                    const option = document.createElement('option');
-                    option.value = stream;
-                    option.textContent = stream;
-                    streamSelect.appendChild(option);
-                });
-            }
-        });
-
-        streamSelect.addEventListener('change', function () {
+    streamSelect.addEventListener('change', function () {
+        const selectedClass = classSelect.value;
+        if (selectedClass === 'Primary Five') {
+            populateNames(selectedClass, this.value);
+        } else {
             genderSelect.style.display = 'block';
             nameSelect.style.display = 'none';
-        });
+        }
+    });
 
-        genderSelect.addEventListener('change', function () {
-            nameSelect.style.display = 'block';
-            nameSelect.innerHTML = '<option value="" disabled selected>Select Name</option>';
+    genderSelect.addEventListener('change', function () {
+        const selectedClass = classSelect.value;
+        const selectedStream = streamSelect.value;
+        const selectedGender = this.value;
+        populateNames(selectedClass, selectedStream, selectedGender);
+    });
 
-            const selectedClass = classSelect.value;
-            const selectedStream = streamSelect.value;
-            const selectedGender = genderSelect.value;
+    function populateNames(selectedClass, selectedStream, selectedGender = null) {
+        nameSelect.style.display = 'block';
+        nameSelect.innerHTML = '<option value="" disabled selected>Select Name</option>';
 
-            if (selectedClass in studentData) {
-                const fullStreamName = `${selectedGender} ${selectedStream}`;
-                if (fullStreamName in studentData[selectedClass]) {
-                    studentData[selectedClass][fullStreamName].forEach(name => {
-                        const option = document.createElement('option');
-                        option.value = name;
-                        option.textContent = name;
-                        nameSelect.appendChild(option);
-                    });
-                }
-            }
-        });
-
-        document.getElementById('credentialsForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const selectedClass = classSelect.value;
-            const selectedStream = streamSelect.value;
-            const selectedGender = genderSelect.value;
-            const selectedName = nameSelect.value;
-
-            if (selectedClass && selectedStream && selectedGender && selectedName) {
-                localStorage.setItem('studentClass', selectedClass);
-                localStorage.setItem('studentStream', selectedStream);
-                localStorage.setItem('studentGender', selectedGender);
-                localStorage.setItem('studentName', selectedName);
-                window.location.href = 'exam.html';
+        if (selectedClass in studentData) {
+            let students;
+            if (selectedClass === 'Primary Five') {
+                students = studentData[selectedClass][selectedStream];
             } else {
-                alert('Please select all fields before starting the examination.');
+                const fullStreamName = `${selectedGender} ${selectedStream}`;
+                students = studentData[selectedClass][fullStreamName];
             }
-        });
+            students.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                nameSelect.appendChild(option);
+            });
+        }
+    }
+
+    document.getElementById('credentialsForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const selectedClass = classSelect.value;
+    const selectedStream = streamSelect.value;
+    const selectedGender = genderSelect.value;
+    const selectedName = nameSelect.value;
+
+    if (!selectedClass || !selectedStream || !selectedName) {
+        alert('Please select all required fields before starting the examination.');
+        return;
+    }
+
+    if (selectedClass !== 'Primary Five' && !selectedGender) {
+        alert('Please select gender before starting the examination.');
+        return;
+    }
+
+    // Create a student info object
+    const studentInfo = {
+        class: selectedClass,
+        stream: selectedStream,
+        name: selectedName
+    };
+
+    if (selectedClass !== 'Primary Five') {
+        studentInfo.gender = selectedGender;
+    }
+
+    // Store the entire student info object as a JSON string
+    localStorage.setItem('studentInfo', JSON.stringify(studentInfo));
+
+    if (selectedClass === 'Primary Five') {
+        window.location.href = 'questions.html';
+    } else {
+        window.location.href = 'exam.html';
+    }
+});
 
         function toggleMenu() {
             const navLinks = document.getElementById('nav-links');

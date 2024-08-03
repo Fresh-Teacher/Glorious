@@ -859,9 +859,221 @@
             background-color: #f44336;
             color: white;
         }
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ff8c00;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .logo img {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.navbar .logo .title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    margin-left: 1rem;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.navbar ul li a:hover {
+    background-color: #e06b00;
+}
+
+.navbar .toggle {
+    display: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.logout-button {
+    padding: 0.5rem 1rem;
+    background-color: #e06b00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #d65600;
+}
+
+/* Animated title */
+@keyframes colorChange {
+    0% { color: white; }
+    50% { color: #FFE0B2; }
+    100% { color: white; }
+}
+
+.animated-title {
+    animation: colorChange 4s infinite;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer styles */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ff8c00;
+    color: white;
+    text-align: center;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+
+.footer p {
+    margin: 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+    }
+
+    .navbar ul.show {
+        display: flex;
+    }
+
+    .navbar ul li {
+        margin: 0;
+        width: 100%;
+    }
+
+    .navbar ul li a {
+        padding: 1rem;
+        border-radius: 0;
+    }
+
+    .navbar .toggle {
+        display: block;
+        align-self: flex-end;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .navbar .logo {
+        margin-bottom: 1rem;
+    }
+}
+
+
     </style>
 </head>
+<script>
+    // navbar-script.js
+function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    navLinks.classList.toggle('show');
+}
+
+function logout() {
+    localStorage.removeItem("rememberMe");
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("password");
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("intendedPage");
+    window.location.href = 'index.html';
+}
+
+function checkAuth(page) {
+    if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+        window.location.href = page;
+    } else {
+        sessionStorage.setItem("intendedPage", page);
+        showLoginMessage();
+    }
+}
+
+function showLoginMessage() {
+    // Implement this function if you want to show a login message
+    console.log("Please log in to access this page.");
+}
+
+function checkAuthStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+    document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    checkAuthStatus();
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+});
+</script>
 <body>
+     <!-- Add the navbar -->
+     <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title animated-title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+            <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+
+    <br><br>
     <div id="feedbackModal" class="modal">
         <div class="modal-content">
             <p id="modalMessage"></p>
@@ -926,7 +1138,14 @@
     </div>
        
     </div>
-
+<!-- Add the footer -->
+<br><br>
+<footer class="footer">
+    
+    <div>
+        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
+    </div>
+</footer>
     <script>
 
         
@@ -939,7 +1158,7 @@ const programTable = document.getElementById('programTable');
 
 const programSchedule = [
     // Wonder Woman - 6:00 AM to 8:11 AM (131 minutes)
-    { startTime: '6:00 AM', title: 'Wonder Woman', duration: 131, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Wonder%20Woman_Luganda_264_www.mobifliks.com.mp4' },
+    { startTime: '6:00 AM', title: 'Wonder Woman', duration: 131, link: 'boat.mp4' },
 
     // Spider-Man - Far from Home - 8:11 AM to 10:09 AM (118 minutes)
     { startTime: '8:11 AM', title: 'Spider-Man - Far from Home', duration: 118, link: 'arrival.mp4' },
@@ -966,7 +1185,7 @@ const programSchedule = [
     { startTime: '11:11 PM', title: 'Guardians of the Galaxy Vol. 3', duration: 89, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Guardians%20of%20the%20Galaxy%20Vol.%203%20Part-%201%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
 
     // Transformers: Rise of the Beasts - 12:40 AM to 2:39 AM (119 minutes)
-    { startTime: '12:40 AM', title: 'Transformers - Rise of the Beasts', duration: 119, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Transformers-%20Rise%20of%20the%20Beasts%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
+    { startTime: '12:40 AM', title: 'Transformers - Rise of the Beasts', duration: 119, link: 'news.mp4' },
 
     // Knights of the Zodiac - 2:39 AM to 4:24 AM (105 minutes)
     { startTime: '2:39 AM', title: 'Knights of the Zodiac', duration: 105, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Knights%20of%20the%20Zodiac%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },

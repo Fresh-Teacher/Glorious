@@ -698,6 +698,51 @@ ${answerText}
         }
     }, 100);
 }
+function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        function setCurrentYear() {
+            const currentYear = new Date().getFullYear();
+            document.getElementById('currentYear').textContent = currentYear;
+        }
+
+        function checkAuth(page) {
+            if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = page;
+            } else {
+                sessionStorage.setItem("intendedPage", page);
+                showLoginMessage();
+            }
+        }
+
+        function showLoginMessage() {
+            document.getElementById("login-message").style.display = "block";
+        }
+
+        function checkAuthStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+            document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+        }
+
+        function logout() {
+            localStorage.removeItem("rememberMe");
+            localStorage.removeItem("email");
+            localStorage.removeItem("password");
+            localStorage.removeItem("isLoggedIn");
+            sessionStorage.removeItem("email");
+            sessionStorage.removeItem("password");
+            sessionStorage.removeItem("isLoggedIn");
+            sessionStorage.removeItem("intendedPage");
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            setCurrentYear();
+        });
+    
     </script>
 </body>
 </html>
