@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Welcome To Glorious Schools, #1 Academic Giant in Ugandan Educational Sector.">
+    <meta name="keyword"
+        content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
+    <meta name="author" content="Fresh Teacher">
+    <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
+    <link data-n-head="ssr" rel="manifest" href="/manifest.json" data-hid="manifest">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta property="og:site_name" content="Fresh Teacher's Library" />
+    <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
+     <title>Glorious Birthday Parties!</title>
+    <style>
+        @keyframes rainbow {
+            0% { color: red; }
+            14% { color: orange; }
+            28% { color: yellow; }
+            42% { color: green; }
+            57% { color: blue; }
+            71% { color: indigo; }
+            85% { color: violet; }
+            100% { color: red; }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de; }
+            50% { text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff, 0 0 10px #ff00de, 0 0 17.5px #ff00de, 0 0 20px #ff00de, 0 0 25px #ff00de, 0 0 37.5px #ff00de; }
+            100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de; }
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h6 {
+            font-size: 3em;
+            margin-top: 20px;
+            animation: rainbow 6s linear infinite, glow 2s ease-in-out infinite;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .student-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .student-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .student-card:hover {
+            transform: scale(1.05);
+        }
+
+        .student-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .student-card h2 {
+            color: #4b0082;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .student-card p {
+            color: #1e90ff;
+            font-size: 1em;
+            margin: 5px 0;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .modal-content h2 {
+            color: #ff69b4;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .modal-content button {
+            background-color: #4b0082;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #6a5acd;
+        }
+
+        .no-birthdays {
+            font-size: 1.5em;
+            color: #4b0082;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .no-birthdays img {
+            max-width: 300px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .upcoming-button {
+            background-color: #4b0082;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .upcoming-button:hover {
+            background-color: #6a5acd;
+        }
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ff8c00;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .logo img {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.navbar .logo .title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    margin-left: 1rem;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.navbar ul li a:hover {
+    background-color: #e06b00;
+}
+
+.navbar .toggle {
+    display: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.logout-button {
+    padding: 0.5rem 1rem;
+    background-color: #e06b00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #d65600;
+}
+
+/* Animated title */
+@keyframes colorChange {
+    0% { color: white; }
+    50% { color: #FFE0B2; }
+    100% { color: white; }
+}
+
+.animated-title {
+    animation: colorChange 4s infinite;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer styles */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ff8c00;
+    color: white;
+    text-align: center;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+
+.footer p {
+    margin: 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+    }
+
+    .navbar ul.show {
+        display: flex;
+    }
+
+    .navbar ul li {
+        margin: 0;
+        width: 100%;
+    }
+
+    .navbar ul li a {
+        padding: 1rem;
+        border-radius: 0;
+    }
+
+    .navbar .toggle {
+        display: block;
+        align-self: flex-end;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .navbar .logo {
+        margin-bottom: 1rem;
+    }
+}
+
+
+    </style>
+</head>
+<script>
+    // navbar-script.js
+function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    navLinks.classList.toggle('show');
+}
+
+function logout() {
+    localStorage.removeItem("rememberMe");
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("password");
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("intendedPage");
+    window.location.href = 'index.html';
+}
+
+function checkAuth(page) {
+    if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+        window.location.href = page;
+    } else {
+        sessionStorage.setItem("intendedPage", page);
+        showLoginMessage();
+    }
+}
+
+function showLoginMessage() {
+    // Implement this function if you want to show a login message
+    console.log("Please log in to access this page.");
+}
+
+function checkAuthStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+    document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    checkAuthStatus();
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+});
+</script>
+<body>
+     <!-- Add the navbar -->
+     <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title animated-title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+            <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+
+    <br><br>
+    <h6>🎉 Happy Birthday! 🎂</h6>
+    <div class="container">
+        <div id="studentContainer" class="student-container"></div>
+        <button id="upcomingButton" class="upcoming-button">Show Upcoming Birthdays</button>
+    </div>
+
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <h2>Welcome to Our Birthday Celebration! 🎈</h2>
+            <p>Click the button below to start the party!</p>
+            <button id="startButton">Let's Celebrate! 🥳</button>
+        </div>
+    </div>
+
+    <audio id="backgroundMusic" loop>
+        <source src="birthday.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+<!-- Add the footer -->
+<br><br>
+<footer class="footer">
+    
+    <div>
+        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
+    </div>
+</footer>
+    <script>
+       const studentDetails = [
+            {
+                "name": "NANYONJO HALIMAH",
+                "photo": "nanyonjo harimar.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-05-24",
+                "parentContact": ""
+            },
+            {
+                "name": "KIZZA JOYCE MYER SEMPA",
+                "photo": "Kizza Joyce.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-03-26",
+                "parentContact": ""
+            },
+            {
+                "name": "NAMAWEJJE ELIZABETH SHANTAL",
+                "photo": "shantal.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-01-01",
+                "parentContact": ""
+            },
+            {
+                "name": "TUMUSIIME ELIJAH",
+                "photo": "tumusiime elijah.jpg",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-03-13",
+                "parentContact": ""
+            },
+            {
+                "name": "NAKIYEMBA SHUKRAH",
+                "photo": "nakiyenmba shukrah.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-01-17",
+                "parentContact": ""
+            },
+            {
+                "name": "BULEGA PIUS",
+                "photo": "bulega pius.jpg",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2011-10-10",
+                "parentContact": ""
+            },
+            {
+                "name": "MUKISA PHILEMON",
+                "photo": "mukisa philemon.jpg",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-02-14",
+                "parentContact": ""
+            },
+            {
+                "name": "NAMUGENYI HELLEN",
+                "photo": "hellen namugenyi.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-02-02",
+                "parentContact": ""
+            },
+            {
+                "name": "KALUNGI JONATHAN",
+                "photo": "kalungi jonathan.jpg",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-12-31",
+                "parentContact": ""
+            },
+            {
+                "name": "KIGGUNDU LIA",
+                "photo": "kiggundu lia.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2044-08-15",
+                "parentContact": ""
+            },
+            {
+                "name": "KAREMERA ABDUL HANAN",
+                "photo": "abdul hanan.jpg",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2011-11-29",
+                "parentContact": ""
+            },
+            {
+                "name": "JJAGWE JOVAN",
+                "photo": "jjagwe jovan.jpg",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2011-06-29",
+                "parentContact": ""
+            },
+            {
+                "name": "KATENDE HAMIR",
+                "photo": "katende hamir.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-07-27",
+                "parentContact": ""
+            },
+            {
+                "name": "KATONO ALLAN",
+                "photo": "katono allan.jpg",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-11-23",
+                "parentContact": ""
+            },
+            {
+                "name": "MWEBAZA PEACE DIVINE",
+                "photo": "Peace Divine.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-06-04",
+                "parentContact": ""
+            },
+            {
+                "name": "KIRABO EVAS",
+                "photo": "kirabo evas.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-10-06",
+                "parentContact": ""
+            },
+            {
+                "name": "LUBWAMA MARTIN WASSWA",
+                "photo": "",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2011-08-09",
+                "parentContact": ""
+            },
+            {
+                "name": "LUKWAGO LUCKY AHMET",
+                "photo": "lucky lukwago.jpg",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2011-02-28",
+                "parentContact": ""
+            },
+            {
+                "name": "SSERUNKUMA ABRIELLE PROSPER",
+                "photo": "sserunkuuma prosper.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-02-02",
+                "parentContact": ""
+            },
+            {
+                "name": "AMUGE LYNDSEY MILES",
+                "photo": "amuge lyndsey.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-02-09",
+                "parentContact": ""
+            },
+            {
+                "name": "OPIO DANIEL OPOLOT",
+                "photo": "opio daniel.jpg",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-02-03",
+                "parentContact": ""
+            },
+
+            {
+                "name": "JAZMINE BIDS",
+                "photo": "jazmine bids.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-10-14",
+                "parentContact": ""
+            },
+
+            {
+                "name": "NAMIREMBE KALHAN MARTHA",
+                "photo": "",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2010-09-10",
+                "parentContact": ""
+            },
+
+            {
+                "name": "NASSUUNA WILDER",
+                "photo": "nassuuna wildah.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-05-11",
+                "parentContact": ""
+            },
+
+            {
+                "name": "MUBIRU RAJAB",
+                "photo": "mubiru rajab.jpg",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-01-06",
+                "parentContact": ""
+            },
+
+            {
+                "name": "NAKITTO MYRA REMEDY",
+                "photo": "nakitto myra.jpg",
+                "schoolPayCode": "",
+                "sex": "Female",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-04-13",
+                "parentContact": ""
+            },
+
+            {
+                "name": "AHABWE JOSIAH",
+                "photo": "ahabwe josiah.jpg",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Male",    
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-06-12",
+                "parentContact": ""
+            },
+
+        ];
+
+        function createStudentCard(student, isUpcoming = false) {
+            const card = document.createElement('div');
+            card.className = 'student-card';
+            
+            const img = document.createElement('img');
+            img.src = student.photo;
+            img.alt = student.name;
+            img.onerror = function() {
+                this.src = 'dp.png';
+            };
+            
+            const name = document.createElement('h2');
+            name.textContent = student.name;
+            
+            card.appendChild(img);
+            card.appendChild(name);
+            
+            const addInfo = (label, value) => {
+                if (value && value.trim() !== "") {
+                    const p = document.createElement('p');
+                    p.textContent = `${label}: ${value}`;
+                    card.appendChild(p);
+                }
+            };
+            
+            addInfo("Birthdate", new Date(student.birthdate).toLocaleDateString());
+            addInfo("Class", student.year);
+            addInfo("Religion", student.religion);
+            addInfo("Sex", student.sex);
+            addInfo("House", student.house);
+            
+            if (!isUpcoming) {
+                const birthday = document.createElement('p');
+                birthday.textContent = `Happy Birthday! 🎂`;
+                birthday.style.fontWeight = 'bold';
+                birthday.style.color = '#ff69b4';
+                card.appendChild(birthday);
+            }
+            
+            return card;
+        }
+
+        function displayStudents(isUpcoming = false) {
+            const container = document.getElementById('studentContainer');
+            container.innerHTML = ''; // Clear previous content
+            const today = new Date();
+            const currentMonth = today.getMonth() + 1;
+            const currentDay = today.getDate();
+            
+            let birthdaysFound = false;
+
+            studentDetails.forEach(student => {
+                const birthdate = new Date(student.birthdate);
+                const birthMonth = birthdate.getMonth() + 1;
+                const birthDay = birthdate.getDate();
+
+                if (isUpcoming) {
+                    if (birthMonth === currentMonth && birthDay > currentDay) {
+                        const card = createStudentCard(student, true);
+                        container.appendChild(card);
+                        birthdaysFound = true;
+                    }
+                } else {
+                    if (birthMonth === currentMonth && birthDay === currentDay) {
+                        const card = createStudentCard(student);
+                        container.appendChild(card);
+                        birthdaysFound = true;
+                    }
+                }
+            });
+
+            if (!birthdaysFound) {
+                const noBirthdaysMessage = document.createElement('div');
+                noBirthdaysMessage.className = 'no-birthdays';
+                noBirthdaysMessage.innerHTML = `
+                    <p>${isUpcoming ? "No upcoming birthdays this month." : "No birthdays today."} But let's celebrate anyway! 🎉</p>
+                    <img src="celeb.gif" alt="Celebration image">
+                `;
+                container.appendChild(noBirthdaysMessage);
+            }
+        }
+
+        function toggleUpcomingBirthdays() {
+            const button = document.getElementById('upcomingButton');
+            const isShowingUpcoming = button.textContent === "Show Today's Birthdays";
+            
+            if (isShowingUpcoming) {
+                displayStudents(false);
+                button.textContent = "Show Upcoming Birthdays";
+            } else {
+                displayStudents(true);
+                button.textContent = "Show Today's Birthdays";
+            }
+        }
+
+        function startCelebration() {
+            const modal = document.getElementById('welcomeModal');
+            const music = document.getElementById('backgroundMusic');
+            
+            modal.style.display = 'none';
+            music.play();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayStudents();
+            
+            const startButton = document.getElementById('startButton');
+            startButton.addEventListener('click', startCelebration);
+
+            const upcomingButton = document.getElementById('upcomingButton');
+            upcomingButton.addEventListener('click', toggleUpcomingBirthdays);
+        });
+    </script>
+</body>
+</html>

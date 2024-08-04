@@ -248,6 +248,8 @@
         }
 
         .resource-container {
+            position: relative;
+    overflow: hidden;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -271,11 +273,17 @@
 
         .resource-item img {
             width: 100%;
-            height: 120px;
+            height: 150px;
+            object-fit: cover;
+            object-position: center;
             object-fit: cover;
             border-radius: 10px;
             margin-bottom: 1rem;
         }
+
+        .resource-item:hover img {
+    transform: scale(1.1);
+}
 
         .resource-item a {
             text-decoration: none;
@@ -302,6 +310,15 @@
             width: 100%;
             z-index: 1000;
         }
+        .padded-content {
+    padding-top: 100px; /* Adjust this value based on your navbar height */
+}
+
+@media (max-width: 768px) {
+    .padded-content {
+        padding-top: 60px; /* Adjust for mobile if your navbar height changes */
+    }
+}
 
         .navbar .logo {
             display: flex;
@@ -880,7 +897,7 @@
     </div><br><br><br>
 
     <div class="content-container" id="content-container">
-        <div class="content">
+        <div class="content padded-content">
             <h1 id="greeting">Welcome to Glorious Schools ☺</h1><br><br><br>
             <div class="resource-container">
                 <div class="resource-item">
@@ -906,10 +923,13 @@
                 <div class="resource-item">
                     <img src="Screenshot (782).png" alt="Results">
                     <a href="results.html">Results Centre</a>
+                </div>       
+                 <div class="resource-item">
+                    <img src="2da1ba1038792dc4771df86ec65442ad.gif" alt="Results">
+                    <a href="birthdays.html">Birthdays</a>
                 </div>
-
                 <div class="resource-item">
-                    <img src="dp.png" alt="Profile">
+                    <img src="" alt="Profile" id="profileResourceImage">
                     <a href="#" onclick="showProfile()">User Profile</a>
                 </div>
                 <div id="profilePane" class="profile-pane">
@@ -964,119 +984,138 @@
         showLogin();
     }
 }
-        function showProfile() {
-            const profilePane = document.getElementById('profilePane');
-            const profileContent = document.getElementById('profileContent');
-            const email = localStorage.getItem('email') || sessionStorage.getItem('email');
-            const user = validUsers.find(u => u.email === email);
+function showProfile() {
+    const profilePane = document.getElementById('profilePane');
+    const profileContent = document.getElementById('profileContent');
+    const email = localStorage.getItem('email') || sessionStorage.getItem('email');
+    const user = validUsers.find(u => u.email === email);
 
-            function calculateAge(birthdate) {
-                if (!birthdate) return "Pending";
-                const today = new Date();
-                const birthDate = new Date(birthdate);
-                let age = today.getFullYear() - birthDate.getFullYear();
-                const monthDiff = today.getMonth() - birthDate.getMonth();
+    function calculateAge(birthdate) {
+        if (!birthdate) return "Pending";
+        const today = new Date();
+        const birthDate = new Date(birthdate);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
 
-                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                    age--;
-                }
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
 
-                return age;
-            }
+        return age;
+    }
 
-            if (user) {
-                const currentYear = new Date().getFullYear();
-                const photoSrc = user.photo || 'dp.png';
-                const age = user.birthdate ? calculateAge(user.birthdate) : "Pending";
+    if (user) {
+        const currentYear = new Date().getFullYear();
+        const photoSrc = user.photo || 'dp.png';
+        const age = user.birthdate ? calculateAge(user.birthdate) : "Pending";
 
-                let profileHTML = `
-            <div class="profile-image-container" onclick="showFullsizeImage('${photoSrc}')">
-                <img src="${photoSrc}" alt="${user.name}" class="profile-image">
-                <div class="profile-image-overlay">
-                    <span class="profile-image-overlay-text">Click to Zoom 🔎</span>
-                </div>
+        // Update the profile resource image
+        const profileResourceImage = document.getElementById('profileResourceImage');
+        profileResourceImage.src = photoSrc;
+
+        let profileHTML = `
+        <div class="profile-image-container" onclick="showFullsizeImage('${photoSrc}')">
+            <img src="${photoSrc}" alt="${user.name}" class="profile-image">
+            <div class="profile-image-overlay">
+                <span class="profile-image-overlay-text">Click to Zoom 🔎</span>
             </div>
-            <p><strong>Name:</strong> ${user.name}</p>
-            <p><strong>Email:</strong> ${user.email || '<i>Pending</i>'}</p>
-            <p><strong>Age:</strong> ${age === "Pending" ? '<i>Pending</i>' : age + ' years'}</p>
+        </div>
+        <p><strong>Name:</strong> ${user.name}</p>
+        <p><strong>Email:</strong> ${user.email || '<i>Pending</i>'}</p>
         `;
 
-                if (user.role === "student") {
-                    const studentDetail = studentDetails.find(s => s.name.toLowerCase() === user.name.toLowerCase());
-                    if (studentDetail) {
-                        profileHTML += `
-                    <p><strong>School Pay Code:</strong> ${studentDetail.schoolPayCode || '<i>Pending</i>'}</p>
-                    <p><strong>Sex:</strong> ${studentDetail.sex || '<i>Pending</i>'}</p>
-                    <p><strong>Year:</strong> ${currentYear}</p>
-                    <p><strong>House:</strong> ${studentDetail.house || '<i>Pending</i>'}</p>
-                    <p><strong>Nationality:</strong> ${studentDetail.nationality || '<i>Pending</i>'}</p>
-                    <p><strong>Parent's contact:</strong> ${studentDetail.parentContact || '<i>Pending</i>'}</p>
-                    <p><strong>Role:</strong> Student</p>
-                `;
-                    }
-                } else if (user.role === "teacher") {
-                    profileHTML += `
-                <p><strong>Sex:</strong> ${user.sex || '<i>Pending</i>'}</p>
-                <p><strong>Nationality:</strong> ${user.nationality || '<i>Pending</i>'}</p>
-                <p><strong>Marital Status:</strong> ${user.maritalStatus || '<i>Pending</i>'}</p>
-                <p><strong>Religion:</strong> ${user.religion || '<i>Pending</i>'}</p>
-                <p><strong>Subjects Taught:</strong> ${user.subjectsTaught && user.subjectsTaught.length > 0 ? user.subjectsTaught.join(', ') : '<i>Pending</i>'}</p>
-                <p><strong>Classes Taught:</strong> ${user.classesTaught && user.classesTaught.length > 0 ? user.classesTaught.join(', ') : '<i>Pending</i>'}</p>
-                <p><strong>Contact Number:</strong> ${user.contactNumber && user.contactNumber.length > 0 ? user.contactNumber.join(', ') : '<i>Pending</i>'}</p>
-                <p><strong>Role:</strong> Teacher</p>
+        if (user.role === "student") {
+            const studentDetail = studentDetails.find(s => s.name.toLowerCase() === user.name.toLowerCase());
+            if (studentDetail) {
+                profileHTML += `
+                <p><strong>School Pay Code:</strong> ${studentDetail.schoolPayCode || '<i>Pending</i>'}</p>
+                <p><strong>Sex:</strong> ${studentDetail.sex || '<i>Pending</i>'}</p>
+                <p><strong>Year:</strong> ${currentYear}</p>
+                <p><strong>House:</strong> ${studentDetail.house || '<i>Pending</i>'}</p>
+                <p><strong>Nationality:</strong> ${studentDetail.nationality || '<i>Pending</i>'}</p>
+                <p><strong>Parent's contact:</strong> ${studentDetail.parentContact || '<i>Pending</i>'}</p>
+                <p><strong>Religion:</strong> ${studentDetail.religion || '<i>Pending</i>'}</p>
+                <p><strong>Role:</strong> Student</p>
             `;
-                } else if (user.role === "administrator") {
-                    profileHTML += `
-                <p><strong>Role:</strong> ${user.adminRole}</p>
-            `;
-                }
-
-                profileContent.innerHTML = profileHTML;
-            } else {
-                profileContent.innerHTML = '<p>User information not available.</p>';
             }
-
-            profilePane.classList.add('open');
-            document.addEventListener('click', closeProfileOutside);
+        } else if (user.role === "teacher") {
+            profileHTML += `
+            <p><strong>Sex:</strong> ${user.sex || '<i>Pending</i>'}</p>
+            <p><strong>Nationality:</strong> ${user.nationality || '<i>Pending</i>'}</p>
+            <p><strong>Marital Status:</strong> ${user.maritalStatus || '<i>Pending</i>'}</p>
+            <p><strong>Religion:</strong> ${user.religion || '<i>Pending</i>'}</p>
+            <p><strong>Subjects Taught:</strong> ${user.subjectsTaught && user.subjectsTaught.length > 0 ? user.subjectsTaught.join(', ') : '<i>Pending</i>'}</p>
+            <p><strong>Classes Taught:</strong> ${user.classesTaught && user.classesTaught.length > 0 ? user.classesTaught.join(', ') : '<i>Pending</i>'}</p>
+            <p><strong>Contact Number:</strong> ${user.contactNumber && user.contactNumber.length > 0 ? user.contactNumber.join(', ') : '<i>Pending</i>'}</p>
+            <p><strong>Role:</strong> Teacher</p>
+        `;
+        } else if (user.role === "administrator") {
+            profileHTML += `
+            <p><strong>Role:</strong> ${user.adminRole}</p>
+        `;
         }
 
-        function closeProfile() {
-            const profilePane = document.getElementById('profilePane');
-            profilePane.classList.remove('open');
-            document.removeEventListener('click', closeProfileOutside);
+        profileContent.innerHTML = profileHTML;
+    } else {
+        profileContent.innerHTML = '<p>User information not available.</p>';
+    }
+
+    profilePane.classList.add('open');
+    document.addEventListener('click', closeProfileOutside);
+}
+
+function closeProfile() {
+    const profilePane = document.getElementById('profilePane');
+    profilePane.classList.remove('open');
+    document.removeEventListener('click', closeProfileOutside);
+}
+
+function closeProfileOutside(event) {
+    const profilePane = document.getElementById('profilePane');
+    if (!profilePane.contains(event.target) && !event.target.closest('.resource-item')) {
+        closeProfile();
+    }
+}
+
+function showFullsizeImage(imageSrc) {
+    const modal = document.getElementById('fullsizeImageModal');
+    const fullsizeImage = document.getElementById('fullsizeImage');
+    fullsizeImage.src = imageSrc;
+    modal.style.display = 'flex';
+}
+
+function closeFullsizeImage() {
+    const modal = document.getElementById('fullsizeImageModal');
+    modal.style.display = 'none';
+}
+
+function updateProfileImage() {
+    const email = localStorage.getItem('email') || sessionStorage.getItem('email');
+    const user = validUsers.find(u => u.email === email);
+    
+    if (user) {
+        const photoSrc = user.photo || 'dp.png';
+        
+        // Update the profile resource image
+        const profileResourceImage = document.getElementById('profileResourceImage');
+        profileResourceImage.src = photoSrc + '?t=' + new Date().getTime(); // Force reload
+ }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('profilePane').addEventListener('click', function (event) {
+        event.stopPropagation();
+    });
+
+    window.addEventListener('click', function (event) {
+        const modal = document.getElementById('fullsizeImageModal');
+        if (event.target === modal) {
+            closeFullsizeImage();
         }
+    });
 
-        function closeProfileOutside(event) {
-            const profilePane = document.getElementById('profilePane');
-            if (!profilePane.contains(event.target) && !event.target.closest('.resource-item')) {
-                closeProfile();
-            }
-        }
-
-        function showFullsizeImage(imageSrc) {
-            const modal = document.getElementById('fullsizeImageModal');
-            const fullsizeImage = document.getElementById('fullsizeImage');
-            fullsizeImage.src = imageSrc;
-            modal.style.display = 'flex';
-        }
-
-        function closeFullsizeImage() {
-            const modal = document.getElementById('fullsizeImageModal');
-            modal.style.display = 'none';
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('profilePane').addEventListener('click', function (event) {
-                event.stopPropagation();
-            });
-
-            window.addEventListener('click', function (event) {
-                const modal = document.getElementById('fullsizeImageModal');
-                if (event.target === modal) {
-                    closeFullsizeImage();
-                }
-            });
-        });
+    updateProfileImage(); // Call this to set the initial profile image
+});
 
         function filterEmailSuggestions() {
             const input = document.getElementById('email');
@@ -1165,7 +1204,7 @@
                 "name": "KAMEREMBO GENEROUS KAHOMBATE",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1180,7 +1219,7 @@
                 "name": "NAKITTO IMELDAH",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1195,7 +1234,7 @@
                 "name": "NAMULINDWA SYLVIA",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1210,7 +1249,7 @@
                 "name": "NAMPUNGU ZAHARAH MARIAM",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1225,7 +1264,7 @@
                 "name": "NAMWANJE NOELYN",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1240,7 +1279,7 @@
                 "name": "NAKANJAKO TEDDY",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1255,7 +1294,7 @@
                 "name": "AKUKU NELVIN ANGELLA",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1270,7 +1309,7 @@
                 "name": "ACHIENG GRACE",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1285,7 +1324,7 @@
                 "name": "NAMULI MARTHA",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1300,7 +1339,7 @@
                 "name": "NAJJEMBA ROSEMARY",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1315,7 +1354,7 @@
                 "name": "NAMBOGO TEDDY",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1330,7 +1369,7 @@
                 "name": "TAREMWA FLAVIA",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1345,7 +1384,7 @@
                 "name": "NAMUKASA JUSTINE",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1360,7 +1399,7 @@
                 "name": "NAKABONGE SAMALIE",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1375,7 +1414,7 @@
                 "name": "NYAMATE AMPEREZA JUDITH",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1390,7 +1429,7 @@
                 "name": "KARUNGI OLIVIA",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1405,7 +1444,7 @@
                 "name": "ZEMEI MIRIAM",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1420,7 +1459,7 @@
                 "name": "NAMUGERWA STELLAH",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1435,7 +1474,7 @@
                 "name": "NANSUBUGA GLORIA",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1450,7 +1489,7 @@
                 "name": "NAKAWUKA MARIA MARGARET RITAH",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1465,7 +1504,7 @@
                 "name": "AKELLO SARAH ENUME",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1480,7 +1519,7 @@
                 "name": "NAMUJJUMBI PROSSY",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1495,7 +1534,7 @@
                 "name": "NITUMWIKIRIZA EDINAH",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1510,7 +1549,7 @@
                 "name": "KUSAASIRA BARBRA",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1525,7 +1564,7 @@
                 "name": "NAZZIWA SHARON",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1540,7 +1579,7 @@
                 "name": "NAMUSAAZI BENITAH",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1555,7 +1594,7 @@
                 "name": "KYOZIRA MARGRET",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1570,7 +1609,7 @@
                 "name": "NAKAGGWA RUTH",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1585,7 +1624,7 @@
                 "name": "NAMUGENYI LEIRAH A.",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1600,7 +1639,7 @@
                 "name": "AJUNA MATHIAS",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1615,7 +1654,7 @@
                 "name": "MIRIMU MANSUR",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1630,7 +1669,7 @@
                 "name": "NKWASIBWE LABON",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1645,7 +1684,7 @@
                 "name": "NSIIMIRE DENIS",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1660,7 +1699,7 @@
                 "name": "ODAGA ALEX",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1675,7 +1714,7 @@
                 "name": "KALIISA JOSEPH KATO",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1690,7 +1729,7 @@
                 "name": "TURYOMURUGYENDO MOSES",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1705,7 +1744,7 @@
                 "name": "NDAWULA SAM",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1721,7 +1760,7 @@
                 "name": "WAISWA ISSA",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1736,7 +1775,7 @@
                 "name": "MUKASA WALTER OJIAMBO",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1751,7 +1790,7 @@
                 "name": "OKURUT CHARLES",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1766,7 +1805,7 @@
                 "name": "SABAIDU ROBERT SMITH",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1781,7 +1820,7 @@
                 "name": "TURINAWE JUSTUS",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1796,7 +1835,7 @@
                 "name": "WATHUM HABERT",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1811,7 +1850,7 @@
                 "name": "NIYOKINDI BENOIT",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1826,7 +1865,7 @@
                 "name": "EPODOI GERALD BENJAMIN",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1841,7 +1880,7 @@
                 "name": "TUHAIRWE JOSEPH",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1872,7 +1911,7 @@
                 "name": "KIWANUKA EDWARD",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1887,7 +1926,7 @@
                 "name": "BONGOMIN GABRIEL",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1902,7 +1941,7 @@
                 "name": "ATWIINE EDMOND",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1917,7 +1956,7 @@
                 "name": "KAYONGO SANTOS JOSEPH",
                 "photo": "",
                 "sex": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "maritalStatus": "",
                 "religion": "",
                 "subjectsTaught": [],
@@ -1933,67 +1972,26 @@
         // Add this at the beginning of your script
         const studentDetails = [
             {
-                "name": "ADAM SALAMA MOKHTAR",
-                "photo": "",
-                "schoolPayCode": "GPS3762",
-                "sex": "Male",
-                "term": "Third Term",
-                "year": "",
-                "house": "Mandela",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "1996-08-28",
-                "parentContact": "+256 123 456 789"
-            },
-            {
-                "name": "AHEREZA HONOUR",
-                "photo": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "term": "Third Term",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "1996-08-28",
-                "parentContact": "+256 123 456 789"
-            },
-            {
-                "name": "AINOMUGISHA ANGEL",
-                "photo": "",
-                "schoolPayCode": "GPS3068",
-                "sex": "Male",
-                "term": "Third Term",
-                "year": "",
-                "house": "Mandela",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "1996-08-28",
-                "parentContact": "+256 123 456 789"
-            },
-            {
                 "name": "NANYONJO HALIMAH",
                 "photo": "nanyonjo harimar.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2013-05-24",
                 "parentContact": ""
             },
             {
                 "name": "KIZZA JOYCE MYER SEMPA",
-                "photo": "",
+                "photo": "Kizza Joyce.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2014-03-26",
                 "parentContact": ""
             },
@@ -2001,12 +1999,11 @@
                 "name": "NAMAWEJJE ELIZABETH SHANTAL",
                 "photo": "shantal.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2013-01-01",
                 "parentContact": ""
             },
@@ -2014,12 +2011,11 @@
                 "name": "TUMUSIIME ELIJAH",
                 "photo": "tumusiime elijah.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2012-03-13",
                 "parentContact": ""
             },
@@ -2027,12 +2023,11 @@
                 "name": "NAKIYEMBA SHUKRAH",
                 "photo": "nakiyenmba shukrah.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2012-01-17",
                 "parentContact": ""
             },
@@ -2040,12 +2035,11 @@
                 "name": "BULEGA PIUS",
                 "photo": "bulega pius.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2011-10-10",
                 "parentContact": ""
             },
@@ -2053,12 +2047,11 @@
                 "name": "MUKISA PHILEMON",
                 "photo": "mukisa philemon.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2014-02-14",
                 "parentContact": ""
             },
@@ -2066,12 +2059,11 @@
                 "name": "NAMUGENYI HELLEN",
                 "photo": "hellen namugenyi.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2012-02-02",
                 "parentContact": ""
             },
@@ -2079,12 +2071,11 @@
                 "name": "KALUNGI JONATHAN",
                 "photo": "kalungi jonathan.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2012-12-31",
                 "parentContact": ""
             },
@@ -2092,12 +2083,11 @@
                 "name": "KIGGUNDU LIA",
                 "photo": "kiggundu lia.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2024-08-15",
                 "parentContact": ""
             },
@@ -2105,12 +2095,11 @@
                 "name": "KAREMERA ABDUL HANAN",
                 "photo": "abdul hanan.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2011-11-29",
                 "parentContact": ""
             },
@@ -2118,12 +2107,11 @@
                 "name": "JJAGWE JOVAN",
                 "photo": "jjagwe jovan.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2011-06-29",
                 "parentContact": ""
             },
@@ -2131,12 +2119,11 @@
                 "name": "KATENDE HAMIR",
                 "photo": "katende hamir.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2012-07-27",
                 "parentContact": ""
             },
@@ -2144,25 +2131,23 @@
                 "name": "KATONO ALLAN",
                 "photo": "katono allan.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2013-11-23",
                 "parentContact": ""
             },
             {
                 "name": "MWEBAZA PEACE DIVINE",
-                "photo": "",
+                "photo": "Peace Divine.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2014-06-04",
                 "parentContact": ""
             },
@@ -2170,12 +2155,11 @@
                 "name": "KIRABO EVAS",
                 "photo": "kirabo evas.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2012-10-06",
                 "parentContact": ""
             },
@@ -2183,12 +2167,11 @@
                 "name": "LUBWAMA MARTIN WASSWA",
                 "photo": "",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2011-08-09",
                 "parentContact": ""
             },
@@ -2196,12 +2179,11 @@
                 "name": "LUKWAGO LUCKY AHMET",
                 "photo": "lucky lukwago.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2011-02-28",
                 "parentContact": ""
             },
@@ -2209,12 +2191,11 @@
                 "name": "SSERUNKUMA ABRIELLE PROSPER",
                 "photo": "sserunkuuma prosper.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2013-02-02",
                 "parentContact": ""
             },
@@ -2222,12 +2203,11 @@
                 "name": "AMUGE LYNDSEY MILES",
                 "photo": "amuge lyndsey.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2014-02-09",
                 "parentContact": ""
             },
@@ -2235,12 +2215,11 @@
                 "name": "OPIO DANIEL OPOLOT",
                 "photo": "opio daniel.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2012-02-03",
                 "parentContact": ""
             },
@@ -2249,12 +2228,11 @@
                 "name": "JAZMINE BIDS",
                 "photo": "jazmine bids.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2013-10-14",
                 "parentContact": ""
             },
@@ -2263,12 +2241,11 @@
                 "name": "NAMIREMBE KALHAN MARTHA",
                 "photo": "",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2010-09-10",
                 "parentContact": ""
             },
@@ -2277,12 +2254,11 @@
                 "name": "NASSUUNA WILDER",
                 "photo": "nassuuna wildah.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2014-05-11",
                 "parentContact": ""
             },
@@ -2291,12 +2267,11 @@
                 "name": "MUBIRU RAJAB",
                 "photo": "mubiru rajab.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2012-01-06",
                 "parentContact": ""
             },
@@ -2305,12 +2280,11 @@
                 "name": "NAKITTO MYRA REMEDY",
                 "photo": "nakitto myra.jpg",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Female",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2014-04-13",
                 "parentContact": ""
             },
@@ -2318,13 +2292,13 @@
             {
                 "name": "AHABWE JOSIAH",
                 "photo": "ahabwe josiah.jpg",
+                "religion": "Anglican",
                 "schoolPayCode": "",
-                "sex": "",
-                "term": "",
+                "sex": "Male",    
                 "year": "",
                 "house": "",
                 "email": "",
-                "nationality": "",
+                "nationality": "Ugandan",
                 "birthdate": "2012-06-12",
                 "parentContact": ""
             }
@@ -4023,7 +3997,7 @@
                 "password": "Believers"
             },
             {
-                "email": "namirembekalhanmartha@glorious.com",
+                "email": "namirembekahlanmartha@glorious.com",
                 "password": "Bernice"
             },
 
@@ -4390,6 +4364,7 @@
                 sessionStorage.removeItem("intendedPage");
                 window.location.href = intendedPage;
             } else {
+                updateProfileImage(); 
                 showContent();
             }
         }
@@ -4442,6 +4417,8 @@
             sessionStorage.removeItem("isLoggedIn");
             sessionStorage.removeItem("secondName");
             sessionStorage.removeItem("intendedPage");
+            const profileResourceImage = document.getElementById('profileResourceImage');
+    profileResourceImage.src = 'dp.png'; // Set to default image
             showLogin();
         }
 
@@ -4493,4 +4470,4 @@
     </script>
 </body>
 
-</html>x`   
+</html>  
