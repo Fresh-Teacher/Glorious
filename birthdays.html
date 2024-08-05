@@ -16,9 +16,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
-    <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
+    <meta property="og:image" content="https://gloriouschools.vercel.app/Screenshot (820).png" />
      <title>Glorious Birthday Parties!</title>
     <style>
+         .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        .video-container video {
+            width: 100%;
+            height: auto;
+        }
+        #playButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 25px 0 25px 50px;
+            border-color: transparent transparent transparent #FF8C00; /* Dark Orange */
+            background: none;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+    
+        #playButton:hover {
+            border-color: transparent transparent transparent #FFA500; /* Orange */
+        }
+
         @keyframes rainbow {
             0% { color: red; }
             14% { color: orange; }
@@ -328,6 +358,7 @@
     </style>
 </head>
 <script>
+    
     // navbar-script.js
 function toggleMenu() {
     const navLinks = document.getElementById('nav-links');
@@ -388,7 +419,7 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 
     <br><br>
-    <h6>Happy Birthday!</h6>
+    <h6 id="birthdayHeader" style="display: none;">Happy Birthday! 🎂</h6>
     <div class="container">
         <div id="studentContainer" class="student-container"></div>
         <button id="upcomingButton" class="upcoming-button">Show Upcoming Birthdays</button>
@@ -533,7 +564,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "house": "",
                 "email": "",
                 "nationality": "Ugandan",
-                "birthdate": "2044-08-15",
+                "birthdate": "2014-08-15",
                 "parentContact": ""
             },
             {
@@ -793,75 +824,119 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         function displayStudents(isUpcoming = false) {
-            const container = document.getElementById('studentContainer');
-            container.innerHTML = ''; // Clear previous content
-            const today = new Date();
-            const currentMonth = today.getMonth() + 1;
-            const currentDay = today.getDate();
-            
-            let birthdaysFound = false;
+    const container = document.getElementById('studentContainer');
+    const birthdayHeader = document.getElementById('birthdayHeader');
+    container.innerHTML = ''; // Clear previous content
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1;
+    const currentDay = today.getDate();
+    
+    let birthdaysFound = false;
 
-            studentDetails.forEach(student => {
-                const birthdate = new Date(student.birthdate);
-                const birthMonth = birthdate.getMonth() + 1;
-                const birthDay = birthdate.getDate();
+    studentDetails.forEach(student => {
+        const birthdate = new Date(student.birthdate);
+        const birthMonth = birthdate.getMonth() + 1;
+        const birthDay = birthdate.getDate();
 
-                if (isUpcoming) {
-                    if (birthMonth === currentMonth && birthDay > currentDay) {
-                        const card = createStudentCard(student, true);
-                        container.appendChild(card);
-                        birthdaysFound = true;
-                    }
-                } else {
-                    if (birthMonth === currentMonth && birthDay === currentDay) {
-                        const card = createStudentCard(student);
-                        container.appendChild(card);
-                        birthdaysFound = true;
-                    }
-                }
-            });
+        if (isUpcoming) {
+            if (birthMonth === currentMonth && birthDay > currentDay) {
+                const card = createStudentCard(student, true);
+                container.appendChild(card);
+                birthdaysFound = true;
+            }
+        } else {
+            if (birthMonth === currentMonth && birthDay === currentDay) {
+                const card = createStudentCard(student);
+                container.appendChild(card);
+                birthdaysFound = true;
+            }
+        }
+    });
 
-            if (!birthdaysFound) {
+    if (!birthdaysFound) {
+                birthdayHeader.style.display = 'none';
                 const noBirthdaysMessage = document.createElement('div');
                 noBirthdaysMessage.className = 'no-birthdays';
                 noBirthdaysMessage.innerHTML = `
-                    <p>${isUpcoming ? "No upcoming birthdays this month." : "No birthdays today."} But let's celebrate anyway! 🎉</p>
-                    <img src="celeb.gif" alt="Celebration image">
+                    <p>${isUpcoming ? "No upcoming birthdays this month." : "No birthdays today. But let's celebrate anyway! 🎉"}</p>
+                    <div class="video-container">
+                        <video loop playsinline>
+                            <source src="celebrate.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <button id="playButton"></button>
+                    </div>
                 `;
                 container.appendChild(noBirthdaysMessage);
+                
+                const video = noBirthdaysMessage.querySelector('video');
+                const playButton = noBirthdaysMessage.querySelector('#playButton');
+
+                // Attempt autoplay
+                const playPromise = video.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        // Autoplay started successfully
+                        console.log('Autoplay started');
+                        playButton.style.display = 'none';
+                    })
+                    .catch(error => {
+                        // Autoplay was prevented
+                        console.log('Autoplay prevented:', error);
+                        playButton.style.display = 'block';
+                    });
+                }
+
+                // Play button click handler
+                playButton.addEventListener('click', () => {
+                    video.play();
+                    playButton.style.display = 'none';
+                });
+
+                // Ensure user interaction before unmuting
+                document.addEventListener('click', function() {
+                    video.muted = false;
+                }, { once: true });
+            } else {
+                birthdayHeader.style.display = 'block';
             }
         }
 
         function toggleUpcomingBirthdays() {
-            const button = document.getElementById('upcomingButton');
-            const isShowingUpcoming = button.textContent === "Show Today's Birthdays";
-            
-            if (isShowingUpcoming) {
-                displayStudents(false);
-                button.textContent = "Show Upcoming Birthdays";
-            } else {
-                displayStudents(true);
-                button.textContent = "Show Today's Birthdays";
-            }
-        }
+    const button = document.getElementById('upcomingButton');
+    const isShowingUpcoming = button.textContent === "Show Today's Birthdays";
+    
+    if (isShowingUpcoming) {
+        displayStudents(false);
+        button.textContent = "Show Upcoming Birthdays";
+    } else {
+        displayStudents(true);
+        button.textContent = "Show Today's Birthdays";
+    }
+}
 
-        function startCelebration() {
-            const modal = document.getElementById('welcomeModal');
-            const music = document.getElementById('backgroundMusic');
-            
-            modal.style.display = 'none';
-            music.play();
-        }
+function startCelebration() {
+    const modal = document.getElementById('welcomeModal');
+    const music = document.getElementById('backgroundMusic');
+    const container = document.getElementById('studentContainer');
+    
+    modal.style.display = 'none';
+    
+    if (container.querySelector('.student-card')) {
+        music.play();
+    }
+}
 
-        document.addEventListener('DOMContentLoaded', () => {
-            displayStudents();
-            
-            const startButton = document.getElementById('startButton');
-            startButton.addEventListener('click', startCelebration);
+document.addEventListener('DOMContentLoaded', () => {
+    displayStudents();
+    
+    const startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', startCelebration);
 
-            const upcomingButton = document.getElementById('upcomingButton');
-            upcomingButton.addEventListener('click', toggleUpcomingBirthdays);
-        });
+    const upcomingButton = document.getElementById('upcomingButton');
+    upcomingButton.addEventListener('click', toggleUpcomingBirthdays);
+});
     </script>
 </body>
 </html>

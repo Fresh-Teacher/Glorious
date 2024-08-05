@@ -551,6 +551,50 @@ main {
         padding-top: 100px; /* Increase padding for mobile view */
     }
 }
+
+#timer-container {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 10px 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#timer {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.blink {
+    animation: blink 1s linear infinite;
+}
+
+.red-text {
+    color: #ff0000;
+}
+@media print {
+    #timer-container, .navbar, .footer {
+        display: none !important;
+    }
+
+    body {
+        padding-top: 0 !important;
+    }
+
+    .container {
+        margin-top: 0 !important;
+    }
+}
     </style>
 </head>
 <script>
@@ -615,7 +659,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     <div id="studentInfo"></div>
     <div class="container">
-        <div class="header">
+        <div id="timer-container">
+            <div id="timer">Time Left: 10:00</div>
+        </div>
+                <div class="header">
             <img src="schoologo-2-150x150.png" alt="School Logo">
             <h2>GLORIOUS KINDERGARTEN & PRIMARY SCHOOL</h2>
             <h3>TOPICAL TEST - THE INTERNET</h3>
@@ -661,38 +708,38 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
 
             <div class="question">
-                <p>3. Identify any two examples of web browsers:</p>
+                <p>3. Identify any two examples of computer hardware:</p>
                 <div class="options">
-                    <input type="checkbox" name="q3" value="Chrome"> Chrome<br>
+                    <input type="checkbox" name="q3" value="Chrome"> Mouse<br>
                     <input type="checkbox" name="q3" value="Yahoo"> Yahoo<br>
-                    <input type="checkbox" name="q3" value="Firefox"> Firefox<br>
+                    <input type="checkbox" name="q3" value="Firefox"> Keyboard<br>
                     <input type="checkbox" name="q3" value="YouTube"> YouTube
                 </div>
                 <div class="print-answer"></div>
             </div>
 
             <div class="question">
-                <p>4. Which of the following is the correct website format?</p>
+                <p>4. Give the short form of Information Technology.</p>
                 <div class="options">
-                    <input type="radio" name="q4" value="ww.gloriouschools.com" required> ww.gloriouschools.com<br>
-                    <input type="radio" name="q4" value="www.gloriousschools.com"> www.gloriousschools.com<br>
-                    <input type="radio" name="q4" value="wwwgloriousschools.com"> wwwgloriousschools.com
+                    <input type="radio" name="q4" value="ww.gloriouschools.com" required> ICT<br>
+                    <input type="radio" name="q4" value="www.gloriousschools.com"> IT<br>
+                    <input type="radio" name="q4" value="wwwgloriousschools.com"> ITC
                 </div>
                 <div class="print-answer"></div>
             </div>
 
             <div class="question">
-                <p>5. Which of the following is the correct email format?</p>
+                <p>5. Define the term software.</p>
                 <div class="options">
-                    <input type="radio" name="q5" value="user@gloriouscom" required> user@gloriouscom<br>
-                    <input type="radio" name="q5" value="user@glorious.com"> user@glorious.com<br>
-                    <input type="radio" name="q5" value="user@.com"> user@.com
+                    <input type="radio" name="q5" value="user@gloriouscom" required> Software are parts of a computer which you can see but cannot touch.<br>
+                    <input type="radio" name="q5" value="user@glorious.com"> Software are parts of a computer which you can see and touch.<br>
+                    <input type="radio" name="q5" value="user@.com"> Software are parts of a computer which you cannot see but you can touch.
                 </div>
                 <div class="print-answer"></div>
             </div>
 
             <div class="question">
-                <p>6. Write down any one importance of the internet to people:</p>
+                <p>6. Type your school e-mail.</p>
                 <div class="options">
                     <input type="text" id="q6" required>
                 </div>
@@ -856,6 +903,96 @@ document.getElementById('printExam').addEventListener('click', function() {
 document.querySelectorAll('input').forEach(input => {
     input.addEventListener('change', updatePrintAnswers);
 });
+
+    // Timer functionality
+    let timeLeft = 10 * 60; // 10 minutes in seconds
+    const timerElement = document.getElementById('timer');
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    }
+
+    function updateTimer() {
+        timerElement.innerHTML = `Time Left: ${formatTime(timeLeft)}`;
+        
+        if (timeLeft === 0) {
+            clearInterval(timerInterval);
+            alert("Time's up! Your answers will be submitted now.");
+            updatePrintAnswers();
+            window.print();
+            setTimeout(() => {
+                window.location.href = 'examinations.html';
+            }, 1000);
+        } else {
+            timeLeft--;
+
+            // Check if 5 minutes are left
+            if (timeLeft === 5 * 60) {
+                timerElement.classList.add('red-text', 'blink');
+            }
+        }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+
+    // Modify the print button click event
+    document.getElementById('printExam').addEventListener('click', function() {
+        clearInterval(timerInterval);
+        updatePrintAnswers();
+        window.print();
+        setTimeout(() => {
+            window.location.href = 'examinations.html';
+        }, 1000);
+    });
+
+    function preparePrint() {
+    // Hide the timer and navbar
+    document.getElementById('timer-container').style.display = 'none';
+    document.querySelector('.navbar').style.display = 'none';
+    document.querySelector('.footer').style.display = 'none';
+
+    // Update answers for printing
+    updatePrintAnswers();
+
+    // Use setTimeout to allow the DOM to update before printing
+    setTimeout(() => {
+        window.print();
+
+        // After printing, show the timer and navbar again
+        document.getElementById('timer-container').style.display = '';
+        document.querySelector('.navbar').style.display = '';
+        document.querySelector('.footer').style.display = '';
+
+        // Log out the user after a short delay
+        setTimeout(logout, 1000);
+    }, 100);
+}
+
+// Modify the print button click event
+document.getElementById('printExam').addEventListener('click', function() {
+    clearInterval(timerInterval);
+    preparePrint();
+});
+
+// Modify the timer expiration logic
+function updateTimer() {
+    timerElement.innerHTML = formatTime(timeLeft);
+    
+    if (timeLeft === 0) {
+        clearInterval(timerInterval);
+        alert("Time's up! Your answers will be submitted now.");
+        preparePrint();
+    } else {
+        timeLeft--;
+
+        // Check if 5 minutes are left
+        if (timeLeft === 5 * 60) {
+            timerContainer.classList.add('urgent', 'pulse');
+        }
+    }
+}
     </script>
 </body>
 </html>
