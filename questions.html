@@ -19,6 +19,12 @@
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
       <title>Internet Exam</title>
     <style>
+.medium-image {
+            max-height: 300px; /* Set a fixed maximum height */
+            width: auto; /* Allow width to adjust automatically */
+            display: block;
+            margin: 10px auto; /* Center the image horizontally */
+        }
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -665,8 +671,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div class="header">
             <img src="schoologo-2-150x150.png" alt="School Logo">
             <h2>GLORIOUS KINDERGARTEN & PRIMARY SCHOOL</h2>
-            <h3>TOPICAL TEST - THE INTERNET</h3>
-            <h4>ENGLISH LANGUAGE</h4>
+            <h3>MID-TERM 2 EXAMINATION</h3>
+            <h3>PRIMARY THREE</h3>
+            <h4>INFORMATION & COMMUNICATION TECHNOLOGY (ICT)</h4>
         </div>
         <div class="student-info">
             <p>Name: <span id="studentName">____________________________</span></p>
@@ -674,28 +681,13 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
         <form id="examForm">
             <div class="question">
-                <p>1. Write the following abbreviations in full:</p>
-                <div class="vertical-inputs">
-                    <div class="input-group">
-                        <label for="q1_1">www:</label>
-                        <input type="text" id="q1_1" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="q1_2">e-mail:</label>
-                        <input type="text" id="q1_2" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="q1_3">internet:</label>
-                        <input type="text" id="q1_3" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="q1_4">CPU:</label>
-                        <input type="text" id="q1_4" required>
-                    </div>
+                <p>1. What is a computer?</p>
+                <div class="options">
+                    <input type="text" id="q1" required>
                 </div>
                 <div class="print-answer"></div>
             </div>
-
+    
             <div class="question">
                 <p>2. Which part of the computer is considered the brain of the computer?</p>
                 <div class="options">
@@ -706,97 +698,112 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
                 <div class="print-answer"></div>
             </div>
-
+    
             <div class="question">
-                <p>3. Identify any two examples of computer hardware:</p>
+                <p>3. Define the term software.</p>
                 <div class="options">
-                    <input type="checkbox" name="q3" value="Chrome"> Mouse<br>
-                    <input type="checkbox" name="q3" value="Yahoo"> Yahoo<br>
-                    <input type="checkbox" name="q3" value="Firefox"> Keyboard<br>
-                    <input type="checkbox" name="q3" value="YouTube"> YouTube
+                    <input type="radio" name="q3" value="option1" required> Software are parts of a computer which you can see but cannot touch.<br>
+                    <input type="radio" name="q3" value="option2"> Software are parts of a computer which you can see and touch.<br>
+                    <input type="radio" name="q3" value="option3"> Software are parts of a computer which you cannot see but you can touch.
                 </div>
                 <div class="print-answer"></div>
             </div>
-
+    
             <div class="question">
-                <p>4. Give the short form of Information Technology.</p>
+                <p>4. Identify any two parts of a computer.</p>
                 <div class="options">
-                    <input type="radio" name="q4" value="ww.gloriouschools.com" required> ICT<br>
-                    <input type="radio" name="q4" value="www.gloriousschools.com"> IT<br>
-                    <input type="radio" name="q4" value="wwwgloriousschools.com"> ITC
+                    <input type="checkbox" name="q4" value="Mouse"> Mouse<br>
+                    <input type="checkbox" name="q4" value="Screen"> Screen<br>
+                    <input type="checkbox" name="q4" value="Keyboard"> Keyboard<br>
+                    <input type="checkbox" name="q4" value="Phone"> Phone
                 </div>
                 <div class="print-answer"></div>
             </div>
-
+    
             <div class="question">
-                <p>5. Define the term software.</p>
+                <p>5. Type your e-mail address.</p>
                 <div class="options">
-                    <input type="radio" name="q5" value="user@gloriouscom" required> Software are parts of a computer which you can see but cannot touch.<br>
-                    <input type="radio" name="q5" value="user@glorious.com"> Software are parts of a computer which you can see and touch.<br>
-                    <input type="radio" name="q5" value="user@.com"> Software are parts of a computer which you cannot see but you can touch.
+                    <input type="text" id="q5" required>
                 </div>
                 <div class="print-answer"></div>
             </div>
-
+    
             <div class="question">
-                <p>6. Type your school e-mail.</p>
+                <p>6. Select the search engines from this list:</p>
                 <div class="options">
-                    <input type="text" id="q6" required>
+                    <input type="checkbox" name="q6" value="Google"> Google<br>
+                    <input type="checkbox" name="q6" value="Facebook"> Facebook<br>
+                    <input type="checkbox" name="q6" value="Yahoo"> Yahoo<br>
+                    <input type="checkbox" name="q6" value="YouTube"> YouTube
                 </div>
                 <div class="print-answer"></div>
             </div>
-
+    
             <div class="question">
-                <p>7. Give any one danger of the internet to young children today:</p>
+                <p>7. Give the short form of Information Technology.</p>
                 <div class="options">
-                    <input type="text" id="q7" required>
+                    <input type="radio" name="q7" value="ICT" required> ICT<br>
+                    <input type="radio" name="q7" value="IT"> IT<br>
+                    <input type="radio" name="q7" value="ITC"> ITC
                 </div>
                 <div class="print-answer"></div>
             </div>
-
+    
             <div class="question">
-                <p>8. Name the computer parts labeled in the image below:</p>
-                <img src="maxresdefault (1).jpg" alt="Computer parts labeled with numbers" class="medium-image">
+                <p>8. Mention the part of a computer which helps to display information to the user.</p>
+                <div class="options">
+                    <input type="text" id="q8" required>
+                </div>
+                <div class="print-answer"></div>
+            </div>
+    
+            <div class="question">
+                <p>9. Name any four parts of a computer you see in this crossword puzzle:</p>
+                <img src="20411042813262565001.jpg" alt="Computer parts crossword puzzle" class="medium-image">
                 <div class="vertical-inputs">
                     <div class="input-group">
-                        <label for="q8_1">1.</label>
-                        <input type="text" id="q8_1" required>
+                        <label for="q9_1">1.</label>
+                        <input type="text" id="q9_1" required>
                     </div>
                     <div class="input-group">
-                        <label for="q8_2">2.</label>
-                        <input type="text" id="q8_2" required>
+                        <label for="q9_2">2.</label>
+                        <input type="text" id="q9_2" required>
                     </div>
                     <div class="input-group">
-                        <label for="q8_3">3.</label>
-                        <input type="text" id="q8_3" required>
+                        <label for="q9_3">3.</label>
+                        <input type="text" id="q9_3" required>
                     </div>
                     <div class="input-group">
-                        <label for="q8_4">4.</label>
-                        <input type="text" id="q8_4" required>
+                        <label for="q9_4">4.</label>
+                        <input type="text" id="q9_4" required>
                     </div>
                 </div>
                 <div class="print-answer"></div>
             </div>
-
+    
             <div class="question">
-                <p>9. Select the search engines from this list:</p>
-                <div class="options">
-                    <input type="checkbox" name="q9" value="Google"> Google<br>
-                    <input type="checkbox" name="q9" value="Facebook"> Facebook<br>
-                    <input type="checkbox" name="q9" value="Yahoo"> Yahoo<br>
-                    <input type="checkbox" name="q9" value="YouTube"> YouTube
+                <p>10. Write the following abbreviations in full:</p>
+                <div class="vertical-inputs">
+                    <div class="input-group">
+                        <label for="q10_1">ICT:</label>
+                        <input type="text" id="q10_1" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="q10_2">CPU:</label>
+                        <input type="text" id="q10_2" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="q10_3">internet:</label>
+                        <input type="text" id="q10_3" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="q10_4">e-mail:</label>
+                        <input type="text" id="q10_4" required>
+                    </div>
                 </div>
                 <div class="print-answer"></div>
             </div>
-
-            <div class="question">
-                <p>10. What is a computer?</p>
-                <div class="options">
-                    <input type="text" id="q10" required>
-                </div>
-                <div class="print-answer"></div>
-            </div>
-
+    
             <button type="button" id="printExam">Submit Exam</button>
         </form>
         <div id="result"></div>
@@ -830,56 +837,56 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 
 function updatePrintAnswers() {
-    const questions = document.querySelectorAll('.question');
-    questions.forEach((question, index) => {
-        let printAnswer = question.querySelector('.print-answer');
-        if (!printAnswer) {
-            printAnswer = document.createElement('div');
-            printAnswer.className = 'print-answer';
-            question.appendChild(printAnswer);
-        }
-        
-        let userAnswer = '';
-        switch(index) {
-            case 0: // Question 1
-                const q1Inputs = question.querySelectorAll('input[type="text"]');
-                userAnswer = Array.from(q1Inputs)
-                    .map((input, i) => {
-                        const label = input.previousElementSibling.textContent.trim();
-                        return `${label} ${input.value}`;
-                    })
-                    .join('<br>');
-                break;
-            case 1: // Question 2
-            case 3: // Question 4
-            case 4: // Question 5
-                const selectedRadio = question.querySelector('input[type="radio"]:checked');
-                userAnswer = selectedRadio ? selectedRadio.value : '';
-                break;
-            case 2: // Question 3
-            case 8: // Question 9
-                const selectedCheckboxes = Array.from(question.querySelectorAll('input[type="checkbox"]:checked'));
-                userAnswer = selectedCheckboxes.map(cb => cb.value).join('<br>');
-                break;
-            case 5: // Question 6
-            case 6: // Question 7
-            case 9: // Question 10
-                userAnswer = question.querySelector('input[type="text"]').value;
-                break;
-            case 7: // Question 8 (unchanged)
-                const inputs = question.querySelectorAll('input[type="text"]');
-                userAnswer = Array.from(inputs)
-                    .map((input, i) => `${i + 1}. <span class="underline">${input.value.trim()}</span>`)
-                    .filter(value => value.split('</span>')[0].split('>')[1] !== '')
-                    .join('<br>');
-                break;
-        }
-        printAnswer.innerHTML = userAnswer;
-    });
+        const questions = document.querySelectorAll('.question');
+        questions.forEach((question, index) => {
+            let printAnswer = question.querySelector('.print-answer');
+            if (!printAnswer) {
+                printAnswer = document.createElement('div');
+                printAnswer.className = 'print-answer';
+                question.appendChild(printAnswer);
+            }
+            
+            let userAnswer = '';
+            switch(index) {
+                case 0: // Question 1
+                case 4: // Question 5
+                case 7: // Question 8
+                    userAnswer = question.querySelector('input[type="text"]').value;
+                    break;
+                case 1: // Question 2
+                case 2: // Question 3
+                case 6: // Question 7
+                    const selectedRadio = question.querySelector('input[type="radio"]:checked');
+                    userAnswer = selectedRadio ? selectedRadio.nextSibling.textContent.trim() : '';
+                    break;
+                case 3: // Question 4
+                case 5: // Question 6
+                    const selectedCheckboxes = Array.from(question.querySelectorAll('input[type="checkbox"]:checked'));
+                    userAnswer = selectedCheckboxes.map(cb => cb.nextSibling.textContent.trim()).join('<br>');
+                    break;
+                case 8: // Question 9
+                    const inputs = question.querySelectorAll('input[type="text"]');
+                    userAnswer = Array.from(inputs)
+                        .map((input, i) => `${i + 1}. <span class="underline">${input.value.trim()}</span>`)
+                        .filter(value => value.split('</span>')[0].split('>')[1] !== '')
+                        .join('<br>');
+                    break;
+                case 9: // Question 10
+                    const q10Inputs = question.querySelectorAll('input[type="text"]');
+                    userAnswer = Array.from(q10Inputs)
+                        .map((input) => {
+                            const label = input.previousElementSibling.textContent.trim();
+                            return `${label} ${input.value}`;
+                        })
+                        .join('<br>');
+                    break;
+            }
+            printAnswer.innerHTML = userAnswer;
+        });
 
-    // Update student info
-    updateStudentInfo();
-}
+        // Update student info
+        updateStudentInfo();
+    }
 
 // Call updateStudentInfo when the page loads
 document.addEventListener('DOMContentLoaded', updateStudentInfo);
@@ -923,7 +930,7 @@ document.querySelectorAll('input').forEach(input => {
             updatePrintAnswers();
             window.print();
             setTimeout(() => {
-                window.location.href = 'examinations.html';
+                window.location.href = 'select.html';
             }, 1000);
         } else {
             timeLeft--;

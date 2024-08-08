@@ -560,8 +560,35 @@ input.minor-subject {
 }
 
 .analysis-section h3 {
-    margin-top: 0;
-}
+        page-break-inside: avoid;
+        margin-top: 20px;
+    }
+
+        /* Add these new styles */
+        .analysis-wrapper {
+        page-break-inside: avoid;
+    }
+
+    .analysis-section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .analysis-section > div {
+        flex-basis: 100%;
+        margin-bottom: 20px;
+    }
+
+    .analysis-section table {
+        font-size: 10pt; /* Reduce font size to fit more content */
+    }
+
+    .analysis-section h3 {
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+
 .notification {
     position: fixed;
     top: 20px;
@@ -756,6 +783,246 @@ main {
         padding-top: 100px; /* Increase padding for mobile view */
     }
 }
+#approvalTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#approvalTable th, #approvalTable td {
+    border: 1px solid var(--secondary-color);
+    padding: 8px;
+    text-align: left;
+}
+
+#approvalTable th {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    width: 30%;
+}
+
+#approvalTable td {
+    height: 30px; /* Provides space for handwritten entries */
+}
+
+@media print {
+    #approvalTable {
+        page-break-inside: avoid;
+    }
+
+    #approvalTable th, #approvalTable td {
+        border: 2px solid black;
+    }
+
+    #approvalTable th {
+        background-color: white;
+        color: black;
+    }
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #FFA500, #D2691E);
+    margin: 15% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 24px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.modal-content p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+#countdown {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFD700;
+}
+
+#cancelRefresh {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+    border: 2px solid white;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+#cancelRefresh:hover {
+    background-color: white;
+    color: #D2691E;
+}
+@media print {
+    @page {
+        size: landscape;
+        margin: 0;
+    }
+    body {
+        font-size: 10pt;
+        font-family: 'Times New Roman', Georgia, serif;
+        font-weight: bold;
+        margin: 1cm;
+    }
+    .container {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    button, input[type="file"] {
+        display: none !important;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 2px;
+        font-size: 9pt;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: bold;
+        text-align: center;
+    }
+    /* Adjust column widths for main grade table */
+    #gradeTable th:first-child, #gradeTable td:first-child {
+        width: 50%; /* Name column */
+        text-align: left;
+    }
+    #gradeTable th:not(:first-child):not(:last-child), 
+    #gradeTable td:not(:first-child):not(:last-child) {
+        width: 10%; /* Subject columns */
+    }
+    #gradeTable th:last-child, #gradeTable td:last-child {
+        width: 10%; /* Agg column */
+    }
+    input[type="text"] {
+        border: none;
+        background: none;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
+    h1, h2, h3, p {
+        margin: 5px 0;
+        font-weight: bold;
+        text-align: center;
+    }
+    /* Additional styles for headers */
+    th {
+        font-size: 10pt;
+        text-transform: uppercase;
+    }
+    /* Hide header and footer */
+    @page {
+        margin: 0;
+    }
+    body::before, body::after {
+        content: none !important;
+    }
+    /* Hide any other elements that might appear in the print version */
+    header, footer, .no-print {
+        display: none !important;
+    }
+    /* Remove other designs but keep the table structure */
+    *:not(table):not(tr):not(th):not(td) {
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    
+    /* Styles for analysis tables */
+    .analysis-section table {
+        margin-top: 20px;
+    }
+    .analysis-section h3 {
+        page-break-inside: avoid;
+        margin-top: 20px;
+    }
+    
+    /* Ensure all table cells in all tables have thick borders */
+    table, th, td {
+        border: 2px solid black !important;
+    }
+    
+    /* Specific styles for approval table */
+    #approvalTable th {
+        width: 30%;
+        text-align: left;
+    }
+    #approvalTable td {
+        height: 30px;
+        text-align: left;
+    }
+}
+
+#gradeTable th {
+    text-transform: uppercase;
+}
+#gradeTable th {
+    text-transform: uppercase;
+}
+
+@media print {
+    #gradeTableHeader th {
+        font-weight: bold !important;
+        color: black !important;
+        background-color: white !important;
+    }
+}
+@media print {
+    #divisionAnalysisTable th {
+        font-weight: bold !important;
+        color: black !important;
+        background-color: white !important;
+    }
+}@media print {
+    #aggregateAnalysisTable th {
+        font-weight: bold !important;
+        color: black !important;
+        background-color: white !important;
+    }
+}@media print {
+    #subjectAnalysisTable th {
+        font-weight: bold !important;
+        color: black !important;
+        background-color: white !important;
+    }
+}
     </style>
 </head>
 <script>
@@ -803,7 +1070,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 <body>
      <!-- Add the navbar -->
-     <div class="navbar">
+     <!-- <div class="navbar">
         <div class="logo">
             <img src="schoologo-2-150x150.png" alt="School Logo">
             <div class="title animated-title">Glorious Schools</div>
@@ -816,12 +1083,20 @@ document.addEventListener("DOMContentLoaded", function() {
             <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
             <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
         </ul>
-    </div>
+    </div> -->
     <div class="pdf-title">
         <h2>GLORIOUS KINDERGARTEN AND PRIMARY SCHOOL</h2>
-        <h2>MID TERM II EXAMS RESULTS 2024</h2>
+        <h2>___________ EXAMS RESULTS TERM ___________ 2024</h2>
         <h2 id="classStreamTitle"></h2>
 
+    </div>
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <h2>PDF Generated Successfully ✔️</h2>
+            <p>The PDF file has been saved to your device.</p>
+            <p>Returning to the start page in <span id="countdown">5</span> seconds.</p>
+            <button id="cancelRefresh">Stay on this page</button>
+        </div>
     </div>
     <div class="container">
         <div id="welcomePage" class="card">
@@ -864,10 +1139,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button id="saveDraftBtn" style="margin-top: 20px;">Save Draft</button>
                 <button id="exportBtn" style="margin-top: 20px;">Export Results</button>
               </div>
-            <div class="analysis-section">
-
-
-                <h3>Division Analysis</h3>
+              <div class="analysis-wrapper">
+                <div class="analysis-section">
+                       <h3>Division Analysis</h3>
                 <table id="divisionAnalysisTable">
                     <thead>
                         <tr>
@@ -893,7 +1167,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         </tr>
                     </tbody>
                 </table>
-
+<br>
                 <h3>Subject Analysis</h3>
                 <table id="subjectAnalysisTable">
                     <thead>
@@ -918,39 +1192,29 @@ document.addEventListener("DOMContentLoaded", function() {
                         <!-- Subject analysis rows will be added here dynamically -->
                     </tbody>
                 </table>
+                <h3>Approval Section</h3>
+                <table id="approvalTable">
+                    <tbody>
+                        <tr>
+                            <th>Class Teacher's Comment:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Class Teacher's Name:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Class Teacher's Signature:</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Date of Submission:</th>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="info-section">
-                <div class="grade-info card">
-                    <h3>Grading Scale:</h3>
-                    <table class="info-table">
-                        <tr><th>Marks Range</th><th>Aggregate</th></tr>
-                        <tr><td>90 - 100</td><td>D1</td></tr>
-                        <tr><td>80 - 89</td><td>D2</td></tr>
-                        <tr><td>70 - 79</td><td>C3</td></tr>
-                        <tr><td>65 - 69</td><td>C4</td></tr>
-                        <tr><td>60 - 64</td><td>C5</td></tr>
-                        <tr><td>55 - 59</td><td>C6</td></tr>
-                        <tr><td>50 - 54</td><td>P7</td></tr>
-                        <tr><td>40 - 49</td><td>P8</td></tr>
-                        <tr><td>0 - 39</td><td>F9</td></tr>
-                        <tr><td>-</td><td>X</td></tr>
-                    </table>
-                </div>
-                
-                <div class="division-info card">
-                    <h3>Division Table:</h3>
-                    <table class="info-table">
-                        <tr><th>Division</th><th>Aggregate Range</th></tr>
-                        <tr><td>Division 1</td><td>4-12</td></tr>
-                        <tr><td>Division 2</td><td>13-24</td></tr>
-                        <tr><td>Division 3</td><td>24-28</td></tr>
-                        <tr><td>Division 4</td><td>29-32</td></tr>
-                        <tr><td>Ungraded</td><td>33-36</td></tr>
-                    </table>
-                </div>
             </div>
-        </div>
-    </div>
 <!-- Add the footer -->
 <br><br>
 <footer class="footer">
@@ -1162,21 +1426,68 @@ function populateTableFromJSON(data) {
 }
 
 function generatePDF() {
+    // Hide elements we don't want in the PDF
     const welcomePage = document.getElementById('welcomePage');
-    const gradingPage = document.getElementById('gradingPage');
-    const buttons = document.querySelectorAll('button');
+    const importDataBtn = document.getElementById('importDataBtn');
+    const fileInput = document.getElementById('fileInput');
+    const saveDraftBtn = document.getElementById('saveDraftBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const generatePdfBtn = document.getElementById('generatePdfBtn');
 
     welcomePage.style.display = 'none';
-    buttons.forEach(button => button.style.display = 'none');
+    importDataBtn.style.display = 'none';
+    fileInput.style.display = 'none';
+    saveDraftBtn.style.display = 'none';
+    exportBtn.style.display = 'none';
+    generatePdfBtn.style.display = 'none';
+
+    // Show the grading page if it's not already visible
+    const gradingPage = document.getElementById('gradingPage');
     gradingPage.style.display = 'block';
 
+    // Print the page
     window.print();
 
+    // Restore the hidden elements
     setTimeout(() => {
         welcomePage.style.display = 'block';
-        buttons.forEach(button => button.style.display = 'inline-block');
+        importDataBtn.style.display = 'inline-block';
+        fileInput.style.display = 'inline-block';
+        saveDraftBtn.style.display = 'inline-block';
+        exportBtn.style.display = 'inline-block';
+        generatePdfBtn.style.display = 'inline-block';
+
+        // Show the modal
+        showModal();
     }, 100);
 }
+
+function showModal() {
+    const modal = document.getElementById('pdfModal');
+    const countdown = document.getElementById('countdown');
+    const cancelBtn = document.getElementById('cancelRefresh');
+    let secondsLeft = 5;
+
+    modal.style.display = 'block';
+
+    const countdownInterval = setInterval(() => {
+        secondsLeft--;
+        countdown.textContent = secondsLeft;
+
+        if (secondsLeft <= 0) {
+            clearInterval(countdownInterval);
+            location.reload();
+        }
+    }, 1000);
+
+    cancelBtn.onclick = () => {
+        clearInterval(countdownInterval);
+        modal.style.display = 'none';
+    };
+}
+
+// Add event listener for the Generate PDF button
+document.getElementById('generatePdfBtn').addEventListener('click', generatePDF);
 
 function showNotification(message, type = 'info', duration = 3000) {
     const notification = document.createElement('div');
@@ -1241,7 +1552,8 @@ function updateSubjectAnalysisTable() {
     const table = document.getElementById('subjectAnalysisTable').getElementsByTagName('tbody')[0];
     table.innerHTML = '';
 
-    const subjects = ['ENG', 'MTC', 'SCIE', 'SST'];
+    const isLowerPrimary = ['Primary One', 'Primary Two', 'Primary Three'].includes(classSelect.value);
+    const subjects = isLowerPrimary ? ['ENG', 'MTC', 'LIT A', 'LIT B', 'R.E', 'LIT 2', 'LUG'] : ['ENG', 'MTC', 'SCIE', 'SST'];
     const grades = ['D1', 'D2', 'C3', 'C4', 'C5', 'C6', 'P7', 'P8', 'F9', 'X'];
 
     // Get total number of pupils
@@ -1303,9 +1615,52 @@ function calculateSubjectPositions(subjectData) {
 }
 
 function countGradesForSubject(subject, grade) {
-    const subjectIndex = ['ENG', 'MTC', 'SST', 'SCI', 'RE'].indexOf(subject) * 2 + 2;
-    const cells = document.querySelectorAll(`#gradeTable td:nth-child(${subjectIndex + 1})`);
+    const isLowerPrimary = ['Primary One', 'Primary Two', 'Primary Three'].includes(classSelect.value);
+    let selector;
+
+    if (isLowerPrimary) {
+        switch (subject) {
+            case 'ENG':
+                selector = 'td:nth-child(3)';
+                break;
+            case 'MTC':
+                selector = 'td:nth-child(5)';
+                break;
+            case 'LIT A':
+                selector = 'td:nth-child(6) input';
+                return countGradesForLitSubject(selector, grade);
+            case 'LIT B':
+                selector = 'td:nth-child(7) input';
+                return countGradesForLitSubject(selector, grade);
+            case 'R.E':
+                selector = 'td:nth-child(11)';
+                break;
+            case 'LIT 2':
+                selector = 'td:nth-child(13)';
+                break;
+            case 'LUG':
+                selector = 'td:nth-child(15)';
+                break;
+            default:
+                return 0;
+        }
+    } else {
+        const subjectIndex = ['ENG', 'MTC', 'SCIE', 'SST'].indexOf(subject) * 2 + 2;
+        selector = `td:nth-child(${subjectIndex + 1})`;
+    }
+
+    const cells = document.querySelectorAll(`#gradeTable ${selector}`);
     return Array.from(cells).filter(cell => cell.textContent.trim().startsWith(grade)).length;
+}
+
+function countGradesForLitSubject(selector, grade) {
+    const inputs = document.querySelectorAll(`#gradeTable ${selector}`);
+    return Array.from(inputs).filter(input => {
+        const marks = input.value.trim();
+        if (marks === "-") return grade === "X";
+        const calculatedGrade = calculateGrade(marks).grade;
+        return calculatedGrade === grade;
+    }).length;
 }
 
 function updateAggregateAnalysisTable() {
@@ -2516,10 +2871,10 @@ goToGradingBtn.addEventListener('click', function() {
 
 // Function to calculate grade and aggregates based on marks
 function calculateGrade(marks) {
-    if (marks === "-") return { grade: "F9", aggregates: 9 };
-    if (marks === "") return { grade: "", aggregates: 0 };
-    marks = parseInt(marks);
-    if (isNaN(marks) || marks < 0 || marks > 100) return { grade: "", aggregates: 0 };
+    if (marks === "-") return { grade: "X", aggregates: null };
+    if (marks === "") return { grade: "", aggregates: null };
+    marks = parseFloat(marks);
+    if (isNaN(marks) || marks < 0 || marks > 100) return { grade: "", aggregates: null };
     
     if (marks >= 90) return { grade: "D1", aggregates: 1 };
     if (marks >= 80) return { grade: "D2", aggregates: 2 };
@@ -2602,15 +2957,21 @@ function updateREResults(row) {
     
     let total = 0;
     let validInputs = 0;
+    let hasMissedExam = false;
     reInputs.forEach(reInput => {
-        if (reInput.value.trim() !== "" && reInput.value.trim() !== "-") {
+        if (reInput.value.trim() === "-") {
+            hasMissedExam = true;
+        } else if (reInput.value.trim() !== "") {
             total += parseFloat(reInput.value);
             validInputs++;
         }
     });
     
-    if (validInputs === 2) {
-        const mean = Math.round(total / 2); // Changed from Math.floor to Math.round
+    if (hasMissedExam) {
+        reMeanCell.textContent = "-";
+        reAggregateCell.textContent = "X";
+    } else if (validInputs === 2) {
+        const mean = Math.round(total / 2);
         reMeanCell.textContent = mean;
         const { grade, aggregates } = calculateGrade(mean.toString());
         reAggregateCell.textContent = grade;
@@ -2636,9 +2997,11 @@ function updateTotalAggregates(row) {
 
     mainSubjectAggregates.forEach(cell => {
         const aggregateText = cell.textContent.trim();
-        if (aggregateText) {
+        if (aggregateText && aggregateText !== 'X') {
             totalAggregates += parseInt(aggregateText.match(/\d+/)[0]);
             validAggregates++;
+        } else if (aggregateText === 'X') {
+            hasMissedExam = true;
         }
     });
 
@@ -2647,13 +3010,12 @@ function updateTotalAggregates(row) {
 
     const requiredAggregates = isLowerPrimary ? 4 : 5; // 3 main subjects + RE for lower primary, 4 main subjects + RE for upper primary
 
-    if (validAggregates === requiredAggregates) {
+    if (hasMissedExam) {
+        totalAggregatesCell.textContent = '-';
+        divisionCell.textContent = 'X';
+    } else if (validAggregates === requiredAggregates) {
         totalAggregatesCell.textContent = totalAggregates;
-        if (hasMissedExam) {
-            divisionCell.textContent = 'X';
-        } else {
-            divisionCell.textContent = calculateDivision(totalAggregates);
-        }
+        divisionCell.textContent = calculateDivision(totalAggregates);
     } else {
         totalAggregatesCell.textContent = '';
         divisionCell.textContent = '';

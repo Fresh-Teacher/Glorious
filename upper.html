@@ -375,25 +375,26 @@ input.minor-subject {
     background-color: #f2f2f2;
 }
 
-.analysis-section h3 {
-    margin-top: 0;
-}
 
 @media print {
     @page {
         size: landscape;
-        margin: 0;
+        margin: 0.5cm; /* Reduce page margins */
     }
     body {
         font-size: 14pt;
         font-family: 'Times New Roman', Georgia, serif;
         font-weight: bold;
-        margin: 1cm;
-    }
+        margin: 0; /* Remove body margin */
+        padding: 0; /* Remove body padding */    }
     .container {
         width: 100%;
         margin: 0;
         padding: 0;
+    }
+        /* Ensure the table starts immediately after the title */
+        #gradeTable {
+        margin-top: 0.5cm;
     }
     table {
         width: 100%;
@@ -438,7 +439,8 @@ input.minor-subject {
         text-align: center;
         font-size: 16pt;
         font-weight: bold;
-        margin-bottom: 20px;
+        margin-top: 0; /* Remove top margin */
+        padding-top: 0.5cm; /* Add a small padding at the top */
         line-height: 1.4;
         color: black;
     }
@@ -457,6 +459,8 @@ input.minor-subject {
         font-size: 14pt;
         font-weight: bold;
     }
+
+    
 
     /* Keep the uppercase style for the first column */
     table td:first-child {
@@ -494,7 +498,7 @@ input.minor-subject {
         margin-top: 20px;
     }
     .analysis-section h3 {
-        page-break-before: always;
+        page-break-inside: avoid;
         margin-top: 20px;
     }
 
@@ -760,6 +764,90 @@ main {
         padding-top: 100px; /* Increase padding for mobile view */
     }
 }
+
+ /* Add these new styles */
+ .analysis-wrapper {
+        page-break-inside: avoid;
+    }
+
+    .analysis-section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .analysis-section > div {
+        flex-basis: 100%;
+        margin-bottom: 20px;
+    }
+
+    .analysis-section table {
+        font-size: 10pt; /* Reduce font size to fit more content */
+    }
+
+    .analysis-section h3 {
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #FFA500, #D2691E);
+    margin: 15% auto;
+    padding: 30px;
+    border: none;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 24px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.modal-content p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+#countdown {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFD700;
+}
+
+#cancelRefresh {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+    border: 2px solid white;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+#cancelRefresh:hover {
+    background-color: white;
+    color: #D2691E;
+}
     </style>
 </head>
 <script>
@@ -807,7 +895,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 <body>
      <!-- Add the navbar -->
-     <div class="navbar">
+     <!-- <div class="navbar">
         <div class="logo">
             <img src="schoologo-2-150x150.png" alt="School Logo">
             <div class="title animated-title">Glorious Schools</div>
@@ -820,10 +908,10 @@ document.addEventListener("DOMContentLoaded", function() {
             <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
             <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
         </ul>
-    </div>
+    </div> -->
         <div class="pdf-title">
             <h2>GLORIOUS KINDERGARTEN AND PRIMARY SCHOOL</h2>
-            <h2>MID TERM II EXAMS RESULTS 2024</h2>
+            <h2>___________ EXAMS RESULTS TERM ___________ 2024</h2>
             <h2 id="classStreamTitle"></h2>
 
         </div>
@@ -843,6 +931,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     <option value="" disabled selected>Select Stream</option>
                 </select>
                 <button id="goToGradingBtn" style="display: none;">Go to Grading</button>
+            </div>
+        </div>
+        <div id="pdfModal" class="modal">
+            <div class="modal-content">
+                <h2>PDF Generated Successfully ✔️</h2>
+                <p>The PDF file has been saved to your device.</p>
+                <p>Returning to the start page in <span id="countdown">5</span> seconds.</p>
+                <button id="cancelRefresh">Stay on this page</button>
             </div>
         </div>
 
@@ -871,6 +967,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <button id="exportBtn" style="display: none;">Export Results</button>
              </div>
 
+             <div class="analysis-wrapper">
              <div class="analysis-section">
                 <h3>Division Analysis</h3>
                 <table id="divisionAnalysisTable">
@@ -944,6 +1041,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         </tr>
                     </tbody>
                 </table>
+            </div>
             </div>
 <!-- Add the footer -->
 <br><br>
@@ -1270,8 +1368,7 @@ document.getElementById('saveJsonBtn').addEventListener('click', saveTableAsJSON
 }
 
 // Add event listener for the Export as CSV button
-document.getElementById('exportCsvBtn').addEventListener('click', exportTableToCSV);
-        function generatePDF() {
+function generatePDF() {
     // Hide elements we don't want in the PDF
     const welcomePage = document.getElementById('welcomePage');
     const importDataBtn = document.getElementById('importDataBtn');
@@ -1302,7 +1399,34 @@ document.getElementById('exportCsvBtn').addEventListener('click', exportTableToC
         saveDraftBtn.style.display = 'inline-block';
         exportBtn.style.display = 'inline-block';
         generatePdfBtn.style.display = 'inline-block';
+
+        // Show the modal
+        showModal();
     }, 100);
+}
+
+function showModal() {
+    const modal = document.getElementById('pdfModal');
+    const countdown = document.getElementById('countdown');
+    const cancelBtn = document.getElementById('cancelRefresh');
+    let secondsLeft = 5;
+
+    modal.style.display = 'block';
+
+    const countdownInterval = setInterval(() => {
+        secondsLeft--;
+        countdown.textContent = secondsLeft;
+
+        if (secondsLeft <= 0) {
+            clearInterval(countdownInterval);
+            location.reload();
+        }
+    }, 1000);
+
+    cancelBtn.onclick = () => {
+        clearInterval(countdownInterval);
+        modal.style.display = 'none';
+    };
 }
 
 // Add event listener for the Generate PDF button
@@ -1787,7 +1911,6 @@ const studentData = {
       'KHARUNDA ESTHER',
       'KYAZZE MARTHA',
       'LYMIAH AVRIL SALIM',
-      'MANZI GALIA',
       'MICHORO ANNA ALEXA',
       'NABAKOOZA CHRISTINE',
       'NABIKOLO ANNA',
@@ -1795,7 +1918,6 @@ const studentData = {
       'NALUMANSI LYTON',
       'NAMALA SALSABEL',
       'NAMBI NAAVA',
-      'NAMPIIMA HYRAT',
       'NAMUBIRU RIAH',
       'NANDAWULA  DESIRE',
       'NANONO ROSHAN ISMAIL',
@@ -2047,7 +2169,7 @@ const studentData = {
     'KATO ENOCK',
     'KAWADWA COLLINS',
     'KEMIGISHA PRINCESS',
-    'KUTOSI FAITH',
+    'KUTOSI FAITH HANNAH',
     'LUKYAMUZI IVAN',
     'LUTAAYA JONATHAN',
     'MAGUMBA SHAKUR',
@@ -2505,8 +2627,9 @@ goToGradingBtn.addEventListener('click', function() {
 });
 
 // Function to calculate grade and aggregates based on marks
+// Function to calculate grade and aggregates based on marks
 function calculateGrade(marks, isPrimarySeven) {
-    if (marks === "-") return { grade: "F9", aggregates: 9 };
+    if (marks === "-") return { grade: "X", aggregates: null };
     if (marks === "") return { grade: "", aggregates: 0 };
     marks = parseInt(marks);
     if (isNaN(marks) || marks < 0 || marks > 100) return { grade: "", aggregates: 0 };
@@ -2539,7 +2662,7 @@ function calculateGrade(marks, isPrimarySeven) {
 // Function to calculate division based on total aggregates
 function calculateOverallResult(totalAggregates, hasMissedExam, hasF9) {
     if (hasMissedExam) {
-        return { totalAggregates, division: 'X' };
+        return { totalAggregates: "X", division: 'X' };
     }
     let division = calculateDivision(totalAggregates);
     if (division === "1" && hasF9) {
@@ -2547,8 +2670,6 @@ function calculateOverallResult(totalAggregates, hasMissedExam, hasF9) {
     }
     return { totalAggregates, division };
 }
-
-
 
 function calculateDivision(totalAggregates) {
     if (totalAggregates >= 4 && totalAggregates <= 12) return "1";
@@ -2587,19 +2708,23 @@ function updateResults(input) {
     let hasMissedExam = false;
     let hasF9 = false;
     let allMainFieldsFilled = true;
+    let validSubjectCount = 0;
 
     mainSubjectInputs.forEach((input) => {
         const value = input.value.trim();
         if (value === "") {
             allMainFieldsFilled = false;
         } else {
-            const { grade, aggregates } = calculateGrade(value);
-            totalAggregates += aggregates;
-            if (grade === "F9") {
-                hasF9 = true;
-            }
-            if (value === "-") {
+            const { grade, aggregates } = calculateGrade(value, isPrimarySeven);
+            if (grade === "X") {
                 hasMissedExam = true;
+            } else if (grade === "F9") {
+                hasF9 = true;
+                totalAggregates += aggregates;
+                validSubjectCount++;
+            } else if (aggregates !== null) {
+                totalAggregates += aggregates;
+                validSubjectCount++;
             }
         }
     });
@@ -2612,7 +2737,7 @@ function updateResults(input) {
         if (minorMarks === "") {
             minorAggregateCell.textContent = "";
         } else {
-            const { grade } = calculateGrade(minorMarks);
+            const { grade } = calculateGrade(minorMarks, isPrimarySeven);
             minorAggregateCell.textContent = grade;
         }
     });
@@ -2652,6 +2777,7 @@ function validateTable() {
     
     return isValid;
 }
+
 
 function createTableRows(studentList) {
     const tableBody = document.getElementById('gradeTableBody');
