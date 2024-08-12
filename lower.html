@@ -119,10 +119,7 @@
             color: var(--white-color);
         }
         @media print {
-    @page {
-        size: landscape;
-        margin: 0;
-    }
+
     body {
         font-size: 10pt;
         font-family: 'Times New Roman', Georgia, serif;
@@ -879,10 +876,7 @@ main {
     color: #D2691E;
 }
 @media print {
-    @page {
-        size: landscape;
-        margin: 0;
-    }
+
     body {
         font-size: 10pt;
         font-family: 'Times New Roman', Georgia, serif;
@@ -1022,6 +1016,109 @@ main {
         color: black !important;
         background-color: white !important;
     }
+}
+.name-options {
+    display: none;
+    margin-left: 10px;
+}
+
+.name-options button {
+    padding: 2px 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.model {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.model-content {
+    background: linear-gradient(135deg, #FFA500, #8B4513);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+}
+
+.model-content h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+#editNameInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.model-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.model-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+#confirmButton {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#confirmButton:hover {
+    background-color: #45a049;
+}
+
+#cancelButton {
+    background-color: #f44336;
+    color: white;
+}
+
+#cancelButton:hover {
+    background-color: #da190b;
+}
+
+.model-buttons button:active {
+    transform: scale(0.98);
+}
+
+.flash-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #FF8C00;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1001;
+    transition: opacity 0.5s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.flash-message.fade-out {
+    opacity: 0;
 }
     </style>
 </head>
@@ -1918,6 +2015,7 @@ document.getElementById('saveDraftBtn').addEventListener('click', saveDraft);
 const studentData = {
   'Primary One': {
       'Diamonds': [
+      'AMPIIRWE DANIELS MUGIZI',
           'ABAHO FIACRE EUGENE',
           'AGASHA ABIGAIL',
           'AKAMPURIRA ARISTARCHUS S.',
@@ -1974,6 +2072,7 @@ const studentData = {
           'ZAWEDDE NADRA'
       ],
       'Pearls': [
+        'NANTEZA ATARAH',
           'ADIL KIVIIRI MITTI',
           'ATULINDA CLARA MERISHA',
           'AYONGYERAHO SAMATHA',
@@ -2031,10 +2130,11 @@ const studentData = {
           'ABIGARURAHO SPLENDID',
           'ACHOLA SAMANTHA',
           'AHIMBISIBWE JEREMIAH',
-          'AHIMISIBWE KEVIN',
+          'AHIMBISIBWE KEVIN',
           'ALIGUMA EMILLY',
           'ALINDA TIFFANY',
           'AMAANI TRISER TIREH',
+          'AMPIIRWE DANIELS',
           'ANZOA FAITH',
           'AQEELAH MWEJUSA',
           'ATUHAIRE TRACY KARUNGI',
@@ -2054,22 +2154,22 @@ const studentData = {
           'KIMULI ELIJAH',
           'KOBUSINGYE NATALIE',
           'KYOBE JOSIAH MULUNGI',
-          'LAKICA ABIGAIL CHLOE',
+          'LAKICA  ABIGAIL CHLOE',
           'MAGUMBA JAHIM',
           'MUGERWA EDRINE',
-          'MUKISA HAM',
+          'MUKISA  HAM',
           'MUKISA JEREMIAH',
           'MULUNGI ASHER NTWALI',
-          'MULWANA MIRACLE NEO',
+            'MULWANA  MIRACLE NEO',
           'NABIRYE LAILAT',
           'NAKYAZZE NICOLE MALAIKA',
           'NAKYEYUNE MARIA DARLEN',
           'NAMIREMBE JUSTINE NATALIA',
-          'NAMPIJJA RAHUMAH',
+          'NAMPIJJA  RAHUMAH',
           'NANTULYA EZRA',
           'NDAHIRO BRIAN',
-          'NIWAGABA DIVINE',
-          'NTEYERA ABIGAIL ZITA',
+          'NIWAGABA  DIVINE',
+          'NTEYERA  ABIGAIL ZITA',
           'OLA CHRISLEY',
           'OMENO MAURICE JUNIOR',
           'ONYIRU JOY ECOKU',
@@ -2077,8 +2177,9 @@ const studentData = {
           'SAKA RAHIM SUNDAY',
           'SSEKANJAKO TRAVIS VIANNEY',
           'WANDERA JOSIAH',
-          'WASSWA JORDAN'
-      ]
+          'WASSWA JORDAN',
+           
+      ]  
   },
   'Primary Two': {
   'Golden': [
@@ -2086,7 +2187,6 @@ const studentData = {
     'AKANDWANAHO MOBERT',
     'ALOYO JIREH OKOT',
     'AMONDING DORCAS LAURETTA',
-    'AMPIIRWE DANIELS MUGIZI',
     'ANYOLE JAAD GALA',
     'ARINDA LINDSAY',
     'ARINIATWE BASHIRAH',
@@ -2264,229 +2364,26 @@ const studentData = {
     'NUWAGABA AARON SHELDON',
     'NYAKATO MARIA MICHELLE',
     'NYOMBI AMIRA',
-    'NZAMBALE MARTIN ERIC',
-    'RABBIT VICTORIA HERMANN',
-    'RANZELO KEVINE',
-    'RUHWEZA ABUBAKER',
-    'RUSHOKI NASHIEMAH'
+   'NZIZA ELIJAH',
+   'OKOT ADRIEL HISGARACE',
+   'OKOTEL EMMANUELLA',
+   'OMODING ETHAN EYALAMA',
+   'ROHAAN BAHAR',
+   'SSALI BENJAMIN',
+   'SSANGO JOVAN ANGELLO',
+   'SSEBUGWAWO JONATHAN KISLEY',
+   'TOMUSANGE KATRINAH',
+   'WALAKIRA ALOYSIOUS',
+   'WASSWA ABEL BRANDON'
+   
   ]
 },
-'Primary Three': {
-      'Cranes': [
-      'Akampulira Calvin',
-      'Bugembe Shakur',
-      'Ankunda Donald',
-      'Kisira Jordan',
-      'Kibudde Nicholas',
-      'Kagimu Shemaiah',
-      'Keeya Malcom',
-      'Kyeyune Daniel',
-      'Lwasa Dalton',
-      'Lwalanda Hakim',
-      'Isingoma Edgar',
-      'Magala Dalton',
-      'Mukiibi Jonathan',
-      'Mukisa Trajan',
-      'Muwamba Wilfred',
-      'Nkwisana Reagan',
-      'Ssentongo Simon Elvis',
-      'Ssimbwa Talia',
-      'Walusimbi Jethro V.',
-      'Hirwa Alle Ian',
-      'Turyakira Tyrone',
-      'Kafeero Elijah P',
-      'Mugerwa Jericho',
-      'Ssebuufu Raymond',
-      'Ssekajigo Victor',
-      'Bwiire Emmanuel',
-      'Lubega Michael',
-      'Kaweesi Abdul S.',
-      'Tumusiime Frank',
-      'Webare Gabriel',
-      'Kaweesi Evans',
-      'Kasule Eliasafu P.',
-      'Sseruyange Timothy',
-      'Migadde Shakur S.',
-      'Sserunjogi Ethan',
-      'Magumba Shakir',
-      'Adriko Prosper',
-      'Bukenya Krystal N.',
-      'Besigye Tricia',
-      'Byaruhanga Ashnaz',
-      'Mukisa Favour',
-      'Nakitto Rhonel R',
-      'Nannungi Anna',
-      'Namubiru Africa',
-      'Nakiboneka Prudence',
-      'Namagala Edron',
-      'Nanyeza Lyan',
-      'Namyalo Tasheemim',
-      'Nakabuye Cynthia',
-      'Nasasira Divine',
-      'Nambejja Christine',
-      'Nanjego Victoria',
-      'Ola Keron',
-      'Waikya Israella P',
-      'Rashym Wahidah I.',
-      'Nabukeera Shukran Y',
-      'Nankubuge Shainah',
-      'Nakasiisa Sheilah K.',
-      'Namuyiga Jovia',
-      'Nassimbwa Grace H',
-      'Nakiguli Shivan Pia',
-      'Nakalanzi Promise',
-      'Kaitesi Leah',
-      'Nassimbwa Ciara',
-      'Kamugisha Giovana',
-      'Mpairwe Celine L.',
-      'Mwesigwa Milva',
-      'Kiguli Nailor'
-      
-              ],
-      'Sparrows': [
-      'Namazzi Hilda', 
-      'Abaasa Melisa', 
-      'Naluyange Madrine', 
-      'Namata Shifra K.', 
-      'Nanyunja Rinah', 
-      'Nakalungi Gabriella', 
-      'Katumba Maria', 
-      'Atuhaire Georgia', 
-      'Treasure Elizabeth Seku', 
-      'Namutebi Leona Rosella', 
-      'Namugerwa Sabrina', 
-      'Nampiima Pauline', 
-      'Mirembe Raudah', 
-      'Nyakato Edrinah', 
-      'Amila Adams Kyeyune', 
-      'Bwire Chloe Grighton', 
-      'Akwero Lynne A.', 
-      'Asaba Mulungi Joana', 
-      'Nalubega Maria', 
-      'Akamutuha Janet', 
-      'Komujuni Fedrace', 
-      'Namaganda Briannah', 
-      'Musiime Gift', 
-      'Muyama Abigail', 
-      'Nabukenya Cate Josephine', 
-      'Nalwanga Jazmine', 
-      'Arinda Martha', 
-      'Kavuma Norine Esther', 
-      'Irene Malaika Nabbale', 
-      'Namanda Majorine', 
-      'Nabbongole Katrinah', 
-      'Namujjuzi Winfred', 
-      'Ainembabazi Melissa', 
-      'Nansirumbi Isabella', 
-      'Nakintu Immaculate', 
-      'Ainembabazi Rainah Grace', 
-      'Sanyu Nisha Gasaro', 
-      'Barungi Victoria', 
-      'Anviko Shantal', 
-      'Malaika Trixie Kiyaga', 
-      'Nansumbi Deborah', 
-      'Ndagire Sarah',
-  'Kalyango Raheem',
-  'Wasswa Kabuye Jonah',
-  'Kato Kabuye Jovans',
-  'Agaba John Treasure',
-  'Katumba Conrad',
-  'Eloy Titus Ssentongo',
-  'Ahumuza Praise Robert',
-  'Kaweesa Keiran',
-  'Balikuddembe Elvis',
-  'Batanda Jethro',
-  'Walusimbi Martin',
-  'Kaweesi Hashim',
-  'Ssewanyana Aaron',
-  'Tamale John Francis',
-  'Buyondo Israel',
-  'Kwezi Robin',
-  'Wodero Joshua',
-  'Ssempijja Oscar',
-  'Mukiriza George',
-  'Kalibbala Akram',
-  'Ariiho Israel',
-  'KalyesubulanJayden',
-  'Kakungulu Ryan Mark',
-  'Ntambi Reagan J.',
-  'Kimbugwe Abdullah'
-              ],
-  'Parrots': [
-  'Agaba Joshua Walter',
-  'Asiimwe Derrick',
-  'Lugendo Amos',
-  'Atwiine Jotham',
-  'Batanda Dylan',
-  'Byamukama Keith',
-  'Tamale Jakira Flavour',
-  'Kakooza Abdul Razaq',
-  'Kakinda Fabian',
-  'Kato Jolly Jonathan',
-  'Kavuma Amir',
-  'Kaweesa Simpson',
-  'Kibuuka Raymond',
-  'Kimbugwe Stewart',
-  'Kimera Jonathan',
-  'Lubowa Abubaker',
-  'Lukwago Rayan',
-  'Magoma Benhur',
-  'Nsubuga Micheal',
-  'Sekate Godfrey',
-  'Ssali Micheal',
-  'Sseremba Jeremiah',
-  'Wasswa David Douglas',
-  'Mayanja Vuubi',
-  'Ssenyonga Jeremiah',
-  'Nayebare Timothy',
-  'Akatuhereza Merrick',
-  'Sserumagga John Putin',
-  'Kawuki Gipson',
-  'Kabagambe Weissman',
-  'Ainomugisha Petrinah',
-  'Ampumuza Elianah',
-  'Asinguza Brenda',
-  'Avghail Batzion',
-  'Kizito Hanah Friend',
-  'Kasule Elsen Zawad',
-  'Katusiime Jasmine',
-  'Kisenyi Mellisa Maggie',
-  'Kyaligonza Josephine',
-  'Lumu Angel Favour',
-  'Lutaaya Catherine',
-  'Magoma Belicia',
-  'Nakanwagi Keirah',
-  'Nakimuli Ethel',
-  'Nambalirwa Trude',
-  'Namirembe Maria Nicole',
-  'Namumbejja Ryhan',
-  'Nassiwa Hailey',
-  'Okallo Natasha Esther',
-  'Nsiimire Faith',
-  'Ssekate Noella',
-  'Namuli Comfort',
-  'Wanyenze Marianah',
-  'Kalungi Neirah',
-  'Nansubuga Tracy Camilla',
-  'Nakirijja Cynthia',
-  'Kyomuhendo Grace',
-  'Ssenyonjo Mercy',
-  'Muhindo Gian',
-  'Niyibizi Jerusa', 
-  'Nanyonga Ziadah',
-  'Munezero Blessen',   
-  'Nanyonjo Patience',
-  'Kyenyini Cossiline', 
-  'Nakasumba Anitah',
-  'Namirembe Peninah',
-  
-              ]
-          },
   'Primary Three': {
     'Cranes': [
       'AKAMPULIRA CALVIN',
       'BUGEMBE SHAKUR',
       'ANKUNDA DONALD',
+      'DDUMBA JORAM',
       'KISIRA JORDAN',
       'KIBUDDE NICHOLAS',
       'KAGIMU SHEMAIAH',
@@ -3114,8 +3011,14 @@ function createTableRows(studentList) {
         
         if (isLowerPrimary) {
             rowHTML = `
-                <td class="name-cell">${rowIndex + 1}. <span class="student-name">${student}</span></td>
-                <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+(\\.\\d+)?$|^-$" maxlength="5"></td>
+            <td class="name-cell">
+                ${rowIndex + 1}. <span class="student-name">${student}</span>
+                <div class="name-options">
+                    <button class="edit-name">Edit</button>
+                    <button class="delete-name">Delete</button>
+                </div>
+            </td>
+          <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+(\\.\\d+)?$|^-$" maxlength="5"></td>
                 <td class="subject-aggregate"></td>
                 <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+(\\.\\d+)?$|^-$" maxlength="5"></td>
                 <td class="subject-aggregate"></td>
@@ -3162,10 +3065,101 @@ function createTableRows(studentList) {
         
         row.innerHTML = rowHTML;
         tableBody.appendChild(row);
+
+        // Add event listeners for name CRUD operations
+        const nameCell = row.querySelector('.name-cell');
+        const nameSpan = nameCell.querySelector('.student-name');
+        const nameOptions = nameCell.querySelector('.name-options');
+
+        nameCell.addEventListener('click', (e) => {
+            if (e.target === nameCell || e.target === nameSpan) {
+                nameOptions.style.display = 'inline-block';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!nameCell.contains(e.target)) {
+                nameOptions.style.display = 'none';
+            }
+        });
+
+        const editButton = nameOptions.querySelector('.edit-name');
+        const deleteButton = nameOptions.querySelector('.delete-name');
+
+        editButton.addEventListener('click', () => {
+            showModel('edit', student, (newName) => {
+                nameSpan.textContent = newName;
+                updateAnalysisTables();
+            });
+        });
+
+        deleteButton.addEventListener('click', () => {
+            showModel('delete', student, () => {
+                row.remove();
+                updateRowNumbers();
+                updateAnalysisTables();
+            });
+        });
     });
 
+    function showModel(action, studentName, callback) {
+    const model = document.createElement('div');
+    model.className = 'model';
+    model.innerHTML = `
+        <div class="model-content">
+            <h2>${action === 'edit' ? 'Edit Student Name' : 'Delete Student'}</h2>
+            ${action === 'edit' 
+                ? `<input type="text" id="editNameInput" value="${studentName}" placeholder="Enter student name">`
+                : `<p>Are you sure you want to delete ${studentName}?</p>`
+            }
+            <div class="model-buttons">
+                <button id="confirmButton">${action === 'edit' ? 'Save' : 'Delete'}</button>
+                <button id="cancelButton">Cancel</button>
+            </div>
+        </div>
+    `;
 
-    
+    document.body.appendChild(model);
+
+    const confirmButton = model.querySelector('#confirmButton');
+    const cancelButton = model.querySelector('#cancelButton');
+
+confirmButton.addEventListener('click', () => {
+    if (action === 'edit') {
+        const newName = model.querySelector('#editNameInput').value;
+        callback(newName);
+        showFlashMessage(`${studentName}'s name updated to ${newName} successfully!`);
+    } else {
+        callback();
+        showFlashMessage(`${studentName} deleted successfully!`);
+    }
+    closeModel(model);
+});
+
+    cancelButton.addEventListener('click', () => {
+        closeModel(model);
+        showFlashMessage('Operation cancelled');
+    });
+}
+
+function closeModel(model) {
+    document.body.removeChild(model);
+}
+
+function showFlashMessage(message) {
+    const flashMessage = document.createElement('div');
+    flashMessage.className = 'flash-message';
+    flashMessage.textContent = message;
+
+    document.body.appendChild(flashMessage);
+
+    setTimeout(() => {
+        flashMessage.classList.add('fade-out');
+        setTimeout(() => {
+            document.body.removeChild(flashMessage);
+        }, 500);
+    }, 3000);
+}
 
     const allInputs = tableBody.querySelectorAll('.subject-mark');
     allInputs.forEach((input, index) => {
@@ -3187,6 +3181,69 @@ function createTableRows(studentList) {
         input.addEventListener('blur', () => validateAndUpdateResults(input));
     });
 }
+
+function showModal(action, studentName, callback) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>${action === 'edit' ? 'Edit Student Name' : 'Delete Student'}</h2>
+            ${action === 'edit' 
+                ? `<input type="text" id="editNameInput" value="${studentName}">`
+                : `<p>Are you sure you want to delete ${studentName}?</p>`
+            }
+            <div class="modal-buttons">
+                <button id="confirmButton">${action === 'edit' ? 'Save' : 'Delete'}</button>
+                <button id="cancelButton">Cancel</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const confirmButton = modal.querySelector('#confirmButton');
+    const cancelButton = modal.querySelector('#cancelButton');
+
+    confirmButton.addEventListener('click', () => {
+        if (action === 'edit') {
+            const newName = modal.querySelector('#editNameInput').value;
+            callback(newName);
+        } else {
+            callback();
+        }
+        document.body.removeChild(modal);
+    });
+
+    cancelButton.addEventListener('click', () => {
+        document.body.removeChild(modal);
+    });
+}
+
+function showFlashMessage(message) {
+    const flashMessage = document.createElement('div');
+    flashMessage.className = 'flash-message';
+    flashMessage.textContent = message;
+
+    document.body.appendChild(flashMessage);
+
+    setTimeout(() => {
+        flashMessage.classList.add('fade-out');
+        setTimeout(() => {
+            document.body.removeChild(flashMessage);
+        }, 500);
+    }, 3000);
+}
+
+function updateRowNumbers() {
+    const rows = document.querySelectorAll('#gradeTableBody tr');
+    rows.forEach((row, index) => {
+        const nameCell = row.querySelector('.name-cell');
+        const numberSpan = nameCell.firstChild;
+        numberSpan.textContent = `${index + 1}. `;
+    });
+}
+
+
 
 function handleInputChange(input) {
     const value = input.value;

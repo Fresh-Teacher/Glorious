@@ -848,6 +848,110 @@ main {
     background-color: white;
     color: #D2691E;
 }
+.name-options {
+    display: none;
+    margin-left: 10px;
+}
+
+.name-options button {
+    padding: 2px 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.model {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.model-content {
+    background: linear-gradient(135deg, #FFA500, #8B4513);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+}
+
+.model-content h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+#editNameInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.model-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.model-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+#confirmButton {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#confirmButton:hover {
+    background-color: #45a049;
+}
+
+#cancelButton {
+    background-color: #f44336;
+    color: white;
+}
+
+#cancelButton:hover {
+    background-color: #da190b;
+}
+
+.model-buttons button:active {
+    transform: scale(0.98);
+}
+
+.flash-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #FF8C00;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1001;
+    transition: opacity 0.5s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.flash-message.fade-out {
+    opacity: 0;
+}
     </style>
 </head>
 <script>
@@ -941,7 +1045,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button id="cancelRefresh">Stay on this page</button>
             </div>
         </div>
-
         <div id="gradingPage" style="display: none;">
             <div class="card">
                 <table id="gradeTable">
@@ -1041,6 +1144,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         </tr>
                     </tbody>
                 </table>
+                
             </div>
             </div>
 <!-- Add the footer -->
@@ -1052,6 +1156,17 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 </footer>
     <script>
+        function updateAnalysisTables() {
+    // Clear existing data
+    document.getElementById('divisionAnalysisTable').getElementsByTagName('tbody')[0].innerHTML = '';
+    document.getElementById('aggregateAnalysisTable').getElementsByTagName('tbody')[0].innerHTML = '';
+    document.getElementById('subjectAnalysisTable').getElementsByTagName('tbody')[0].innerHTML = '';
+
+    // Recalculate and update tables
+    updateDivisionAnalysisTable();
+    updateAggregateAnalysisTable();
+    updateSubjectAnalysisTable();
+}
         // Function to import JSON
 function importJSON() {
     document.getElementById('jsonFileInput').click();
@@ -2856,8 +2971,14 @@ function createTableRows(studentList) {
     studentList.forEach((student, rowIndex) => {
         const row = document.createElement('tr');
         let rowHTML = `
-            <td class="name-cell">${rowIndex + 1}. <span class="student-name">${student}</span></td>
-            <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="name-cell">
+                ${rowIndex + 1}. <span class="student-name">${student}</span>
+                <div class="name-options">
+                    <button class="edit-name">Edit</button>
+                    <button class="delete-name">Delete</button>
+                </div>
+            </td>
+             <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
             <td class="subject-aggregate"></td>
             <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
             <td class="subject-aggregate"></td>
@@ -2892,7 +3013,138 @@ function createTableRows(studentList) {
         
         row.innerHTML = rowHTML;
         tableBody.appendChild(row);
+
+        // Add event listeners for name CRUD operations
+        const nameCell = row.querySelector('.name-cell');
+        const nameSpan = nameCell.querySelector('.student-name');
+        const nameOptions = nameCell.querySelector('.name-options');
+
+        nameCell.addEventListener('click', (e) => {
+            if (e.target === nameCell || e.target === nameSpan) {
+                nameOptions.style.display = 'inline-block';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!nameCell.contains(e.target)) {
+                nameOptions.style.display = 'none';
+            }
+        });
+
+        const editButton = nameOptions.querySelector('.edit-name');
+        const deleteButton = nameOptions.querySelector('.delete-name');
+
+        editButton.addEventListener('click', () => {
+            showModel('edit', student, (newName) => {
+                nameSpan.textContent = newName;
+                updateAnalysisTables();
+            });
+        });
+
+        deleteButton.addEventListener('click', () => {
+            showModel('delete', student, () => {
+                row.remove();
+                updateRowNumbers();
+                updateAnalysisTables();
+            });
+        });
     });
+ 
+  
+    function showModel(action, studentName, callback) {
+    const model = document.createElement('div');
+    model.className = 'model';
+    model.innerHTML = `
+        <div class="model-content">
+            <h2>${action === 'edit' ? 'Edit Student Name' : 'Delete Student'}</h2>
+            ${action === 'edit' 
+                ? `<input type="text" id="editNameInput" value="${studentName}" placeholder="Enter student name">`
+                : `<p>Are you sure you want to delete ${studentName}?</p>`
+            }
+            <div class="model-buttons">
+                <button id="confirmButton">${action === 'edit' ? 'Save' : 'Delete'}</button>
+                <button id="cancelButton">Cancel</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(model);
+
+    const confirmButton = model.querySelector('#confirmButton');
+    const cancelButton = model.querySelector('#cancelButton');
+
+    confirmButton.addEventListener('click', () => {
+    if (action === 'edit') {
+        const newName = model.querySelector('#editNameInput').value;
+        callback(newName);
+        showFlashMessage(`${studentName}'s name updated to ${newName} successfully!`);
+    } else {
+        callback();
+        showFlashMessage(`${studentName} deleted successfully!`);
+    }
+    closeModel(model);
+});
+
+    cancelButton.addEventListener('click', () => {
+        closeModel(model);
+        showFlashMessage('Operation cancelled');
+    });
+}
+
+function closeModel(model) {
+    document.body.removeChild(model);
+}
+
+function showFlashMessage(message) {
+    const flashMessage = document.createElement('div');
+    flashMessage.className = 'flash-message';
+    flashMessage.textContent = message;
+
+    document.body.appendChild(flashMessage);
+
+    setTimeout(() => {
+        flashMessage.classList.add('fade-out');
+        setTimeout(() => {
+            document.body.removeChild(flashMessage);
+        }, 500);
+    }, 3000);
+}
+  
+    function updateRowNumbers() {
+    const rows = document.querySelectorAll('#gradeTableBody tr');
+    rows.forEach((row, index) => {
+        const nameCell = row.querySelector('.name-cell');
+        const numberSpan = nameCell.firstChild;
+        numberSpan.textContent = `${index + 1}. `;
+    });
+}
+
+function addNewStudent() {
+    const tableBody = document.getElementById('gradeTableBody');
+    const newRowIndex = tableBody.children.length;
+    const newRow = document.createElement('tr');
+    
+    let rowHTML = `
+        <td class="name-cell">
+            ${newRowIndex + 1}. <span class="student-name" contenteditable="true">New Student</span>
+            <div class="name-options" style="display: none;">
+                <button class="edit-name">Edit</button>
+                <button class="delete-name">Delete</button>
+            </div>
+        </td>
+    `;
+
+    // Add the rest of the cells (subject marks, aggregates, etc.)
+    // This part will be similar to the row creation in createTableRows function
+
+    newRow.innerHTML = rowHTML;
+    tableBody.appendChild(newRow);
+
+    // Add event listeners for the new row (similar to createTableRows function)
+    // ...
+
+    updateAnalysisTables();
+}
 
     const allInputs = tableBody.querySelectorAll('.subject-mark');
     allInputs.forEach((input, index) => {

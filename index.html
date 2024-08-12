@@ -986,137 +986,143 @@
             }
         }
         function showProfile() {
-            const profilePane = document.getElementById('profilePane');
-            const profileContent = document.getElementById('profileContent');
-            const email = localStorage.getItem('email') || sessionStorage.getItem('email');
-            const user = validUsers.find(u => u.email === email);
+    const profilePane = document.getElementById('profilePane');
+    const profileContent = document.getElementById('profileContent');
+    const email = localStorage.getItem('email') || sessionStorage.getItem('email');
+    const user = validUsers.find(u => u.email === email);
 
-            function calculateAge(birthdate) {
-                if (!birthdate) return "Pending";
-                const today = new Date();
-                const birthDate = new Date(birthdate);
-                let age = today.getFullYear() - birthDate.getFullYear();
-                const monthDiff = today.getMonth() - birthDate.getMonth();
+    function calculateAge(birthdate) {
+        if (!birthdate) return null;
+        const today = new Date();
+        const birthDate = new Date(birthdate);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
 
-                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                    age--;
-                }
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
 
-                return age;
+        return age;
+    }
+
+    function formatDate(date) {
+        if (!date) return null;
+        const d = new Date(date);
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const year = d.getFullYear();
+        return `${month}/${day}/${year}`;
+    }
+
+    if (user) {
+        const currentYear = new Date().getFullYear();
+        const photoSrc = user.photo || 'dp.png';
+        const age = calculateAge(user.birthdate);
+        const dob = formatDate(user.birthdate);
+
+        // Update the profile resource image
+        const profileResourceImage = document.getElementById('profileResourceImage');
+        profileResourceImage.src = photoSrc;
+
+        let profileHTML = `
+<div class="profile-image-container" onclick="showFullsizeImage('${photoSrc}')">
+    <img src="${photoSrc}" alt="${user.name}" class="profile-image">
+    <div class="profile-image-overlay">
+        <span class="profile-image-overlay-text">Click to Zoom 🔎</span>
+    </div>
+</div>
+<p><strong>Name:</strong> ${user.name}</p>
+<p><strong>Email:</strong> ${user.email || ''}</p>
+${age !== null ? `<p><strong>Age:</strong> ${age}</p>` : ''}
+${dob !== null ? `<p><strong>D.O.B:</strong> ${dob}</p>` : ''}
+`;
+
+        if (user.role === "student") {
+            const studentDetail = studentDetails.find(s => s.name.toLowerCase() === user.name.toLowerCase());
+            if (studentDetail) {
+                profileHTML += `
+        ${studentDetail.schoolPayCode ? `<p><strong>School Pay Code:</strong> ${studentDetail.schoolPayCode}</p>` : ''}
+        ${studentDetail.sex ? `<p><strong>Sex:</strong> ${studentDetail.sex}</p>` : ''}
+        <p><strong>Year:</strong> ${currentYear}</p>
+        ${studentDetail.house ? `<p><strong>House:</strong> ${studentDetail.house}</p>` : ''}
+        ${studentDetail.nationality ? `<p><strong>Nationality:</strong> ${studentDetail.nationality}</p>` : ''}
+        ${studentDetail.parentContact ? `<p><strong>Parent's contact:</strong> ${studentDetail.parentContact}</p>` : ''}
+        ${studentDetail.religion ? `<p><strong>Religion:</strong> ${studentDetail.religion}</p>` : ''}
+        <p><strong>Role:</strong> Student</p>
+    `;
             }
-
-            if (user) {
-                const currentYear = new Date().getFullYear();
-                const photoSrc = user.photo || 'dp.png';
-                const age = user.birthdate ? calculateAge(user.birthdate) : "Pending";
-
-                // Update the profile resource image
-                const profileResourceImage = document.getElementById('profileResourceImage');
-                profileResourceImage.src = photoSrc;
-
-                let profileHTML = `
-        <div class="profile-image-container" onclick="showFullsizeImage('${photoSrc}')">
-            <img src="${photoSrc}" alt="${user.name}" class="profile-image">
-            <div class="profile-image-overlay">
-                <span class="profile-image-overlay-text">Click to Zoom 🔎</span>
-            </div>
-        </div>
-        <p><strong>Name:</strong> ${user.name}</p>
-        <p><strong>Email:</strong> ${user.email || '<i>Pending</i>'}</p>
-        `;
-
-                if (user.role === "student") {
-                    const studentDetail = studentDetails.find(s => s.name.toLowerCase() === user.name.toLowerCase());
-                    if (studentDetail) {
-                        profileHTML += `
-                <p><strong>School Pay Code:</strong> ${studentDetail.schoolPayCode || '<i>Pending</i>'}</p>
-                <p><strong>Sex:</strong> ${studentDetail.sex || '<i>Pending</i>'}</p>
-                <p><strong>Year:</strong> ${currentYear}</p>
-                <p><strong>House:</strong> ${studentDetail.house || '<i>Pending</i>'}</p>
-                <p><strong>Nationality:</strong> ${studentDetail.nationality || '<i>Pending</i>'}</p>
-                <p><strong>Parent's contact:</strong> ${studentDetail.parentContact || '<i>Pending</i>'}</p>
-                <p><strong>Religion:</strong> ${studentDetail.religion || '<i>Pending</i>'}</p>
-                <p><strong>Role:</strong> Student</p>
-            `;
-                    }
-                } else if (user.role === "teacher") {
-                    profileHTML += `
-            <p><strong>Sex:</strong> ${user.sex || '<i>Pending</i>'}</p>
-            <p><strong>Nationality:</strong> ${user.nationality || '<i>Pending</i>'}</p>
-            <p><strong>Marital Status:</strong> ${user.maritalStatus || '<i>Pending</i>'}</p>
-            <p><strong>Religion:</strong> ${user.religion || '<i>Pending</i>'}</p>
-            <p><strong>Subjects Taught:</strong> ${user.subjectsTaught && user.subjectsTaught.length > 0 ? user.subjectsTaught.join(', ') : '<i>Pending</i>'}</p>
-            <p><strong>Classes Taught:</strong> ${user.classesTaught && user.classesTaught.length > 0 ? user.classesTaught.join(', ') : '<i>Pending</i>'}</p>
-            <p><strong>Contact Number:</strong> ${user.contactNumber && user.contactNumber.length > 0 ? user.contactNumber.join(', ') : '<i>Pending</i>'}</p>
-            <p><strong>Role:</strong> Teacher</p>
-        `;
-                } else if (user.role === "administrator") {
-                    profileHTML += `
-            <p><strong>Role:</strong> ${user.adminRole}</p>
-        `;
-                }
-
-                profileContent.innerHTML = profileHTML;
-            } else {
-                profileContent.innerHTML = '<p>User information not available.</p>';
-            }
-
-            profilePane.classList.add('open');
-            document.addEventListener('click', closeProfileOutside);
+        } else if (user.role === "teacher") {
+            profileHTML += `
+    ${user.sex ? `<p><strong>Sex:</strong> ${user.sex}</p>` : ''}
+    ${user.nationality ? `<p><strong>Nationality:</strong> ${user.nationality}</p>` : ''}
+    ${user.maritalStatus ? `<p><strong>Marital Status:</strong> ${user.maritalStatus}</p>` : ''}
+    ${user.religion ? `<p><strong>Religion:</strong> ${user.religion}</p>` : ''}
+    ${user.subjectsTaught && user.subjectsTaught.length > 0 ? `<p><strong>Subjects Taught:</strong> ${user.subjectsTaught.join(', ')}</p>` : ''}
+    ${user.classesTaught && user.classesTaught.length > 0 ? `<p><strong>Classes Taught:</strong> ${user.classesTaught.join(', ')}</p>` : ''}
+    ${user.contactNumber && user.contactNumber.length > 0 ? `<p><strong>Contact Number:</strong> ${user.contactNumber.join(', ')}</p>` : ''}
+    <p><strong>Role:</strong> Teacher</p>
+`;
+        } else if (user.role === "administrator") {
+            profileHTML += `
+    <p><strong>Role:</strong> ${user.adminRole}</p>
+`;
         }
 
-        function closeProfile() {
-            const profilePane = document.getElementById('profilePane');
-            profilePane.classList.remove('open');
-            document.removeEventListener('click', closeProfileOutside);
+        profileContent.innerHTML = profileHTML;
+    } else {
+        profileContent.innerHTML = '<p>User information not available.</p>';
+    }
+
+    profilePane.classList.add('open');
+    document.addEventListener('click', closeProfileOutside);
+}
+
+function closeProfileOutside(event) {
+    const profilePane = document.getElementById('profilePane');
+    if (!profilePane.contains(event.target) && !event.target.closest('.resource-item')) {
+        closeProfile();
+    }
+}
+
+function showFullsizeImage(imageSrc) {
+    const modal = document.getElementById('fullsizeImageModal');
+    const fullsizeImage = document.getElementById('fullsizeImage');
+    fullsizeImage.src = imageSrc;
+    modal.style.display = 'flex';
+}
+
+function closeFullsizeImage() {
+    const modal = document.getElementById('fullsizeImageModal');
+    modal.style.display = 'none';
+}
+
+function updateProfileImage() {
+    const email = localStorage.getItem('email') || sessionStorage.getItem('email');
+    const user = validUsers.find(u => u.email === email);
+
+    if (user) {
+        const photoSrc = user.photo || 'dp.png';
+
+        // Update the profile resource image
+        const profileResourceImage = document.getElementById('profileResourceImage');
+        profileResourceImage.src = photoSrc + '?t=' + new Date().getTime(); // Force reload
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('profilePane').addEventListener('click', function (event) {
+        event.stopPropagation();
+    });
+
+    window.addEventListener('click', function (event) {
+        const modal = document.getElementById('fullsizeImageModal');
+        if (event.target === modal) {
+            closeFullsizeImage();
         }
+    });
 
-        function closeProfileOutside(event) {
-            const profilePane = document.getElementById('profilePane');
-            if (!profilePane.contains(event.target) && !event.target.closest('.resource-item')) {
-                closeProfile();
-            }
-        }
-
-        function showFullsizeImage(imageSrc) {
-            const modal = document.getElementById('fullsizeImageModal');
-            const fullsizeImage = document.getElementById('fullsizeImage');
-            fullsizeImage.src = imageSrc;
-            modal.style.display = 'flex';
-        }
-
-        function closeFullsizeImage() {
-            const modal = document.getElementById('fullsizeImageModal');
-            modal.style.display = 'none';
-        }
-
-        function updateProfileImage() {
-            const email = localStorage.getItem('email') || sessionStorage.getItem('email');
-            const user = validUsers.find(u => u.email === email);
-
-            if (user) {
-                const photoSrc = user.photo || 'dp.png';
-
-                // Update the profile resource image
-                const profileResourceImage = document.getElementById('profileResourceImage');
-                profileResourceImage.src = photoSrc + '?t=' + new Date().getTime(); // Force reload
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('profilePane').addEventListener('click', function (event) {
-                event.stopPropagation();
-            });
-
-            window.addEventListener('click', function (event) {
-                const modal = document.getElementById('fullsizeImageModal');
-                if (event.target === modal) {
-                    closeFullsizeImage();
-                }
-            });
-
-            updateProfileImage(); // Call this to set the initial profile image
-        });
+    updateProfileImage(); // Call this to set the initial profile image
+});
 
         function filterEmailSuggestions() {
             const input = document.getElementById('email');
@@ -1988,16 +1994,133 @@
         // Add this at the beginning of your script
         const studentDetails = [
             {
-                "name": "FRESH",
+                "name": "NANSUBUGA MANUELLA",
                 "photo": "",
-                "religion": "",
+                "religion": "Anglican",
                 "schoolPayCode": "",
-                "sex": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014/05/05",
+                "parentContact": ""
+            },
+            {
+                "name": "NAMARA REBECCA BLESSED",
+                "photo": "",
+                "religion": "Born Again",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012/04/23",
+                "parentContact": ""
+            },
+            {
+                "name": "KAKOOZA DIVINE MACKYLA",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013/08/16",
+                "parentContact": "0751761613"
+            },
+            {
+                "name": "OWARUHANGA JONATHAN KAHIIRWA",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2011/11/11",
+                "parentContact": "0701333732"
+            },
+            {
+                "name": "NAMAGANDA JULIANA TENDO",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2009/12/17",
+                "parentContact": "0756000867"
+            },
+            {
+                "name": "KIMBUGWE HASSAN AWADH",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012/11/05",
+                "parentContact": "0756503445"
+            },
+            {
+                "name": "NABWIRE GLORIA MICHELLE",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
                 "nationality": "Ugandan",
-                "birthdate": "1996-03-12",
+                "birthdate": "2010/07/16",
+                "parentContact": "0752595397"
+            },
+            {
+                "name": "NAMUSISI MARIA FEDERESI",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013/07/04",
+                "parentContact": "0782305555"
+            },
+            {
+                "name": "NAGAWA ANTHONIA BEATRICE",
+                "photo": "",
+                "religion": "",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013/07/18",
+                "parentContact": "0704900900"
+            },
+            {
+                "name": "LUBUULWA MELINA J",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014/05/28",
                 "parentContact": ""
             },
             {
@@ -3008,6 +3131,19 @@
                 "parentContact": ""
             },
             {
+    "name": "NABAKOOZA CHRISTINE",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/09/28",
+    "parentContact": ""
+  },
+            {
                 "name": "Temitope Grace",
                 "photo": "",
                 "religion": "Born Again",
@@ -3034,1124 +3170,577 @@
                 "parentContact": "0784181768"
             },
             {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-            {
-                "name": "",
-                "photo": "",
-                "religion": "",
-                "schoolPayCode": "",
-                "sex": "",
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "",
-                "parentContact": ""
-            },
-
+    "name": "KEMIGISHA ALEXANDRIA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/02/05",
+    "parentContact": "0773118917"
+  },
+  {
+    "name": "KALULE CARLOS",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/02/11",
+    "parentContact": "0759763410"
+  },
+  {
+    "name": "NINSIIMA MARY S.",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/06/09",
+    "parentContact": "0771214810"
+  },
+  {
+    "name": "MULANGIRA JOSEPH",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2012/10/21",
+    "parentContact": "0760920484"
+  },
+  {
+    "name": "KISMART DAUDA",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/11/20",
+    "parentContact": "0753444449"
+  },
+  {
+    "name": "SSUUNA RAFAN W",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/01/05",
+    "parentContact": "0701856405"
+  },
+  {
+    "name": "LUYIGA RAYAN",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Rwandan",
+    "birthdate": "2014/11/08",
+    "parentContact": "0758082221"
+  },
+  {
+    "name": "NAMAGANDA IMRAH",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/12/16",
+    "parentContact": "0702544724"
+  },
+  {
+    "name": "BAGONZA JOAB",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/02/08",
+    "parentContact": "0782984180"
+  },
+  {
+    "name": "BUKIRWA LETICIA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/04/07",
+    "parentContact": "0775126909"
+  },
+  {
+    "name": "WALLIGO ETHAN",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/10/04",
+    "parentContact": "077941009"
+  },
+  {
+    "name": "MANZI EVANS",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/09/25",
+    "parentContact": "0701126060"
+  },
+  {
+    "name": "BLESSING SHILOH",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2016/10/27",
+    "parentContact": "0754341447"
+  },
+  {
+    "name": "MURUNGI IAN",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/09/11",
+    "parentContact": "0704554242"
+  },
+  {
+    "name": "NAMUTEBI GERTRUDE",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/06/24",
+    "parentContact": "0755418269"
+  },
+  {
+    "name": "LUGGYA AKRAM",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/07/02",
+    "parentContact": "0701110414"
+  },
+  {
+    "name": "ADAM SAMA MOKHTAR",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Sudanese",
+    "birthdate": "2014/12/13",
+    "parentContact": ""
+  },
+  {
+    "name": "NAKAWEESI MICHELLE",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/11/25",
+    "parentContact": "07757470144"
+  },
+  {
+    "name": "ASHABA ELIZABETH",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/03/10",
+    "parentContact": ""
+  },
+  {
+    "name": "KIGGUNDU LUKE",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2012/11/11",
+    "parentContact": "0772345590"
+  },
+  {
+    "name": "ALIYAH ADAMS K.",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/03/11",
+    "parentContact": "0782707261 / 0703735874"
+  },
+  {
+    "name": "NANUNGI DRUCILLA L.",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/03/21",
+    "parentContact": "0702843349"
+  },
+  {
+    "name": "NAMAKULA SOPHIA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/04/01",
+    "parentContact": "0705270652"
+  },
+  {
+    "name": "NANJOBE VANESSA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/11/09",
+    "parentContact": "0701679398"
+  },
+  {
+    "name": "NAMIREMBE ALPHA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/01/09",
+    "parentContact": "0773994343"
+  },
+  {
+    "name": "NVANUNGI SHANIEZ F.",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/06/26",
+    "parentContact": "0705622707"
+  },
+  {
+    "name": "SSEMATIMBA MARK",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/02/10",
+    "parentContact": ""
+  },
+  {
+    "name": "NANTONGO BUSHIRAH",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2010/11/11",
+    "parentContact": ""
+  },
+  {
+    "name": "LUKANDWA PHILLIP",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2012/03/27",
+    "parentContact": "0772513221"
+  },
+  {
+    "name": "LUBEGA MALCOM",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2012/12/11",
+    "parentContact": "0705496730"
+  },
+  {
+    "name": "SSEBABENGA KERON",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/06/04",
+    "parentContact": ""
+  },
+  {
+    "name": "AKARABO GOLDA",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2012/01/20",
+    "parentContact": "0772728054"
+  },
+  {
+    "name": "BUYUNGO ERIC",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2011/11/11",
+    "parentContact": "0704808038"
+  },
+  {
+    "name": "KAYONGO JAWAD",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/09/09",
+    "parentContact": "0701939874"
+  },
+  {
+    "name": "MUBEEZI SHADIA L.",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/07/05",
+    "parentContact": "0701813167"
+  },
+  {
+    "name": "SSEWAKIRYANGA HOSEA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/03/25",
+    "parentContact": "0702079505"
+  },
+  {
+    "name": "ITAAGA NICHOLAST",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/12/14",
+    "parentContact": "0775582320"
+  },
+  {
+    "name": "AHEREZA HONOUR",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/08/14",
+    "parentContact": "0782448777"
+  },
+  {
+    "name": "SSEMOMBWE ANDERSON",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/06/26",
+    "parentContact": "0704303273"
+  },
+  {
+    "name": "KASOZI AAMRAT",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/05/15",
+    "parentContact": "077576729"
+  },
+  {
+    "name": "TWESIGYE ADRIAN",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/05/01",
+    "parentContact": "0777823819"
+  },
+  {
+    "name": "NAKUNGU PRECIOUS",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/05/17",
+    "parentContact": "075130665"
+  },
+  {
+    "name": "NASSANGA MARIA A.",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/02/01",
+    "parentContact": "0752566118"
+  },
+  {
+    "name": "OBANG SHALLOM S.",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/09/23",
+    "parentContact": "0702325743"
+  }
         ];
 
         const studentNames = [
@@ -5258,24 +4847,6 @@
             'NAMIREMBE PENINAH',
         ];
 
-        const Administrators = [
-            {
-                email: "ssentongovincent@glorious.com",
-                name: "Ssentongo Vincent",
-                role: "Deputy Headteacher"
-            },
-            {
-                email: "jamesbimanywa@glorious.com",
-                name: "James Bimwanywa",
-                role: "Deputy Academics"
-            },
-            {
-                email: "tekulibetty@glorious.com",
-                name: "Tekuli Betty Nassali",
-                role: "Headteacher"
-            }
-        ];
-
         const specialUsers = [
             {
                 "email": "nakijjepriscaresty@glorious.com",
@@ -5770,116 +5341,159 @@
                 "email": "nkabimericia@glorious.com",
                 "password": "starlight"
             },
-
+            {
+                "email": "ssentongovincent@glorious.com",
+                "password": "Glorious."
+            },    
+                    {
+                "email": "tekulibettynassali@glorious.com",
+                "password": "Glorious."
+            },           
+            {
+                "email": "tekulizziwa@glorious.com",
+                "password": "Glorious."
+            },
+            {
+                "email": "asiimwesheena@glorious.com",
+                "password": "sunset."
+            },
+            
 
         ];
 
-        const teacherNames = [
-            'Tekuli Betty Nassali',
-            'NKABI MERICIA',
-            'KAMEREMBO GENEROUS KAHOMBATE',
-            'NAKITTO IMELDAH',
-            'NAMULINDWA SYLVIA',
-            'NAMPUNGU ZAHARAH MARIAM',
-            'NAMWANJE NOELYN',
-            'NAKANJAKO TEDDY',
-            'AKUKU NELVIN ANGELLA',
-            'ACHIENG GRACE',
-            'NAMULI MARTHA',
-            'NAJJEMBA ROSEMARY',
-            'NAMBOGO TEDDY',
-            'TAREMWA FLAVIA',
-            'NAMUKASA JUSTINE',
-            'NAKABONGE SAMALIE',
-            'NYAMATE AMPEREZA JUDITH',
-            'KARUNGI OLIVIA',
-            'ZEMEI MIRIAM',
-            'NAMUGERWA STELLAH',
-            'NANSUBUGA GLORIA',
-            'NAKAWUKA MARIA MARGARET RITAH',
-            'AKELLO SARAH ENUME',
-            'NAMUJJUMBI PROSSY',
-            'NITUMWIKIRIZA EDINAH',
-            'KUSAASIRA BARBRA',
-            'NAZZIWA SHARON',
-            'NAMUSAAZI BENITAH',
-            'KYOZIRA MARGRET',
-            'NAKAGGWA RUTH',
-            'NAMUGENYI LEIRAH A.',
-            'AJUNA MATHIAS',
-            'MIRIMU MANSUR',
-            'NKWASIBWE LABON',
-            'NSIIMIRE DENIS',
-            'ODAGA ALEX',
-            'KALIISA JOSEPH KATO',
-            'TURYOMURUGYENDO MOSES',
-            'NDAWULA SAM',
-            'WAISWA ISSA',
-            'MUKASA WALTER OJIAMBO',
-            'OKURUT CHARLES',
-            'SABAIDU ROBERT SMITH',
-            'TURINAWE JUSTUS',
-            'WATHUM HABERT',
-            'NIYOKINDI BENOIT',
-            'EPODOI GERALD BENJAMIN',
-            'TUHAIRWE JOSEPH',
-            'MUTUMBA JESSE PAUL',
-            'KIWANUKA EDWARD',
-            'BONGOMIN GABRIEL',
-            'ATWIINE EDMOND',
-            'KAYONGO SANTOS JOSEPH'
-        ];
+        const Administrators = [
+    {
+        email: "ssentongovincent@glorious.com",
+        name: "Ssentongo Vincent",
+        role: "Deputy Headteacher",
+        photo: "KEN_0281-scaled-1.jpg"
+    },
+    {
+        email: "jamesbimanywa@glorious.com",
+        name: "James Bimanywarugaba",
+        role: "Deputy Academics",
+        photo: "KEN_0453-scaled-1.jpg"
+    },
+    {
+        email: "tekulibettynassali@glorious.com",
+        name: "Tekuli Betty Nassali",
+        role: "Headteacher",
+        photo: "KEN_0293-scaled-1.jpg"
+    },
+    {
+        email: "tekulizziwa@glorious.com",
+        name: "Tekuli Martin Zziwa",
+        role: "Director",
+        photo: "DSC_7109-scaled-e1680942704581-919x1024.jpg"
+    }
+];
 
-        function generateEmail(name) {
-            return name.toLowerCase().replace(/[^a-z]/g, '') + '@glorious.com';
-        }
+const teacherNames = [
+    'NKABI MERICIA',
+    'KAMEREMBO GENEROUS KAHOMBATE',
+    'NAKITTO IMELDAH',
+    'NAMULINDWA SYLVIA',
+    'NAMPUNGU ZAHARAH MARIAM',
+    'NAMWANJE NOELYN',
+    'NAKANJAKO TEDDY',
+    'AKUKU NELVIN ANGELLA',
+    'ACHIENG GRACE',
+    'NAMULI MARTHA',
+    'NAJJEMBA ROSEMARY',
+    'NAMBOGO TEDDY',
+    'TAREMWA FLAVIA',
+    'NAMUKASA JUSTINE',
+    'NAKABONGE SAMALIE',
+    'NYAMATE AMPEREZA JUDITH',
+    'KARUNGI OLIVIA',
+    'ZEMEI MIRIAM',
+    'NAMUGERWA STELLAH',
+    'NANSUBUGA GLORIA',
+    'NAKAWUKA MARIA MARGARET RITAH',
+    'AKELLO SARAH ENUME',
+    'NAMUJJUMBI PROSSY',
+    'NITUMWIKIRIZA EDINAH',
+    'KUSAASIRA BARBRA',
+    'NAZZIWA SHARON',
+    'NAMUSAAZI BENITAH',
+    'KYOZIRA MARGRET',
+    'NAKAGGWA RUTH',
+    'NAMUGENYI LEIRAH A.',
+    'AJUNA MATHIAS',
+    'MIRIMU MANSUR',
+    'NKWASIBWE LABON',
+    'NSIIMIRE DENIS',
+    'ODAGA ALEX',
+    'KALIISA JOSEPH KATO',
+    'TURYOMURUGYENDO MOSES',
+    'NDAWULA SAM',
+    'WAISWA ISSA',
+    'MUKASA WALTER OJIAMBO',
+    'OKURUT CHARLES',
+    'SABAIDU ROBERT SMITH',
+    'TURINAWE JUSTUS',
+    'WATHUM HABERT',
+    'NIYOKINDI BENOIT',
+    'EPODOI GERALD BENJAMIN',
+    'TUHAIRWE JOSEPH',
+    'MUTUMBA JESSE PAUL',
+    'KIWANUKA EDWARD',
+    'BONGOMIN GABRIEL',
+    'ATWIINE EDMOND',
+    'KAYONGO SANTOS JOSEPH'
+];
 
-        function getSecondName(fullName) {
-            const names = fullName.split(' ');
-            if (names.length > 1) {
-                return names[1].charAt(0).toUpperCase() + names[1].slice(1).toLowerCase();
-            }
-            return fullName;
-        }
+function generateEmail(name) {
+    return name.toLowerCase().replace(/[^a-z]/g, '') + '@glorious.com';
+}
 
-        // Modify the validUsers creation to include teacher details
-        const validUsers = [
-            ...studentNames.map(name => {
-                const studentDetail = studentDetails.find(s => s.name === name);
-                return {
-                    email: generateEmail(name),
-                    password: "123",
-                    name: name,
-                    secondName: getSecondName(name),
-                    role: "student",
-                    birthdate: studentDetail ? studentDetail.birthdate : null,
-                    photo: studentDetail ? studentDetail.photo : null,
-                };
-            }),
-            ...teacherNames.map(name => {
-                const email = generateEmail(name);
-                const teacherDetail = teacherDetails.find(t => t.name === name) || {};
-                return {
-                    email: email,
-                    password: teacherDetail.password || "0123",
-                    name: name,
-                    secondName: getSecondName(name),
-                    role: "teacher",
-                    ...teacherDetail
-                };
-            }),
-            ...Administrators.map(admin => ({
-                email: admin.email,
-                password: "Glorious.", // Default password for administrators
-                name: admin.name,
-                secondName: getSecondName(admin.name),
-                role: "administrator",
-                adminRole: admin.role
-            })),
-            ...specialUsers
-        ].filter((user, index, self) =>
-            index === self.findIndex((t) => t.email === user.email)
-        );
+function getSecondName(fullName) {
+    const names = fullName.split(' ');
+    if (names.length > 1) {
+        return names[1].charAt(0).toUpperCase() + names[1].slice(1).toLowerCase();
+    }
+    return fullName;
+}
+
+// Modify the validUsers creation to include teacher details
+const validUsers = [
+    ...studentNames.map(name => {
+        const studentDetail = studentDetails.find(s => s.name === name);
+        return {
+            email: generateEmail(name),
+            password: "123",
+            name: name,
+            secondName: getSecondName(name),
+            role: "student",
+            birthdate: studentDetail ? studentDetail.birthdate : null,
+            photo: studentDetail ? studentDetail.photo : null,
+        };
+    }),
+    ...teacherNames.map(name => {
+        const email = generateEmail(name);
+        const teacherDetail = teacherDetails.find(t => t.name === name) || {};
+        return {
+            email: email,
+            password: teacherDetail.password || "0123",
+            name: name,
+            secondName: getSecondName(name),
+            role: "teacher",
+            ...teacherDetail
+        };
+    }),
+    ...Administrators.map(admin => ({
+        email: admin.email,
+        password: "Glorious.", // Default password for administrators
+        name: admin.name,
+        secondName: getSecondName(admin.name),
+        role: "administrator",
+        adminRole: admin.role,
+        photo: admin.photo
+    })),
+    ...specialUsers
+].filter((user, index, self) =>
+    index === self.findIndex((t) => t.email === user.email)
+);
 
         // Function to update a user's password
         function updateUserPassword(email, newPassword) {
