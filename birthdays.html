@@ -18,347 +18,542 @@
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/Screenshot (820).png" />
      <title>Glorious Birthday Parties!</title>
-    <style>
-         .video-container {
-            position: relative;
-            width: 100%;
-            max-width: 640px;
-            margin: 0 auto;
-        }
-        .video-container video {
-            width: 100%;
-            height: auto;
-        }
-        #playButton {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 25px 0 25px 50px;
-            border-color: transparent transparent transparent #FF8C00; /* Dark Orange */
-            background: none;
-            cursor: pointer;
-            padding: 0;
-            transition: all 0.3s ease;
-        }
-    
-        #playButton:hover {
-            border-color: transparent transparent transparent #FFA500; /* Orange */
-        }
-
-        @keyframes rainbow {
-            0% { color: red; }
-            14% { color: orange; }
-            28% { color: yellow; }
-            42% { color: green; }
-            57% { color: blue; }
-            71% { color: indigo; }
-            85% { color: violet; }
-            100% { color: red; }
-        }
-
-        @keyframes glow {
-            0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de; }
-            50% { text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff, 0 0 10px #ff00de, 0 0 17.5px #ff00de, 0 0 20px #ff00de, 0 0 25px #ff00de, 0 0 37.5px #ff00de; }
-            100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de; }
-        }
-
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: #f0f8ff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h6 {
-            font-size: 3em;
-            margin-top: 20px;
-            animation: rainbow 6s linear infinite, glow 2s ease-in-out infinite;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        .student-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .student-card {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            width: 250px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .student-card:hover {
-            transform: scale(1.05);
-        }
-
-        .student-card img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 10px;
-        }
-
-        .student-card h2 {
-            color: #4b0082;
-            font-size: 1.2em;
-            margin: 10px 0;
-        }
-
-        .student-card p {
-            color: #1e90ff;
+     <style>
+        .more-button, .month-select-button, .modal-content button, .upcoming-button {
+            background: linear-gradient(45deg, var(--orange-dark), var(--brown-light));
+            color: white;
+            border: none;
+            padding: 10px 20px;
             font-size: 1em;
-            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
-
-        .modal {
+        
+        .more-button:hover, .month-select-button:hover, .modal-content button:hover, .upcoming-button:hover {
+            background: linear-gradient(45deg, var(--brown-light), var(--orange-dark));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        /* Update these variable definitions at the top of your CSS if they're not already there */
+        :root {
+            --orange-light: #FFA500;
+            --orange-dark: #FF8C00;
+            --brown-light: #8B4513;
+            --brown-dark: #5D2E0C;
+        }
+            :root {
+                --orange-light: #FFA500;
+                --orange-dark: #FF8C00;
+                --brown-light: #8B4513;
+                --brown-dark: #5D2E0C;
+            }
+            
+            body {
+                font-family: 'Comic Sans MS', cursive, sans-serif;
+                background: linear-gradient(135deg, var(--orange-light), var(--brown-light));
+                color: var(--brown-dark);
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .video-container {
+                position: relative;
+                width: 100%;
+                max-width: 640px;
+                margin: 0 auto;
+            }
+            
+            .video-container video {
+                width: 100%;
+                height: auto;
+            }
+            
+            #playButton {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 25px 0 25px 50px;
+                border-color: transparent transparent transparent var(--orange-dark);
+                background: none;
+                cursor: pointer;
+                padding: 0;
+                transition: all 0.3s ease;
+            }
+            
+            #playButton:hover {
+                border-color: transparent transparent transparent var(--orange-light);
+            }
+            
+            @keyframes rainbow {
+                0% { color: red; }
+                14% { color: orange; }
+                28% { color: yellow; }
+                42% { color: green; }
+                57% { color: blue; }
+                71% { color: indigo; }
+                85% { color: violet; }
+                100% { color: red; }
+            }
+            
+            @keyframes glow {
+                0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px var(--orange-dark), 0 0 35px var(--orange-dark), 0 0 40px var(--orange-dark), 0 0 50px var(--orange-dark), 0 0 75px var(--orange-dark); }
+                50% { text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff, 0 0 10px var(--orange-dark), 0 0 17.5px var(--orange-dark), 0 0 20px var(--orange-dark), 0 0 25px var(--orange-dark), 0 0 37.5px var(--orange-dark); }
+                100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px var(--orange-dark), 0 0 35px var(--orange-dark), 0 0 40px var(--orange-dark), 0 0 50px var(--orange-dark), 0 0 75px var(--orange-dark); }
+            }
+            
+            h6 {
+                font-size: 3em;
+                margin-top: 20px;
+                animation: rainbow 6s linear infinite, glow 2s ease-in-out infinite;
+            }
+            
+            .container {
+                background-color: rgba(255, 255, 255, 0.8);
+                border-radius: 15px;
+                padding: 20px;
+                margin: 20px auto;
+                max-width: 1200px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            
+            .student-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .student-card {
+                background: linear-gradient(45deg, var(--orange-light), var(--orange-dark));
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                padding: 20px;
+                width: 250px;
+                text-align: center;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .student-card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            }
+            
+            .student-card img {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-bottom: 10px;
+                border: 3px solid var(--brown-light);
+            }
+            
+            .student-card h2 {
+                color: var(--brown-dark);
+                font-size: 1.2em;
+                margin: 10px 0;
+                text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            }
+            
+            .student-card p {
+                color: var(--brown-dark);
+                font-size: 1em;
+                margin: 5px 0;
+            }
+            
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.4);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                animation: fadeIn 0.3s ease-out;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            .modal-content {
+                background: linear-gradient(135deg, var(--orange-light), var(--orange-dark));
+                color: white;
+                padding: 40px;
+                border-radius: 10px;
+                text-align: center;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                animation: slideDown 0.5s ease-out;
+            }
+            
+            @keyframes slideDown {
+                from { transform: translateY(-50px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            
+            .modal-content h2 {
+                color: var(--brown-dark);
+                font-size: 2em;
+                margin-bottom: 20px;
+                text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            }
+            
+            .modal-content button, .upcoming-button, .month-select-button {
+                background: linear-gradient(45deg, var(--brown-light), var(--brown-dark));
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                font-size: 1.2em;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+            
+            .modal-content button:hover, .upcoming-button:hover, .month-select-button:hover {
+                background: linear-gradient(45deg, var(--brown-dark), var(--brown-light));
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            }
+            
+            .no-birthdays {
+                font-size: 1.5em;
+                color: var(--brown-dark);
+                text-align: center;
+                margin-top: 50px;
+                background-color: rgba(255, 255, 255, 0.8);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+            
+            .no-birthdays img {
+                max-width: 300px;
+                margin-top: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            
+            .upcoming-button {
+                margin-top: 20px;
+            }
+            
+            /* Navbar styles */
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: var(--orange-dark);
+                padding: 0.5rem 1rem;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+            }
+            
+            .navbar .logo {
+                display: flex;
+                align-items: center;
+            }
+            
+            .navbar .logo img {
+                width: 40px;
+                height: auto;
+                margin-right: 10px;
+            }
+            
+            .navbar .logo .title {
+                color: white;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+            
+            .navbar ul {
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .navbar ul li {
+                margin-left: 1rem;
+            }
+            
+            .navbar ul li a {
+                color: white;
+                text-decoration: none;
+                padding: 0.5rem 1rem;
+                display: block;
+                transition: background-color 0.3s ease;
+                font-size: 1rem;
+                border-radius: 5px;
+            }
+            
+            .navbar ul li a:hover {
+                background-color: var(--brown-light);
+            }
+            
+            .navbar .toggle {
+                display: none;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+            
+            .logout-button {
+                padding: 0.5rem 1rem;
+                background-color: var(--brown-light);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            
+            .logout-button:hover {
+                background-color: var(--brown-dark);
+            }
+            
+            /* Animated title */
+            @keyframes colorChange {
+                0% { color: white; }
+                50% { color: var(--brown-light); }
+                100% { color: white; }
+            }
+            
+            .animated-title {
+                animation: colorChange 4s infinite;
+                font-weight: bold;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            }
+            
+            /* Footer styles */
+            .footer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background-color: var(--orange-dark);
+                color: white;
+                text-align: center;
+                padding: 0.5rem 0;
+                font-size: 0.9rem;
+                box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+            
+            .footer p {
+                margin: 0;
+            }
+            
+        /* Month selection modal */
+        .month-modal {
+            display: none;
             position: fixed;
-            top: 0;
+            z-index: 1001;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            background-color: #f0f8ff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            background-color: rgba(0,0,0,0.4);
+            animation: fadeIn 0.3s ease-out;
         }
-
-        .modal-content {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 10px;
+        
+        .month-modal-content {
+            background: linear-gradient(135deg, var(--orange-light), var(--orange-dark));
+            color: white;
+            height: 100%;
+            width: 300px;
+            padding: 20px;
+            border-right: 1px solid var(--brown-dark);
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+            position: absolute;
+            left: -300px;
+            top: 0;
+            animation: slideInFromLeft 0.5s forwards;
         }
-
-        .modal-content h2 {
-            color: #ff69b4;
-            font-size: 2em;
-            margin-bottom: 20px;
+        
+        @keyframes slideInFromLeft {
+            from {
+                left: -300px;
+            }
+            to {
+                left: 0;
+            }
         }
-
-        .modal-content button {
-            background-color: #4b0082;
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.2em;
+        
+        @keyframes slideOutToLeft {
+            from {
+                left: 0;
+            }
+            to {
+                left: -300px;
+            }
+        }
+        
+        .month-select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            border: 1px solid var(--brown-dark);
+            background-color: white;
+            color: var(--brown-dark);
+            font-size: 1em;
         }
-
-        .modal-content button:hover {
-            background-color: #6a5acd;
-        }
-
-        .no-birthdays {
-            font-size: 1.5em;
-            color: #4b0082;
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .no-birthdays img {
-            max-width: 300px;
-            margin-top: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .upcoming-button {
-            background-color: #4b0082;
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.2em;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .upcoming-button:hover {
-            background-color: #6a5acd;
-        }
-/* Navbar styles */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ff8c00;
-    padding: 0.5rem 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-}
-
-.navbar .logo {
-    display: flex;
-    align-items: center;
-}
-
-.navbar .logo img {
-    width: 40px;
-    height: auto;
-    margin-right: 10px;
-}
-
-.navbar .logo .title {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.navbar ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-.navbar ul li {
-    margin-left: 1rem;
-}
-
-.navbar ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    display: block;
-    transition: background-color 0.3s ease;
-    font-size: 1rem;
-    border-radius: 5px;
-}
-
-.navbar ul li a:hover {
-    background-color: #e06b00;
-}
-
-.navbar .toggle {
-    display: none;
-    color: white;
-    font-size: 1.5rem;
+        
+            
+            /* Responsive styles */
+            @media (max-width: 768px) {
+                .navbar {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+            
+                .navbar ul {
+                    flex-direction: column;
+                    width: 100%;
+                    display: none;
+                }
+            
+                .navbar ul.show {
+                    display: flex;
+                }
+            
+                .navbar ul li {
+                    margin: 0;
+                    width: 100%;
+                }
+            
+                .navbar ul li a {
+                    padding: 1rem;
+                    border-radius: 0;
+                }
+            
+                .navbar .toggle {
+                    display: block;
+                    align-self: flex-end;
+                    position: absolute;
+                    top: 1rem;
+                    right: 1rem;
+                }
+            
+                .navbar .logo {
+                    margin-bottom: 1rem;
+                }
+            }
+            .thumbnail-container {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    border-radius: 10px;
     cursor: pointer;
 }
 
-.logout-button {
-    padding: 0.5rem 1rem;
-    background-color: #e06b00;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.student-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-.logout-button:hover {
-    background-color: #d65600;
+.thumbnail-container:hover .student-thumbnail {
+    transform: scale(1.1);
 }
-
-/* Animated title */
-@keyframes colorChange {
-    0% { color: white; }
-    50% { color: #FFE0B2; }
-    100% { color: white; }
-}
-
-.animated-title {
-    animation: colorChange 4s infinite;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-/* Footer styles */
-.footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #ff8c00;
-    color: white;
-    text-align: center;
-    padding: 0.5rem 0;
-    font-size: 0.9rem;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-
-.footer p {
-    margin: 0;
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .navbar ul {
-        flex-direction: column;
-        width: 100%;
-        display: none;
-    }
-
-    .navbar ul.show {
-        display: flex;
-    }
-
-    .navbar ul li {
-        margin: 0;
-        width: 100%;
-    }
-
-    .navbar ul li a {
-        padding: 1rem;
-        border-radius: 0;
-    }
-
-    .navbar .toggle {
-        display: block;
-        align-self: flex-end;
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-    }
-
-    .navbar .logo {
-        margin-bottom: 1rem;
-    }
-}
-
-
-    </style>
+        </style>
 </head>
-<script>
+<body>
+     <!-- Add the navbar -->
+     <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title animated-title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
+            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+            <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
+            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+
+    <br><br>
+    <h6 id="birthdayHeader" style="display: none;">Happy Birthday! 🎂</h6>
+    <div class="container">
+        <div id="studentContainer" class="student-container"></div>
+        <button id="upcomingButton" class="upcoming-button">Show Other Birthdays</button>
+    </div>
+   <!-- Add this new modal for month selection -->
+   <div id="monthModal" class="month-modal">
+    <div class="month-modal-content">
+        <h2>Select Month</h2>
+        <select id="monthSelect" class="month-select">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+        <button id="selectMonthButton" class="month-select-button">View Birthdays</button>
+    </div>
+</div>
+
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <h2>Welcome to Our Birthday Celebration! 🎈</h2>
+            <p>Click the button below to enjoy </p>
+            <button id="startButton">Let's Celebrate! 🥳</button>
+        </div>
+    </div>
+
+    <audio id="backgroundMusic" loop>
+        <source src="birthday.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+<!-- Add the footer -->
+<br><br>
+<footer class="footer">
     
+    <div>
+        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
+    </div>
+</footer>
+    <script>
+            
     // navbar-script.js
 function toggleMenu() {
     const navLinks = document.getElementById('nav-links');
@@ -400,58 +595,660 @@ document.addEventListener("DOMContentLoaded", function() {
     checkAuthStatus();
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 });
-</script>
-<body>
-     <!-- Add the navbar -->
-     <div class="navbar">
-        <div class="logo">
-            <img src="schoologo-2-150x150.png" alt="School Logo">
-            <div class="title animated-title">Glorious Schools</div>
-        </div>
-        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
-        <ul id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
-            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
-            <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
-            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
-        </ul>
-    </div>
 
-    <br><br>
-    <h6 id="birthdayHeader" style="display: none;">Happy Birthday! 🎂</h6>
-    <div class="container">
-        <div id="studentContainer" class="student-container"></div>
-        <button id="upcomingButton" class="upcoming-button">Show Upcoming Birthdays</button>
-    </div>
+        function closeModal() {
+    const modal = document.getElementById('monthModal');
+    const modalContent = modal.querySelector('.month-modal-content');
+    modalContent.style.animation = 'slideOutToLeft 0.5s forwards';
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modalContent.style.animation = '';
+    }, 500);
+}
 
-    <div id="welcomeModal" class="modal">
-        <div class="modal-content">
-            <h2>Welcome to Our Birthday Celebration! 🎈</h2>
-            <p>Click the button below to start the party!</p>
-            <button id="startButton">Let's Celebrate! 🥳</button>
-        </div>
-    </div>
-
-    <audio id="backgroundMusic" loop>
-        <source src="birthday.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-<!-- Add the footer -->
-<br><br>
-<footer class="footer">
-    
-    <div>
-        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
-    </div>
-</footer>
-    <script>
-       const studentDetails = [
+        const studentDetails = [
+            {
+                "name": "NANSUBUGA MANUELLA",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014/08/13",
+                "parentContact": ""
+            },
+            {
+                "name": "NAMARA REBECCA BLESSED",
+                "photo": "",
+                "religion": "Born Again",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012/04/23",
+                "parentContact": ""
+            },
+            {
+                "name": "KAKOOZA DIVINE MACKYLA",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013/08/16",
+                "parentContact": "0751761613"
+            },
+            {
+                "name": "OWARUHANGA JONATHAN KAHIIRWA",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2011/11/11",
+                "parentContact": "0701333732"
+            },
+            {
+                "name": "NAMAGANDA JULIANA TENDO",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2009/12/17",
+                "parentContact": "0756000867"
+            },
+            {
+                "name": "KIMBUGWE HASSAN AWADH",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012/11/05",
+                "parentContact": "0756503445"
+            },
+            {
+                "name": "NABWIRE GLORIA MICHELLE",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2010/07/16",
+                "parentContact": "0752595397"
+            },
+            {
+                "name": "NAMUSISI MARIA FEDERESI",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013/07/04",
+                "parentContact": "0782305555"
+            },
+            {
+                "name": "NAGAWA ANTHONIA BEATRICE",
+                "photo": "",
+                "religion": "",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013/07/18",
+                "parentContact": "0704900900"
+            },
+            {
+                "name": "LUBUULWA MELINA J",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014/05/28",
+                "parentContact": ""
+            },
+            {
+                "name": "NINSIIMA KIRABO ARIANAH",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-07-24",
+                "parentContact": "0771661500"
+            },
+            {
+                "name": "KAYEMBA SHAN",
+                "photo": "",
+                "religion": "Muslim",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-06-19",
+                "parentContact": ""
+            },
+            {
+                "name": "HIPAINGAH SALAH JOSEPHINE",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "South Sudanese",
+                "birthdate": "2011-07-07",
+                "parentContact": ""
+            },
+            {
+                "name": "KALIBALA JANAT",
+                "photo": "",
+                "religion": "Muslim",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-06-15",
+                "parentContact": ""
+            },
+            {
+                "name": "MURAMUZI JAN JENSEN",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-10-30",
+                "parentContact": ""
+            },
+            {
+                "name": "NAMALA SALSABEL",
+                "photo": "",
+                "religion": "Muslim",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-05-27",
+                "parentContact": "0753087012"
+            },
+            {
+                "name": "KIMBUGWE MELVIN",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-05-12",
+                "parentContact": ""
+            },
+            {
+                "name": "MUKISA SAMSON",
+                "photo": "",
+                "religion": "Born Again",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-10-11",
+                "parentContact": "0755017678"
+            },
+            {
+                "name": "SSEKANDI RAMATHAN",
+                "photo": "",
+                "religion": "Muslim",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2010-07-27",
+                "parentContact": "0703047009"
+            },
+            {
+                "name": "SSONKO HENRY ARTHUR",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2015-02-25",
+                "parentContact": ""
+            },
+            {
+                "name": "GITTA RAZAQ",
+                "photo": "",
+                "religion": "Muslim",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-10-25",
+                "parentContact": ""
+            },
+            {
+                "name": "MUGISA VALENTE",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-02-14",
+                "parentContact": ""
+            },
+            {
+                "name": "LWANGA RAPHAEL",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-03-14",
+                "parentContact": ""
+            },
+            {
+                "name": "KASOZI NELSON",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-11-30",
+                "parentContact": "0755137507 / 0752208873"
+            },
+            {
+                "name": "KASEMIRE BLESSING",
+                "photo": "",
+                "religion": "Seventh-day Adventist",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2015-05-02",
+                "parentContact": "0781496708"
+            },
+            {
+                "name": "DDUMBA FRANCIS",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-05-13",
+                "parentContact": "0753108763"
+            },
+            {
+                "name": "KAMUGISHA NATALIE",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-12-31",
+                "parentContact": "077266899"
+            },
+            {
+                "name": "KYAZZE MARTHA",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2015-05-15",
+                "parentContact": "0701299270"
+            },
+            {
+                "name": "KHARUNDA ESTHER",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-02-28",
+                "parentContact": "0705555942"
+            },
+            {
+                "name": "MUKISA NATHAN",
+                "photo": "",
+                "religion": "Born Again",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-07-21",
+                "parentContact": "0702051314"
+            },
+            {
+                "name": "KATEREGGA RAUL",
+                "photo": "",
+                "religion": "Muslim",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2011-02-27",
+                "parentContact": ""
+            },
+            {
+                "name": "NALUMANSI LYTON",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-11-10",
+                "parentContact": ""
+            },
+            {
+                "name": "BUKENYA KEITH MARTINS",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-03-23",
+                "parentContact": ""
+            },
+            {
+                "name": "BWIRE CLARRISA",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-01-08",
+                "parentContact": "0763531217"
+            },
+            {
+                "name": "ASIIMWE SHEENA",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2011-11-11",
+                "parentContact": "0782626224"
+            },
+            {
+                "name": "NAMBI NAAVA",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-07-02",
+                "parentContact": ""
+            },
+            {
+                "name": "NAJIB AL SHAFIQ",
+                "photo": "",
+                "religion": "Muslim",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Kenyan",
+                "birthdate": "2010-09-04",
+                "parentContact": ""
+            },
+            {
+                "name": "NAKASUJJA SHANNAH",
+                "photo": "",
+                "religion": "Muslim",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2017-04-27",
+                "parentContact": ""
+            },
+            {
+                "name": "ANKUNDA DENISE",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-02-23",
+                "parentContact": "0782446666"
+            },
+            {
+                "name": "KIRABIRA ARNOLD",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-06-12",
+                "parentContact": ""
+            },
+            {
+                "name": "ATUKUNDA GRAMIA",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-09-03",
+                "parentContact": ""
+            },
+            {
+                "name": "NYONYOZI EDRINAH",
+                "photo": "",
+                "religion": "Born Again",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-07-07",
+                "parentContact": ""
+            },
+            {
+                "name": "JIBE IMMACULATE",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-01-14",
+                "parentContact": ""
+            },
+            {
+                "name": "KAVUMA GRACE",
+                "photo": "",
+                "religion": "Born Again",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2011-11-11",
+                "parentContact": "0705540111"
+            },
+            {
+                "name": "MULINDWA EDDY",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-04-14",
+                "parentContact": ""
+            },
+            {
+                "name": "MICHORO ANNA ALEXA",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-03-12",
+                "parentContact": ""
+            },
+            {
+                "name": "MOYA ELISHA",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-05-13",
+                "parentContact": ""
+            },
+            {
+                "name": "KABUYAYA RAYANNA",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2015-04-12",
+                "parentContact": ""
+            },
+            {
+                "name": "NABIKOLO ANNA",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-08-03",
+                "parentContact": ""
+            },
             {
                 "name": "NANYONJO HALIMAH",
                 "photo": "nanyonjo harimar.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -463,7 +1260,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "KIZZA JOYCE MYER SEMPA",
                 "photo": "Kizza Joyce.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -475,7 +1272,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "NAMAWEJJE ELIZABETH SHANTAL",
                 "photo": "shantal.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -487,7 +1284,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "TUMUSIIME ELIJAH",
                 "photo": "tumusiime elijah.jpg",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -499,7 +1296,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "NAKIYEMBA SHUKRAH",
                 "photo": "nakiyenmba shukrah.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -511,7 +1308,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "BULEGA PIUS",
                 "photo": "bulega pius.jpg",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -523,7 +1320,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "MUKISA PHILEMON",
                 "photo": "mukisa philemon.jpg",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -535,7 +1332,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "NAMUGENYI HELLEN",
                 "photo": "hellen namugenyi.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -547,7 +1344,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "KALUNGI JONATHAN",
                 "photo": "kalungi jonathan.jpg",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -555,23 +1352,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 "birthdate": "2012-12-31",
                 "parentContact": ""
             },
-            {
-                "name": "KIGGUNDU LIA",
-                "photo": "kiggundu lia.jpg",
-                "schoolPayCode": "",
-                "sex": "Female",    
-                "year": "",
-                "house": "",
-                "email": "",
-                "nationality": "Ugandan",
-                "birthdate": "2014-08-15",
-                "parentContact": ""
-            },
+
             {
                 "name": "KAREMERA ABDUL HANAN",
                 "photo": "abdul hanan.jpg",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -583,7 +1369,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "JJAGWE JOVAN",
                 "photo": "jjagwe jovan.jpg",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -595,7 +1381,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "KATENDE HAMIR",
                 "photo": "katende hamir.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -607,7 +1393,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "KATONO ALLAN",
                 "photo": "katono allan.jpg",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -619,7 +1405,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "MWEBAZA PEACE DIVINE",
                 "photo": "Peace Divine.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -631,7 +1417,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "KIRABO EVAS",
                 "photo": "kirabo evas.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -643,7 +1429,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "LUBWAMA MARTIN WASSWA",
                 "photo": "",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -655,7 +1441,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "LUKWAGO LUCKY AHMET",
                 "photo": "lucky lukwago.jpg",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -667,7 +1453,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "SSERUNKUMA ABRIELLE PROSPER",
                 "photo": "sserunkuuma prosper.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -679,7 +1465,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "AMUGE LYNDSEY MILES",
                 "photo": "amuge lyndsey.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -691,7 +1477,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "OPIO DANIEL OPOLOT",
                 "photo": "opio daniel.jpg",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -704,7 +1490,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "JAZMINE BIDS",
                 "photo": "jazmine bids.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -717,7 +1503,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "NAMIREMBE KALHAN MARTHA",
                 "photo": "",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -730,7 +1516,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "NASSUUNA WILDER",
                 "photo": "nassuuna wildah.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -743,7 +1529,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "MUBIRU RAJAB",
                 "photo": "mubiru rajab.jpg",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -756,7 +1542,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "name": "NAKITTO MYRA REMEDY",
                 "photo": "nakitto myra.jpg",
                 "schoolPayCode": "",
-                "sex": "Female",    
+                "sex": "Female",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -770,7 +1556,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "photo": "ahabwe josiah.jpg",
                 "religion": "Anglican",
                 "schoolPayCode": "",
-                "sex": "Male",    
+                "sex": "Male",
                 "year": "",
                 "house": "",
                 "email": "",
@@ -778,55 +1564,1223 @@ document.addEventListener("DOMContentLoaded", function() {
                 "birthdate": "2012-06-12",
                 "parentContact": ""
             },
-
+            {
+                "name": "NAMWANJE MACRINAH",
+                "photo": "namwanje macrinah.jpg",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2016-09-20",
+                "parentContact": ""
+            },
+            {
+                "name": "LUBUULWA MELINA J",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-05-28",
+                "parentContact": ""
+            },
+            {
+                "name": "NAGAWA ANTHONIA BEATRICE",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-07-18",
+                "parentContact": ""
+            },
+            {
+                "name": "Namusisi Maria Federesi",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-07-04",
+                "parentContact": ""
+            },
+            {
+                "name": "Nabwire Gloria",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "",
+                "parentContact": ""
+            },
+            {
+                "name": "KIMBUGWE HASSAN AWADH",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "",
+                "parentContact": "0756503445"
+            },
+            {
+                "name": "NAMAGANDA JULIAN TENDO",
+                "photo": "",
+                "religion": "",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "",
+                "parentContact": "0756000867"
+            },
+            {
+                "name": "OWARUHANGA JONATHAN KAHIIRWA",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "",
+                "parentContact": "0701333732"
+            },
+            {
+                "name": "KAKOOZA DIVINE MACKYLA",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013",
+                "parentContact": "0751761613"
+            },
+            {
+                "name": "Namara Rebecca Blessed",
+                "photo": "",
+                "religion": "Born again",
+                "schoolPayCode": "",
+                "sex": "",
+                "year": "",
+                "house": "Victoria",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2012-04-23",
+                "parentContact": ""
+            },
+            {
+                "name": "NANSUBUGA MANUELLA",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-05-05",
+                "parentContact": "0758943115"
+            },
+            {
+                "name": "Namwanja John Baptist",
+                "photo": "",
+                "religion": "Catholic",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2014-10-02",
+                "parentContact": "0774934103"
+            },
+            {
+                "name": "Ssengendo Prita",
+                "photo": "",
+                "religion": "",
+                "schoolPayCode": "",
+                "sex": "Male",
+                "year": "",
+                "house": "Mandela",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2013-03-18",
+                "parentContact": ""
+            },
+            {
+    "name": "NABAKOOZA CHRISTINE",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/09/28",
+    "parentContact": ""
+  },
+            {
+                "name": "Temitope Grace",
+                "photo": "",
+                "religion": "Born Again",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Nile",
+                "email": "",
+                "nationality": "Nigerian",
+                "birthdate": "2014-11-03",
+                "parentContact": "0709854854"
+            },
+            {
+                "name": "Ainomugisha Angel",
+                "photo": "",
+                "religion": "Anglican",
+                "schoolPayCode": "",
+                "sex": "Female",
+                "year": "",
+                "house": "Rwenzori",
+                "email": "",
+                "nationality": "Ugandan",
+                "birthdate": "2015-08-31",
+                "parentContact": "0784181768"
+            },
+            {
+    "name": "KEMIGISHA ALEXANDRIA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/02/05",
+    "parentContact": "0773118917"
+  },
+  {
+    "name": "KALULE CARLOS",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/02/11",
+    "parentContact": "0759763410"
+  },
+  {
+    "name": "NINSIIMA MARY S.",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/06/09",
+    "parentContact": "0771214810"
+  },
+  {
+    "name": "MULANGIRA JOSEPH",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2012/10/21",
+    "parentContact": "0760920484"
+  },
+  {
+    "name": "KISMART DAUDA",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/11/20",
+    "parentContact": "0753444449"
+  },
+  {
+    "name": "SSUUNA RAFAN W",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/01/05",
+    "parentContact": "0701856405"
+  },
+  {
+    "name": "LUYIGA RAYAN",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Rwandan",
+    "birthdate": "2014/11/08",
+    "parentContact": "0758082221"
+  },
+  {
+    "name": "NAMAGANDA IMRAH",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/12/16",
+    "parentContact": "0702544724"
+  },
+  {
+    "name": "BAGONZA JOAB",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/02/08",
+    "parentContact": "0782984180"
+  },
+  {
+    "name": "BUKIRWA LETICIA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/04/07",
+    "parentContact": "0775126909"
+  },
+  {
+    "name": "WALLIGO ETHAN",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/10/04",
+    "parentContact": "077941009"
+  },
+  {
+    "name": "MANZI EVANS",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/09/25",
+    "parentContact": "0701126060"
+  },
+  {
+    "name": "BLESSING SHILOH",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2016/10/27",
+    "parentContact": "0754341447"
+  },
+  {
+    "name": "MURUNGI IAN",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/09/11",
+    "parentContact": "0704554242"
+  },
+  {
+    "name": "NAMUTEBI GERTRUDE",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/06/24",
+    "parentContact": "0755418269"
+  },
+  {
+    "name": "LUGGYA AKRAM",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/07/02",
+    "parentContact": "0701110414"
+  },
+  {
+    "name": "ADAM SAMA MOKHTAR",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Sudanese",
+    "birthdate": "2014/12/13",
+    "parentContact": ""
+  },
+  {
+    "name": "NAKAWEESI MICHELLE",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/11/25",
+    "parentContact": "07757470144"
+  },
+  {
+    "name": "ASHABA ELIZABETH",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/03/10",
+    "parentContact": ""
+  },
+  {
+    "name": "KIGGUNDU LUKE",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2012/11/11",
+    "parentContact": "0772345590"
+  },
+  {
+    "name": "ALIYAH ADAMS K.",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/03/11",
+    "parentContact": "0782707261 / 0703735874"
+  },
+  {
+    "name": "NANUNGI DRUCILLA L.",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/03/21",
+    "parentContact": "0702843349"
+  },
+  {
+    "name": "NAMAKULA SOPHIA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/04/01",
+    "parentContact": "0705270652"
+  },
+  {
+    "name": "NANJOBE VANESSA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/11/09",
+    "parentContact": "0701679398"
+  },
+  {
+    "name": "NAMIREMBE ALPHA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/01/09",
+    "parentContact": "0773994343"
+  },
+  {
+    "name": "NVANUNGI SHANIEZ F.",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/06/26",
+    "parentContact": "0705622707"
+  },
+  {
+    "name": "SSEMATIMBA MARK",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/02/10",
+    "parentContact": ""
+  },
+  {
+    "name": "NANTONGO BUSHIRAH",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2010/11/11",
+    "parentContact": ""
+  },
+  {
+    "name": "LUKANDWA PHILLIP",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2012/03/27",
+    "parentContact": "0772513221"
+  },
+  {
+    "name": "LUBEGA MALCOM",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2012/12/11",
+    "parentContact": "0705496730"
+  },
+  {
+    "name": "SSEBABENGA KERON",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/06/04",
+    "parentContact": ""
+  },
+  {
+    "name": "AKARABO GOLDA",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2012/01/20",
+    "parentContact": "0772728054"
+  },
+  {
+    "name": "BUYUNGO ERIC",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2011/11/11",
+    "parentContact": "0704808038"
+  },
+  {
+    "name": "KAYONGO JAWAD",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/09/09",
+    "parentContact": "0701939874"
+  },
+  {
+    "name": "MUBEEZI SHADIA L.",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Rwenzori",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/07/05",
+    "parentContact": "0701813167"
+  },
+  {
+    "name": "SSEWAKIRYANGA HOSEA",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/03/25",
+    "parentContact": "0702079505"
+  },
+  {
+    "name": "ITAAGA NICHOLAST",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/12/14",
+    "parentContact": "0775582320"
+  },
+  {
+    "name": "AHEREZA HONOUR",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/08/14",
+    "parentContact": "0782448777"
+  },
+  {
+    "name": "SSEMOMBWE ANDERSON",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Mandela",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2013/06/26",
+    "parentContact": "0704303273"
+  },
+  {
+    "name": "KASOZI AAMRAT",
+    "photo": "",
+    "religion": "Muslim",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2015/05/15",
+    "parentContact": "077576729"
+  },
+  {
+    "name": "TWESIGYE ADRIAN",
+    "photo": "",
+    "religion": "Anglican",
+    "schoolPayCode": "",
+    "sex": "Male",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/05/01",
+    "parentContact": "0777823819"
+  },
+  {
+    "name": "NAKUNGU PRECIOUS",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Nile",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/05/17",
+    "parentContact": "075130665"
+  },
+  {
+    "name": "NASSANGA MARIA A.",
+    "photo": "",
+    "religion": "Catholic",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "2014/02/01",
+    "parentContact": "0752566118"
+  },
+  {
+    "name": "OBANG SHALLOM S.",
+    "photo": "",
+    "religion": "Born Again",
+    "schoolPayCode": "",
+    "sex": "Female",
+    "year": "",
+    "house": "Victoria",
+    "email": "",
+    "nationality": "Ugandan",
+    "birthdate": "1996/09/23",
+    "parentContact": "0702325743"
+  }
         ];
 
         function createStudentCard(student, isUpcoming = false) {
-            const card = document.createElement('div');
-            card.className = 'student-card';
-            
-            const img = document.createElement('img');
-            img.src = student.photo;
-            img.alt = student.name;
-            img.onerror = function() {
-                this.src = 'dp.png';
-            };
-            
-            const name = document.createElement('h2');
-            name.textContent = student.name;
-            
-            card.appendChild(img);
-            card.appendChild(name);
-            
-            const addInfo = (label, value) => {
-                if (value && value.trim() !== "") {
-                    const p = document.createElement('p');
-                    p.textContent = `${label}: ${value}`;
-                    card.appendChild(p);
-                }
-            };
-            
-            addInfo("Birthdate", new Date(student.birthdate).toLocaleDateString());
-            addInfo("Class", student.year);
-            addInfo("Religion", student.religion);
-            addInfo("Sex", student.sex);
-            addInfo("House", student.house);
-            
-            if (!isUpcoming) {
-                const birthday = document.createElement('p');
-                birthday.textContent = `Happy Birthday! 🎂`;
-                birthday.style.fontWeight = 'bold';
-                birthday.style.color = '#ff69b4';
-                card.appendChild(birthday);
-            }
-            
-            return card;
-        }
+    const card = document.createElement('div');
+    card.className = 'student-card';
+    
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'img-container';
+    
+    const img = document.createElement('img');
+    img.src = student.photo || 'dp.png';
+    img.alt = student.name;
+    img.onerror = function() {
+        this.src = 'dp.png';
+    };
+    img.onclick = function() {
+        openFullscreenImage(this.src);
+    };
+    
+    imgContainer.appendChild(img);
+    
+    const name = document.createElement('h2');
+    name.textContent = student.name;
+    
+    card.appendChild(imgContainer);
+    card.appendChild(name);
+    
+    if (isUpcoming) {
+        const birthdate = new Date(student.birthdate);
+        const currentYear = new Date().getFullYear();
+        birthdate.setFullYear(currentYear);
+        
+        const upcomingDate = document.createElement('p');
+        upcomingDate.textContent = `Birthday: ${formatDate(birthdate)}`;
+        card.appendChild(upcomingDate);
 
-        function displayStudents(isUpcoming = false) {
+        const moreButton = document.createElement('button');
+        moreButton.textContent = 'DETAILS';
+        moreButton.className = 'more-button';
+        moreButton.onclick = () => showStudentDetailsModal(student);
+        card.appendChild(moreButton);
+    } else {
+        const addInfo = (label, value) => {
+            if (value && value.trim() !== "") {
+                const p = document.createElement('p');
+                p.textContent = `${label}: ${value}`;
+                card.appendChild(p);
+            }
+        };
+        
+        
+        addInfo("Birthdate", formatDate(new Date(student.birthdate)));
+        
+        addInfo("Birthdate", new Date(student.birthdate).toLocaleDateString());
+        addInfo("Class", student.year);
+        addInfo("Religion", student.religion);
+        addInfo("Sex", student.sex);
+        addInfo("House", student.house);
+        
+        const birthday = document.createElement('p');
+        birthday.textContent = `Happy Birthday! 🎂`;
+        birthday.style.fontWeight = 'bold';
+        birthday.style.color = '#ff69b4';
+        card.appendChild(birthday);
+    }
+    
+    return card;
+}
+
+// Add this new function to format the date
+function formatDate(date) {
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+}
+
+function openFullscreenImage(src) {
+    const fullscreenContainer = document.createElement('div');
+    fullscreenContainer.className = 'fullscreen-container';
+    
+    const fullscreenImage = document.createElement('img');
+    fullscreenImage.src = src;
+    fullscreenImage.alt = 'Fullscreen image';
+    
+    const closeIcon = document.createElement('div');
+    closeIcon.className = 'close-icon';
+    closeIcon.innerHTML = '&times;';
+    closeIcon.onclick = function(e) {
+        e.stopPropagation();
+        fullscreenContainer.remove();
+    };
+    
+    fullscreenContainer.appendChild(fullscreenImage);
+    fullscreenContainer.appendChild(closeIcon);
+    
+    fullscreenContainer.onclick = function() {
+        this.remove();
+    };
+    
+    document.body.appendChild(fullscreenContainer);
+}
+
+function formatDate(date) {
+    const dayNames = [
+        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+    ];
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const dayOfWeek = dayNames[date.getDay()];
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+
+    // Function to add ordinal suffix to day
+    function getOrdinalSuffix(day) {
+        if (day > 3 && day < 21) return 'th';
+        switch (day % 10) {
+            case 1:  return "st";
+            case 2:  return "nd";
+            case 3:  return "rd";
+            default: return "th";
+        }
+    }
+
+    return `${dayOfWeek}, ${day}${getOrdinalSuffix(day)} ${monthNames[monthIndex]} ${year}`;
+}
+
+function showStudentDetailsModal(student) {
+    const studentModal = document.createElement('div');
+    studentModal.className = 'student-modal';
+    
+    const studentModalContent = document.createElement('div');
+    studentModalContent.className = 'student-modal-content';
+    
+    const closeButton = document.createElement('span');
+    closeButton.className = 'student-modal-close';
+    closeButton.innerHTML = '&times;';
+    closeButton.onclick = () => {
+        studentModalContent.style.transform = 'translateY(-100%)';
+        setTimeout(() => studentModal.remove(), 300);
+    };
+    
+    studentModalContent.appendChild(closeButton);
+    
+    const contentWrapper = document.createElement('div');
+    contentWrapper.className = 'content-wrapper';
+    
+    const detailsSection = document.createElement('div');
+    detailsSection.className = 'details-section';
+    
+    const title = document.createElement('h2');
+    title.textContent = student.name;
+    detailsSection.appendChild(title);
+    
+    const birthdate = new Date(student.birthdate);
+    const today = new Date(); // Get current date from user's device
+    
+    const currentYear = today.getFullYear();
+    const nextBirthday = new Date(currentYear, birthdate.getMonth(), birthdate.getDate());
+    
+    // If the birthday has already passed this year, set it to next year
+    if (nextBirthday < today) {
+        nextBirthday.setFullYear(currentYear + 1);
+    }
+    
+    const currentAge = calculateAge(birthdate, today);
+    const newAge = calculateAge(birthdate, nextBirthday);
+    
+    const detailsMap = {
+        'Date of Birth': formatDate(birthdate),
+        'Birthday': formatDate(nextBirthday),
+        'Current Age': `${currentAge} years`,
+        'Next Age': `${newAge} years`,
+        'Religion': student.religion,
+        'Sex': student.sex,
+        'Nationality': student.nationality,
+        'School': 'Glorious Primary School',
+        'House': student.house
+    };
+    
+    for (const [key, value] of Object.entries(detailsMap)) {
+        if (value && value !== 'undefined' && value.toString().trim() !== '') {
+            const p = document.createElement('p');
+            p.textContent = `${key}: ${value}`;
+            detailsSection.appendChild(p);
+        }
+    }
+    
+    // Add thumbnail
+    const thumbnailContainer = document.createElement('div');
+    thumbnailContainer.className = 'thumbnail-container';
+    const thumbnail = document.createElement('img');
+    thumbnail.src = student.photo || 'dp.png';
+    thumbnail.alt = student.name;
+    thumbnail.className = 'student-thumbnail';
+    thumbnail.onclick = (e) => {
+        e.stopPropagation();
+        openImageOverlay(thumbnail.src);
+    };
+    thumbnailContainer.appendChild(thumbnail);
+    
+    contentWrapper.appendChild(detailsSection);
+    contentWrapper.appendChild(thumbnailContainer);
+    studentModalContent.appendChild(contentWrapper);
+    
+    studentModal.appendChild(studentModalContent);
+    document.body.appendChild(studentModal);
+
+    // Trigger animation
+    setTimeout(() => {
+        studentModalContent.style.transform = 'translateY(0)';
+    }, 10);
+}
+
+// Helper function to calculate age
+function calculateAge(birthDate, currentDate) {
+    let age = currentDate.getFullYear() - birthDate.getFullYear();
+    const m = currentDate.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+}
+
+// Update the CSS for the modal
+const style = document.createElement('style');
+style.textContent = `
+.img-container {
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.img-container:hover img {
+    transform: scale(1.1);
+}
+
+.fullscreen-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.fullscreen-container img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.close-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.close-icon:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+},
+    .more-button {
+        background-color: #4b0082;
+        color: #ffffff;
+        border: none;
+        padding: 5px 10px;
+        font-size: 1em;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .more-button:hover {
+        background-color: #6a5acd;
+    }
+
+    .student-modal {
+        position: fixed;
+        z-index: 1001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.4);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 50px;
+    }
+
+    .student-modal-content {
+        max-width: 600px; /* Increased width to accommodate the image */
+        background-color: #fefefe;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 500px;
+        width: 80%;
+        position: relative;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.details-section {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.thumbnail-container {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.student-thumbnail {
+    width: 90%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.thumbnail-container:hover .student-thumbnail {
+    transform: scale(1.1);
+}
+
+.image-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1010; /* Higher than the modal */
+}
+
+.image-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.overlay-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+    .student-modal-close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+    }
+
+    .student-modal-close:hover,
+    .student-modal-close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+`;
+document.head.appendChild(style);
+
+function openImageOverlay(src) {
+    const overlay = document.createElement('div');
+    overlay.className = 'image-overlay';
+    
+    const image = document.createElement('img');
+    image.src = src;
+    image.alt = 'Full size image';
+    
+    const closeButton = document.createElement('span');
+    closeButton.className = 'overlay-close';
+    closeButton.innerHTML = '&times;';
+    closeButton.onclick = () => overlay.remove();
+    
+    overlay.appendChild(image);
+    overlay.appendChild(closeButton);
+    overlay.onclick = (e) => {
+        if (e.target === overlay) overlay.remove();
+    };
+    
+    document.body.appendChild(overlay);
+}
+
+function displayStudents(isUpcoming = false) {
     const container = document.getElementById('studentContainer');
     const birthdayHeader = document.getElementById('birthdayHeader');
-    container.innerHTML = ''; // Clear previous content
+    const music = document.getElementById('backgroundMusic');
+    container.innerHTML = '';
     const today = new Date();
     const currentMonth = today.getMonth() + 1;
     const currentDay = today.getDate();
@@ -838,36 +2792,31 @@ document.addEventListener("DOMContentLoaded", function() {
         const birthMonth = birthdate.getMonth() + 1;
         const birthDay = birthdate.getDate();
 
-        if (isUpcoming) {
-            if (birthMonth === currentMonth && birthDay > currentDay) {
-                const card = createStudentCard(student, true);
-                container.appendChild(card);
-                birthdaysFound = true;
-            }
-        } else {
-            if (birthMonth === currentMonth && birthDay === currentDay) {
-                const card = createStudentCard(student);
-                container.appendChild(card);
-                birthdaysFound = true;
-            }
+        if (!isUpcoming && birthMonth === currentMonth && birthDay === currentDay) {
+            const card = createStudentCard(student);
+            container.appendChild(card);
+            birthdaysFound = true;
         }
     });
 
     if (!birthdaysFound) {
-                birthdayHeader.style.display = 'none';
-                const noBirthdaysMessage = document.createElement('div');
-                noBirthdaysMessage.className = 'no-birthdays';
-                noBirthdaysMessage.innerHTML = `
-                    <p>${isUpcoming ? "No upcoming birthdays this month." : "No birthdays today. But let's celebrate anyway! 🎉"}</p>
-                    <div class="video-container">
-                        <video loop playsinline>
-                            <source src="celebrate.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <button id="playButton"></button>
-                    </div>
-                `;
-                container.appendChild(noBirthdaysMessage);
+        birthdayHeader.style.display = 'none';
+        const noBirthdaysMessage = document.createElement('div');
+        noBirthdaysMessage.className = 'no-birthdays';
+        noBirthdaysMessage.innerHTML = `
+            <p>${isUpcoming ? "No upcoming birthdays this month." : "No birthdays today, but let's celebrate anyways! 🎉"}</p>
+            <div class="video-container">
+                <video loop playsinline>
+                    <source src="celebrate.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <button id="playButton"></button>
+            </div>
+        `;
+        container.appendChild(noBirthdaysMessage);
+        
+        music.pause();
+        music.currentTime = 0;
                 
                 const video = noBirthdaysMessage.querySelector('video');
                 const playButton = noBirthdaysMessage.querySelector('#playButton');
@@ -899,21 +2848,141 @@ document.addEventListener("DOMContentLoaded", function() {
                     video.muted = false;
                 }, { once: true });
             } else {
-                birthdayHeader.style.display = 'block';
-            }
+        birthdayHeader.style.display = 'block';
+        if (music.paused) {
+            music.play().catch(error => console.log("Audio playback failed: ", error));
         }
+    }
 
-        function toggleUpcomingBirthdays() {
+    document.getElementById('upcomingButton').textContent = "Show Other Birthdays";
+}
+
+function stopBirthdayMusic() {
+    const music = document.getElementById('backgroundMusic');
+    music.pause();
+    music.currentTime = 0;
+}
+
+function toggleUpcomingBirthdays() {
     const button = document.getElementById('upcomingButton');
     const isShowingUpcoming = button.textContent === "Show Today's Birthdays";
+    const music = document.getElementById('backgroundMusic');
     
     if (isShowingUpcoming) {
         displayStudents(false);
-        button.textContent = "Show Upcoming Birthdays";
+        button.textContent = "Show Other Birthdays";
+        // Don't stop the music here, let displayStudents handle it
     } else {
-        displayStudents(true);
-        button.textContent = "Show Today's Birthdays";
+        document.getElementById('monthModal').style.display = 'block';
+        if (music.paused) {
+            music.play().catch(error => console.log("Audio playback failed: ", error));
+        }
     }
+}
+
+        // Add this new function to display birthdays for a specific month
+        function displayBirthdaysForMonth(selectedMonth) {
+    const container = document.getElementById('studentContainer');
+    const birthdayHeader = document.getElementById('birthdayHeader');
+    const music = document.getElementById('backgroundMusic');
+    container.innerHTML = '';
+    birthdayHeader.style.display = 'none';
+
+    let birthdaysFound = false;
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const nextYear = currentYear + 1;
+
+    studentDetails.forEach(student => {
+        const birthdate = new Date(student.birthdate);
+        const birthMonth = birthdate.getMonth() + 1;
+
+        if (birthMonth === selectedMonth) {
+            let nextBirthday = new Date(currentYear, birthMonth - 1, birthdate.getDate());
+            
+            if (nextBirthday < today) {
+                nextBirthday.setFullYear(nextYear);
+            }
+
+            const card = createUpcomingBirthdayCard(student, nextBirthday);
+            container.appendChild(card);
+            birthdaysFound = true;
+        }
+    });
+
+    if (!birthdaysFound) {
+        const noBirthdaysMessage = document.createElement('div');
+        noBirthdaysMessage.className = 'no-birthdays';
+        noBirthdaysMessage.innerHTML = `<p>No birthdays in this month.</p>`;
+        container.appendChild(noBirthdaysMessage);
+        music.pause();
+        music.currentTime = 0;
+    } else if (music.paused) {
+        music.play().catch(error => console.log("Audio playback failed: ", error));
+    }
+
+    document.getElementById('upcomingButton').textContent = "Show Today's Birthdays";
+}
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayStudents();
+            
+            const startButton = document.getElementById('startButton');
+            startButton.addEventListener('click', startCelebration);
+
+            const upcomingButton = document.getElementById('upcomingButton');
+            upcomingButton.addEventListener('click', toggleUpcomingBirthdays);
+
+            // Add event listener for the month selection button
+            const selectMonthButton = document.getElementById('selectMonthButton');
+            selectMonthButton.addEventListener('click', () => {
+                const selectedMonth = parseInt(document.getElementById('monthSelect').value);
+                displayBirthdaysForMonth(selectedMonth);
+                document.getElementById('monthModal').style.display = 'none';
+            });
+        });
+
+        function createUpcomingBirthdayCard(student, nextBirthday) {
+    const card = document.createElement('div');
+    card.className = 'student-card';
+    
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'img-container';
+    
+    const img = document.createElement('img');
+    img.src = student.photo || 'dp.png';
+    img.alt = student.name;
+    img.onerror = function() {
+        this.src = 'dp.png';
+    };
+    img.onclick = function() {
+        openFullscreenImage(this.src);
+    };
+    
+    imgContainer.appendChild(img);
+    
+    const name = document.createElement('h2');
+    name.textContent = student.name;
+    
+    card.appendChild(imgContainer);
+    card.appendChild(name);
+    
+    const upcomingDate = document.createElement('p');
+    upcomingDate.textContent = `Birthday: ${formatDate(nextBirthday)}`;
+    card.appendChild(upcomingDate);
+
+    const newAge = calculateAge(new Date(student.birthdate), nextBirthday);
+    const ageInfo = document.createElement('p');
+    ageInfo.textContent = `Turning: ${newAge} years`;
+    card.appendChild(ageInfo);
+
+    const moreButton = document.createElement('button');
+    moreButton.textContent = 'DETAILS';
+    moreButton.className = 'more-button';
+    moreButton.onclick = () => showStudentDetailsModal(student);
+    card.appendChild(moreButton);
+
+    return card;
 }
 
 function startCelebration() {
