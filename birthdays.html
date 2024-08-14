@@ -503,11 +503,11 @@
             <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
         </ul>
     </div>
-
     <br><br>
     <h6 id="birthdayHeader" style="display: none;">Happy Birthday! 🎂</h6>
     <div class="container">
         <div id="studentContainer" class="student-container"></div>
+        <div id="changeMonthButtonContainer" class="change-month-container"></div>
         <button id="upcomingButton" class="upcoming-button">Show Other Birthdays</button>
     </div>
    <!-- Add this new modal for month selection -->
@@ -606,7 +606,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 500);
 }
 
-        const studentDetails = [
+const studentDetails = [
             {
                 "name": "NANSUBUGA MANUELLA",
                 "photo": "",
@@ -617,7 +617,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "house": "Rwenzori",
                 "email": "",
                 "nationality": "Ugandan",
-                "birthdate": "2014/08/13",
+                "birthdate": "2014/05/05",
                 "parentContact": ""
             },
             {
@@ -2371,44 +2371,36 @@ document.addEventListener("DOMContentLoaded", function() {
     card.appendChild(imgContainer);
     card.appendChild(name);
     
-    if (isUpcoming) {
-        const birthdate = new Date(student.birthdate);
-        const currentYear = new Date().getFullYear();
-        birthdate.setFullYear(currentYear);
-        
-        const upcomingDate = document.createElement('p');
-        upcomingDate.textContent = `Birthday: ${formatDate(birthdate)}`;
-        card.appendChild(upcomingDate);
-
-        const moreButton = document.createElement('button');
-        moreButton.textContent = 'DETAILS';
-        moreButton.className = 'more-button';
-        moreButton.onclick = () => showStudentDetailsModal(student);
-        card.appendChild(moreButton);
-    } else {
-        const addInfo = (label, value) => {
-            if (value && value.trim() !== "") {
-                const p = document.createElement('p');
-                p.textContent = `${label}: ${value}`;
-                card.appendChild(p);
-            }
-        };
-        
-        
-        addInfo("Birthdate", formatDate(new Date(student.birthdate)));
-        
-        addInfo("Birthdate", new Date(student.birthdate).toLocaleDateString());
-        addInfo("Class", student.year);
-        addInfo("Religion", student.religion);
-        addInfo("Sex", student.sex);
-        addInfo("House", student.house);
-        
+    const addInfo = (label, value) => {
+        if (value && value.trim() !== "") {
+            const p = document.createElement('p');
+            p.textContent = `${label}: ${value}`;
+            card.appendChild(p);
+        }
+    };
+    
+    addInfo("Birthdate", formatDate(new Date(student.birthdate)));
+    addInfo("Class", student.year);
+    addInfo("Religion", student.religion);
+    addInfo("Sex", student.sex);
+    addInfo("House", student.house);
+    
+    if (!isUpcoming) {
+        document.getElementById('changeMonthButtonContainer').style.display = 'none';
         const birthday = document.createElement('p');
-        birthday.textContent = `Happy Birthday! 🎂`;
+        let secondName = student.name.split(' ').pop().toLowerCase(); // Get the last name and make it lowercase
+        secondName = secondName.charAt(0).toUpperCase() + secondName.slice(1); // Capitalize only the first letter
+        birthday.textContent = `Happy Birthday ${secondName}! 🎂`;
         birthday.style.fontWeight = 'bold';
         birthday.style.color = '#ff69b4';
         card.appendChild(birthday);
     }
+    
+    const moreButton = document.createElement('button');
+    moreButton.textContent = 'View Details';
+    moreButton.className = 'more-button';
+    moreButton.onclick = () => showStudentDetailsModal(student);
+    card.appendChild(moreButton);
     
     return card;
 }
@@ -2502,12 +2494,10 @@ function showStudentDetailsModal(student) {
     detailsSection.appendChild(title);
     
     const birthdate = new Date(student.birthdate);
-    const today = new Date(); // Get current date from user's device
-    
+    const today = new Date();
     const currentYear = today.getFullYear();
     const nextBirthday = new Date(currentYear, birthdate.getMonth(), birthdate.getDate());
     
-    // If the birthday has already passed this year, set it to next year
     if (nextBirthday < today) {
         nextBirthday.setFullYear(currentYear + 1);
     }
@@ -2517,7 +2507,7 @@ function showStudentDetailsModal(student) {
     
     const detailsMap = {
         'Date of Birth': formatDate(birthdate),
-        'Birthday': formatDate(nextBirthday),
+        'Next Birthday': formatDate(nextBirthday),
         'Current Age': `${currentAge} years`,
         'Next Age': `${newAge} years`,
         'Religion': student.religion,
@@ -2535,7 +2525,6 @@ function showStudentDetailsModal(student) {
         }
     }
     
-    // Add thumbnail
     const thumbnailContainer = document.createElement('div');
     thumbnailContainer.className = 'thumbnail-container';
     const thumbnail = document.createElement('img');
@@ -2665,18 +2654,44 @@ style.textContent = `
     }
 
     .student-modal-content {
-        max-width: 600px; /* Increased width to accommodate the image */
-        background-color: #fefefe;
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 500px;
-        width: 80%;
-        position: relative;
-        transform: translateY(-100%);
-        transition: transform 0.3s ease-in-out;
-    }
+    max-width: 600px;
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    position: relative;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+    max-height: 80vh;
+    overflow-y: auto;
+}
 
-    .content-wrapper {
+/* Scrollbar styling */
+.student-modal-content::-webkit-scrollbar {
+    width: 12px;
+}
+
+.student-modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.student-modal-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #FFA500, #8B4513);
+    border-radius: 10px;
+}
+
+.student-modal-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #FF8C00, #A0522D);
+}
+
+/* For Firefox */
+.student-modal-content {
+    scrollbar-width: thin;
+    scrollbar-color: #FFA500 #f1f1f1;
+}
+
+.content-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -2693,6 +2708,25 @@ style.textContent = `
     overflow: hidden;
     border-radius: 10px;
     cursor: pointer;
+    flex-shrink: 0;
+    margin-left: 20px;
+}
+
+.student-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.student-modal-close:hover,
+.student-modal-close:focus {
+    color: #000;
+    text-decoration: none;
 }
 
 .student-thumbnail {
@@ -2751,6 +2785,31 @@ style.textContent = `
         text-decoration: none;
         cursor: pointer;
     }
+    .change-month-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.switch-month-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.switch-month-button:hover {
+    background-color: #45a049;
+}
+
+
 `;
 document.head.appendChild(style);
 
@@ -2804,7 +2863,7 @@ function displayStudents(isUpcoming = false) {
         const noBirthdaysMessage = document.createElement('div');
         noBirthdaysMessage.className = 'no-birthdays';
         noBirthdaysMessage.innerHTML = `
-            <p>${isUpcoming ? "No upcoming birthdays this month." : "No birthdays today, but let's celebrate anyways! 🎉"}</p>
+            <p>${isUpcoming ? "No upcoming birthdays this month." : "There aren't any birthdays today, but let's celebrate anyway! 🕺💃"}</p>
             <div class="video-container">
                 <video loop playsinline>
                     <source src="celebrate.mp4" type="video/mp4">
@@ -2866,32 +2925,50 @@ function stopBirthdayMusic() {
 function toggleUpcomingBirthdays() {
     const button = document.getElementById('upcomingButton');
     const isShowingUpcoming = button.textContent === "Show Today's Birthdays";
-    const music = document.getElementById('backgroundMusic');
     
     if (isShowingUpcoming) {
         displayStudents(false);
         button.textContent = "Show Other Birthdays";
-        // Don't stop the music here, let displayStudents handle it
+        document.getElementById('changeMonthButtonContainer').style.display = 'none';
+        
+        // Scroll to top
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     } else {
+        // Just show the month selection modal, don't play music yet
         document.getElementById('monthModal').style.display = 'block';
-        if (music.paused) {
-            music.play().catch(error => console.log("Audio playback failed: ", error));
-        }
     }
 }
 
-        // Add this new function to display birthdays for a specific month
-        function displayBirthdaysForMonth(selectedMonth) {
+function displayBirthdaysForMonth(selectedMonth) {
     const container = document.getElementById('studentContainer');
     const birthdayHeader = document.getElementById('birthdayHeader');
     const music = document.getElementById('backgroundMusic');
+    const changeMonthContainer = document.getElementById('changeMonthButtonContainer');
     container.innerHTML = '';
     birthdayHeader.style.display = 'none';
 
-    let birthdaysFound = false;
     const today = new Date();
+    const currentMonth = today.getMonth() + 1;
     const currentYear = today.getFullYear();
     const nextYear = currentYear + 1;
+
+    let birthdaysFound = false;
+
+    // Show the "Change Month" button only when viewing months other than the current one
+    if (selectedMonth !== currentMonth) {
+        const switchMonthButton = document.createElement('button');
+        switchMonthButton.textContent = "Change Month 📅";
+        switchMonthButton.className = 'switch-month-button';
+        switchMonthButton.onclick = () => document.getElementById('monthModal').style.display = 'block';
+        changeMonthContainer.innerHTML = ''; // Clear any existing content
+        changeMonthContainer.appendChild(switchMonthButton);
+        changeMonthContainer.style.display = 'block';
+    } else {
+        changeMonthContainer.style.display = 'none';
+    }
 
     studentDetails.forEach(student => {
         const birthdate = new Date(student.birthdate);
@@ -2913,34 +2990,127 @@ function toggleUpcomingBirthdays() {
     if (!birthdaysFound) {
         const noBirthdaysMessage = document.createElement('div');
         noBirthdaysMessage.className = 'no-birthdays';
-        noBirthdaysMessage.innerHTML = `<p>No birthdays in this month.</p>`;
+        noBirthdaysMessage.innerHTML = `
+            <p>No birthdays in this month, but let's celebrate anyway! 🕺💃</p>
+            <div class="video-container">
+                <video loop playsinline>
+                    <source src="celebrate.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <button id="playButton"></button>
+            </div>
+        `;
         container.appendChild(noBirthdaysMessage);
+        
         music.pause();
         music.currentTime = 0;
+                
+        const video = noBirthdaysMessage.querySelector('video');
+        const playButton = noBirthdaysMessage.querySelector('#playButton');
+
+        // Attempt autoplay
+        const playPromise = video.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                // Autoplay started successfully
+                console.log('Autoplay started');
+                playButton.style.display = 'none';
+            })
+            .catch(error => {
+                // Autoplay was prevented
+                console.log('Autoplay prevented:', error);
+                playButton.style.display = 'block';
+            });
+        }
+
+        // Play button click handler
+        playButton.addEventListener('click', () => {
+            video.play();
+            playButton.style.display = 'none';
+        });
+
+        // Ensure user interaction before unmuting
+        document.addEventListener('click', function() {
+            video.muted = false;
+        }, { once: true });
     } else if (music.paused) {
         music.play().catch(error => console.log("Audio playback failed: ", error));
     }
 
-    document.getElementById('upcomingButton').textContent = "Show Today's Birthdays";
+    // Update the button text and functionality
+    const upcomingButton = document.getElementById('upcomingButton');
+    upcomingButton.textContent = "Show Today's Birthdays";
+    upcomingButton.onclick = () => {
+        displayStudents(false);
+        upcomingButton.textContent = "Show Other Birthdays";
+        upcomingButton.onclick = toggleUpcomingBirthdays;
+    };
+
+    // Scroll to the top of the page smoothly
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
+
+
+    // Remove any existing "Change Month" button
+    const existingButton = document.querySelector('.switch-month-button');
+    if (existingButton) {
+        existingButton.remove();
+    }
+
+    // Create and add the "Change Month" button to the top container
+    const switchMonthButton = document.createElement('button');
+    switchMonthButton.textContent = "Change Month 📅";
+    switchMonthButton.className = 'switch-month-button';
+    switchMonthButton.onclick = () => document.getElementById('monthModal').style.display = 'block';
+    const buttonContainer = document.getElementById('changeMonthButtonContainer');
+    buttonContainer.innerHTML = ''; // Clear any existing content
+    buttonContainer.appendChild(switchMonthButton);
 }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            displayStudents();
-            
-            const startButton = document.getElementById('startButton');
-            startButton.addEventListener('click', startCelebration);
-
-            const upcomingButton = document.getElementById('upcomingButton');
-            upcomingButton.addEventListener('click', toggleUpcomingBirthdays);
-
-            // Add event listener for the month selection button
-            const selectMonthButton = document.getElementById('selectMonthButton');
-            selectMonthButton.addEventListener('click', () => {
-                const selectedMonth = parseInt(document.getElementById('monthSelect').value);
-                displayBirthdaysForMonth(selectedMonth);
-                document.getElementById('monthModal').style.display = 'none';
-            });
+const selectMonthButton = document.getElementById('selectMonthButton');
+selectMonthButton.addEventListener('click', () => {
+    const selectedMonth = parseInt(document.getElementById('monthSelect').value);
+    displayBirthdaysForMonth(selectedMonth);
+    document.getElementById('monthModal').style.display = 'none';
+    
+    // Slight delay to ensure content is updated before scrolling
+    setTimeout(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
         });
+    }, 100);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    displayStudents();
+    
+    const startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', startCelebration);
+
+    const upcomingButton = document.getElementById('upcomingButton');
+    upcomingButton.addEventListener('click', toggleUpcomingBirthdays);
+
+    // Add event listener for the month selection button
+    const selectMonthButton = document.getElementById('selectMonthButton');
+    selectMonthButton.addEventListener('click', () => {
+        const selectedMonth = parseInt(document.getElementById('monthSelect').value);
+        displayBirthdaysForMonth(selectedMonth);
+        document.getElementById('monthModal').style.display = 'none';
+        
+        // Slight delay to ensure content is updated before scrolling
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }, 100);
+    });
+});
 
         function createUpcomingBirthdayCard(student, nextBirthday) {
     const card = document.createElement('div');
@@ -2968,7 +3138,7 @@ function toggleUpcomingBirthdays() {
     card.appendChild(name);
     
     const upcomingDate = document.createElement('p');
-    upcomingDate.textContent = `Birthday: ${formatDate(nextBirthday)}`;
+    upcomingDate.textContent = `Next Birthday: ${formatDate(nextBirthday)}`;
     card.appendChild(upcomingDate);
 
     const newAge = calculateAge(new Date(student.birthdate), nextBirthday);
