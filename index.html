@@ -1079,9 +1079,16 @@ ${dob !== null ? `<p><strong>D.O.B:</strong> ${dob}</p>` : ''}
 
 function closeProfileOutside(event) {
     const profilePane = document.getElementById('profilePane');
-    if (!profilePane.contains(event.target) && !event.target.closest('.resource-item')) {
+    const closeBtn = document.querySelector('.close-btn');
+    if (!profilePane.contains(event.target) && !event.target.closest('.resource-item') && event.target !== closeBtn) {
         closeProfile();
     }
+}
+
+function closeProfile() {
+    const profilePane = document.getElementById('profilePane');
+    profilePane.classList.remove('open');
+    document.removeEventListener('click', closeProfileOutside);
 }
 
 function showFullsizeImage(imageSrc) {
@@ -2747,7 +2754,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 "house": "",
                 "email": "",
                 "nationality": "Ugandan",
-                "birthdate": "2024-08-15",
+                "birthdate": "2014-08-15",
                 "parentContact": ""
             },
             {
