@@ -20,6 +20,7 @@
      <title>Games</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
+        
         body {
             padding: 20px;
             font-family: Arial, sans-serif;
@@ -257,7 +258,68 @@ body {
         font-weight: bold;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
+    .more-games-button-container {
+    position: relative;
+    width: 220px;
+    height: 70px;
+    margin: 20px auto;
+}
 
+.more-games-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    padding: 15px;
+    background-color: #ff8c00;
+    color: white;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.more-games-button:hover {
+    background-color: #e06b00;
+}
+
+.ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border: 2px solid #ff8c00;
+    border-radius: 10px;
+    opacity: 0;
+    animation: ripple 2s linear infinite;
+}
+
+.ripple:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.ripple:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes ripple {
+    0% {
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+    }
+    100% {
+        width: 150%;
+        height: 150%;
+        opacity: 0;
+    }
+}
     </style>
 </head>
 <body>
@@ -284,9 +346,17 @@ body {
     </div>
     <div class="container" id="gamesContainer">
         <!-- Games will be loaded here dynamically -->
+        
     </div>
-    <div class="no-results" id="noResults">No results found. Please try a different search term.</div>
-
+    <div class="more-games-button-container" id="moreGamesContainer">
+        <a href="https://poki.com" target="_blank" class="more-games-button">MORE GAMES</a>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+    </div>    <div class="no-results" id="noResults">
+        No results found. Please try a different search term or click on more games button to view other online games...
+        <a href="https://poki.com" target="_blank" class="more-games-button">MORE GAMES</a>
+    </div>
     <footer class="footer">
         <div>
             <p>
@@ -380,6 +450,31 @@ body {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
             document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
         }
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+    const searchQuery = this.value.toLowerCase();
+    let hasResults = false;
+    document.querySelectorAll('.card').forEach(card => {
+        const title = card.querySelector('p').textContent.toLowerCase();
+        if (title.includes(searchQuery)) {
+            card.style.display = 'block';
+            hasResults = true;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    const noResultsElement = document.getElementById('noResults');
+    const moreGamesButtonInResults = document.querySelector('#gamesContainer > .more-games-button');
+    
+    if (hasResults) {
+        noResultsElement.style.display = 'none';
+        if (moreGamesButtonInResults) moreGamesButtonInResults.style.display = 'block';
+    } else {
+        noResultsElement.style.display = 'block';
+        if (moreGamesButtonInResults) moreGamesButtonInResults.style.display = 'none';
+    }
+});
     </script>
 </body>
 </html>
