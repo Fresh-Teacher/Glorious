@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
     <link data-n-head="ssr" rel="manifest" href="/manifest.json" data-hid="manifest">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/tv.png" />
@@ -758,100 +758,99 @@
                 opacity: 0;
             }
         }
-
         .modal {
-            display: none;
-            position: fixed;
             z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
+            overflow: hidden;
 
-        .modal-content {
-            background-color: #ff4d4d;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 15px;
-            width: 80%;
-            max-width: 500px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            animation: flash 2s infinite;
-        }
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    animation: fadeIn 0.3s ease-out;
+}
 
-        .modal h2 {
-            color: white;
-            text-align: center;
-            font-size: 24px;
-            margin-top: 0;
-            animation: blink 1s infinite;
-        }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
-        .modal p {
-            color: white;
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
+.modal-content {
+    z-index: 1001;
 
-        .modal button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background-color: white;
-            color: #ff4d4d;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    width: 300px;
+    text-align: center;
+    animation: dropIn 0.5s ease-out;
+}
 
-        .modal button:hover {
-            background-color: #f0f0f0;
-        }
+@keyframes dropIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
 
-        .modal-content.admin-warning {
-            background-color: #ffa500;
-            /* Orange background for admin warnings */
-            animation: flash-admin 2s infinite;
-        }
+.modal-content h2 {
+    color: #4a4a4a;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
 
-        @keyframes flash-admin {
+button {
+    margin: 10px;
+    padding: 12px 24px;
+    cursor: pointer;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
 
-            0%,
-            50%,
-            100% {
-                background-color: #ffa500;
-            }
+#offline-library {
+    background-color: #FF9800;
+    color: white;
+}
 
-            25%,
-            75% {
-                background-color: #ffcc00;
-            }
-        }
+#online-library {
+    background-color: #2196F3;
+    color: white;
+}
 
-        .modal-content.admin-warning h2 {
-            color: #800000;
-            /* Dark red for the title in admin warnings */
-        }
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
 
-        .modal-content.admin-warning p {
-            color: #000000;
-            /* Black text for better readability on orange background */
-        }
+button:active {
+    transform: scale(0.95);
+}
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: fall 5s linear forwards;
+    z-index: 1002; /* This ensures confetti is above the modal */
+}
 
-        .modal-content.admin-warning button {
-            background-color: #800000;
-            /* Dark red button for admin warnings */
-            color: white;
-        }
-
-        .modal-content.admin-warning button:hover {
-            background-color: #a52a2a;
-            /* Lighter red on hover */
-        }
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(720deg);
+    }
+}
     </style>
 </head>
 
@@ -912,8 +911,8 @@
                     <a href="birthdays.html">Birthdays</a>
                 </div>
                 <div class="resource-item">
-                    <img src="gallery.jpg" alt="Gallery">
-                    <a href="#" onclick="showGalleryModal()">Gallery</a>
+                    <img src="5cc2c82aeb804d30302c7ca3f12b7308.gif" alt="Gallery">
+                    <a href="#" onclick="showGalleryModal()">Library</a>
                 </div>
 
                 <div class="resource-item">
@@ -930,8 +929,17 @@
                     <a href="results.html">Results Centre</a>
                 </div>
                 <div class="resource-item">
-                    <img src="5cc2c82aeb804d30302c7ca3f12b7308.gif" alt="Library">
-                    <a href="library.html">Library</a>
+                    <img src="gallery.jpg" alt="Library">
+                    <a href="#" id="library-link">Gallery</a>
+                </div>
+                
+                <!-- Modal -->
+                <div id="library-modal" class="modal">
+                    <div class="modal-content">
+                        <h2> Choose a Gallery</h2>
+                        <button id="offline-library"> Photo Gallery</button>
+                        <button id="online-library">Video Gallery</button>
+                    </div>
                 </div>
                 <div id="profilePane" class="profile-pane">
                     <div class="profile-pane-content">
@@ -959,9 +967,9 @@
                     <div class="modal-content">
                         <div class="curtain curtain-left"></div>
                         <div class="curtain curtain-right"></div>
-                        <h2>Choose a Gallery</h2>
-                        <a href="gallery.html" class="gallery-btn">Photo Gallery</a>
-                        <a href="player.html" class="gallery-btn">Video Gallery</a>
+                        <h2>Choose Library Type</h2>
+                        <a href="offline.html" class="gallery-btn">OFFLINE LIBRARY </a>
+                        <a href="https://fresh-teacher.github.io" class="gallery-btn">ONLINE LIBRARY </a>
                     </div>
                 </div>
 
@@ -978,6 +986,67 @@
     </footer>
 
     <script>
+let confettiInterval;
+
+function createConfetti() {
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+    const modalContent = document.querySelector('.modal-content');
+
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    modalContent.appendChild(confetti);
+
+    // Remove confetti after animation completes
+    confetti.addEventListener('animationend', () => confetti.remove());
+}
+
+function startConfetti() {
+    // Create new confetti every 50ms
+    confettiInterval = setInterval(createConfetti, 50);
+}
+
+function stopConfetti() {
+    clearInterval(confettiInterval);
+    // Remove all existing confetti
+    document.querySelectorAll('.confetti').forEach(c => c.remove());
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const libraryLink = document.getElementById('library-link');
+    const modal = document.getElementById('library-modal');
+    const offlineLibraryBtn = document.getElementById('offline-library');
+    const onlineLibraryBtn = document.getElementById('online-library');
+
+// Update the existing event listeners
+libraryLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    modal.style.display = 'block';
+    startConfetti();
+});
+
+
+
+offlineLibraryBtn.addEventListener('click', function() {
+    stopConfetti();
+    window.location.href = 'gallery.html';
+});
+
+onlineLibraryBtn.addEventListener('click', function() {
+    stopConfetti();
+    window.location.href = 'player.html';
+});
+
+
+window.addEventListener('click', function(e) {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+        stopConfetti();
+    }
+});
+});
         function checkLoginStatus() {
             if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
                 showContent();
