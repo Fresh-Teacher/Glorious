@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Welcome To Glorious Schools, #1 Academic Giant in Ugandan Educational Sector.">
-    <meta name="keyword"
-        content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
+    <meta name="description" content="Welcome To Glorious Media Library, the full collection of various school events.">
+    <meta name="keyword" content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
     <meta name="author" content="Fresh Teacher">
     <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
-    <link data-n-head="ssr" rel="manifest" href="/manifest.json" data-hid="manifest">
+    <link rel="manifest" href="/manifest.json" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
-      <title>Glorious' Gallery 📺</title>
+    <title>Glorious' Gallery 📺</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -662,14 +660,6 @@ document.addEventListener("DOMContentLoaded", function() {
             <button id="cancelBtn" class="btn btn-cancel">CANCEL</button></center>
         </div>
     </div>
-    <!-- Add the footer -->
-<br><br>
-<footer class="footer">
-    
-    <div>
-        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
-    </div>
-</footer>
     <script>
         // Sample JSON array of media item filenames (replace with your actual data)
         const mediaItems = [
@@ -1177,205 +1167,195 @@ document.addEventListener("DOMContentLoaded", function() {
 
    
         const itemsPerPage = 12;
-        let currentPage = 1;
-        let currentPhotoIndex = 0;
-        let slideshowDirection = 1; // 1 for forward, -1 for backward
+let currentPage = 1;
+let currentPhotoIndex = 0;
+let slideshowDirection = 1; // 1 for forward, -1 for backward
 
-        // Filter out video files
-        const photoItems = mediaItems.filter(item => getMediaType(item) === 'image');
+// Filter out video files
+const photoItems = mediaItems.filter(item => getMediaType(item) === 'image');
 
-        // Fisher-Yates shuffle algorithm
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
+function getMediaType(filename) {
+    const extension = filename.split('.').pop().toLowerCase();
+    return ['jpg', 'jpeg', 'png', 'gif'].includes(extension) ? 'image' : 'video';
+}
 
-        // Shuffle the photoItems array when the page loads
-        shuffleArray(photoItems);
+// function getRandomTransition() {
+//     const transitions = [
+//         'slide-in-right', 'slide-in-left', 'drop-from-top', 
+//         'spin', 'fade-in', 'bounce', 'flip', 'zoom-in', 
+//         'cube-rotate', 'unfold'
+//     ];
+//     return transitions[Math.floor(Math.random() * transitions.length)];
+// }
 
-        function getMediaType(filename) {
-            const extension = filename.split('.').pop().toLowerCase();
-            return ['jpg', 'jpeg', 'png', 'gif'].includes(extension) ? 'image' : 'video';
-        }
+function displayMedia(page) {
+    const gallery = document.getElementById('gallery');
+    gallery.innerHTML = '';
 
-        function getRandomTransition() {
-            const transitions = [
-                'slide-in-right', 'slide-in-left', 'drop-from-top', 
-                'spin', 'fade-in', 'bounce', 'flip', 'zoom-in', 
-                'cube-rotate', 'unfold'
-            ];
-            return transitions[Math.floor(Math.random() * transitions.length)];
-        }
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageItems = photoItems.slice(startIndex, endIndex);
 
-        function displayMedia(page) {
-            const gallery = document.getElementById('gallery');
-            gallery.innerHTML = '';
+    
 
-            const startIndex = (page - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const pageItems = photoItems.slice(startIndex, endIndex);
+    pageItems.forEach((item, index) => {
+        const mediaItem = document.createElement('div');
+        mediaItem.className = 'media-item';
+        mediaItem.addEventListener('click', () => openModal(startIndex + index, false));
 
-            pageItems.forEach((item, index) => {
-                const mediaItem = document.createElement('div');
-                mediaItem.className = 'media-item';
-                mediaItem.addEventListener('click', () => openModal(startIndex + index, false));
+        const img = document.createElement('img');
+        img.src = item;
+        img.alt = 'Media item';
+        mediaItem.appendChild(img);
 
-                const img = document.createElement('img');
-                img.src = item;
-                img.alt = 'Media item';
-                mediaItem.appendChild(img);
+        gallery.appendChild(mediaItem);
+    });
 
-                gallery.appendChild(mediaItem);
-            });
+    updatePaginationButtons();
+}
 
-            updatePaginationButtons();
-        }
+function updatePaginationButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageNumbers = document.getElementById('pageNumbers');
 
-        function updatePaginationButtons() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const pageNumbers = document.getElementById('pageNumbers');
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === Math.ceil(photoItems.length / itemsPerPage);
 
-            prevBtn.disabled = currentPage === 1;
-            nextBtn.disabled = currentPage === Math.ceil(photoItems.length / itemsPerPage);
+    const totalPages = Math.ceil(photoItems.length / itemsPerPage);
+    pageNumbers.textContent = `Page ${currentPage} of ${totalPages}`;
 
-            const totalPages = Math.ceil(photoItems.length / itemsPerPage);
-            pageNumbers.textContent = `Page ${currentPage} of ${totalPages}`;
+    if (currentPage === totalPages) {
+        showEndModal();
+    }
+}
 
-            if (currentPage === totalPages) {
-                showEndModal();
-            }
-        }
+function openModal(index, isSlideshow = false) {
+    currentPhotoIndex = index;
+    const modal = document.getElementById('modal');
+    modal.style.display = 'block';
+    updateModalContent();
+    
+    const playBtnContainer = document.querySelector('.play-btn-container');
+    
+    if (isSlideshow) {
+        hideNavButtons();
+        playBtnContainer.style.display = 'block';
+        movePlayButton();
+    } else {
+        showNavButtons();
+        playBtnContainer.style.display = 'none'; // Hide play button for direct photo viewing
+    }
+}
 
-        function openModal(index, isSlideshow = false) {
-            currentPhotoIndex = index;
-            const modal = document.getElementById('modal');
-            modal.style.display = 'block';
-            updateModalContent();
-            
-            const playBtnContainer = document.querySelector('.play-btn-container');
-            
-            if (isSlideshow) {
-                hideNavButtons();
-                playBtnContainer.style.display = 'block';
-                movePlayButton();
-            } else {
-                showNavButtons();
-                playBtnContainer.style.display = 'none'; // Hide play button for direct photo viewing
-            }
-        }
+function hideNavButtons() {
+    const prevButton = document.querySelector('.nav-button.prev');
+    const nextButton = document.querySelector('.nav-button.next');
+    prevButton.classList.add('hidden');
+    nextButton.classList.add('hidden');
+}
+let complimentTimeout;
 
-        function hideNavButtons() {
-            const prevButton = document.querySelector('.nav-button.prev');
-            const nextButton = document.querySelector('.nav-button.next');
-            prevButton.classList.add('hidden');
-            nextButton.classList.add('hidden');
-        }
+function speakCompliment() {
+    clearTimeout(complimentTimeout);  // Clear any existing timeout
 
-        let complimentTimeout;
+    const compliments = [
+        'Wow! 🤩', 'Wonderful! 🌟', 'Fantastic! 🎉', 'Nice! 👍',
+        'Amazing! 😍', 'Cool! 😎', 'Awesome! 👏', 'Great! 💫', 'Super! 🚀',
+        'Terrific! 🎊', 'Splendid! 🌈', 'Brilliant! 💡', 'Fabulous! 🦄', 'Excellent! 🏆',
+        'Marvelous! 🎨', 'Impressive! 👌', 'Outstanding! 🏅', 'Incredible! 🦋', 'Magnificent! 🎇',
+        'Lovely! 💖', 'Spectacular! 🌠', 'Charming! 🥰', 'Remarkable! 🔥', 'Top-notch! 🌟',
+        'Glorious! 🏵️', 'Breathtaking! 😮', 'Radiant! ✨', 'Sensational! 💥', 'Dazzling! 🌟',
+        'Stunning! 🌟', 'Splendid! 🎉', 'Gorgeous! 🌺', 'Fascinating! 🌀', 'Admirable! 👏',
+        'Astonishing! 😲', 'Enchanting! 🧚', 'Magnificent! 🌟', 'Wonderful! 💖', 'Superb! 🌟',
+        'Remarkable! 🌟', 'Fantastic! 🌟', 'Outstanding! 🌟', 'Brilliant! 🌟', 'Amazing! 🌟',
+        'Terrific! 🌟', 'Incredible! 🌟', 'Awesome! 🌟', 'Splendid! 🌟', 'High-five! ✋',
+        'Legendary! 🏅', 'Kudos! 👏', 'Bravo! 🔥', 'Epic! 🌠', 'Sweet! 🍬'
+    ];
 
-        function speakCompliment() {
-            clearTimeout(complimentTimeout);  // Clear any existing timeout
+    const randomCompliment = compliments[Math.floor(Math.random() * compliments.length)];
+    
+    const complimentDisplay = document.getElementById('complimentDisplay');
+    const complimentText = complimentDisplay.querySelector('.compliment-text');
+    const balloon = complimentDisplay.querySelector('.balloon');
+    
+    complimentText.textContent = randomCompliment;
+    complimentDisplay.style.display = 'block';
+    
+    // Random horizontal offset between -40% and 40% of screen width
+    const xOffset = (Math.random() - 0.5) * 0.8 * window.innerWidth;
+    // Random rotation between -20 and 20 degrees
+    const rotation = (Math.random() - 0.5) * 40;
+    
+    balloon.style.setProperty('--x-offset', `${xOffset}px`);
+    balloon.style.setProperty('--rotation', `${rotation}deg`);
+    
+    if ('speechSynthesis' in window) {
+        // Remove emoji from the spoken text
+        const spokenText = randomCompliment.split(' ')[0];
+        
+        const utterance = new SpeechSynthesisUtterance(spokenText);
+        utterance.lang = 'en-US';
+        utterance.pitch = 1.5;  // Increased pitch (default is 1)
+        utterance.rate = 1.1;   // Slightly faster rate (default is 1)
+        
+        // Randomly vary the pitch slightly for each compliment
+        utterance.pitch += (Math.random() - 0.5) * 0.4;  // Adds -0.2 to +0.2 to the pitch
+        
+        // Add emphasis to the voice
+        utterance.volume = 1;  // Full volume
+        
+        window.speechSynthesis.speak(utterance);
+    }
 
-            const compliments = [
-                'Wow! 🤩', 'Wonderful! 🌟', 'Fantastic! 🎉', 'Nice! 👍',
-                'Amazing! 😍', 'Cool! 😎', 'Awesome! 👏', 'Great! 💫', 'Super! 🚀',
-                'Terrific! 🎊', 'Splendid! 🌈', 'Brilliant! 💡', 'Fabulous! 🦄', 'Excellent! 🏆',
-                'Marvelous! 🎨', 'Impressive! 👌', 'Outstanding! 🏅', 'Incredible! 🦋', 'Magnificent! 🎇',
-                'Lovely! 💖', 'Spectacular! 🌠', 'Charming! 🥰', 'Remarkable! 🔥', 'Top-notch! 🌟',
-                'Glorious! 🏵️', 'Breathtaking! 😮', 'Radiant! ✨', 'Sensational! 💥', 'Dazzling! 🌟',
-                'Stunning! 🌟', 'Splendid! 🎉', 'Gorgeous! 🌺', 'Fascinating! 🌀', 'Admirable! 👏',
-                'Astonishing! 😲', 'Enchanting! 🧚', 'Magnificent! 🌟', 'Wonderful! 💖', 'Superb! 🌟',
-                'Remarkable! 🌟', 'Fantastic! 🌟', 'Outstanding! 🌟', 'Brilliant! 🌟', 'Amazing! 🌟',
-                'Terrific! 🌟', 'Incredible! 🌟', 'Awesome! 🌟', 'Splendid! 🌟', 'High-five! ✋',
-                'Legendary! 🏅', 'Kudos! 👏', 'Bravo! 🔥', 'Epic! 🌠', 'Sweet! 🍬'
-            ];
+    // Reset the balloon after animation
+    complimentTimeout = setTimeout(() => {
+        complimentDisplay.style.display = 'none';
+        balloon.style.animation = 'none';
+        void balloon.offsetWidth; // Trigger reflow
+        balloon.style.animation = null;
+    }, 5000);
+}
 
-            const randomCompliment = compliments[Math.floor(Math.random() * compliments.length)];
-            
-            const complimentDisplay = document.getElementById('complimentDisplay');
-            const complimentText = complimentDisplay.querySelector('.compliment-text');
-            const balloon = complimentDisplay.querySelector('.balloon');
-            
-            complimentText.textContent = randomCompliment;
-            complimentDisplay.style.display = 'block';
-            
-            // Random horizontal offset between -40% and 40% of screen width
-            const xOffset = (Math.random() - 0.5) * 0.8 * window.innerWidth;
-            // Random rotation between -20 and 20 degrees
-            const rotation = (Math.random() - 0.5) * 40;
-            
-            balloon.style.setProperty('--x-offset', `${xOffset}px`);
-            balloon.style.setProperty('--rotation', `${rotation}deg`);
-            
-            if ('speechSynthesis' in window) {
-                // Remove emoji from the spoken text
-                const spokenText = randomCompliment.split(' ')[0];
-                
-                const utterance = new SpeechSynthesisUtterance(spokenText);
-                utterance.lang = 'en-US';
-                utterance.pitch = 1.5;  // Increased pitch (default is 1)
-                utterance.rate = 1.1;   // Slightly faster rate (default is 1)
-                
-                // Randomly vary the pitch slightly for each compliment
-                utterance.pitch += (Math.random() - 0.5) * 0.4;  // Adds -0.2 to +0.2 to the pitch
-                
-                // Add emphasis to the voice
-                utterance.volume = 1;  // Full volume
-                
-                window.speechSynthesis.speak(utterance);
-            }
+function updateModalContent() {
+    clearTimeout(complimentTimeout);  // Clear any existing timeout
+    const modalMedia = document.getElementById('modalMedia');
+    modalMedia.innerHTML = '';
+    const complimentDisplay = document.getElementById('complimentDisplay');
+    complimentDisplay.style.display = 'none';
+    
+    const item = photoItems[currentPhotoIndex];
+    const img = document.createElement('img');
+    img.src = item;
+    
+    const transition = getRandomTransition();
+    img.classList.add(transition);
+    modalMedia.appendChild(img);
 
-            // Reset the balloon after animation
-            complimentTimeout = setTimeout(() => {
-                complimentDisplay.style.display = 'none';
-                balloon.style.animation = 'none';
-                void balloon.offsetWidth; // Trigger reflow
-                balloon.style.animation = null;
-            }, 5000);
-        }
+    // Trigger reflow
+    void img.offsetWidth;
 
-        function updateModalContent() {
-            clearTimeout(complimentTimeout);  // Clear any existing timeout
-            const modalMedia = document.getElementById('modalMedia');
-            modalMedia.innerHTML = '';
-            const complimentDisplay = document.getElementById('complimentDisplay');
-            complimentDisplay.style.display = 'none';
-            
-            const item = photoItems[currentPhotoIndex];
-            const img = document.createElement('img');
-            img.src = item;
-            
-            const transition = getRandomTransition();
-            img.classList.add(transition);
-            modalMedia.appendChild(img);
-
-            // Trigger reflow
-            void img.offsetWidth;
-
-            let stabilizeClass = '';
-            switch(transition) {
-                case 'slide-in-right':
-                case 'slide-in-left':
-                    img.classList.add('slide-in');
-                    stabilizeClass = 'horizontal-sway';
-                    break;
-                case 'drop-from-top':
-                    img.classList.add('drop-in');
-                    stabilizeClass = 'vertical-bounce';
-                    break;
-                case 'spin':
-                    img.classList.add('spin-in');
-                    stabilizeClass = 'spin-stabilize';
-                    break;
-                case 'bounce':
-                    img.classList.add('bounce-in');
-                    stabilizeClass = 'vertical-bounce';
-                    break;
-                case 'flip':
-                    img.classList.add('flip-in');
+    let stabilizeClass = '';
+    switch(transition) {
+        case 'slide-in-right':
+        case 'slide-in-left':
+            img.classList.add('slide-in');
+            stabilizeClass = 'horizontal-sway';
+            break;
+        case 'drop-from-top':
+            img.classList.add('drop-in');
+            stabilizeClass = 'vertical-bounce';
+            break;
+        case 'spin':
+            img.classList.add('spin-in');
+            stabilizeClass = 'spin-stabilize';
+            break;
+        case 'bounce':
+            img.classList.add('bounce-in');
+            stabilizeClass = 'vertical-bounce';
+            break;
+        case 'flip':
+            img.classList.add('flip-in');
             stabilizeClass = 'flip-stabilize';
             break;
         case 'zoom-in':
