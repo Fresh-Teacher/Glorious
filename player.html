@@ -294,9 +294,111 @@ body {
         font-weight: bold;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(219, 135, 0); /* Fully opaque black background */
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: #FFF3E0;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    text-align: center;
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from {opacity: 0; transform: translateY(-50px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal h1 {
+    color: #FF9800;
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.modal p {
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.button {
+    padding: 12px 24px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #FF9800;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s;
+    flex: 1;
+    min-width: 150px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.button:hover {
+    background-color: #F57C00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        margin: 20% auto;
+        padding: 20px;
+    }
+
+    .modal h1 {
+        font-size: 1.8em;
+    }
+
+    .modal p {
+        font-size: 1em;
+    }
+
+    .button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+}
     </style>
 </head>
 <body>
+    <div id="selectionModal" class="modal">
+        <div class="modal-content">
+            <h1>Glorious Video Library 🎬</h1>
+            <p>Which videos would you like to watch?</p>
+            <div class="button-container">
+                <button class="button" onclick="selectOption('events')">EVENTS 🎥</button>
+                <button class="button" onclick="selectOption('videos')">MOVIES 🍿</button>
+            </div>
+        </div>
+    </div>
     <div class="navbar">
         <div class="logo">
             <img src="schoologo-2-150x150.png" alt="School Logo">
@@ -321,6 +423,37 @@ body {
     <button class="scroll-to-top" id="scrollToTop">↑</button>
 
     <script>
+document.addEventListener('DOMContentLoaded', function() {
+    showModal();
+});
+
+function showModal() {
+    document.getElementById('selectionModal').style.display = 'block';
+    document.body.classList.add('modal-open');
+}
+
+function selectOption(option) {
+    if (option === 'videos') {
+        // Redirect to videos.html
+        window.location.href = 'videos.html';
+    } else if (option === 'events') {
+        // Hide the modal and show the current page content
+        document.getElementById('selectionModal').style.display = 'none';
+        document.body.classList.remove('modal-open');
+    }
+}
+
+function showMovies() {
+    // Function to display movie content
+    console.log("Showing movies");
+    // Implement the logic to show movie-related content
+}
+
+function showSchoolEvents() {
+    // Function to display school events content
+    console.log("Showing school events");
+    // Implement the logic to show school event-related content
+}
        const programSchedule = [
        { videoSrc: "VID-20240730-WA0066.mp4" },
             { videoSrc: "VID-20240729-WA0028.mp4" },
