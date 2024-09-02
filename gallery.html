@@ -406,9 +406,115 @@
     opacity: 1;
     animation: bounceIn 0.7s;
 }
+
+/* Loading spinner styles */
+.loading-spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .loading-spinner.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #ff6b6b transparent transparent transparent;
+        }
+
+        .lds-ring div:nth-child(1) {
+            border-color: #ff6b6b transparent transparent transparent;
+            animation-delay: -0.45s;
+        }
+
+        .lds-ring div:nth-child(2) {
+            border-color: #ffa500 transparent transparent transparent;
+            animation-delay: -0.3s;
+        }
+
+        .lds-ring div:nth-child(3) {
+            border-color: #ffff00 transparent transparent transparent;
+            animation-delay: -0.15s;
+        }
+
+        .lds-ring div:nth-child(4) {
+            border-color: #00ff00 transparent transparent transparent;
+        }
+
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
+<!-- Loading spinner -->
+<div class="loading-spinner" id="loading-spinner">
+    <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<script>
+  // Show the loading spinner before the page loads
+  window.addEventListener('DOMContentLoaded', () => {
+            const loadingSpinner = document.getElementById('loading-spinner');
+            loadingSpinner.classList.add('show');
+        });
+
+        // Hide the loading spinner once the content is ready
+        window.addEventListener('load', () => {
+            const loadingSpinner = document.getElementById('loading-spinner');
+            loadingSpinner.classList.remove('show');
+        });
+
+        // Show the loading spinner when clicking a button with a link
+        const redirectButtons = document.querySelectorAll('a[href]:not([target="_blank"])');
+        redirectButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const loadingSpinner = document.getElementById('loading-spinner');
+                loadingSpinner.classList.add('show');
+                setTimeout(() => {
+                    window.location.href = event.target.getAttribute('href');
+                }, 500); // Delay of 500ms to simulate loading
+            });
+        });
+</script>
+
     <div class="slideshow-controls">
         <div class="play-btn-container">
             <button id="playBtn" class="play-btn">▶</button>
@@ -449,179 +555,181 @@
         </div>
     </div>
     <script>
+     
+        
         // Sample JSON array of media item filenames (replace with your actual data)
         const mediaItems = [
-                    "IMG-20240826-WA0077.jpg",
-"IMG-20240826-WA0078.jpg",
-"IMG-20240826-WA0079.jpg",
-"IMG-20240826-WA0080.jpg",
-"IMG-20240826-WA0082.jpg",
-"IMG-20240826-WA0083.jpg",
-"IMG-20240826-WA0084.jpg",
-"IMG-20240826-WA0085.jpg",
-"IMG-20240826-WA0086.jpg",
-"IMG-20240826-WA0088.jpg",
-"IMG-20240826-WA0089.jpg",
-"IMG-20240826-WA0090.jpg",
-"IMG-20240826-WA0091.jpg",
-"IMG-20240826-WA0092.jpg",
-"IMG-20240826-WA0093.jpg",
-"IMG-20240826-WA0094.jpg",
-"IMG-20240826-WA0095.jpg",
-"IMG-20240826-WA0096.jpg",
-"IMG-20240826-WA0097.jpg",
-"IMG-20240826-WA0098.jpg",
-"IMG-20240826-WA0099.jpg",
-"IMG-20240826-WA0100.jpg",
-"IMG-20240826-WA0101.jpg",
-"IMG-20240826-WA0102.jpg",
-"IMG-20240826-WA0104.jpg",
-"IMG-20240826-WA0105.jpg",
-"IMG-20240826-WA0106.jpg",
-"IMG-20240826-WA0107.jpg",
-"IMG-20240826-WA0108.jpg",
-"IMG-20240826-WA0109.jpg",
-"IMG-20240826-WA0110.jpg",
-"IMG-20240826-WA0111.jpg",
-"IMG-20240826-WA0112.jpg",
-"IMG-20240826-WA0113.jpg",
-"IMG-20240826-WA0114.jpg",
-"IMG-20240826-WA0115.jpg",
-"IMG-20240826-WA0116.jpg",
-"IMG-20240826-WA0117.jpg",
-"IMG-20240826-WA0118.jpg",
-"IMG-20240826-WA0119.jpg",
-"IMG-20240826-WA0120.jpg",
-"IMG-20240826-WA0121.jpg",
-"IMG-20240826-WA0122.jpg",
-"IMG-20240826-WA0123.jpg",
-"IMG-20240826-WA0124.jpg",
-"IMG-20240826-WA0125.jpg",
-"IMG-20240826-WA0126.jpg",
-"IMG-20240826-WA0127.jpg",
-"IMG-20240826-WA0128.jpg",
-"IMG-20240826-WA0129.jpg",
-"IMG-20240826-WA0130.jpg",
-"IMG-20240826-WA0131.jpg",
-"IMG-20240826-WA0132.jpg",
-"IMG-20240826-WA0133.jpg",
-"IMG-20240826-WA0134.jpg",
-"IMG-20240826-WA0135.jpg",
-"IMG-20240826-WA0136.jpg",
-"IMG-20240826-WA0137.jpg",
-"IMG-20240826-WA0138.jpg",
-"IMG-20240826-WA0139.jpg",
-"IMG-20240826-WA0140.jpg",
-"IMG-20240826-WA0141.jpg",
-"IMG-20240826-WA0142.jpg",
-"IMG-20240826-WA0143.jpg",
-"IMG-20240826-WA0144.jpg",
-"IMG-20240826-WA0145.jpg",
-"IMG-20240826-WA0146.jpg",
-"IMG-20240826-WA0147.jpg",
-"IMG-20240826-WA0148.jpg",
-"IMG-20240826-WA0149.jpg",
-"IMG-20240826-WA0150.jpg",
-"IMG-20240826-WA0151.jpg",
-"IMG-20240826-WA0152.jpg",
-"IMG-20240826-WA0153.jpg",
-"IMG-20240826-WA0154.jpg",
-"IMG-20240826-WA0155.jpg",
-"IMG-20240826-WA0167.jpg",
-"IMG-20240826-WA0169.jpg",
-"IMG-20240826-WA0170.jpg",
-"IMG-20240826-WA0171.jpg",
-"IMG-20240826-WA0172.jpg",
-"IMG-20240826-WA0173.jpg",
-"IMG-20240826-WA0174.jpg",
-"IMG-20240826-WA0175.jpg",
-"IMG-20240826-WA0176.jpg",
-"IMG-20240826-WA0177.jpg",
-"IMG-20240826-WA0178.jpg",
-"IMG-20240826-WA0179.jpg",
-"IMG-20240826-WA0180.jpg",
-"IMG-20240826-WA0181.jpg",
-"IMG-20240826-WA0182.jpg",
-"IMG-20240826-WA0183.jpg",
-"IMG-20240826-WA0184.jpg",
-"IMG-20240826-WA0185.jpg",
-"IMG-20240826-WA0186.jpg",
-"IMG-20240826-WA0187.jpg",
-"IMG-20240826-WA0188.jpg",
-"IMG-20240826-WA0189.jpg",
-"IMG-20240826-WA0190.jpg",
-"IMG-20240826-WA0191.jpg",
-"IMG-20240826-WA0192.jpg",
-"IMG-20240826-WA0193.jpg",
-"IMG-20240826-WA0194.jpg",
-"IMG-20240826-WA0195.jpg",
-"IMG-20240826-WA0196.jpg",
-"IMG-20240826-WA0197.jpg",
-"IMG-20240826-WA0198.jpg",
-"IMG-20240826-WA0199.jpg",
-"IMG-20240826-WA0200.jpg",
-"IMG-20240826-WA0201.jpg",
-"IMG-20240826-WA0202.jpg",
-"IMG-20240826-WA0204.jpg",
-"IMG-20240826-WA0205.jpg",
-"IMG-20240826-WA0206.jpg",
-"IMG-20240826-WA0207.jpg",
-"IMG-20240826-WA0208.jpg",
-"IMG-20240826-WA0209.jpg",
-"IMG-20240826-WA0210.jpg",
-"IMG-20240826-WA0211.jpg",
-"IMG-20240826-WA0212.jpg",
-"IMG-20240826-WA0213.jpg",
-"IMG-20240826-WA0214.jpg",
-"IMG-20240826-WA0215.jpg",
-"IMG-20240826-WA0216.jpg",
-"IMG-20240826-WA0217.jpg",
-"IMG-20240826-WA0218.jpg",
-"IMG-20240826-WA0219.jpg",
-"IMG-20240826-WA0220.jpg",
-"IMG-20240826-WA0221.jpg",
-"IMG-20240826-WA0222.jpg",
-"IMG-20240826-WA0224.jpg",
-"IMG-20240826-WA0225.jpg",
-"IMG-20240826-WA0226.jpg",
-"IMG-20240826-WA0227.jpg",
-"IMG-20240826-WA0228.jpg",
-"IMG-20240826-WA0229.jpg",
-"IMG-20240826-WA0230.jpg",
-"IMG-20240826-WA0231.jpg",
-"IMG-20240826-WA0232.jpg",
-"IMG-20240826-WA0233.jpg",
-"IMG-20240826-WA0234.jpg",
-"IMG-20240826-WA0235.jpg",
-"IMG-20240826-WA0236.jpg",
-"IMG-20240826-WA0237.jpg",
-"IMG-20240826-WA0238.jpg",
-"IMG-20240826-WA0239.jpg",
-"IMG-20240826-WA0240.jpg",
-"IMG-20240826-WA0241.jpg",
-"IMG-20240826-WA0243.jpg",
-"IMG-20240826-WA0244.jpg",
-"IMG-20240826-WA0245.jpg",
-"IMG-20240826-WA0246.jpg",
-"IMG-20240826-WA0247.jpg",
-"IMG-20240826-WA0248.jpg",
-"IMG-20240826-WA0249.jpg",
-"IMG-20240826-WA0250.jpg",
-"IMG-20240826-WA0251.jpg",
-"IMG-20240826-WA0252.jpg",
-"IMG-20240826-WA0253.jpg",
-"IMG-20240826-WA0254.jpg",
-"IMG-20240826-WA0256.jpg",
-"IMG-20240826-WA0257.jpg",
-"IMG-20240826-WA0258.jpg",
-"IMG-20240826-WA0259.jpg",
-"IMG-20240826-WA0260.jpg",
-"IMG-20240826-WA0261.jpg",
-            "IMG-20240826-WA0003.jpg",
-            "IMG-20240826-WA0006.jpg",
-            "IMG-20240826-WA0007.jpg",
-            "IMG-20240826-WA0010.jpg",
-            "IMG-20240826-WA0011.jpg",
+        "https://gloriouschools.vercel.app/IMG-20240826-WA0077.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0078.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0079.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0080.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0082.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0083.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0084.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0085.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0086.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0088.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0089.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0090.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0091.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0092.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0093.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0094.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0095.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0096.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0097.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0098.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0099.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0100.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0101.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0102.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0104.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0105.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0106.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0107.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0108.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0109.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0110.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0111.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0112.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0113.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0114.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0115.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0116.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0117.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0118.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0119.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0120.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0121.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0122.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0123.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0124.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0125.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0126.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0127.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0128.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0129.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0130.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0131.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0132.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0133.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0134.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0135.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0136.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0137.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0138.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0139.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0140.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0141.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0142.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0143.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0144.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0145.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0146.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0147.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0148.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0149.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0150.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0151.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0152.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0153.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0154.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0155.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0167.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0169.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0170.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0171.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0172.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0173.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0174.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0175.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0176.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0177.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0178.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0179.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0180.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0181.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0182.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0183.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0184.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0185.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0186.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0187.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0188.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0189.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0190.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0191.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0192.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0193.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0194.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0195.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0196.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0197.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0198.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0199.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0200.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0201.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0202.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0204.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0205.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0206.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0207.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0208.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0209.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0210.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0211.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0212.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0213.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0214.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0215.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0216.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0217.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0218.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0219.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0220.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0221.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0222.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0224.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0225.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0226.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0227.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0228.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0229.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0230.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0231.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0232.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0233.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0234.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0235.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0236.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0237.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0238.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0239.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0240.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0241.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0243.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0244.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0245.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0246.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0247.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0248.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0249.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0250.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0251.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0252.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0253.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0254.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0256.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0257.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0258.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0259.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0260.jpg",
+"https://gloriouschools.vercel.app/IMG-20240826-WA0261.jpg",
+            "https://gloriouschools.vercel.app/IMG-20240826-WA0003.jpg",
+            "https://gloriouschools.vercel.app/IMG-20240826-WA0006.jpg",
+            "https://gloriouschools.vercel.app/IMG-20240826-WA0007.jpg",
+            "https://gloriouschools.vercel.app/IMG-20240826-WA0010.jpg",
+            "https://gloriouschools.vercel.app/IMG-20240826-WA0011.jpg",
         "https://vclone-eight.vercel.app/photos/IMG-20240723-WA0483.jpg",
          "https://vclone-eight.vercel.app/photos/IMG-20240723-WA0484.jpg",
          "https://vclone-eight.vercel.app/photos/IMG-20240723-WA0485.jpg",

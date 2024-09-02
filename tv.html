@@ -1023,54 +1023,113 @@
         margin-bottom: 1rem;
     }
 }
+   /* Loading spinner styles */
+   .loading-spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
 
+        .loading-spinner.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #ff6b6b transparent transparent transparent;
+        }
+
+        .lds-ring div:nth-child(1) {
+            border-color: #ff6b6b transparent transparent transparent;
+            animation-delay: -0.45s;
+        }
+
+        .lds-ring div:nth-child(2) {
+            border-color: #ffa500 transparent transparent transparent;
+            animation-delay: -0.3s;
+        }
+
+        .lds-ring div:nth-child(3) {
+            border-color: #ffff00 transparent transparent transparent;
+            animation-delay: -0.15s;
+        }
+
+        .lds-ring div:nth-child(4) {
+            border-color: #00ff00 transparent transparent transparent;
+        }
+
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
-<script>
-    // navbar-script.js
-function toggleMenu() {
-    const navLinks = document.getElementById('nav-links');
-    navLinks.classList.toggle('show');
-}
-
-function logout() {
-    localStorage.removeItem("rememberMe");
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
-    localStorage.removeItem("isLoggedIn");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("password");
-    sessionStorage.removeItem("isLoggedIn");
-    sessionStorage.removeItem("intendedPage");
-    window.location.href = 'index.html';
-}
-
-function checkAuth(page) {
-    if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
-        window.location.href = page;
-    } else {
-        sessionStorage.setItem("intendedPage", page);
-        showLoginMessage();
-    }
-}
-
-function showLoginMessage() {
-    // Implement this function if you want to show a login message
-    console.log("Please log in to access this page.");
-}
-
-function checkAuthStatus() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
-    document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    checkAuthStatus();
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-});
-</script>
 <body>
+<!-- Loading spinner -->
+<div class="loading-spinner" id="loading-spinner">
+    <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<script>
+  // Show the loading spinner before the page loads
+  window.addEventListener('DOMContentLoaded', () => {
+            const loadingSpinner = document.getElementById('loading-spinner');
+            loadingSpinner.classList.add('show');
+        });
+
+        // Hide the loading spinner once the content is ready
+        window.addEventListener('load', () => {
+            const loadingSpinner = document.getElementById('loading-spinner');
+            loadingSpinner.classList.remove('show');
+        });
+
+        // Show the loading spinner when clicking a button with a link
+        const redirectButtons = document.querySelectorAll('a[href]:not([target="_blank"])');
+        redirectButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const loadingSpinner = document.getElementById('loading-spinner');
+                loadingSpinner.classList.add('show');
+                setTimeout(() => {
+                    window.location.href = event.target.getAttribute('href');
+                }, 500); // Delay of 500ms to simulate loading
+            });
+        });
+</script>
      <!-- Add the navbar -->
      <div class="navbar">
         <div class="logo">
@@ -1159,7 +1218,49 @@ document.addEventListener("DOMContentLoaded", function() {
     <div>
         <p>&copy; Glorious Schools <span id="currentYear"></span></p>
     </div>
-</footer>
+</footer><script>
+    // navbar-script.js
+function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    navLinks.classList.toggle('show');
+}
+
+function logout() {
+    localStorage.removeItem("rememberMe");
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("password");
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("intendedPage");
+    window.location.href = 'index.html';
+}
+
+function checkAuth(page) {
+    if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+        window.location.href = page;
+    } else {
+        sessionStorage.setItem("intendedPage", page);
+        showLoginMessage();
+    }
+}
+
+function showLoginMessage() {
+    // Implement this function if you want to show a login message
+    console.log("Please log in to access this page.");
+}
+
+function checkAuthStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+    document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    checkAuthStatus();
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+});
+</script>
     <script>
 
         
@@ -1172,10 +1273,10 @@ const programTable = document.getElementById('programTable');
 
 const programSchedule = [
     // Wonder Woman - 6:00 AM to 8:11 AM (131 minutes)
-    { startTime: '6:00 AM', title: 'Wonder Woman', duration: 131, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Wonder%20Woman%201984%20-%20VJ%20Junior%20-%20Mobifliks.com.mp4' },
+    { startTime: '7:00 AM', title: 'Transformers - Terminator 3: Rise of the Machines', duration: 131, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Terminator%20-%20%20Sarah%20Connor%20Chronicles%20-%20VJ%20Junior.mp4' },
 
     // Spider-Man - Far from Home - 8:11 AM to 10:09 AM (118 minutes)
-    { startTime: '8:11 AM', title: 'Spider-Man - Far from Home', duration: 118, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Spider-Man-%20Far%20from%20Home%20by%20Vj%20Junior%20-Mobifliks.com.mp4' },
+    { startTime: '8:11 AM', title: 'Harriet', duration: 118, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Harriet%20-%20VJ%20Lance%20-%20Mobifliks.com.mp4' },
 
     // Sonic the Hedgehog - 10:09 AM to 11:48 AM (99 minutes)
     { startTime: '10:09 AM', title: 'Sonic the Hedgehog', duration: 99, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Sonic%20the%20Hedgehog%20by%20Vj%20Kevo_mobifliks.com.mp4' },
@@ -1193,13 +1294,13 @@ const programSchedule = [
     { startTime: '5:53 PM', title: 'Batman vs Superman', duration: 134, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Batman%20vs%20Suprman_VJ%20Junior%20-%20Mobifliks.com.mp4' },
 
     // Batman vs Superman - 8:07 PM to 11:11 PM (184 minutes)
-    { startTime: '8:07 PM', title: 'Batman vs Superman', duration: 184, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Batman%20vs%20Suprman_VJ%20Junior%20-%20Mobifliks.com.mp4' },
+    { startTime: '8:07 PM', title: 'Spider-Man - Far from Home', duration: 118, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Spider-Man-%20Far%20from%20Home%20by%20Vj%20Junior%20-Mobifliks.com.mp4' },
 
     // Guardians of the Galaxy Vol. 3 - 11:11 PM to 12:40 AM (89 minutes)
     { startTime: '11:11 PM', title: 'Guardians of the Galaxy Vol. 3', duration: 89, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Guardians%20of%20the%20Galaxy%20Vol.%203%20Part-%201%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },
 
     // Transformers: Rise of the Beasts - 12:40 AM to 2:39 AM (119 minutes)
-    { startTime: '12:40 AM', title: 'Transformers - Rise of the Beasts', duration: 119, link: 'news.mp4' },
+    { startTime: '12:40 AM', title: 'Wonder Woman', duration: 119, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Wonder%20Woman%201984%20-%20VJ%20Junior%20-%20Mobifliks.com.mp4' },
 
     // Knights of the Zodiac - 2:39 AM to 4:24 AM (105 minutes)
     { startTime: '2:39 AM', title: 'Knights of the Zodiac', duration: 105, link: 'https://mobifliks.info/downloadmp4.php?file=luganda/Knights%20of%20the%20Zodiac%20by%20Vj%20Junior%20-%20Mobifliks.com.mp4' },

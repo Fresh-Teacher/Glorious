@@ -12,6 +12,7 @@
     <meta name="author" content="Fresh Teacher">
     <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
     <link data-n-head="ssr" rel="manifest" href="/manifest.json" data-hid="manifest">
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
@@ -1120,6 +1121,101 @@ main {
 .flash-message.fade-out {
     opacity: 0;
 }
+#excelConversionModal {
+        display: none;
+        position: fixed;
+        z-index: 1000;  /* Ensure it's above other elements */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    #excelConversionModal .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+    }
+
+    #excelConversionModal h2 {
+        margin-top: 0;
+    }
+
+    #excelConversionModal input[type="file"] {
+        margin: 10px 0;
+    }
+
+    #excelConversionModal button {
+        margin: 5px;
+        padding: 5px 10px;
+    }
+    .flash-notification {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    border-radius: 4px;
+    z-index: 1001;
+}
+
+#internetConnectionModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+#internetConnectionModal .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+.flash-notification {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px;
+        border-radius: 4px;
+        z-index: 1001;
+        color: white;
+        font-weight: bold;
+    }
+
+    .flash-notification.success {
+        background-color: #4CAF50; /* Green */
+    }
+
+    .flash-notification.error {
+        background-color: #f44336; /* Red */
+    }
+    #connectionSuggestions {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 15px;
+}
+
+#connectionSuggestions li {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #666;
+}
     </style>
 </head>
 <script>
@@ -1227,6 +1323,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 </table>
                 <button id="exportJsonBtn">Export JSON</button>
                 <button id="importJsonBtn">Import JSON</button>
+                <button id="convertToExcelBtn" style="margin-top: 20px;">Convert to Excel 📊</button>
                 <input type="file" id="jsonFileInput" style="display: none;">   
                      <button id="generatePdfBtn" style="margin-top: 20px;">Print Preview 🖶</button>
                 <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
@@ -1236,20 +1333,55 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button id="saveDraftBtn" style="margin-top: 20px;">Save Draft</button>
                 <button id="exportBtn" style="margin-top: 20px;">Export Results</button>
               </div>
+
+              <!-- No Internet Connection Modal -->
+<div id="internetConnectionModal" class="modal">
+    <div class="modal-content">
+        <h2>No Internet Connection 🌐 </h2>
+        <p>You appear to be offline. Some functionalities may not work.</p>
+        
+        <button onclick="retryConnection()">Retry</button>
+        <button onclick="closeInternetConnectionModal()">Close</button>
+        <h3>Here are some friendly suggestions:</h3>
+        <ul id="connectionSuggestions">
+            <li>Turn on Wi-Fi</li>
+            <li>Check if you're in airplane mode</li>
+            <li>Restart your router</li>
+            <li>Move closer to your Wi-Fi router</li>
+            <li>Try connecting to a different network</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Excel Conversion Modal -->
+<div id="excelConversionModal" class="modal">
+    <div class="modal-content">
+        <h2>Convert JSON to Excel</h2>
+        <input type="file" id="jsonExcelInput" accept=".json">
+        <button onclick="convertToExcel()">Convert</button>
+        <button onclick="closeExcelConversionModal()">Cancel</button>
+    </div>
+</div>
+
+<!-- Flash Notification -->
+<div id="flashNotification" class="flash-notification">
+    <p id="flashMessage"></p>
+</div>
               <div class="analysis-wrapper">
                 <div class="analysis-section">
-                       <h3>Division Analysis</h3>
-                <table id="divisionAnalysisTable">
-                    <thead>
-                        <tr>
-                            <th>Division</th>
-                            <th>Number of Pupils</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Division analysis rows will be added here dynamically -->
-                    </tbody>
-                </table>
+                    <h3>Division Analysis</h3>
+                    <table id="divisionAnalysisTable">
+                        <thead>
+                            <tr>
+                                <th>Division</th>
+                                <th>Number of Pupils</th>
+                                <th>%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Division analysis rows will be added here dynamically -->
+                        </tbody>
+                    </table>
             
                 <h3>Aggregate Analysis</h3>
                 <table id="aggregateAnalysisTable">
@@ -1321,6 +1453,222 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 </footer>
     <script>
+        let isOnline = navigator.onLine;
+let currentOpenModal = null;
+
+function showFlashNotification(message, isSuccess) {
+    const flashNotification = document.getElementById('flashNotification');
+    const flashMessage = document.getElementById('flashMessage');
+    flashMessage.textContent = message;
+    
+    // Remove any existing classes
+    flashNotification.classList.remove('success', 'error');
+    
+    // Add the appropriate class based on the message type
+    if (isSuccess) {
+        flashNotification.classList.add('success');
+    } else {
+        flashNotification.classList.add('error');
+    }
+    
+    flashNotification.style.display = 'block';
+    setTimeout(() => {
+        flashNotification.style.display = 'none';
+    }, 3000);
+}
+
+function checkInternetConnection() {
+    if (navigator.onLine) {
+        if (!isOnline) {
+            showFlashNotification("Internet connection received 📡", true);
+            isOnline = true;
+            if (currentOpenModal === 'internetConnectionModal') {
+                closeInternetConnectionModal();
+                openExcelConversionModal();
+            }
+        }
+    } else {
+        if (isOnline) {
+            showFlashNotification("Internet connection lost 📶", false);
+            isOnline = false;
+            if (currentOpenModal === 'excelConversionModal') {
+                closeExcelConversionModal();
+                openInternetConnectionModal();
+            }
+        }
+    }
+}
+
+function openInternetConnectionModal() {
+    document.getElementById('internetConnectionModal').style.display = 'block';
+    currentOpenModal = 'internetConnectionModal';
+}
+
+function closeInternetConnectionModal() {
+    document.getElementById('internetConnectionModal').style.display = 'none';
+    currentOpenModal = null;
+}
+
+function openExcelConversionModal() {
+    document.getElementById('excelConversionModal').style.display = 'block';
+    document.getElementById('jsonExcelInput').value = '';
+    currentOpenModal = 'excelConversionModal';
+}
+
+function closeExcelConversionModal() {
+    document.getElementById('excelConversionModal').style.display = 'none';
+    currentOpenModal = null;
+}
+
+function retryConnection() {
+    checkInternetConnection();
+    if (isOnline) {
+        closeInternetConnectionModal();
+        openExcelConversionModal();
+    } else {
+        showFlashNotification("Still no internet connection 😔", false);
+    }
+}
+
+document.getElementById('convertToExcelBtn').addEventListener('click', function() {
+    if (navigator.onLine) {
+        openExcelConversionModal();
+    } else {
+        openInternetConnectionModal();
+    }
+});
+
+function convertToExcel() {
+    if (!navigator.onLine) {
+        openInternetConnectionModal();
+        return;
+    }
+
+    const fileInput = document.getElementById('jsonExcelInput');
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert('Please select a JSON file.');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        let data;
+        try {
+            data = JSON.parse(e.target.result);
+        } catch (error) {
+            alert('Invalid JSON file. Please check your input.');
+            return;
+        }
+
+        const schoolName = "GLORIOUS KINDERGARTEN & PRIMARY SCHOOL";
+        const className = data.class;
+        const stream = data.stream;
+        const students = data.students;
+
+        // Determine the format based on the first student's data
+        const format = students[0].hasOwnProperty('scie') ? 'original' : 'new';
+
+        // Create headers based on the format
+        let headers;
+        if (format === 'original') {
+            headers = ['Name', 'English', 'Grade', 'Mathematics', 'Grade', 'Science', 'Grade', 
+                       'Social Studies', 'Grade', 'ICT', 'Grade', 'Kiswahili', 'Grade', 
+                       'Total Aggregates', 'Division'];
+        } else {
+            headers = ['Name', 'English', 'Grade', 'Mathematics', 'Grade', 'Literature A', 'Literature B', 
+                       'Literature Avg', 'Literature Grade', 'RE', 'Grade', 'Literature 2', 'Grade', 
+                       'Luganda', 'Grade', 'Total Aggregates', 'Division'];
+        }
+
+        // Create worksheet
+        const ws = XLSX.utils.aoa_to_sheet([
+            [schoolName],
+            [`Class: ${className}`, `Stream: ${stream}`],
+            [],  // Empty row for spacing
+            headers
+        ]);
+
+        // Add student data
+        const studentData = students.map(student => {
+            if (format === 'original') {
+                return [
+                    student.name,
+                    student.eng.marks, student.eng.grade,
+                    student.mtc.marks, student.mtc.grade,
+                    student.scie.marks, student.scie.grade,
+                    student.sst.marks, student.sst.grade,
+                    student.ict.marks, student.ict.grade,
+                    student.kisw.marks, student.kisw.grade,
+                    student.totalAggregates,
+                    student.division
+                ];
+            } else {
+                return [
+                    student.name,
+                    student.eng.marks, student.eng.grade,
+                    student.mtc.marks, student.mtc.grade,
+                    student.lit.a.marks,
+                    student.lit.b.marks,
+                    student.lit.avg,
+                    student.lit.grade,
+                    student.re.marks, student.re.grade,
+                    student.lit2.marks, student.lit2.grade,
+                    student.lug.marks, student.lug.grade,
+                    student.totalAggregates,
+                    student.division
+                ];
+            }
+        });
+
+        XLSX.utils.sheet_add_aoa(ws, studentData, {origin: -1});
+
+        // Set column widths
+        const cols = Array(headers.length).fill({wch: 15});
+        cols[0] = {wch: 30};  // Name column
+        ws['!cols'] = cols;
+
+        // Make header bold
+        ['A1', 'A2', 'B2'].forEach(cell => {
+            if (!ws[cell]) ws[cell] = {};
+            ws[cell].s = { font: { bold: true } };
+        });
+
+        // Make column headers bold
+        for (let i = 0; i < headers.length; i++) {
+            const cell = XLSX.utils.encode_cell({r: 3, c: i});
+            if (!ws[cell]) ws[cell] = {};
+            ws[cell].s = { font: { bold: true } };
+        }
+
+        // Create workbook and add the worksheet
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Students");
+
+        // Generate Excel file with class name and stream as file name
+        const fileName = `${className}_${stream}.xlsx`.replace(/\s+/g, '_');
+        XLSX.writeFile(wb, fileName);
+
+        // Clear the file input after successful conversion
+        fileInput.value = '';
+
+        closeExcelConversionModal();
+    };
+
+    reader.readAsText(file);
+}
+
+// Check internet connection status every 5 seconds
+setInterval(checkInternetConnection, 5000);
+
+// Initial check when the page loads
+window.addEventListener('load', checkInternetConnection);
+
+// Listen for online/offline events
+window.addEventListener('online', checkInternetConnection);
+window.addEventListener('offline', checkInternetConnection);
+
 function getTableData() {
     const rows = document.querySelectorAll('#gradeTable tbody tr');
     const data = {
@@ -1610,9 +1958,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('jsonFileInput').addEventListener('change', handleJSONImport);
     document.getElementById('generatePdfBtn').addEventListener('click', generatePDF);
 });
-        function updateDivisionAnalysisTable() {
+function updateDivisionAnalysisTable() {
     const table = document.getElementById('divisionAnalysisTable').getElementsByTagName('tbody')[0];
-    table.innerHTML = ''; // Clear existing rows
+    table.innerHTML = '';
 
     const divisionCounts = {
         '1': 0,
@@ -1632,10 +1980,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Calculate total number of pupils
+    const totalStudents = Object.values(divisionCounts).reduce((sum, count) => sum + count, 0);
+
     Object.entries(divisionCounts).forEach(([division, count]) => {
         const row = table.insertRow();
         row.insertCell().textContent = division;
         row.insertCell().textContent = count;
+        
+        // Calculate and add percentage
+        if (totalStudents > 0) {
+            const percentage = ((count / totalStudents) * 100).toFixed(2);
+            row.insertCell().textContent = `${percentage}%`;
+        } else {
+            row.insertCell().textContent = '0%';
+        }
     });
 }
 
