@@ -1025,8 +1025,8 @@ button:active {
     </div>
 </div>
 <script>
-  // Show the loading spinner before the page loads
-  window.addEventListener('DOMContentLoaded', () => {
+    // Show the loading spinner before the page loads
+        window.addEventListener('DOMContentLoaded', () => {
             const loadingSpinner = document.getElementById('loading-spinner');
             loadingSpinner.classList.add('show');
         });
@@ -1037,17 +1037,17 @@ button:active {
             loadingSpinner.classList.remove('show');
         });
 
-        // Show the loading spinner when clicking a button with a link
-        const redirectButtons = document.querySelectorAll('a[href]:not([target="_blank"])');
-        redirectButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
+        // Show the loading spinner when clicking a link
+        document.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.tagName.toLowerCase() === 'a' && target.getAttribute('href') && target.getAttribute('href').startsWith('http')) {
                 event.preventDefault();
                 const loadingSpinner = document.getElementById('loading-spinner');
                 loadingSpinner.classList.add('show');
                 setTimeout(() => {
-                    window.location.href = event.target.getAttribute('href');
+                    window.location.href = target.getAttribute('href');
                 }, 500); // Delay of 500ms to simulate loading
-            });
+            }
         });
 </script>
     <div class="navbar">
