@@ -25,23 +25,35 @@
             color: #ff704d; /* Orange text color */
         }
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .media-item {
-            background-color: #ffffff;
-            border: 2px solid #ffa366; /* Light orange border */
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .media-item img, .media-item video {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px; /* Reduce the gap between items */
+}
+.media-item {
+    background-color: #ffffff;
+    border: 2px solid #ffa366;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 1 / 1; /* This makes the container square */
+    position: relative;
+}
+     .media-item video {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+.media-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top; /* This ensures the top of the image is always visible */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
         .pagination {
             display: flex;
             justify-content: center;
@@ -76,16 +88,19 @@
             background-color: rgba(0,0,0,0.9);
         }
         .modal-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 20px; /* Add some padding */
+}
         .modal-content img, .modal-content video {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-        }
+    max-width: 100%;
+    max-height: 90vh; /* 90% of the viewport height */
+    width: auto;
+    height: auto;
+    object-fit: contain; /* This will fit the entire image within the container */
+}
         .close {
             position: absolute;
             top: 15px;
@@ -232,7 +247,11 @@
         }
         .modal-content img {
     max-width: 90%;
-    max-height: 90%;
+    max-height: 90vh; /* 90% of the viewport height */
+    width: auto;
+    height: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.15); /* Optional: adds a subtle shadow */
+
     object-fit: contain;
     opacity: 0;
     transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
