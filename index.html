@@ -1028,13 +1028,23 @@ button:active {
 class LoadingSpinner {
     constructor(spinnerId = 'loading-spinner') {
         this.spinner = document.getElementById(spinnerId);
+        this.showCount = 0;
     }
 
     show() {
+        this.showCount++;
         this.spinner.classList.add('show');
     }
 
     hide() {
+        this.showCount = Math.max(0, this.showCount - 1);
+        if (this.showCount === 0) {
+            this.spinner.classList.remove('show');
+        }
+    }
+
+    reset() {
+        this.showCount = 0;
         this.spinner.classList.remove('show');
     }
 }
@@ -1097,6 +1107,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('load', () => {
         spinner.hide();
+    });
+
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            // Page was loaded from cache (user used back/forward button)
+            spinner.reset();
+        }
     });
 
     document.addEventListener('click', (event) => {
