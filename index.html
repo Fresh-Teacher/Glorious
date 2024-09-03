@@ -1025,49 +1025,72 @@ button:active {
     </div>
 </div>
 <script>
- function showSpinner() {
-            const loadingSpinner = document.getElementById('loading-spinner');
-            loadingSpinner.classList.add('show');
-        }
+        let navigationTimeout;
 
-        function hideSpinner() {
-            const loadingSpinner = document.getElementById('loading-spinner');
-            loadingSpinner.classList.remove('show');
-        }
+function showSpinner() {
+    const loadingSpinner = document.getElementById('loading-spinner');
+    loadingSpinner.classList.add('show');
+}
 
-        // Handle clicks on navigation items
-        document.addEventListener('click', (event) => {
-            const target = event.target.closest('a');
-            if (target && target.getAttribute('href') && 
-                !target.getAttribute('href').startsWith('#') && 
-                !target.getAttribute('target') &&
-                target.getAttribute('href') !== 'javascript:void(0);') {
-                event.preventDefault();
-                showSpinner();
-                setTimeout(() => {
-                    window.location.href = target.getAttribute('href');
-                }, 500); // Delay of 500ms to simulate loading
+function hideSpinner() {
+    const loadingSpinner = document.getElementById('loading-spinner');
+    loadingSpinner.classList.remove('show');
+    if (navigationTimeout) {
+        clearTimeout(navigationTimeout);
+    }
+}
+
+// Handle clicks on navigation items
+document.addEventListener('click', (event) => {
+    const target = event.target.closest('a');
+    if (target && target.getAttribute('href') && 
+        !target.getAttribute('href').startsWith('#') && 
+        !target.getAttribute('target') &&
+        target.getAttribute('href') !== 'javascript:void(0);') {
+        event.preventDefault();
+        showSpinner();
+        navigationTimeout = setTimeout(() => {
+            window.location.href = target.getAttribute('href');
+        }, 500); // Delay of 500ms to simulate loading
+    }
+});
+
+// Modify your checkAuth function
+function checkAuth(url) {
+    // Your authentication logic here
+    const isAuthenticated = true; // Replace with your actual auth check
+
+    if (isAuthenticated) {
+        showSpinner();
+        navigationTimeout = setTimeout(() => {
+            window.location.href = url;
+        }, 500);
+    } else {
+        // Show login message or redirect to login page
+        document.getElementById('login-message').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('login-message').style.display = 'none';
+        }, 3000);
+    }
+}
+
+     // Handle back/forward navigation
+     window.addEventListener('popstate', () => {
+            hideSpinner();
+        });
+
+        // Handle page loads and refreshes
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                hideSpinner();
             }
         });
 
-        // Modify your checkAuth function
-        function checkAuth(url) {
-            // Your authentication logic here
-            const isAuthenticated = true; // Replace with your actual auth check
+        // Optionally, handle cases where the page might be unloading
+        window.addEventListener('beforeunload', () => {
+            hideSpinner();
+        });
 
-            if (isAuthenticated) {
-                showSpinner();
-                setTimeout(() => {
-                    window.location.href = url;
-                }, 500);
-            } else {
-                // Show login message or redirect to login page
-                document.getElementById('login-message').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('login-message').style.display = 'none';
-                }, 3000);
-            }
-        }
 </script>
     <div class="navbar">
         <div class="logo">
@@ -5985,6 +6008,8 @@ const validUsers = [
         function toggleMenu() {
             const navLinks = document.getElementById("nav-links");
             navLinks.classList.toggle("show");
+            hideSpinner();
+
         }
 
         function setCurrentYear() {
