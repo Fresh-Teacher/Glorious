@@ -489,49 +489,67 @@
     </div>
 </div>
 <script>
- function showSpinner() {
-            const loadingSpinner = document.getElementById('loading-spinner');
-            loadingSpinner.classList.add('show');
-        }
+// Get the loading spinner element
+const loadingSpinner = document.getElementById('loading-spinner');
 
-        function hideSpinner() {
-            const loadingSpinner = document.getElementById('loading-spinner');
-            loadingSpinner.classList.remove('show');
-        }
+// Show the loading spinner
+function showSpinner() {
+    loadingSpinner.classList.add('show');
+}
 
-        // Handle clicks on navigation items
-        document.addEventListener('click', (event) => {
-            const target = event.target.closest('a');
-            if (target && target.getAttribute('href') && 
-                !target.getAttribute('href').startsWith('#') && 
-                !target.getAttribute('target') &&
-                target.getAttribute('href') !== 'javascript:void(0);') {
-                event.preventDefault();
-                showSpinner();
-                setTimeout(() => {
-                    window.location.href = target.getAttribute('href');
-                }, 500); // Delay of 500ms to simulate loading
-            }
-        });
+// Hide the loading spinner
+function hideSpinner() {
+    loadingSpinner.classList.remove('show');
+}
 
-        // Modify your checkAuth function
-        function checkAuth(url) {
-            // Your authentication logic here
-            const isAuthenticated = true; // Replace with your actual auth check
+// Show the loading spinner before the page loads
+window.addEventListener('DOMContentLoaded', showSpinner);
 
-            if (isAuthenticated) {
-                showSpinner();
-                setTimeout(() => {
-                    window.location.href = url;
-                }, 500);
-            } else {
-                // Show login message or redirect to login page
-                document.getElementById('login-message').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('login-message').style.display = 'none';
-                }, 3000);
-            }
-        }
+// Hide the loading spinner once the content is ready
+window.addEventListener('load', hideSpinner);
+
+// Handle the back/forward navigation
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        // Page was loaded from cache (user used back/forward button)
+        hideSpinner();
+    }
+});
+
+// Show the loading spinner when clicking a link
+document.addEventListener('click', (event) => {
+    const target = event.target.closest('a');
+    if (target && target.getAttribute('href') && 
+        !target.getAttribute('href').startsWith('#') && 
+        !target.getAttribute('target') &&
+        target.getAttribute('href') !== 'javascript:void(0);') {
+        event.preventDefault();
+        showSpinner();
+        setTimeout(() => {
+            window.location.href = target.getAttribute('href');
+        }, 500); // Delay of 500ms to simulate loading
+    }
+});
+
+// Authentication check function
+function checkAuth(url) {
+    // Your authentication logic here
+    const isAuthenticated = true; // Replace with your actual auth check
+
+    if (isAuthenticated) {
+        showSpinner();
+        setTimeout(() => {
+            window.location.href = url;
+        }, 500);
+    } else {
+        // Show login message or redirect to login page
+        const loginMessage = document.getElementById('login-message');
+        loginMessage.style.display = 'block';
+        setTimeout(() => {
+            loginMessage.style.display = 'none';
+        }, 3000);
+    }
+}
 </script>
 
     <div class="slideshow-controls">
