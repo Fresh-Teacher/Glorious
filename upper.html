@@ -1124,30 +1124,49 @@ main {
     </div>
 </div>
 <script>
-  // Show the loading spinner before the page loads
-  window.addEventListener('DOMContentLoaded', () => {
+ function showSpinner() {
             const loadingSpinner = document.getElementById('loading-spinner');
             loadingSpinner.classList.add('show');
-        });
+        }
 
-        // Hide the loading spinner once the content is ready
-        window.addEventListener('load', () => {
+        function hideSpinner() {
             const loadingSpinner = document.getElementById('loading-spinner');
             loadingSpinner.classList.remove('show');
+        }
+
+        // Handle clicks on navigation items
+        document.addEventListener('click', (event) => {
+            const target = event.target.closest('a');
+            if (target && target.getAttribute('href') && 
+                !target.getAttribute('href').startsWith('#') && 
+                !target.getAttribute('target') &&
+                target.getAttribute('href') !== 'javascript:void(0);') {
+                event.preventDefault();
+                showSpinner();
+                setTimeout(() => {
+                    window.location.href = target.getAttribute('href');
+                }, 500); // Delay of 500ms to simulate loading
+            }
         });
 
-        // Show the loading spinner when clicking a button with a link
-        const redirectButtons = document.querySelectorAll('a[href]:not([target="_blank"])');
-        redirectButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                event.preventDefault();
-                const loadingSpinner = document.getElementById('loading-spinner');
-                loadingSpinner.classList.add('show');
+        // Modify your checkAuth function
+        function checkAuth(url) {
+            // Your authentication logic here
+            const isAuthenticated = true; // Replace with your actual auth check
+
+            if (isAuthenticated) {
+                showSpinner();
                 setTimeout(() => {
-                    window.location.href = event.target.getAttribute('href');
-                }, 500); // Delay of 500ms to simulate loading
-            });
-        });
+                    window.location.href = url;
+                }, 500);
+            } else {
+                // Show login message or redirect to login page
+                document.getElementById('login-message').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('login-message').style.display = 'none';
+                }, 3000);
+            }
+        }
 </script>
      <!-- Add the navbar -->
      <!-- <div class="navbar">

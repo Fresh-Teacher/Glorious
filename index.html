@@ -1025,30 +1025,49 @@ button:active {
     </div>
 </div>
 <script>
-    // Show the loading spinner before the page loads
-        window.addEventListener('DOMContentLoaded', () => {
+ function showSpinner() {
             const loadingSpinner = document.getElementById('loading-spinner');
             loadingSpinner.classList.add('show');
-        });
+        }
 
-        // Hide the loading spinner once the content is ready
-        window.addEventListener('load', () => {
+        function hideSpinner() {
             const loadingSpinner = document.getElementById('loading-spinner');
             loadingSpinner.classList.remove('show');
-        });
+        }
 
-        // Show the loading spinner when clicking a link
+        // Handle clicks on navigation items
         document.addEventListener('click', (event) => {
-            const target = event.target;
-            if (target.tagName.toLowerCase() === 'a' && target.getAttribute('href') && target.getAttribute('href').startsWith('http')) {
+            const target = event.target.closest('a');
+            if (target && target.getAttribute('href') && 
+                !target.getAttribute('href').startsWith('#') && 
+                !target.getAttribute('target') &&
+                target.getAttribute('href') !== 'javascript:void(0);') {
                 event.preventDefault();
-                const loadingSpinner = document.getElementById('loading-spinner');
-                loadingSpinner.classList.add('show');
+                showSpinner();
                 setTimeout(() => {
                     window.location.href = target.getAttribute('href');
                 }, 500); // Delay of 500ms to simulate loading
             }
         });
+
+        // Modify your checkAuth function
+        function checkAuth(url) {
+            // Your authentication logic here
+            const isAuthenticated = true; // Replace with your actual auth check
+
+            if (isAuthenticated) {
+                showSpinner();
+                setTimeout(() => {
+                    window.location.href = url;
+                }, 500);
+            } else {
+                // Show login message or redirect to login page
+                document.getElementById('login-message').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('login-message').style.display = 'none';
+                }, 3000);
+            }
+        }
 </script>
     <div class="navbar">
         <div class="logo">
