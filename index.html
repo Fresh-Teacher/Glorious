@@ -1025,72 +1025,91 @@ button:active {
     </div>
 </div>
 <script>
-        let navigationTimeout;
+class LoadingSpinner {
+    constructor(spinnerId = 'loading-spinner') {
+        this.spinner = document.getElementById(spinnerId);
+    }
 
-function showSpinner() {
-    const loadingSpinner = document.getElementById('loading-spinner');
-    loadingSpinner.classList.add('show');
-}
+    show() {
+        this.spinner.classList.add('show');
+    }
 
-function hideSpinner() {
-    const loadingSpinner = document.getElementById('loading-spinner');
-    loadingSpinner.classList.remove('show');
-    if (navigationTimeout) {
-        clearTimeout(navigationTimeout);
+    hide() {
+        this.spinner.classList.remove('show');
     }
 }
 
-// Handle clicks on navigation items
-document.addEventListener('click', (event) => {
-    const target = event.target.closest('a');
-    if (target && target.getAttribute('href') && 
-        !target.getAttribute('href').startsWith('#') && 
-        !target.getAttribute('target') &&
-        target.getAttribute('href') !== 'javascript:void(0);') {
-        event.preventDefault();
-        showSpinner();
-        navigationTimeout = setTimeout(() => {
-            window.location.href = target.getAttribute('href');
-        }, 500); // Delay of 500ms to simulate loading
+class NavigationHandler {
+    constructor(spinner) {
+        this.spinner = spinner;
     }
-});
 
-// Modify your checkAuth function
-function checkAuth(url) {
-    // Your authentication logic here
-    const isAuthenticated = true; // Replace with your actual auth check
-
-    if (isAuthenticated) {
-        showSpinner();
-        navigationTimeout = setTimeout(() => {
-            window.location.href = url;
-        }, 500);
-    } else {
-        // Show login message or redirect to login page
-        document.getElementById('login-message').style.display = 'block';
+    handleNavigation(url, delay = 500) {
+        this.spinner.show();
         setTimeout(() => {
-            document.getElementById('login-message').style.display = 'none';
+            window.location.href = url;
+        }, delay);
+    }
+
+    isValidLink(target) {
+        return target && 
+               target.getAttribute('href') && 
+               !target.getAttribute('href').startsWith('#') && 
+               !target.getAttribute('target') &&
+               target.getAttribute('href') !== 'javascript:void(0);';
+    }
+}
+
+class AuthHandler {
+    constructor(spinner, loginMessageId = 'login-message') {
+        this.spinner = spinner;
+        this.loginMessage = document.getElementById(loginMessageId);
+    }
+
+    checkAuth(url) {
+        // Your authentication logic here
+        const isAuthenticated = true; // Replace with your actual auth check
+
+        if (isAuthenticated) {
+            this.spinner.show();
+            setTimeout(() => {
+                window.location.href = url;
+            }, 500);
+        } else {
+            this.showLoginMessage();
+        }
+    }
+
+    showLoginMessage() {
+        this.loginMessage.style.display = 'block';
+        setTimeout(() => {
+            this.loginMessage.style.display = 'none';
         }, 3000);
     }
 }
 
-     // Handle back/forward navigation
-     window.addEventListener('popstate', () => {
-            hideSpinner();
-        });
+document.addEventListener('DOMContentLoaded', () => {
+    const spinner = new LoadingSpinner();
+    const navHandler = new NavigationHandler(spinner);
+    const authHandler = new AuthHandler(spinner);
 
-        // Handle page loads and refreshes
-        window.addEventListener('pageshow', (event) => {
-            if (event.persisted) {
-                hideSpinner();
-            }
-        });
+    spinner.show();
 
-        // Optionally, handle cases where the page might be unloading
-        window.addEventListener('beforeunload', () => {
-            hideSpinner();
-        });
+    window.addEventListener('load', () => {
+        spinner.hide();
+    });
 
+    document.addEventListener('click', (event) => {
+        const target = event.target.closest('a');
+        if (navHandler.isValidLink(target)) {
+            event.preventDefault();
+            navHandler.handleNavigation(target.getAttribute('href'));
+        }
+    });
+
+    // Expose checkAuth function globally
+    window.checkAuth = (url) => authHandler.checkAuth(url);
+});
 </script>
     <div class="navbar">
         <div class="logo">
@@ -6008,8 +6027,6 @@ const validUsers = [
         function toggleMenu() {
             const navLinks = document.getElementById("nav-links");
             navLinks.classList.toggle("show");
-            hideSpinner();
-
         }
 
         function setCurrentYear() {
