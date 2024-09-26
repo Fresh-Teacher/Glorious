@@ -19,6 +19,68 @@
     <meta property="og:image" content="https://gloriouschools.vercel.app/Screenshot (820).png" />
      <title>Glorious Birthday Parties!</title>
      <style>
+          /* Updated styles for the animated MEDIA button */
+          .media-button {
+            background-color: #c45709; /* Brown */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 4px 8px rgba(228, 87, 0, 0.5); /* Dark coffee brown shadow */
+            position: relative;
+        }
+
+        .media-button:hover {
+            background-color: #A0522D; /* Slightly lighter brown on hover */
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(65, 25, 0, 0.7); /* Enhanced shadow on hover */
+        }
+
+        .media-button .emoji {
+            display: inline-block;
+            animation: bounce 0.6s ease infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        /* Sparkles around the button */
+        .media-button::before,
+        .media-button::after {
+            content: '✨';
+            position: absolute;
+            font-size: 20px;
+            animation: sparkle 2s infinite;
+            color: #FFD700; /* Gold color for sparkles to stand out against brown */
+        }
+
+        .media-button::before {
+            left: -25px;
+            top: -10px;
+        }
+
+        .media-button::after {
+            right: -25px;
+            bottom: -10px;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
         .more-button, .month-select-button, .modal-content button, .upcoming-button {
             background: linear-gradient(45deg, var(--orange-dark), var(--brown-light));
             color: white;
@@ -629,21 +691,22 @@ function checkAuth(url) {
     }
 }
 </script>
-     <!-- Add the navbar -->
-     <div class="navbar">
-        <div class="logo">
-            <img src="schoologo-2-150x150.png" alt="School Logo">
-            <div class="title animated-title">Glorious Schools</div>
-        </div>
-        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
-        <ul id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
-            <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
-            <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
-            <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
-        </ul>
+  <!-- Updated navbar with bouncing emoji and sparkles in MEDIA button -->
+  <div class="navbar">
+    <div class="logo">
+        <img src="schoologo-2-150x150.png" alt="School Logo">
+        <div class="title animated-title">Glorious Schools</div>
     </div>
+    <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+    <ul id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
+        <li><a href="javascript:void(0);" onclick="checkAuth('videos.html')">Videos</a></li>     
+        <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
+        <li><a href="javascript:void(0);" onclick="checkAuth('media.html')" class="media-button">Gallery <span class="emoji">🕺💃</span></a></li>
+        <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
+    </ul>
+</div>
     <br><br>
     <h6 id="birthdayHeader" style="display: none;">Happy Birthday! 🎂</h6>
     <div class="container">

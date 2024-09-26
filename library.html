@@ -1,24 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Welcome To Glorious Schools, #1 Academic Giant in Ugandan Educational Sector.">
-    <meta name="keyword"
-        content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
-    <meta name="author" content="Fresh Teacher">
-    <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
-    <link data-n-head="ssr" rel="manifest" href="/manifest.json" data-hid="manifest">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-    <meta property="og:site_name" content="Fresh Teacher's Library" />
-    <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
-      <title>School Library</title>
-    <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
+    <title>School Library</title>
     <style>
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
@@ -28,388 +13,160 @@
             color: #333;
         }
 
-        header {
-            background-color: #ff6f00;
-            color: white;
-            text-align: center;
-            padding: 1em 0;
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ff8c00;
+            padding: 0.1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .navbar .logo .title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin-left: 1rem;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: background-color 0.3s ease;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #e06b00;
         }
 
         main {
             padding: 20px;
-            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         h1, h2 {
             color: #bf360c;
+            text-align: center;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        button {
-            display: block;
-            margin: 10px auto;
-            padding: 15px 30px;
-            font-size: 18px;
-            cursor: pointer;
-            border: none;
-            background-color: #ff9800;
-            color: white;
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #fff;
             border-radius: 10px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
         }
 
-        button:hover {
-            background-color: #fb8c00;
-            transform: translateY(-2px);
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
         }
 
-        #class-title, #resource-title {
-            margin-bottom: 20px;
-            font-size: 24px;
+        .card-image {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
         }
 
-        #class-list, #resource-list {
-            max-width: 600px;
-            margin: 0 auto;
+        .card-content {
+            padding: 10px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card h3 {
+            margin: 0;
+            color: #ff6f00;
         }
 
         .back-button {
-            animation: shake 1s infinite;
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
+        .back-button:hover {
+            background-color: #fb8c00;
+        }
+
+        .footer {
+            background-color: #ff8c00;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            font-size: 0.8rem;
         }
 
         @media (max-width: 600px) {
-            button {
-                width: 90%;
-                padding: 10px;
-                font-size: 16px;
-            }
-        }
-        
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ff8c00;
-    padding: 0.1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-}
-
-.navbar .logo {
-    display: flex;
-    align-items: center;
-}
-
-.navbar .logo img {
-    width: 50px;
-    height: auto;
-    margin-right: 10px;
-}
-
-.navbar .logo .title {
-    color: white;
-    font-size: 1.8rem;
-    font-weight: bold;
-}
-
-.navbar ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-.navbar ul li {
-    margin-left: 1rem;
-}
-
-.navbar ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    display: block;
-    transition: background-color 0.3s ease;
-    font-size: 1.1rem;
-    border-radius: 10px;
-}
-
-.navbar ul li a:hover {
-    background-color: #e06b00;
-}
-
-.navbar .toggle {
-    display: none;
-    color: white;
-    font-size: 1.8rem;
-    cursor: pointer;
-}
-
-.logout-button {
-    padding: 0.5rem 1rem;
-    background-color: #ff8c00;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-    background-color: #e06b00;
-}
-
-.flash-message {
-    font-size: 24px;
-    font-weight: bold;
-    color: #FF4500;
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #FFE4B5;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    animation: flash-animation 1s infinite alternate, bounce 0.5s infinite alternate;
-}
-
-@keyframes flash-animation {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0.7;
-        transform: scale(1.05);
-    }
-}
-
-@keyframes bounce {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(-5px);
-    }
-}
-
-@media (max-width: 600px) {
-    .navbar ul {
-        flex-direction: column;
-        display: none;
-        width: 100%;
-    }
-
-    .navbar ul li {
-        margin-left: 0;
-    }
-
-    .navbar ul li a {
-        text-align: center;
-        padding: 1rem;
-    }
-
-    .navbar .toggle {
-        display: block;
-    }
-
-    .navbar ul.show {
-        display: flex;
-    }
-}
-
-.footer {
-    background-color: #ff8c00;
-    color: white;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    font-size: 0.8rem; /* Reduced from 0.9rem */
-}
-
-body {
-    padding-bottom: 40px; /* Reduced from 60px */
-}
-
-.container {
-    margin-bottom: 40px; /* Reduced from 60px */
-}
-@keyframes colorChange {
-        0% { color: white; }
-        20% { color: #FFE0B2; }
-        40% { color: #FFCC80; }
-        60% { color: #FFA726; }
-        80% { color: #FF9800; }
-        100% { color: white; }
-    }
-
-    .animated-title {
-        animation: colorChange 6s infinite;
-        font-weight: bold;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    }
-   /* Loading spinner styles */
-   .loading-spinner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        .loading-spinner.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .lds-ring {
-            display: inline-block;
-            position: relative;
-            width: 80px;
-            height: 80px;
-        }
-
-        .lds-ring div {
-            box-sizing: border-box;
-            display: block;
-            position: absolute;
-            width: 64px;
-            height: 64px;
-            margin: 8px;
-            border: 8px solid;
-            border-radius: 50%;
-            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            border-color: #ff6b6b transparent transparent transparent;
-        }
-
-        .lds-ring div:nth-child(1) {
-            border-color: #ff6b6b transparent transparent transparent;
-            animation-delay: -0.45s;
-        }
-
-        .lds-ring div:nth-child(2) {
-            border-color: #ffa500 transparent transparent transparent;
-            animation-delay: -0.3s;
-        }
-
-        .lds-ring div:nth-child(3) {
-            border-color: #ffff00 transparent transparent transparent;
-            animation-delay: -0.15s;
-        }
-
-        .lds-ring div:nth-child(4) {
-            border-color: #00ff00 transparent transparent transparent;
-        }
-
-        @keyframes lds-ring {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
 </head>
 <body>
-<!-- Loading spinner -->
-<div class="loading-spinner" id="loading-spinner">
-    <div class="lds-ring">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-</div>
-<script>
-// Get the loading spinner element
-const loadingSpinner = document.getElementById('loading-spinner');
-
-// Show the loading spinner
-function showSpinner() {
-    loadingSpinner.classList.add('show');
-}
-
-// Hide the loading spinner
-function hideSpinner() {
-    loadingSpinner.classList.remove('show');
-}
-
-// Show the loading spinner before the page loads
-window.addEventListener('DOMContentLoaded', showSpinner);
-
-// Hide the loading spinner once the content is ready
-window.addEventListener('load', hideSpinner);
-
-// Handle the back/forward navigation
-window.addEventListener('pageshow', (event) => {
-    if (event.persisted) {
-        // Page was loaded from cache (user used back/forward button)
-        hideSpinner();
-    }
-});
-
-// Show the loading spinner when clicking a link
-document.addEventListener('click', (event) => {
-    const target = event.target.closest('a');
-    if (target && target.getAttribute('href') && 
-        !target.getAttribute('href').startsWith('#') && 
-        !target.getAttribute('target') &&
-        target.getAttribute('href') !== 'javascript:void(0);') {
-        event.preventDefault();
-        showSpinner();
-        setTimeout(() => {
-            window.location.href = target.getAttribute('href');
-        }, 500); // Delay of 500ms to simulate loading
-    }
-});
-
-// Authentication check function
-function checkAuth(url) {
-    // Your authentication logic here
-    const isAuthenticated = true; // Replace with your actual auth check
-
-    if (isAuthenticated) {
-        showSpinner();
-        setTimeout(() => {
-            window.location.href = url;
-        }, 500);
-    } else {
-        // Show login message or redirect to login page
-        const loginMessage = document.getElementById('login-message');
-        loginMessage.style.display = 'block';
-        setTimeout(() => {
-            loginMessage.style.display = 'none';
-        }, 3000);
-    }
-}
-</script>
     <div class="navbar">
         <div class="logo">
             <img src="schoologo-2-150x150.png" alt="School Logo">
-            <div class="title animated-title">Glorious Schools</div>
+            <div class="title">Glorious Schools</div>
         </div>
-        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
         <ul id="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="javascript:void(0);" onclick="checkAuth('games.html')">Games</a></li>
@@ -418,98 +175,152 @@ function checkAuth(url) {
             <li id="logout-nav" style="display: none;"><button class="logout-button" onclick="logout()">Logout</button></li>
         </ul>
     </div>
-    <div id="login-message" class="flash-message" style="display: none;">
-        Access denied! You must first login to view this page 🔐 
-    </div>
 
     <main>
-        <h2>Select Class</h2>
         <div id="class-list">
-            <button onclick="showResources('P.1')">Primary One</button>
-            <button onclick="showResources('P.2')">Primary Two</button>
-            <button onclick="showResources('P.3')">Primary Three</button>
-            <button onclick="showResources('P.4')">Primary Four</button>
-            <button onclick="showResources('P.5')">Primary Five</button>
-            <button onclick="showResources('P.6')">Primary Six</button>
-            <button onclick="showResources('P.7')">Primary Seven</button>
+            <h2>Select Class</h2>
+            <div class="grid-container">
+                <div class="card" onclick="showResources('P.1')">
+                    <img src="p1.jpg" alt="Primary One" class="card-image">
+                    <div class="card-content"><h3>Primary One</h3></div>
+                </div>
+                <div class="card" onclick="showResources('P.2')">
+                    <img src="p2.jpg" alt="Primary Two" class="card-image">
+                    <div class="card-content"><h3>Primary Two</h3></div>
+                </div>
+                <div class="card" onclick="showResources('P.3')">
+                    <img src="p3.jpg" alt="Primary Three" class="card-image">
+                    <div class="card-content"><h3>Primary Three</h3></div>
+                </div>
+                <div class="card" onclick="showResources('P.4')">
+                    <img src="p4.jpg" alt="Primary Four" class="card-image">
+                    <div class="card-content"><h3>Primary Four</h3></div>
+                </div>
+                <div class="card" onclick="showResources('P.5')">
+                    <img src="p5.jpg" alt="Primary Five" class="card-image">
+                    <div class="card-content"><h3>Primary Five</h3></div>
+                </div>
+                <div class="card" onclick="showResources('P.6')">
+                    <img src="p6.jpg" alt="Primary Six" class="card-image">
+                    <div class="card-content"><h3>Primary Six</h3></div>
+                </div>
+                <div class="card" onclick="showResources('P.7')">
+                    <img src="p7.jpg" alt="Primary Seven" class="card-image">
+                    <div class="card-content"><h3>Primary Seven</h3></div>
+                </div>
+            </div>
         </div>
         <div id="resource-list" style="display: none;">
             <h2 id="class-title"></h2>
-            <button onclick="navigateToResource('Lesson Notes')">Lesson Notes</button>
-            <button onclick="navigateToResource('Schemes of Work')">Schemes of Work</button>
-            <button onclick="navigateToResource('Past Papers')">Past Papers</button>
+            <div class="grid-container">
+                <div class="card" onclick="showSubjects('Lesson Notes')">
+                    <img src="notes.jpg" alt="Lesson Notes" class="card-image">
+                    <div class="card-content"><h3>Lesson Notes</h3></div>
+                </div>
+                <div class="card" onclick="showSubjects('Schemes of Work')">
+                    <img src="schemes.jpg" alt="Schemes of Work" class="card-image">
+                    <div class="card-content"><h3>Schemes of Work</h3></div>
+                </div>
+                <div class="card" onclick="showSubjects('Past Papers')">
+                    <img src="papers.jpg" alt="Past Papers" class="card-image">
+                    <div class="card-content"><h3>Past Papers</h3></div>
+                </div>
+            </div>
             <button class="back-button" onclick="backToClasses()">⬅ Back to Classes</button>
-        </div><br><br><br>
+        </div>
+        <div id="subject-list" style="display: none;">
+            <h2 id="resource-title"></h2>
+            <div class="grid-container" id="subject-container">
+                <!-- Subject cards will be dynamically added here -->
+            </div>
+            <button class="back-button" onclick="backToResources()">⬅ Back to Resources</button>
+        </div>
     </main>
-
+    <br><br><br><br><br><br>
     <footer class="footer">
         <p>&copy; Glorious Schools <span id="currentYear"></span></p>
     </footer>
-    
+
     <script>
-        let selectedClass = '';
+let selectedClass = '';
+let selectedResource = '';
+const subjects = ['MATHEMATICS', 'ENGLISH', 'SCIENCE', 'SOCIAL STUDIES', 'ICT'];
 
-        function showResources(className) {
-            selectedClass = className;
-            document.getElementById('class-list').style.display = 'none';
-            document.getElementById('class-title').innerText = `Resources for ${className}`;
-            document.getElementById('resource-list').style.display = 'block';
-        }
+function showResources(className) {
+    selectedClass = className;
+    document.getElementById('class-list').style.display = 'none';
+    document.getElementById('resource-list').style.display = 'block';
+    document.getElementById('subject-list').style.display = 'none';
+    document.getElementById('class-title').innerText = `Resources for ${className}`;
+    history.pushState({ view: 'resources', class: className }, '', `?view=resources&class=${className}`);
+}
 
-        function navigateToResource(resourceType) {
-            const pageName = `${selectedClass} ${resourceType}.html`.replace(/ /g, '');
-            window.location.href = pageName;
-        }
+function showSubjects(resourceType) {
+    selectedResource = resourceType;
+    document.getElementById('resource-list').style.display = 'none';
+    document.getElementById('subject-list').style.display = 'block';
+    document.getElementById('resource-title').innerText = `${selectedClass} ${resourceType}`;
 
-        function backToClasses() {
-            document.getElementById('resource-list').style.display = 'none';
-            document.getElementById('class-list').style.display = 'block';
-        }
+    const subjectContainer = document.getElementById('subject-container');
+    subjectContainer.innerHTML = ''; // Clear previous subjects
 
-        function toggleMenu() {
-            const navLinks = document.getElementById('nav-links');
-            navLinks.classList.toggle('active');
-        }
+    subjects.forEach(subject => {
+        const subjectCard = document.createElement('div');
+        subjectCard.className = 'card';
+        subjectCard.onclick = () => navigateToResource(subject);
+        subjectCard.innerHTML = `
+            <img src="${subject.toLowerCase()}.jpg" alt="${subject}" class="card-image">
+            <div class="card-content"><h3>${selectedClass} ${subject}</h3></div>
+        `;
+        subjectContainer.appendChild(subjectCard);
+    });
 
-        function setCurrentYear() {
-            const currentYear = new Date().getFullYear();
-            document.getElementById('currentYear').textContent = currentYear;
-        }
+    history.pushState({ view: 'subjects', class: selectedClass, resource: resourceType }, '', `?view=subjects&class=${selectedClass}&resource=${resourceType}`);
+}
 
-        function checkAuth(page) {
-            if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
-                window.location.href = page;
-            } else {
-                sessionStorage.setItem("intendedPage", page);
-                showLoginMessage();
-            }
-        }
+function backToClasses() {
+    document.getElementById('resource-list').style.display = 'none';
+    document.getElementById('subject-list').style.display = 'none';
+    document.getElementById('class-list').style.display = 'block';
+    history.pushState({ view: 'classes' }, '', '?view=classes');
+}
 
-        function showLoginMessage() {
-            document.getElementById("login-message").style.display = "block";
-        }
+function backToResources() {
+    document.getElementById('subject-list').style.display = 'none';
+    document.getElementById('resource-list').style.display = 'block';
+    history.pushState({ view: 'resources', class: selectedClass }, '', `?view=resources&class=${selectedClass}`);
+}
 
-        function checkAuthStatus() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
-            document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
-        }
+function navigateToResource(subject) {
+    const resourceType = selectedResource.replace(/ /g, '');
+    const pageName = `${selectedClass}${subject}${resourceType}.html`;
+    window.location.href = pageName;
+}
 
-        function logout() {
-            localStorage.removeItem("rememberMe");
-            localStorage.removeItem("email");
-            localStorage.removeItem("password");
-            localStorage.removeItem("isLoggedIn");
-            sessionStorage.removeItem("email");
-            sessionStorage.removeItem("password");
-            sessionStorage.removeItem("isLoggedIn");
-            sessionStorage.removeItem("intendedPage");
-            window.location.href = 'index.html';
-        }
+function loadState() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const view = urlParams.get('view');
+    const classParam = urlParams.get('class');
+    const resourceParam = urlParams.get('resource');
 
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuthStatus();
-            setCurrentYear();
-        });
+    if (view === 'subjects' && classParam && resourceParam) {
+        selectedClass = classParam;
+        showSubjects(resourceParam);
+    } else if (view === 'resources' && classParam) {
+        showResources(classParam);
+    } else {
+        backToClasses();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    setCurrentYear();
+    loadState();
+});
+
+window.onpopstate = function(event) {
+    loadState();
+};
     </script>
 </body>
 </html>

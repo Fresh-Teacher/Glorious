@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glorious Birthday Media Gallery</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D2B48C, #8B4513);
+            margin: 0;
+            padding: 0;
+            color: #d68802;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: #d88c00;
+            padding: 10px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: #D7CCC8;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #c78100;
+            color: #FFFFFF;
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(200, 137, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #9b6200;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(62, 39, 35, 0.1);
+        }
+
+        .media-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .media-card {
+            background: linear-gradient(45deg, #f0b103, #bcb6a4);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(62, 39, 35, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 300px;
+        }
+
+        .media-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(62, 39, 35, 0.2);
+        }
+
+        .media-card img, .media-card video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer; /* Add this line to change cursor to hand */
+
+        }
+
+        .footer {
+            background-color: #cb8b00;
+            color: #D7CCC8;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Animated coffee beans */
+        .coffee-bean {
+            position: fixed;
+            bottom: -20px;
+            background-color: #d79700;
+            border-radius: 50%;
+            animation: float 15s infinite;
+            z-index: -1;
+        }
+
+        .coffee-bean::before {
+            content: '💖';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: #D7CCC8;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-100vh) rotate(180deg); }
+            100% { transform: translateY(-200vh) rotate(360deg); }
+        }
+
+        /* Pagination styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            background-color: #d88c00;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .pagination button:hover {
+            background-color: #c78100;
+        }
+
+        .pagination button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+         /* New styles for the preview overlay */
+         .preview-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preview-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .preview-content img, .preview-content video {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .preview-close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .preview-close:hover,
+        .preview-close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .preview-nav {
+            color: #fff;
+            font-size: 40px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            padding: 16px;
+            font-weight: bold;
+        }
+
+        .preview-nav.prev {
+            left: 10px;
+        }
+
+        .preview-nav.next {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Add this new div for the preview overlay -->
+    <div id="previewOverlay" class="preview-overlay">
+        <span class="preview-close">&times;</span>
+        <div class="preview-content" id="previewContent"></div>
+        <span class="preview-nav prev" onclick="changePreview(-1)">&#10094;</span>
+        <span class="preview-nav next" onclick="changePreview(1)">&#10095;</span>
+    </div>
+    <!-- Animated coffee beans -->
+    <div class="coffee-bean" style="left: 5%; width: 40px; height: 50px;"></div>
+    <div class="coffee-bean" style="left: 20%; width: 30px; height: 40px; animation-delay: 2s;"></div>
+    <div class="coffee-bean" style="left: 35%; width: 50px; height: 60px; animation-delay: 4s;"></div>
+    <div class="coffee-bean" style="right: 5%; width: 45px; height: 55px; animation-delay: 1s;"></div>
+    <div class="coffee-bean" style="right: 20%; width: 35px; height: 45px; animation-delay: 3s;"></div>
+
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="games.html">Games</a>
+        <a href="videos.html">Videos</a>
+        <a href="library.html">Library</a>
+        <a href="media.html">Media</a>
+    </nav>
+
+    <div class="content">
+        <h1>🎉 Birthday Celebrations Media Gallery 🎂</h1>
+        
+        <div class="media-container" id="mediaContainer">
+            <!-- Media items will be dynamically added here -->
+        </div>
+
+        <div class="pagination" id="pagination">
+            <!-- Pagination buttons will be dynamically added here -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; Glorious Schools <span id="currentYear"></span></p>
+    </footer>
+
+    <script>
+ document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+// Function to create random coffee beans
+function createCoffeeBeans(number) {
+    const sizes = ['small', 'medium', 'large'];
+    for (let i = 0; i < number; i++) {
+        const bean = document.createElement('div');
+        bean.className = 'coffee-bean';
+        bean.style.left = `${Math.random() * 100}%`;
+        bean.style.width = `${30 + Math.random() * 30}px`;
+        bean.style.height = `${40 + Math.random() * 30}px`;
+        bean.style.animationDelay = `${Math.random() * 5}s`;
+        document.body.appendChild(bean);
+    }
+}
+
+// Create additional random coffee beans
+createCoffeeBeans(10);
+
+// JSON list of media items
+const programSchedule = [
+    { videoSrc: "VID-20240924-WA0001.mp4" },
+    { videoSrc: "VID-20240924-WA0003.mp4" },
+    { videoSrc: "VID-20240924-WA0016.mp4" },
+    { videoSrc: "VID-20240924-WA0024.mp4" },
+    { videoSrc: "VID-20240924-WA0025.mp4" },
+    { videoSrc: "VID-20240924-WA0026.mp4" },
+    "IMG-20240924-WA0004.jpg",
+    "IMG-20240924-WA0005.jpg",
+    "IMG-20240924-WA0006.jpg",
+    "IMG-20240924-WA0007.jpg",
+    "IMG-20240924-WA0008.jpg",
+    "IMG-20240924-WA0009.jpg",
+    "IMG-20240924-WA0010.jpg",
+    "IMG-20240924-WA0011.jpg",
+    "IMG-20240924-WA0012.jpg",
+    "IMG-20240924-WA0013.jpg",
+    "IMG-20240924-WA0014.jpg",
+    "IMG-20240924-WA0015.jpg",
+    "IMG-20240924-WA0017.jpg",
+    "IMG-20240924-WA0018.jpg",
+    "IMG-20240924-WA0019.jpg",
+    "IMG-20240924-WA0020.jpg",
+    "IMG-20240924-WA0021.jpg",
+    "IMG-20240924-WA0022.jpg",
+    "IMG-20240924-WA0023.jpg",
+    "IMG-20240924-WA0027.jpg",
+    "IMG-20240924-WA0028.jpg",
+    "IMG-20240924-WA0029.jpg",
+    "IMG-20240924-WA0030.jpg",
+    "IMG-20240924-WA0031.jpg",
+    "IMG-20240924-WA0032.jpg",
+];
+
+const itemsPerPage = 12;
+let currentPage = 1;
+let currentPreviewIndex = 0;
+let currentlyPlayingVideo = null;
+
+// Function to create media cards
+function createMediaCards(page) {
+    const container = document.getElementById('mediaContainer');
+    container.innerHTML = ''; // Clear existing content
+
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageItems = programSchedule.slice(startIndex, endIndex);
+
+    pageItems.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'media-card';
+
+        if (typeof item === 'string' && item.toLowerCase().endsWith('.jpg')) {
+            // It's an image
+            const img = document.createElement('img');
+            img.src = item;
+            img.alt = 'Birthday celebration image';
+            img.onclick = () => openPreview(startIndex + index);
+            card.appendChild(img);
+        } else if (typeof item === 'object' && item.videoSrc) {
+            // It's a video
+            const video = document.createElement('video');
+            video.controls = true;
+            video.innerHTML = `<source src="${item.videoSrc}" type="video/mp4">Your browser does not support the video tag.`;
+            video.onclick = (e) => {
+                e.preventDefault(); // Prevent default click behavior
+                openPreview(startIndex + index);
+            };
+            video.addEventListener('play', () => {
+                if (currentlyPlayingVideo && currentlyPlayingVideo !== video) {
+                    currentlyPlayingVideo.pause();
+                }
+                currentlyPlayingVideo = video;
+            });
+            card.appendChild(video);
+        }
+
+        container.appendChild(card);
+    });
+
+    updatePagination();
+    window.scrollTo(0, 0); // Scroll to top when changing page
+}
+
+// Function to update pagination controls
+function updatePagination() {
+    const paginationContainer = document.getElementById('pagination');
+    paginationContainer.innerHTML = '';
+
+    const totalPages = Math.ceil(programSchedule.length / itemsPerPage);
+
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Previous';
+    prevButton.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            createMediaCards(currentPage);
+        }
+    });
+    prevButton.disabled = currentPage === 1;
+    paginationContainer.appendChild(prevButton);
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.addEventListener('click', () => {
+            currentPage = i;
+            createMediaCards(currentPage);
+        });
+        if (i === currentPage) {
+            pageButton.disabled = true;
+        }
+        paginationContainer.appendChild(pageButton);
+    }
+
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            createMediaCards(currentPage);
+        }
+    });
+    nextButton.disabled = currentPage === totalPages;
+    paginationContainer.appendChild(nextButton);
+}
+
+// Function to open preview
+function openPreview(index) {
+    currentPreviewIndex = index;
+    const overlay = document.getElementById('previewOverlay');
+    const content = document.getElementById('previewContent');
+    const item = programSchedule[index];
+
+    content.innerHTML = '';
+
+    if (typeof item === 'string' && item.toLowerCase().endsWith('.jpg')) {
+        const img = document.createElement('img');
+        img.src = item;
+        img.alt = 'Birthday celebration image';
+        content.appendChild(img);
+    } else if (typeof item === 'object' && item.videoSrc) {
+        const video = document.createElement('video');
+        video.controls = true;
+        video.innerHTML = `<source src="${item.videoSrc}" type="video/mp4">Your browser does not support the video tag.`;
+        content.appendChild(video);
+
+        // Pause all videos in the background
+        pauseAllVideos();
+
+        // Set the current video as the playing video
+        currentlyPlayingVideo = video;
+    }
+
+    overlay.style.display = 'flex';
+}
+
+// Function to close preview
+function closePreview() {
+    const overlay = document.getElementById('previewOverlay');
+    overlay.style.display = 'none';
+    
+    // Pause all videos
+    pauseAllVideos();
+}
+
+// Function to pause all videos
+function pauseAllVideos() {
+    const allVideos = document.querySelectorAll('video');
+    allVideos.forEach(video => {
+        video.pause();
+        video.currentTime = 0;
+    });
+    currentlyPlayingVideo = null;
+}
+    
+// Function to change preview
+function changePreview(direction) {
+    currentPreviewIndex += direction;
+    if (currentPreviewIndex < 0) currentPreviewIndex = programSchedule.length - 1;
+    if (currentPreviewIndex >= programSchedule.length) currentPreviewIndex = 0;
+    openPreview(currentPreviewIndex);
+}
+
+// Event listeners for preview navigation
+document.querySelector('.preview-close').addEventListener('click', closePreview);
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePreview();
+    if (e.key === 'ArrowLeft') changePreview(-1);
+    if (e.key === 'ArrowRight') changePreview(1);
+});
+
+// Touch swipe functionality
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.getElementById('previewOverlay').addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+}, false);
+
+document.getElementById('previewOverlay').addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+}, false);
+
+function handleSwipe() {
+    if (touchEndX < touchStartX) changePreview(1);
+    if (touchEndX > touchStartX) changePreview(-1);
+}
+
+// Initial call to create media cards and pagination
+createMediaCards(currentPage);
+    </script>
+</body>
+</html>
