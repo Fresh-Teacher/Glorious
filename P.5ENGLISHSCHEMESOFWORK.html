@@ -17,7 +17,7 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
-      <title>P.3 Work</title>
+    <title>P.5ENGLISHSCHEMESOFWORK</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -202,11 +202,7 @@
            }
        }
        
-       .pagination-container {
-           display: flex;
-           justify-content: center;
-           margin-top: 20px;
-       }
+
        
        .pagination-button {
            padding: 10px;
@@ -223,10 +219,7 @@
            background-color: #e65100;
        }
        
-       .pagination-button:disabled {
-           background-color: #ccc;
-           cursor: not-allowed;
-       }
+
        
        .loading {
                    text-align: center;
@@ -448,10 +441,12 @@
                    }
                }
                .pagination-container {
-                   display: flex;
-                   justify-content: center;
-                   margin-top: 20px;
-               }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
                .pagination-button {
                    padding: 10px 20px;
                    margin: 0 5px;
@@ -465,6 +460,87 @@
                    background-color: #ccc;
                    cursor: not-allowed;
                }
+               .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        .pagination li {
+            margin: 0 3px;
+        }
+
+        .pagination button {
+            background-color: var(--light-orange);
+            border: none;
+            color: #333;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--dark-orange);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .active button {
+            background-color: var(--deep-orange);
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 8px 12px;
+            color: #333;
+        }
+
+        .jump-to-page {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .jump-to-page input {
+            width: 150px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid var(--medium-orange);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .jump-to-page button {
+            background: linear-gradient(145deg, var(--dark-orange), var(--deep-orange));
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .jump-to-page button:hover {
+            background: linear-gradient(145deg, var(--deep-orange), var(--dark-orange));
+        }
+
+        .jump-to-page .search-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        :root {
+            --light-orange: #FFE0B2;
+            --medium-orange: #FFB74D;
+            --dark-orange: #FF9800;
+            --deep-orange: #F57C00;
+        }
            </style>
 </head>
 <body>
@@ -560,11 +636,18 @@ function checkAuth(url) {
     <div id="cards-container" class="cards-container"></div>
     <div class="no-results" id="no-results" style="display: none;">No results found</div>
     <div class="pagination-container">
-        <button id="prevButton" class="pagination-button" onclick="changePage(-1)">Previous</button>
-        <button id="nextButton" class="pagination-button" onclick="changePage(1)">Next</button>
+        <ul class="pagination" id="pagination"></ul>
+        <div class="jump-to-page">
+            <input type="number" id="jump-to-page-input" min="1" placeholder="Jump to page">
+            <button onclick="jumpToPage()" title="Jump to page">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
     </div>
     <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-    <div id="pdf-viewer-modal">
+   <div id="pdf-viewer-modal">
         <div id="pdf-viewer"><br><br>
             <button class="close-button" onclick="closePdfViewer()">Close</button>
             <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
@@ -577,28 +660,136 @@ function checkAuth(url) {
             navLinks.classList.toggle('active');
         }
     
+          
         const pdfData = 
         [
   {
-    "pdfUrl": "Resources/P5/P5 SCHEMES/ENG/P.5 English Language schemes of work all terms-1.pdf"
+    "pdfUrl": "P.5 English Language schemes of work all terms-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 SCHEMES/ENG/P.5 English Language schemes of work all terms.pdf"
+    "pdfUrl": "P.5 English Language schemes of work all terms.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 SCHEMES/ENG/P.5 English Schemes of work term 1 - 3-1.pdf"
+    "pdfUrl": "P.5 English Schemes of work term 1 - 3-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 SCHEMES/ENG/P.5 English Schemes of work term 1 - 3-2.pdf"
+    "pdfUrl": "P.5 English Schemes of work term 1 - 3-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 SCHEMES/ENG/P.5 English Schemes of work term 1 - 3.pdf"
+    "pdfUrl": "P.5 English Schemes of work term 1 - 3.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 SCHEMES/ENG/P.5 English Schemes of work term I - III (1).pdf"
-  }
+    "pdfUrl": "P.5 English Schemes of work term I - III (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 COMPOSITION SCHEME OF WORK TERM 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 COMPREHENSION SCHEME OF WORK TERM ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 comprehension term iii.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 comprehension term iii-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 comprehension term one.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.5 eng comp term 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG GRAMMAR SCHEME 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.5 eng grammar term 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Eng Grammar term 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH LANGUAGE SCHEMES OF WORK (ecolebooks.com).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 English Language schemes of work all terms.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH SCHEME COMPOSITION AND COMPREHENSION TERM I.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH SCHEME TERM I.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 English Schemes of work term 1 - 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 English Schemes of work term I - III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 English Schemes of work term I - III-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 GRAMMAR SCHEME OF WORK TERM ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 GRAMMAR SCHEME TERM II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 GRAMMAR SCHEME TERM THREE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 TERM 3 COMPREHENSION SCHEME.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-PRIMARY-FIVE-ENG-SCHEME-OF-WORK_TEACHER.AC_ (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-PRIMARY-FIVE-ENG-SCHEME-OF-WORK_TEACHER.AC_.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.6 ENGLISH SCHEME OF WORK TERM I (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.6 ENGLISH SCHEME WORK TERM 1 - 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.6 ENGLISH SCHEME.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.6 ENGLISH SCHEME-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.6-PRIMARY-SIX-ENG-SCHEME-OF-WORK_T…C_.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 ENGLISH SCHEME OF WORK TERM ONE 1 (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 ENGLISH SCHEME OF WORK TERM ONE 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 GRAMMAR SCHEME OF WORK TERM ONE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIMARY FIVE SCHEME WORK ENGLISH.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/scheme of work english P.5 term 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 COMPOSITION AND COMPREHENSION SCHEME TERM II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 COMPOSITION AND COMPREHENSION SCHEME TERM III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 COMPOSITION SCHEME OF WORK  TERM.pdf"
+  },
 ]
         ;
+       
+
        
         let currentPage = 1;
         const itemsPerPage = 12;
@@ -650,13 +841,107 @@ function checkAuth(url) {
                 cardsContainer.appendChild(card);
             });
 
-            updatePaginationButtons();
+            updatePagination();
 
             if (filteredData.length === 0) {
                 document.getElementById('no-results').style.display = 'block';
             } else {
                 document.getElementById('no-results').style.display = 'none';
             }
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            const createPageButton = (page, text) => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = text || page;
+                button.onclick = () => goToPage(page);
+                if (page === currentPage) {
+                    li.classList.add('active');
+                }
+                if (text === '...') {
+                    button.disabled = true;
+                    li.classList.add('ellipsis');
+                }
+                li.appendChild(button);
+                return li;
+            };
+
+            // Previous button
+            pagination.appendChild(createPageButton(currentPage - 1, '←'));
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (startPage > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (startPage > 2) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+                pagination.appendChild(createPageButton(totalPages));
+            }
+
+            // Next button
+            pagination.appendChild(createPageButton(currentPage + 1, '→'));
+
+            // Disable prev/next buttons when at first/last page
+            pagination.firstChild.querySelector('button').disabled = currentPage === 1;
+            pagination.lastChild.querySelector('button').disabled = currentPage === totalPages;
+
+            // Update the max attribute of the jump-to-page input
+            document.getElementById('jump-to-page-input').max = totalPages;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayCards();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('jump-to-page-input');
+            const page = parseInt(input.value);
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                goToPage(page);
+                input.value = ''; // Clear the input after jumping
+            } else {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            }
+        }
+
+        // Add event listener for Enter key on the jump-to-page input
+        document.getElementById('jump-to-page-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function goToPage(page) {
+            if (page < 1 || page > Math.ceil(filteredData.length / itemsPerPage)) {
+                return;
+            }
+            currentPage = page;
+            displayCards();
+            window.scrollTo(0, 0);
         }
 
         function updatePaginationButtons() {
@@ -740,4 +1025,5 @@ function checkAuth(url) {
     
 </body>
 </html>
+
 

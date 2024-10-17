@@ -1,0 +1,4379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Welcome To Glorious Schools, #1 Academic Giant in Ugandan Educational Sector.">
+    <meta name="keyword"
+        content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
+    <meta name="author" content="Fresh Teacher">
+    <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
+    <link data-n-head="ssr" rel="manifest" href="/manifest.json" data-hid="manifest">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta property="og:site_name" content="Fresh Teacher's Library" />
+    <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
+    <title>P.7SCIENCEPASTPAPERS</title>
+    <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
+    <style>
+        body {
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+           margin: 0;
+           padding: 20px;
+           background: linear-gradient(to right, #ff9a9e, #fad0c4);
+           overflow-x: hidden; /* Prevent horizontal scrolling */
+           width: 100%; /* Ensure body takes full width */
+           box-sizing: border-box;
+       }
+       
+       h1 {
+           color: #e65100;
+           margin-bottom: 20px;
+           text-align: center; /* Center-align text for better readability on mobile */
+           font-size: 1.5em; /* Adjust font size for better readability on smaller screens */
+       }
+       
+       .search-container {
+           margin-bottom: 20px;
+           width: 100%;
+           max-width: 500px; /* Limit the width of the search container */
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+           padding: 0 10px; /* Add padding to prevent the search container from touching the edges */
+       }
+       
+       .search-input {
+           padding: 10px;
+           border-radius: 4px;
+           border: 1px solid #ddd;
+           width: 100%; /* Make search input take full width of the container */
+           font-size: 16px;
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+       }
+       
+       .cards-container {
+           display: grid;
+           grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+           gap: 20px;
+           width: 100%;
+           max-width: 1200px; /* Limit the width of the cards container */
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+           padding: 0 10px; /* Add padding to prevent cards from touching the edges */
+       }
+       
+       .no-results {
+           text-align: center;
+           font-size: 18px;
+           color: #e65100;
+           margin-top: 20px;
+           width: 100%;
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+           padding: 0 10px; /* Add padding to prevent text from touching the edges */
+       }
+       
+       .card {
+           border: none;
+           border-radius: 8px;
+           padding: 20px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           text-align: center;
+           background: #ffffff;
+           transition: transform 0.2s;
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+           width: 100%;
+       }
+       
+       .card:hover {
+           transform: scale(1.05);
+       }
+       
+       .card h3 {
+           margin: 0 0 10px 0;
+           color: #ff6f00;
+           font-size: 1em; /* Adjust font size for better readability on smaller screens */
+       }
+       
+       .view-button {
+           color: #ffffff;
+           background-color: #ff6f00;
+           padding: 10px 15px;
+           margin-top: 10px;
+           display: inline-block;
+           border-radius: 4px;
+           cursor: pointer;
+           text-decoration: none;
+           transition: background-color 0.2s;
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+           font-size: 1em; /* Adjust font size for better readability on smaller screens */
+       }
+       
+       .view-button:hover {
+           background-color: #e65100;
+       }
+       
+       #pdf-viewer-modal {
+           display: none;
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: rgba(0, 0, 0, 0.5);
+           justify-content: center;
+           align-items: center;
+           z-index: 1000;
+           opacity: 0;
+           transition: opacity 0.5s;
+       }
+       
+       #pdf-viewer {
+           width: 100%; /* Adjust as needed */
+           height: 100%; /* Adjust as needed */
+           background: #ffffff;
+           border-radius: 8px;
+           position: relative;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       }
+       
+       #pdf-viewer iframe {
+           width: 100%; /* Make iframe width 100% of parent */
+           height: 100%; /* Make iframe height 100% of parent */
+           border-radius: 8px;
+       }
+       
+       
+       .close-button {
+           position: absolute;
+           top: 10px;
+           right: 10px;
+           background: #d32f2f;
+           color: white;
+           border: none;
+           padding: 5px 10px;
+           cursor: pointer;
+           border-radius: 3px;
+           transition: background-color 0.2s;
+           font-size: 1em; /* Adjust font size for better readability on smaller screens */
+       }
+       
+       .close-button:hover {
+           background: #b71c1c;
+       }
+       
+       #scrollTopBtn {
+           display: none;
+           position: fixed;
+           bottom: 20px;
+           right: 20px;
+           z-index: 1000;
+           font-size: 18px;
+           border: none;
+           outline: none;
+           background-color: #ff6f00;
+           color: white;
+           cursor: pointer;
+           padding: 15px;
+           border-radius: 4px;
+           transition: background-color 0.2s;
+       }
+       
+       #scrollTopBtn:hover {
+           background-color: #e65100;
+       }
+       
+       @media (max-width: 768px) {
+           .search-container, .no-results, .cards-container {
+               padding: 0 10px; /* Adjust padding for smaller screens */
+           }
+       
+           .card {
+               padding: 15px; /* Adjust padding for smaller screens */
+           }
+       
+           .view-button {
+               padding: 8px 12px; /* Adjust button padding for smaller screens */
+           }
+       }
+       
+
+       
+       .pagination-button {
+           padding: 10px;
+           margin: 0 5px;
+           border: none;
+           background-color: #ff6f00;
+           color: white;
+           cursor: pointer;
+           border-radius: 4px;
+           transition: background-color 0.2s;
+       }
+       
+       .pagination-button:hover {
+           background-color: #e65100;
+       }
+       
+
+       
+       .loading {
+                   text-align: center;
+                   font-size: 16px;
+                   margin: 20px 0;
+                   display: none; /* Initially hidden */
+               }
+       
+               .loading .spinner {
+                   border: 4px solid rgba(0, 0, 0, 0.3);
+                   border-radius: 50%;
+                   border-top: 4px solid #3498db;
+                   width: 30px;
+                   height: 30px;
+                   animation: spin 1s linear infinite;
+                   margin: 0 auto;
+                   margin-bottom: 10px;
+               }
+       
+               @keyframes spin {
+                   0% { transform: rotate(0deg); }
+                   100% { transform: rotate(360deg); }
+               }
+               .navbar {
+                   background-color: #333;
+                   overflow: hidden;
+                   display: flex;
+                   justify-content: space-between;
+                   align-items: center;
+                   padding: 10px 20px;
+               }
+       
+               .logo {
+                   display: flex;
+                   align-items: center;
+                   color: white;
+                   text-decoration: none;
+               }
+       
+               .logo img {
+                   width: 40px; /* Adjust logo size */
+                   height: 40px; /* Adjust logo size */
+                   margin-right: 10px;
+                   border-radius: 50%;
+               }
+       
+               .title {
+                   font-weight: bold;
+                   font-size: 1.2rem;
+               }
+       
+               .toggle {
+                   font-size: 1.5rem;
+                   color: white;
+                   cursor: pointer;
+                   display: none; /* Initially hidden on larger screens */
+               }
+               .navbar {
+                   display: flex;
+                   justify-content: space-between;
+                   align-items: center;
+                   background-color: #ff8c00;
+                   padding: 1rem;
+                   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                   position: sticky;
+                   top: 0;
+                   width: 100%;
+                   z-index: 1000;
+               }
+       
+               .navbar .logo {
+                   display: flex;
+                   align-items: center;
+               }
+       
+               .navbar .logo img {
+                   width: 50px;
+                   height: auto;
+                   margin-right: 10px;
+               }
+       
+               .navbar .logo .title {
+                   color: white;
+                   font-size: 1.8rem;
+                   font-weight: bold;
+               }
+       
+               .navbar ul {
+                   list-style: none;
+                   display: flex;
+                   margin: 0;
+                   padding: 0;
+               }
+       
+               .navbar ul li {
+                   margin-left: 1rem;
+               }
+       
+               .navbar ul li a {
+                   color: white;
+                   text-decoration: none;
+                   padding: 0.5rem 1rem;
+                   display: block;
+                   transition: background-color 0.3s ease;
+                   font-size: 1.1rem;
+                   border-radius: 10px;
+               }
+       
+               .navbar ul li a:hover {
+                   background-color: #e06b00;
+               }
+       
+               .navbar .toggle {
+                   display: none;
+                   color: white;
+                   font-size: 1.8rem;
+                   cursor: pointer;
+               }
+               .logout-button {
+                   background: none;
+                   border: none;
+                   cursor: pointer;
+                   color: inherit;
+                   font-size: inherit;
+               }
+       
+               @media (max-width: 768px) {
+                   .navbar .toggle {
+                       display: block;
+                   }
+       
+                   .navbar ul {
+                       display: none;
+                       flex-direction: column;
+                       width: 100%;
+                   }
+       
+                   .navbar ul li {
+                       margin: 10px 0;
+                       text-align: center;
+                   }
+       
+                   .navbar ul li a,
+                   .navbar ul li .logout-button {
+                       width: 100%;
+                   }
+       
+                   .navbar ul.active {
+                       display: flex;
+                   }
+               }
+          /* Loading spinner styles */
+          .loading-spinner {
+                   position: fixed;
+                   top: 0;
+                   left: 0;
+                   width: 100%;
+                   height: 100%;
+                   background-color: rgba(255, 255, 255, 0.8);
+                   display: flex;
+                   justify-content: center;
+                   align-items: center;
+                   z-index: 9999;
+                   opacity: 0;
+                   pointer-events: none;
+                   transition: opacity 0.3s ease-in-out;
+               }
+       
+               .loading-spinner.show {
+                   opacity: 1;
+                   pointer-events: auto;
+               }
+       
+               .lds-ring {
+                   display: inline-block;
+                   position: relative;
+                   width: 80px;
+                   height: 80px;
+               }
+       
+               .lds-ring div {
+                   box-sizing: border-box;
+                   display: block;
+                   position: absolute;
+                   width: 64px;
+                   height: 64px;
+                   margin: 8px;
+                   border: 8px solid;
+                   border-radius: 50%;
+                   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+                   border-color: #ff6b6b transparent transparent transparent;
+               }
+       
+               .lds-ring div:nth-child(1) {
+                   border-color: #ff6b6b transparent transparent transparent;
+                   animation-delay: -0.45s;
+               }
+       
+               .lds-ring div:nth-child(2) {
+                   border-color: #ffa500 transparent transparent transparent;
+                   animation-delay: -0.3s;
+               }
+       
+               .lds-ring div:nth-child(3) {
+                   border-color: #ffff00 transparent transparent transparent;
+                   animation-delay: -0.15s;
+               }
+       
+               .lds-ring div:nth-child(4) {
+                   border-color: #00ff00 transparent transparent transparent;
+               }
+       
+               @keyframes lds-ring {
+                   0% {
+                       transform: rotate(0deg);
+                   }
+                   100% {
+                       transform: rotate(360deg);
+                   }
+               }
+               .pagination-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+               .pagination-button {
+                   padding: 10px 20px;
+                   margin: 0 5px;
+                   background-color: #ff6f00;
+                   color: white;
+                   border: none;
+                   border-radius: 5px;
+                   cursor: pointer;
+               }
+               .pagination-button:disabled {
+                   background-color: #ccc;
+                   cursor: not-allowed;
+               }
+               .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        .pagination li {
+            margin: 0 3px;
+        }
+
+        .pagination button {
+            background-color: var(--light-orange);
+            border: none;
+            color: #333;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--dark-orange);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .active button {
+            background-color: var(--deep-orange);
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 8px 12px;
+            color: #333;
+        }
+
+        .jump-to-page {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .jump-to-page input {
+            width: 150px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid var(--medium-orange);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .jump-to-page button {
+            background: linear-gradient(145deg, var(--dark-orange), var(--deep-orange));
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .jump-to-page button:hover {
+            background: linear-gradient(145deg, var(--deep-orange), var(--dark-orange));
+        }
+
+        .jump-to-page .search-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        :root {
+            --light-orange: #FFE0B2;
+            --medium-orange: #FFB74D;
+            --dark-orange: #FF9800;
+            --deep-orange: #F57C00;
+        }
+           </style>
+</head>
+<body>
+<!-- Loading spinner -->
+<div class="loading-spinner" id="loading-spinner">
+    <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<script>
+// Get the loading spinner element
+const loadingSpinner = document.getElementById('loading-spinner');
+
+// Show the loading spinner
+function showSpinner() {
+    loadingSpinner.classList.add('show');
+}
+
+// Hide the loading spinner
+function hideSpinner() {
+    loadingSpinner.classList.remove('show');
+}
+
+// Show the loading spinner before the page loads
+window.addEventListener('DOMContentLoaded', showSpinner);
+
+// Hide the loading spinner once the content is ready
+window.addEventListener('load', hideSpinner);
+
+// Handle the back/forward navigation
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        // Page was loaded from cache (user used back/forward button)
+        hideSpinner();
+    }
+});
+
+// Show the loading spinner when clicking a link
+document.addEventListener('click', (event) => {
+    const target = event.target.closest('a');
+    if (target && target.getAttribute('href') && 
+        !target.getAttribute('href').startsWith('#') && 
+        !target.getAttribute('target') &&
+        target.getAttribute('href') !== 'javascript:void(0);') {
+        event.preventDefault();
+        showSpinner();
+        setTimeout(() => {
+            window.location.href = target.getAttribute('href');
+        }, 500); // Delay of 500ms to simulate loading
+    }
+});
+
+// Authentication check function
+function checkAuth(url) {
+    // Your authentication logic here
+    const isAuthenticated = true; // Replace with your actual auth check
+
+    if (isAuthenticated) {
+        showSpinner();
+        setTimeout(() => {
+            window.location.href = url;
+        }, 500);
+    } else {
+        // Show login message or redirect to login page
+        const loginMessage = document.getElementById('login-message');
+        loginMessage.style.display = 'block';
+        setTimeout(() => {
+            loginMessage.style.display = 'none';
+        }, 3000);
+    }
+}
+</script>
+    <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="videos.html">Videos</a></li>
+            <li><a href="library.html">Library</a></li>
+        </ul>
+    </div>
+    <h1>Give Your Child The Best!</h1>
+    <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Search for content here..." onkeyup="filterCards()">
+    </div>
+    <div id="cards-container" class="cards-container"></div>
+    <div class="no-results" id="no-results" style="display: none;">No results found</div>
+    <div class="pagination-container">
+        <ul class="pagination" id="pagination"></ul>
+        <div class="jump-to-page">
+            <input type="number" id="jump-to-page-input" min="1" placeholder="Jump to page">
+            <button onclick="jumpToPage()" title="Jump to page">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
+   <div id="pdf-viewer-modal">
+        <div id="pdf-viewer"><br><br>
+            <button class="close-button" onclick="closePdfViewer()">Close</button>
+            <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+    <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+    
+        const pdfData = 
+        [
+  {
+    "pdfUrl": "P.7 2023 SCI SUPER SERIES - GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "P.7 2023 SCI SUPER SERIES.pdf"
+  },
+  {
+    "pdfUrl": "P.7 DEC SCI B.O.T 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "P.7 FEB- SCIE 2024..pdf"
+  },
+  {
+    "pdfUrl": "P.7 MID TERM ONE, 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 MOT 1 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "P.7 PLE PREP -SCI guide-1_034823.pdf"
+  },
+  {
+    "pdfUrl": "P.7 PLE SCI - SERIES 3 GUIDE_034835.pdf"
+  },
+  {
+    "pdfUrl": "P.7 PLE- SCI 3.pdf"
+  },
+  {
+    "pdfUrl": "P.7 PRIME MID 2024 SCI @JUV.pdf"
+  },
+  {
+    "pdfUrl": "P.7 PRIME SCI MID TERM 1 2024  @PROF. MOSES VIP(1).pdf"
+  },
+  {
+    "pdfUrl": "P.7 Rev Science.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI  ASSESSMENT.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI  BOT.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI - MID TERM 1 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI 0779680288.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI 3-1.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI BEGINNING OF FEB 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI BOT 1 24.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI BOT I 2024-1.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI BOT I 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI END OF FEB 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI FEB 1.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI KAMCEB TWO 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI MID TERM 1 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI MID TERM ONE GUIDE E-LEARN UG 2024-1.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI MID TERM ONE GUIDE E-LEARN UG 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI Mortar 2024 @Juv.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI PLACEMENT SET.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI SET 4.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI SSEB BOT.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI TESTING PAPER(1).pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCI Topical exam 2022.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCIE E-LEARN UG  MID TERM I 2024 - ALL RIGHTS RESERVED.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCIENCE BOT 1 2024-1.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCIENCE BOT 1 2024-2.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCIENCE BOT 1 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCIENCE E.O.T 1 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCIENCE EXAM, 2023.pdf"
+  },
+  {
+    "pdfUrl": "P.7 SCIENCE MARKING GUIDE MID TERM 1 2024.pdf"
+  },
+  {
+    "pdfUrl": "P.7 science mid.pdf"
+  },
+  {
+    "pdfUrl": "P.7 Term 2 topical tests science .pdf"
+  },
+  {
+    "pdfUrl": "p.7.sci Broad_BOT 2024.Join us on our best Science WhatsApp groups for daily discussion.pdf"
+  },
+  {
+    "pdfUrl": "P.L.E SCIENCE 2001.pdf"
+  },
+  {
+    "pdfUrl": "P7 INTEGRATED SCIENCE PLE MOCK EXAMINATION SUREKEY 2022..pdf"
+  },
+  {
+    "pdfUrl": "P7 prime BOT 1 SCI 2023.pdf"
+  },
+  {
+    "pdfUrl": "P7 SCI WAKISO INT A2.pdf"
+  },
+  {
+    "pdfUrl": "P7 SCIE BOT 1.pdf"
+  },
+  {
+    "pdfUrl": "P7 SCIE MID MARCH.pdf"
+  },
+  {
+    "pdfUrl": "P7 SCIE PRE-REG.pdf"
+  },
+  {
+    "pdfUrl": "P7 SCIE PRIME BOT 1.pdf"
+  },
+  {
+    "pdfUrl": "p7 scie tes.pdf"
+  },
+  {
+    "pdfUrl": "P7 Science.pdf"
+  },
+  {
+    "pdfUrl": "P7 TOPICAL SCIENCE QUESTIONS 2023.pdf"
+  },
+  {
+    "pdfUrl": "PEARL P.4 SCI HOME WORK WEEK TWO.pdf"
+  },
+  {
+    "pdfUrl": "PRE PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "PRIMARY SEVEN REVISION TEST ON ELECTRICITY.pdf"
+  },
+  {
+    "pdfUrl": "PRIMARY SEVEN SCHEM WORK SCI.pdf"
+  },
+  {
+    "pdfUrl": "SCIENCE TOPICAL QUESTIONS FOR P_7 TERM 1 (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/de6f14f7-bd9f-4ded-aa4b-199cf71aecdc-P.7 SCI PLACEMENT SET  - GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/DEC SCI MOCK GUIDE (SPECIAL SET 1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Dr BUKEDDE SCIENCE GUIDE .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Dr SCIENCE BUKEDDE .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Dr SCIENCE BUKEDDE MOCK .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Dr SCIENCE BUKEDDE PREPLE SET 1 (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/ENTEBBE PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/EXAMINATION 2023 INTERGRATED SCIENCE FOR P.6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/FRUKIGA PRE-PLE SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/GEC PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/GEC PRE-PLE SET 2 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Greater Buikwe MOCK Examination.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/HILLSIDE P7 TERM 3 SCIENCE SET 6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Hoima city Pre ple.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/INTERGRATED SCI MAKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/INTERGRATED SCI MAKING GUIDE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/IPPSA MOT 2 P7 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/JIM JUNIOR SCHOOL SCI exams.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/KALANGALA PLE MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/KAMPALA PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/KAMULI SCIE PRE REG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Kasese district mock sci pdf.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/KASSANDA MOCK WITH GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/KAYUNGA PLE MOCK 2023 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/kesk p7 science workbook term one.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Kikuube district mock examination .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/kolfram integgrated science mock marking guides 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/kolfram set 7 science exams 2023 pdf.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/kolfram set 8 SCI exams 2023 nn.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/LUWERO SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/LUWERO TRIAL SCIENCE TEST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/MAKINDYE PLE SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/MAKINDYE PRE REGISTRATION SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/MALCOM EXAMINATIONS BOARD .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/MBALE MOCK SCIENCE @ MR KIMULI DERRICK-0754336823-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/MBALE MOCK SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/MOCK 2023 SCIENCE BY JB 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/mother manjeri p7 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/M'RA DISTRICT SCIENCE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/NAKASANA SCIE PRE-PLE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/OTTO Essential Microbiology for Pharmacy and Pharmaceutical Science (Geoffs 2013).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P.7 BOT II SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P.7 MOCK PREPARATION SET TWO TERM 2 ( OUTREACH SCHOOLS EXAMINATIONS BOARD).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P.7 PRE PLE SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P.7 SCI PLACEMENT SET  - GUIDE (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P.7 Sci Prime Mid term 11 with it's guide .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P.7 SCI TESTING PAPER(1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P.7 SCI TESTING PAPER(1)-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P.7 SCIE Jerox B.O.T1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/p.7 science VSES BOT 2023 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P.7,TERM 3-PRE -PLE SET 3, 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P.7,TERM 3-PRE -PLE SET 5, 2022(1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P7 BROAD SCIENCE TERM 2 SET I.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P7 BROAD SCIENCE TERM 2 SET II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P7 SCI R MOCK SET 4..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P7 SCIENCE EOT 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P7 SCIENCE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/P7 SIPRO BOT 1 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PAKWACH DISTRICT MOCK SCIENCE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PES P.7 PRE MOCK SET TWO 2023 (MARKING GUIDE).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PES P.7 SCI - MID TERM TWO (MARKING GUIDE).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PES P7 SCIE MOT 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PLE 2020 MARKING SCHEME.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PLE 2022 SCIE GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PLE 2023 REAL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PLE ANALYSIS REPORT 2022 - Copy (3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PLE REPORT 2020 - Copy (3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PLE SCI 2023 DIDIX.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PLE SCI 2023 DIDIX-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PLE TIPS - Copy.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PLE_REPORTONWORKOFCANDIDATES-2022 - Copy (4).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRE P.L.E SCIENCE P.7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRE PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRE-MID TERM 2 SCI EXAMS 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRE-PLE P.7 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRE-PLE SCI SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIMARY SEVEN REVISION TEST ON ELECTRICITY.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Prime end of term 11 and it's guide .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIME EOT 3 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/prime mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIME PRE PLE SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIME PRE-PLE SCIE MAGIC SET IV.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIME PRE-PLE SET 2 SCI..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIME PRE-PLE SET 3 SCI..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIME SCIE PRE-PLE MAGIC SET 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIME SCIE PRE-PLE TRIAL SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Prime science p.6 EOT with its guide 2023..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIME SET SCIENCE MTC MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIME SPECIAL EXAM SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PRIME SPECIAL PAPER.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/PURSUIT OF EXCELLENCE EXAMINATIONS-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Pursuit of Excellence p.6 EOT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/REAL PLE 2023 SCIENCE  shared - E-Learn.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/REAL scie GUIDE - 9.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/RUBANDA DISTRICT MOCK SCIENCE GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Rubanda district Sci Mock 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SAFU PRE-PLE SCIENCE EXAM 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCI  BOT - II - 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCI BOT - II - GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Sci Broad mid term 112023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCI JOINT EXAM 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCI PLE ITEM 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCI PRE MOCK ASSESSMENT GUIDE ITEM 1of  3 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCI QUALITY GUIDE 22222.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCI Set 3 Guide.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCI SPECIAL MOCK TRIAL - 2- GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCI SPECIAL MOCK TRIAL - I - GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCI SPECIAL MOCK TRIAL - I - GUIDE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIE EXAM (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIE KAPSMA.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIE PRE-PLE BROADWAY SPECIAL SET 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Scie Set 5 Guide.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/science and english.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIENCE BOT THREE, SET ELEVEN.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIENCE BOT THREE, SET ONE (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIENCE BOT THREE, SET THREE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIENCE BOT THREE, SET TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCience making guide.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Science marking guideMOCK 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/science mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/science mocks 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Science Mocks.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIENCE P.7 PLE TARGET SET.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/science paper joint.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIENCE PART TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIENCE PLE 2000-2015 QUESTIONS AND ANSWERS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Science Set 4 Guide.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIENCE SPECIAL PAPER.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Science stem mock set ix.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SCIENTIFIC WRITING AND STUDY SKILLS EXAM JUNE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SET 1 SCI GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SET 2 SCIE GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SIMPLE MACHINES AND FRICTION.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Sipro Mock 2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SIPRO PRE PLE SCIENCE SET  6 AND GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SIPRO SCIE PRE-PLE SET 4 MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Sipro science pre PLE set one 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/sipro science special set.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SIPRO SET 4 PRE-PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SIPRO SPECIAL SET SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SIR APOLLO KAGGWA  SCHOOLS PRIMARY SEVEN SET II INTERGRATED  SCIENCE  TERM II 2016.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SKYLINE SCIE PRE-PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/special mock exam.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Standard High school zzana 2022 Pre-PLE Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/STANDARD PRIMARY EXAMINATIONS SCIENCE PRIMARY SEVEN.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SURE KEY PLMOCK EXAMS SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SURE KEY TARGET SERIES SCIE GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SUREKEY  PRE PLE TARGET SERIES SCIENCE 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SUREKEY PRE-REG SCIE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/surekey science target series exams 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Surekey Scimagic series 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/SUREKEY SUPER SERIES 23.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/TAAD EOT SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Tekart P.7 Science Revision Booklet 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Tekart P.7 Science Revision Booklet.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Tekart Science Revision Practice Book Vol 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/THE JEROX BEGINNING OF TERM 1 EXAMINATIONS 2023 P.4 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/The Prime examinations 2022 Pre-PLE Trial SET V science marking guide.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/The Sipro BOT 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/TORORO DISTRICT MOCKS SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/TR. JUSTUS PRIME SPECIAL EXAMS ALL 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/UMTA ENG and SCIE MOCKS 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/UMTA MARKING GUIDE SCIE (p1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/UMTA MARKING GUIDE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/UNEB PRIMARY LEAVING EXAMINATION 2023 INTEGRATED SCIENCE QUESTIONS WITH ANSWERS SECTION A AND SECTION B.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/UNEB PRIMARY LEAVING EXAMINATION 2023 INTEGRATED SCIENCE QUESTIONS WITH ANSWERS SECTION A TAKEN CARE OF BY C I B.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/WAKISO MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/WUSAA Science Mock Exams 2022-3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/BOBI WINE MOCK SCI MARKING GUIDE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/BROAD EXAMINATIONS PRE-PLE SETII 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/BROAD EXAMS P.4 SCIENCE..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/BROAD EXAMS SCIENCE BOT II 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/Broad P.7 Sci Set 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/BROAD PRE-PLE SCIE 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/BROAD SCIE P7 MOT 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/BULIISA SCIE PLE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/BUSIA SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p7/CONFI SCI.pdf"},
+    {
+  "pdfUrl": "https://fresh-teacher.github.io/p.7/004 MOCK P.7 SCI 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2015 PLE Science Past Paper.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2016 PLE Science Past Paper.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2017 PLE Science Past Paper.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2018 PLE Science Past Paper.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2019 PLE Science Past Paper.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2019 PLE science-min (3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2019 PLE science-min(0).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2019 PLE science-min.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2020 PLE SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2022 - PRE-PLE SERIES 2 SCI-GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2022 - PRE-PLE SERIES 22 SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2022 - PRE-PLE SERIES I SCI FRESH.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2022 - PRE-PLE SERIES I SCI GUIDE FRESH.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2022 - PRE-PLE SERIES I SCI GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2022 - PRE-PLE SERIES I SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/2022_PLE_MOCK_EXAMINATION.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/1696763401805_REAL SCI PLE - MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/A Dictionary of Science, Sixth Edition (Oxford Paperback Reference) ( PDFDrive ).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ACAB SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ACEI SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/AGAGO SCIE PLE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Amuria Mock 2023- Sci 08-19-2023 14.10.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ANKOLE PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ANKOLE SCIE PRE-PLE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ARINGA NORTH SCI MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ARUA SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BATANDA SCIE MOCK TERM 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BEC SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BECO SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BETTER EDUCATIONAL CONSULTANCY PRE-PLE SCIENCE SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BETTER EDUCATIONAL CONSULTANCY PRE-PLE SCIENCE SET 1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BETTER EDUCATIONAL CONSULTANCY PRE-PLE SCIENCE SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BETTER EDUCATIONAL CONSULTANCY PRE-PLE SCIENCE SET 3 (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BETTER EDUCATIONAL CONSULTANCY PRE-PLE SCIENCE SET 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BETTER EDUCATIONAL CONSULTANCY PRE-PLE SCIENCE SET 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BETTER EDUCATIONAL CONSULTANCY PRE-PLE SCIENCE SPOT ON SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BETTER EDUCATIONAL CONSULTANCY PRE-PLE SCIENCE SPOT ON SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BLUE PRINT SCI ITEM ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BOBI WINE PLE 3 OF 4 INTEGRATED SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BOBI WINE SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BOT III P7 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/bot P7 ii science .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BROAD EXAMINATION SCIENCE SET ll.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BROAD EXAMINATION SCIENCE SET ll-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Broad examinations 2022 Pre-PLE Trial SET II Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BROAD EXAMS SCIENCE PRE PLE SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BROAD EXAMS SCIENCE PRE PLE SET 1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BROAD PRE PLE SCIENCE SET III 2023_compressed.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BROAD PRE-MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Budaka SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BUGANDA MOCK 2023 Science from KEYS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Buganda Mock, Science .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BUIKWE PRE-PLE MOCK SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BUKEDDE MOCK SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BUKEDDE PASS PLE (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BUKEDDE SCI GUIDE @ MR KIMULI DERRICK-0754336823-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BUKEDDE SCIE MOCK ANSWERS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BUKOMANSIMBI MOCK SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DAFFODILS PLE MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DEC SCI GUIDE B.O.T 1  2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DEC SCI GUIDE PRE PLE SET 2 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DEC SCI MOCK  2022(SPECIAL SET 1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DEC SCI MOCK  2022(SPECIAL SET 1)-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DEC SCI MOCK SET 2 2022(special).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DEC SCI PRE PLE 2022 SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DEC SCI PRE PLE 2022 SET 1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DEC SCI PRE PLE 2022 SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DEC SCI PRE PLE GUIDE SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/DEC SCI PRE PLE SET 3 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Dr SCIENCE MASINDI MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/EEB SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/END OF TERM ONE SCIENCE P.7 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Entebbe Municipal Mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Entebbe Private Schools Mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/FINAL OFFICIAL GUIDE PLE SCIENCE 2022 TEACH & LEARN SCI. 0752041080.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/FINAL PRE PLE SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/FORT PORTAL SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/GREENHILL P.7 SCI SET 09 - e-LEARN.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/GREENHILL P.7 SCI SET 12 - e-LEARN.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Gulu City Mocks Sci 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Gulu sci mock 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Hill Side.SCI PRE PLE SET ELEVEN.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/HILLSIDE BOT 3 SCIE SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/HILLSIDE P. 7 MOCK SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/HILLSIDE PRE-MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Hillside.SCI PRE PLE SET TEN.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Hillside.SCI PRE PLE SET TWELVE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Hoima Diocese Mock 2023 Sci..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/HOIMA DIOCESE MOCK SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/HOIMA DIOCESE MOCK SCI_032637.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Hoima Diocese Mock SCIE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Hoima sci 2023 mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/HOIMA SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/HORM SCIE SET 4.docx p.7-main/p.7-main/exams/scie/HORM SCIE SET 5.docx p.7-main/p.7-main/exams/scie/HORM SCIE SET 6 done.docx p.7-main/p.7-main/exams/scie/HORM SCIE SET 8.docx p.7-main/p.7-main/exams/scie/HORM SCIE SET 9.docx p.7-main/p.7-main/exams/scie/Hormisdallen P.7 SCI PRE-PLE SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/IBANDA SCIE PLE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/INTEGRATED SCIENCE  BLUE PRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/INTERGRATED P7 SCIENCE ACTIVITY.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/INTERNAL MOCK SET I SCIENCE, 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ITEM 5 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/JEROX P7 BOT 2 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Jerox Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/JINJA SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/JOINT EXAMS SCIENCE P7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/JOINT P.7SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/jubra exam.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/JUBRA PRE-MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/JUBRA PRE-PLE SCIE SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/JUBRA PRE-PLE SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Kabale diocese pre mock Scie .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KABALE MUNICIPAL SCI MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Kakumiro District mock .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Kakumiro P.7 Sci Mock..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KAMPALA MADELA PRE PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KAMPALA PARENTS SCIE PRE-MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/kampala pre-mock scie.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Kampala Pri Sci Mocks 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Kampala primary schools' skyline examinations 2022 Pre-PLE SET IV science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KAMULI PLE SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KAMWENGE PLE MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KAPCHORWA SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KCCA Mock SCI 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KCCA MOCKS SCIE @ GALIWANGO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KCCA SCI GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KCCA SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KCCA SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KCCA SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KESK PLE REVISION EXAMS SCIENCE PLE 2022 Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KESK SCIENCE P.7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KIKONI SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KIKUUBE SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KMC SCI MOCK 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KMCEC Pre PLE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/kolfram bot P.7 science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Kolfram p7 scie.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/kolfram p7 science midterm set 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/kolfram P7. science end of term one exams 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/kolfram P7. science end of term one exams 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KOLFRAM Sci PREMOCK SET III 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/kolfram set III p7 exams integrates science with guide P7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KOLOLO SCI 8.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KUMI MOCK Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/KYEGEGWA SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Kyotera Mock SCI 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/LDM SCI 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/LIGHT ACADEMY PRE-MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/LIRA SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/LUGAZI 2023 SCI MOCK @MR KIMULI DERRICK-0754336823-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Luweero district Mock Sci.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/LWENGO SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/LWENGO SCIENCE PLE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/LYANTONDE DISTRICT MOCK SCIENCE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/LYANTONDE SCI @ MR KIMULI DERRICK-0754336823-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/LYANTONDE SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MARKING GUIDE P7 PLE SCIE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MASAKA CITY MOCK SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Masaka City Mock, science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MASAKA SCI_2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MASAKA SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Masindi District Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MASINDI MUNICIPALITY SCIENCE PRE MOCK 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MAYUGE SCIE PLE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MBALE PLE MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MBALE SCI PLE MOCK 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MBALE SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Mbarara Archdiocese Pre PLE   ..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MBARARA PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Mb'ra Archdiocese  SCI Pre-Mock 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MID TERM I SCIENCE 2023....pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MITOOMA SCI @MR KIMULI DERRICK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MITYANA DISTRICT MOCK SCI. 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MITYANA MUNICIPAL INTEGRATED SCIENCE MOCK 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MITYANA MUNICIPAL MOCK-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MMCAB MOCK SCIE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MOCK 2020 A3 - SCI i.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MOCK P.7 SCI NAMIREMBE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/mock SCi mitooma.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MOCK SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MORE ITEMS SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MORE MODERATED ITEMS SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MSK MOCK SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MUBENDE SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MUKONO  MUNICIPALITY MOCK 2023  INTEGRATED SCIENCE - NEW AND FINAL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MUKONO MOCKS SCI sperito.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MUKONO MUNICIPAL SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Mukono municipality Sci mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MUKONO SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/mukono science mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MUSAB PLE MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MUSAB SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/MUSAB SCIE PLE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/mwalimu Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NABBUNGA PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NAMAGUGA P7 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NAMAGUNGA PRE-PLE SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NAMAGUNGA SCIE PRE-PLE FINAL SET.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NAMAGUNGA SCIENCE PRE-PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NAMAYINGO SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NAMIREMBE DIO PRE MOCK SCI 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NAMIREMBE DIOCES SCI MOCK, 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NDEJJE MOT 2 SCIE P7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NEXUS MOCK SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NEXUS PRE PLE SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NEXUS SET IV SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NPEIA SCI MOCK SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/NTUNGAMO SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/OMEGA HUB SEVEN SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/OMEGA MASTER SCIENCE 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P. 7 End of Term I Examination.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P. 7 SCIENCE HILLSIDE MOCK SET 2 (ecolebooks.com).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 (A) SCIENCE ASSMENT 2 (1) KIBULI-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 (A) SCIENCE FEB 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 2023 SCI MAGIC SERIES - GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 2023 SCI MAGIC SERIES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 2023 SCI PLE MOCK - GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 2023 SCI PLE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 2023 SCI PLE SPECICAL MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 2023 SCI SUPER SERIES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 2023 SCI TARGET SERIES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 2023 SCI UNIQUE SERIES - GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 2023 SCI UNIQUE SERIES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 DEC SCI B.O.T 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 ENGLISH LESSON NOTES 2012.doc p.7-main/p.7-main/exams/scie/P.7 Good P sci.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 INTEGRATED SCIENCE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 INTERGRATED SCIENCE. 22_022707.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 magic set one.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 MID 3 SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 MOCK SCI 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE MOCK - SCI  EMMERGENCY PAPER.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE MOCK - SCI GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE MOCK - SCI GUIDE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE MOCK  -SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP  -SCI  3 GUIDE (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP  -SCI  3 GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP  -SCI  3 GUIDE_034829.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP  -SCI  3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP -SCI 2 GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP -SCI guide(0).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP -SCI guide.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP -SCI guide-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP -SCI guide-1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP -SCI(0).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE PREP -SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE SCI - SERIES 3 GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE SCI - SERIES 3 GUIDE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE SCI - SERIES 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE- SCI 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE- SCI 3-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE SPECIAL MOCK - SCI  GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PLE SPECIAL MOCK - SCI  GUIDE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PRE PLE SET 7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/p.7 PRE PLE SET III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 PRE-REGISTRATION_-SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 Rev Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 REVISION TEST PAPERS - Copy (3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI BOT I.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI EXAMS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI MAGIC TWO(0).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI MAGIC TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI MID TERM 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PAPER ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PLACEMENT SET  - GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PLACEMENT SET .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PLE PREP SET 1 answers-1 (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PLE PREP SET 1 answers-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PLE PREP SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PLE PREP SET 1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PRE MOCK 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PRE MOCK SET TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PRE PLE revision.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PRE PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PRE PLE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PREMOCK 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI PRE-REGISTRATION SET -3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI SET 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI TARGET TERM II  2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI THE WALK TO PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI. MOCK GOMBA FF.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCI-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE END OF TERM I 2019.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE MID 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE MOCK KAPSHA 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE PRE MOCK 22.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE PRE-END OF TERM 2 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/p.7 SCIE QUALITY CHECK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE SPECIAL MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE TOWER.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE VSES SET FOUR.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE VSES SET FOUR-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE VSES SET ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE VSES SET ONE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE VSES SET THREE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE VSES SET TWO 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIE VSES SUPER CHECK SET THREE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 science  pre-ple set  7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE  REAL PLE @2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE  SET XXIII.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 Science (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 -Science .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 Science 6.docx p.7-main/p.7-main/exams/scie/P.7 SCIENCE ASS 2021.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE E.O.T 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE E.O.T 1 EXAMS 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE END OF TERM 1 2022 SIPRO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 Science External Mock 2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE JOINT EDITED-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE -KAMOTA PRE-MOCKS 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE KAWEMPE SET 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE MAKING GUIDE E.O.T 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE MARKING GUIDE MID TERM 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE MARKING GUIDE MID TERM 1 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE MID TERM ONE, SET SIX 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE MID TERM TWO 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE NOTES 2020.docx p.7-main/p.7-main/exams/scie/P.7 SCIENCE PLE SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 science pre-mock set 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 science pre-mock set 2-final.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 science Pride.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE REVISION WORK DAY 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE SET 7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE SET XXIX.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE SET XXV.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE SPECIAL  PRE- P.L.E EXAMINATIONS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SCIENCE XXIV.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/p.7 science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 scince-pre set 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SPECIAL MOCK SCI (Autosaved).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SPECIAL MOCK SCI (Autosaved)-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SPECIAL SET  SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST NOTES TERM 2 AND 3-.doc p.7-main/p.7-main/exams/scie/P.7 SST NOTES TERM 2 AND 3-1-1.doc p.7-main/p.7-main/exams/scie/P.7 surekey special mock-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7_SCI_PLE_PREP_SET 2 GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7_SCI_PLE_PREP_SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7_SCI_PLE_PREP_SET 2-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7_SCI_SET_6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7_SCI_SET_6-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7_SCI_SET_8.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.-7-SCIENCE Hillside Mock SET-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-Science-Activity-on-liquids.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.-7-SCIENCE-Mock Exam SET-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-science-Recess-Work-EXAM_TEACHER.AC_.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-Science-Set-1 (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SCIENCE-WORKBOOK-TERM-ONE..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SCI-SET-5-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SCI-SET-III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SCI-Week-2-Test-EXAM_TEACHER.AC_.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SCI-Week-3-Test-EXAM_TEACHER.AC_.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SPECIAL-SET-SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.L.E SCIENCE 1998.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.L.E SCIENCE 1999.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.L.E SCIENCE 2000.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.L.E SCIENCE 2001.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.L.E SCIENCE 2002.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.L.E SCIENCE 2004.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.L.E SCIENCE 2006.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.L.E SCIENCE 2007.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.L.E SCIENCE 2018.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.L.E WARM-UP EXAMINATIONS  October2022 Integrated Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P6 AND P7 NEW COURSEWORK  REVISION WORKBOOK..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7  INTEGRATED SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7  SCIENCE LESSON  NOTES.docx p.7-main/p.7-main/exams/scie/P7  science notes TERM I, II, III_0.doc p.7-main/p.7-main/exams/scie/P7 BOT II SCI 2023 SIPRO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 BOT II SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 BROAD SCIE TERM 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 HUB SCIE TERM 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 INTEGRATED SCIENCE MARKING GUIDE PRE-PLE EXAMINATIONS SERIES 2 SUREKEY EXAMINATIONS BOARD 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 INTEGRATED SCIENCE PLE MOCK EXAMINATION SUREKEY 2022..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 INTEGRATED SCIENCE PLE MOCK EXAMINATION SUREKEY 2022.-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 INTEGRATED SCIENCE PRE-PLE EXAMINATIONS SERIES ONE SUREKEY EXAMIINATIONS BOARD 2022..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/p7 joint mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 Kitgum Municipal Science PLE Mock Term II 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 Kitgum Municipal Science Pre PLE Term III 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 MID TERM SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 MOCK 2022 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 Mortar Sci End of term 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 PRE P.L.E MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 PRE PLE SCIE & MG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 PRE PLE SCIE _ MG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 PRE PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 prime BOT 1 SCI 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 prime BOT 1 SCI 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 PRIME BOT 1 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCI PLE PREP SET 1_230918_082514.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCI PLE PREP SET 3_230609_111738.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCI R MOCK SET 1..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCI R MOCK SET 3. .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCI R MOCK SET 7..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCI SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCI SET 1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCI SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCI SET 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCI WAKISO INT A2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIE EOT 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIE MID TERM 2 2023  SET 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIE set 10.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIE TERM 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 Science (3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE BOT II (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE BOT II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE END OF HOLIDAY.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE END OF TERM 1 EXAMINATIONS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE EXAM (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE MAGICAL SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE MID MARCH.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE MOCK KCCA.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 Science mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE PRE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE PRE REG MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE PRE-END OF TERM ONE ASSESSMENT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SCIENCE PRE-P.L.E JOINT EXAMINATION.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 ScienceExam PURSUIT EDUCATION SERVICES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SPECIAL EXAM SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7_HALF_TERM_WORK,_Term_one_2020_Basic_Science_and_Health_Education.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7_INTERGRATED_SCIENCE_REVISION_EXAM_NAMAGUNGA_PRIMARY_BOARDING.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7_Science_6May2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7_Science_set8_29April2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PAMPHLET OF SCIENCE QUESTIONS TO PASS P.L.E.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PASS PLE 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PASS PLE ALL SUBJECTS - Copy.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PASS PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PERFECT SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PERSUIT SCIENCE MAGIC SET.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PES - SPECIAL SET SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PES P.7 PRE MOCK SET TWO 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PES P.7 SCI - MID TERM TWO 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PES PRE-MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PES SCIE SPECIAL SET.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE 2014 SCIENCE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE 2020 - MEB, SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE 2020 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE 2022 Science tekartlearning.com (4).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE 2022 Science tekartlearning.com.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE 2022 Science tekartlearning.com-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE 2022 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE 2023 SCIENCE MARKING GUIDE BY BES-Ug_112916.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE INTEGRATED SCIENCE 2020-2000docx.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE INTEGRATED SCIENCE GUIDE 2022 TEACH & LEARN SCI. .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE INTEGRATED SCIENCE GUIDE 2022 TEACH & LEARN SCI. -1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE INTEGRATED SCIENCE GUIDE, 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE MAGIC SCI 333333.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE PAST PAPERS  INTERGRATED SCIENCE 2019.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE PROPOSED MARKING GUIDE FOR SCIENCE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE QUESTIONS ABOUT ELECTRICITY.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE QUESTIONS ABOUT ELECTRICITY-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE QUESTIONS ON ACCIDENT AND FIRST AID.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE QUESTIONS ON ACCIDENT AND FIRST AID-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE QUESTIONS ON SOUND ENERGY.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCI 2014.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCI 2015.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCI 2016.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCI 2017.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCI 2018.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCI MAGIC 333333 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCI. QUESTION BANK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCI.MUTEESA.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCIE GUIDE 2015.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ple scie.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCIENCE 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCIENCE MARKING GUIDE 2019.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE SCIENCE MARKING GUIDE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE science tips.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE TIPS - Copy (3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE_REPORTONWORKOFCANDIDATES-2022 - Copy (3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE_Science MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE_Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PLE-SCIENCE-216.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE - PLE EXAMINATIONS SCIENCE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE - PLE EXAMINATIONS SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE MOCK  SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE P.L.E SCI NAKASANA (KABOJJA).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE P.L.E SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE PLE JOINT SCIENCE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE PLE P7 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE PLE SCI SET 5 PS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE PLE SCI SET 9 F.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE PLE SCI SET 10 F.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE PLE SCIE P7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE PLE SCIENCE SET 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE PLE SET 2 SCI FRA.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE PLE SET 2 SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE PLE SET TWO SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PREPARING AND INVESTING IN RETIREMENT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SCIENCE SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SCIENCE SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SCIENCE SET 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SERIES 2 SCI-GUIDE 2022 -.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SERIES 2 SCI-GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SERIES I SCI 2022 -.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SERIES I SCI GUIDE 2022 -.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SERIES I SCI GUIDE FRESH 2022 -.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SERIES I SCI GUIDE FRESH.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SERIES I SCI GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE SERIES I SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRE-PLE Special Test Set III 2022 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIDE PRE MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/primary seven integrated Science COVID-19 doc.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIMARY SEVEN SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIMARY-SEVEN-INTERGRATED-SCIENCE-REVISION-QUESTIONS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME MOCK 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/prime pre mock 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/prime pre mock 2023-1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/prime pre ple Sci set 6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE PLE SCI SET SIX 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-PLE SCIE SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-PLE SCIE SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-PLE SCIE SET 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-PLE SCIE SET 5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-PLE SET 2 SCI MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-PLE SET 3  SCI MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-PLE SET 4 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-PLE1 SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME PRE-TRIAL PLE SCIENCE MG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME SCI SET IV.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME SCIE PRE-PLE MAGIC SET 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME SCIE PRE-PLE TRIAL SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME SCIE PRE-PLE TRIAL SET 2 GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME SCIENCE PRE PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME SET IV SCI & SST MG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME SET IV SCI _ SST MG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIME-MAGIC SET SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIVATE SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PURSUIT P7 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Raayat Islamic SCI Mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Raayat Islamic SCI Mock-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/REAL SCI PLE - 9 - 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/REAL SCI PLE - MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/REAL SCI Supplement PLE - 1 -2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/REAL SCI Supplement PLE - 2-2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/REAL SCI Supplement PLE - 3 -2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/REAL scie GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/research science 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Revision WORRIERS special Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Rukungiri district mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Rukungiri Sci Mock 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Scence PLE Marking Guide 2023 Tekart Learning.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 1- 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 1- 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 1- 2023-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 1- GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 2- 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 2- GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 3- 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 3- 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 4- 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 4- 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 4- 2023-1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  - 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  -5 - 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE  -8 - 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE 2022 - SET  8(0).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  REAL PLE 2022 - SET  8.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SET EIGHT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SET FIVE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SET FOUR.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SET NINE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SET SEVEN.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SET SIX.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SET THREE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SET TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SPECIAL MOCK TRIAL - 2- 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SPECIAL MOCK TRIAL - 2- 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SPECIAL MOCK TRIAL - 2- 2023-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SPECIAL MOCK TRIAL - I - 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SPECIAL MOCK TRIAL - I - 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SPECIAL MOCK TRIAL - I - 2023-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI  SPECIAL MOCK TRIAL - I - 2023-3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI 1ST OCTOBER 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI 10.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sci BOT1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI E-LEARN UG PRE PLE GUIDE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI KCCA MOCK  2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI KIYINDA MOCK Tr.Sam.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/sci marking guide.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI MOCK MORTAR BY JUVENTINE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI MOCK SET 6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI MOCK SET 7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI MOD ITEM 3 ,4 and 5_compressed.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI MOD ITEM 15 of 15-compressed.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI MODERATED.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI MODERATED_052309.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI MONDAY 25TH.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sci P.7 sipro bot 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 1 BLUEPRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 2 BLUEPRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 3 BLUEPRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 4 BLUEPRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 4_041410.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 5 BLUEPRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 5_040416.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE - 8.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE GUIDE - 1 BLUEPRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE GUIDE - 2 BLUEPRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE GUIDE - 3 BLUEPRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE GUIDE - 4 BLUEPRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE GUIDE - 5 BLUEPRINT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE GUIDE - 6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE GUIDE - 7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE GUIDE - 8.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE PREP III, 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE-1_040110.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PLE-2_041345.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PRE – PRIMARY LEAVING EXAMINATION.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PRE MOCK ASSESSMENT -2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/sci pre mock set 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PRE MOCK SET TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PRE- PLE 2022 set 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PRE PLE SET 3   2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PRE PLE SET SEVEN.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PRE PLE SET TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PREP 4, 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI PRE-PLE I  7.docx p.7-main/p.7-main/exams/scie/SCI REAL PLE -5 -.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI REAL PLE -10 - 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI REVISION ONE 23-Sep-06-10-26.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SET 2, 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SET 2, 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SET 7(1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SET 7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SET 7-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SET 10.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SET 13.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SET 17.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/sci set three.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/sci set three-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sci sipro set 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SPECIAL MOCK  ASSESSMENT -2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SPECIAL MOCK GUIDE-2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI SUPER SET TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI TIPS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI.  PLE. 2022. Baluku.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI.Mbarara City mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE DIAGRAMS (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE DIAGRAMS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE E-LEARN P.5 TERM III 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE GO ITEMS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE HUB SET 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE item.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE MOD items 6, 7 and 8 of 15 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE MODERATED ITEMS 2 of 15   2023_compressed.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE MOT 2 SIPRO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE P.7 surekey special mock-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Scie P7 PRE PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE PAPER.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE PLE -7-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE PLE -7--1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE PLE GUIDE 2017.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/scie PRE PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Scie Prime Mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE PRIME PRE-PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE SET 4.docx p.7-main/p.7-main/exams/scie/SCIE SIPRO PRE PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE SUREKEY UNIQUE SETS MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIE.special mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE  SET ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science _08_02_2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE AT HAND.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE AT HOME.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science Bug Mock.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science Bug Mock-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE CODE 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE ÈDITED.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE E-LEARN UG PRE PLE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE EXAMS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE FACTS TEST_012839.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE ITEM 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE ITEM 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science Jinja mock 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/science joint 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE JOINT PRE PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE KALUNGU_060817.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science La mennais Pre-PLE 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE MARKING GUIDE FOR KCCA MOCK 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE MARKING GUIDE FOR TRS' INTERVIEW 2023 SIR APOLLO KAGGWA SCHOOLS-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/science MASAKA PRE-PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE MID TERM SET ONE, 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE MOCK 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science Mock 2023Kitgum m.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE MOCK KAKUMIRO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/science mocks_08_16_2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE MPIGI DISTRICT PRE-PLE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE MT2, SET FOUR.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE MT2, SET THREE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE MT2, SET TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE NAPSA PRE-MOCK SET I 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE National mock championship 2023 V.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE NTOROKO MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE P.7 ENTRANCE_1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science P.7 Municipal.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE P.7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science P7 discussion.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/science P7 JOINT PRE PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PAPER II P.7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/science ple 2023 all items.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PLE tipes.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PLE TIPS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PLE TIPS-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/science PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science pre mock 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science Pre- Mock Set 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PRE MOCK SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PRE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PRE MOCK-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/science prep 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PRE-P.L.E JOINT EXAMINATION.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PRE-PLE, SET FOUR.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PRE-PLE, SET ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PRE-PLE, SET THREE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science Pre-PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE PURSUIT EXAMINATIONS BOARD magic SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE REAL -6-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE RECESS HOMEWORK FOR P.4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE RECESS HOMEWORK FOR P.5 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE SET FIVE, 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE SET FIVE, 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE SET FOUR, 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE SET THREE, 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE SET TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science Sipro set 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE SIPRO SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE TAAND BOT 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE TOPICAL  TEST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE TOPICAL QUESTIONS FOR P_7 TERM 1_220810_225406.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-8.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-9.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/science-10.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/science-11_10_2023(1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-2008-PLE-QUESTIONS-WITH-ANSWERS-UNEB-PAST-PAPER-REVISION-GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-2009-PLE-QUESTIONS-WITH-ANSWERS-UNEB-PAST-PAPER-REVISION-GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-2010-PLE-QUESTIONS-WITH-ANSWERS-UNEB-PAST-PAPER-REVISION-GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SCIENCE-2011-PLE-QUESTIONS-WITH-ANSWERS-UNEB-PAST-PAPER-REVISION-GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science-PLE-2020-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science-Topical-Questions-for-P.4(1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Science-Topical-Questions-for-P.4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SEB Science pre PLE with MG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SEETA EDUC SCI SET 4  2022(1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SEETA EDUC SCI SET 4  2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SEETA-EXAMINATIONS COMMITTEE SPECIAL SET FOUR 2022 Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SERERE SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SET 1 SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SET 1 SCIENCE.docx p.7-main/p.7-main/exams/scie/SET 2 SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SET 2 SCIENCE.docx p.7-main/p.7-main/exams/scie/SET 3 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SET 11 SCI.docx p.7-main/p.7-main/exams/scie/SET-1-SCIENCE-HALF-TERM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SET-2-SCIENCE-HALF-TERM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SET-3-SCIENCE-HALF-TERM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SET-4-SCIENCE-HALF-TERM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SET-5-SCIENCE-HALF-TERM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO BOT 2 P7 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO BOT 3 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO BOT II SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/sipro mid term two science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/sipro mid term two science-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO MOCK SCE TERM 2 pdf.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO P5 SCIENCE BOT3 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO P7  MOT SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO P7 EOT 1 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO P7 PREMIUM SET EOT 2 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO PRE PLE SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO PRE PLE SET II SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO PRE PLE SET V AND GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO PRE-MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO PRE-PLE SCIE SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO PRE-PLE SCIE SET 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sipro Pre-PLE set 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCI 2023 MOCK @MR KIMULI DERRICK-0754336823-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCI 2023 MOCK @MR KIMULI DERRICK-0754336823--1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sipro sci set 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCIE BOT 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCIE EXAMINERS INTERVIEW.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/sipro scie mid p6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCIE MOCK (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCIE PRE PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCIE PRE-MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCIE SET 1 MG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCIE SPECIAL SET.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCIENCE EXAMINER'S INTERVIEW.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sipro Science mid march.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sipro Science mock set 2 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SCIENCE PRE-PLE SET ONE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPRO SET III SCI. J.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sipro Special Sci Mock 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SIPS Integrated Science Mock Exams.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sir Apollo Kaggwa Schools 2022 HUB-TEST SET IV TERM 3 P7 Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sir Apollo Kagwa Holiday Pack Sci P.7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SKYLINE P7 EOT 1 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SKYLINE PRE-MOCK SCIE (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SKYLINE PRE-MOCK SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SKYLINE SCI PRE PLE SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SKYLINE SCIE EOT 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SKYLINE SCIE FINAL PLE SET.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SKYLINE SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SKYLINE SCIE PRE-MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/skyline science P.7 ple  set -01.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SKYLINE SCIENCE PRE-PLE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SOROTI SCI MOCK 2023 @ MR KIMULI DERRICK-0754336823.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SPE P7 SCIE TERM 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SPECIAL SET SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SPOTTING PAPER SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SSEB PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ST FRANCIS SCI PRE PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ST. MARCELINO PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ST.SALVA Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ST.SALVATORE PRI SCHOOL SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STAHIZA P7 Science 2015.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STAHIZA P7 Science 2016.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STAHIZA P7 Science 2017.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STAHIZA P7 Science 2018.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STAHIZA P7 Science 2019.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STANDARD KOLFRAM PRE PLE SCIENCE SET IV 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/standard-high-Zan-scie-p-7-oct-20155.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STECO SCIENCE PRE-PLE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Stem examinations Board 2022 Pre-PLE Trial SET IV Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STEM INTEGRATED SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STEM MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Stem pre ple set 1 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STEM PRE-PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/STEM PR-PLE SCIE SET XI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Succ Mock Sci 6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SURE KEY PLE 2021 - SCI I.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SURE KEY PLE 2021 - SCI III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Sure key Pre-PLE Magic series Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SURE KEY SCI MOCK 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SURE KEY SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY EXAMINATIONS BOARD PRE-PLE TARGET SERIES 2022 INTEGRATED SCIENCE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY EXAMINATIONS BOARD PRE-PLE TARGET SERIES 2022 SCIENCE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY EXAMINATIONS BOARD PRE-PLE TARGET SERIES 2022 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY EXAMINATIONS BOARD PRIMARY LEAVING TARGET SET 2022 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY P7 SCIENCE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY P7 SCIENCE MARKINGGUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY PRE-PLE EXAMINATION SERIES ONE 2022 SCIENCE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY PRE-PLE EXAMINATION SERIES ONE 2022 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY PRE-PLE EXAMINATION SERIES TWO 2022 SCIENCE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY PRE-PLE EXAMINATION SERIES TWO 2022 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY PRE-PLE TARGET SERIES 2022 SCIENCE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY SCIE GUIDE (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY SCIE GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY SCIE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY SCIE PRE-PLE TARGET SERIES GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY SCIENCE GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY SCIENCE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Surekey special mock Sci 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SUREKEY UNIQUE SET SCIE MARKING GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/TAAND SCIE P.7 BOT 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/THE EYE P.7  SCIENCE 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/The jerox end of term 1 P.7 Science 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/THE PRIME EXAMINATIoNs . PRE - PLE ScIENcE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/The Prime examinations 2022 Pre-PLE Trial SET V Science (Abridged Curriculum).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/The prime SCIENCE pre-ple set 4 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/The real 2020 PLE SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/THE ROSHA SET III SCI..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/THE VERIFIED UNEB BLUE PRINT SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/TIPS FOR PLE SCIENCE - 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/TIPS FOR PLE SCIENCE - 2022-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Tips for PLE science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/TR.PAUL EPIDU PLE SCI GUIDE-2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UMAKA & BISHOP DDUNGU JOINT SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UMTA JOINT MOCK SCIENCE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UMTA SCI MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UNEB PLE SCI 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UNEB PLE SCIE 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UNEB PLE SCIENCE .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UNEB PLE-2022 INTERGRATED SCIENCE .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UNEB SCIENCE EMERGENCY PAPER 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UNEB SCIENCE EMERGENCY PAPER 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UNEB-PLE-2022-INTERGRATED-SCIENCE-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UNEMAC_MOCK_SCI 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UNIQUE P.7-SCI 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UPSHA SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UTEB SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Wakiso District Mock 2020-6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Wakiso District Mock 2020-7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/WAKISO MOCK SCI 2022 @MR.KIMULI DERRICK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/wakiso mock science 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/WAKISO MOCK SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/WAKISO SCI MOCK 2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/WAKISO SCIE MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Weekly Homework P7 - Copy.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/WENIPSHA SCIE REGIONAL MOCK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/WUSAA Science Mock Exams 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/𝐊𝐢𝐫𝐮𝐡𝐮𝐫𝐚 𝐃𝐢𝐬𝐭𝐫𝐢𝐜𝐭  𝐌𝐨𝐜𝐤 𝐒𝐂𝐈.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/𝐏𝐋𝐄 𝐒𝐂𝐈 𝐈𝐓𝐄𝐌 0322-Sep-05-55-17_unlocked.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/𝐏𝐋𝐄 𝐒𝐂𝐈 𝐈𝐓𝐄𝐌.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/𝐏𝐋𝐄 𝐒𝐄𝐓 𝐎𝐍𝐄 - Copy (3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/𝐏𝐋𝐄 𝐒𝐄𝐓 𝐓𝐖𝐎 - Copy (3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/𝐏𝐑𝐄-𝐏𝐋𝐄 𝐒𝐂𝐈.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/𝐓𝐡𝐞 𝐁𝐞𝐚𝐬𝐭 𝐒𝐮𝐫𝐞 𝐊𝐞𝐲 𝐬𝐜𝐢𝐞𝐧𝐜𝐞 𝐒𝐩𝐞𝐜𝐢𝐚𝐥 𝐌𝐨𝐜𝐤 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/𝐓𝐡𝐞 𝐃𝐞𝐬𝐞𝐫𝐭𝐞𝐫 𝐒𝐮𝐫𝐞 𝐊𝐞𝐲 𝐬𝐜𝐢𝐞𝐧𝐜𝐞 𝐒𝐩𝐞𝐜𝐢𝐚𝐥 𝐌𝐨𝐜𝐤 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/𝐓𝐡𝐞 𝐝𝐞𝐬𝐞𝐫𝐭𝐞𝐫 𝐏.7 𝐒𝐜𝐢𝐞𝐧𝐜𝐞 𝐄𝐱𝐚𝐦𝐬.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/004 MOCK P.7 SCI 2023.pdf"}
+]
+        ;
+    
+       
+        let currentPage = 1;
+        const itemsPerPage = 12;
+        let filteredData = pdfData;
+        let isLoading = false;
+        let endOfData = false;
+    
+        function extractNameFromUrl(pdfUrl) {
+    const parts = pdfUrl.split('/');
+    const fileName = parts[parts.length - 1].replace('.pdf', '');
+    // Remove special characters except '&' and replace with spaces
+    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&]/g, ' ');
+    // Remove hyphens and underscores and replace with spaces
+    let nameWithoutHyphensUnderscores = nameWithoutSpecialChars.replace(/[-_]/g, ' ');
+    // Capitalize all letters
+    let capitalizedWords = nameWithoutHyphensUnderscores.toUpperCase();
+    return capitalizedWords;
+}
+
+
+
+    
+        function createCard(pdf) {
+            const card = document.createElement('div');
+            card.className = 'card';
+    
+            const title = document.createElement('h3');
+            title.textContent = extractNameFromUrl(pdf.pdfUrl);
+            card.appendChild(title);
+    
+            const viewButton = document.createElement('a');
+            viewButton.className = 'view-button';
+            viewButton.textContent = 'VIEW';
+            viewButton.onclick = () => openPdfViewer(pdf.pdfUrl);
+            card.appendChild(viewButton);
+    
+            return card;
+        }
+    
+        function displayCards() {
+            const cardsContainer = document.getElementById('cards-container');
+            cardsContainer.innerHTML = ''; // Clear previous cards
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const currentItems = filteredData.slice(start, end);
+
+            currentItems.forEach(pdf => {
+                const card = createCard(pdf);
+                cardsContainer.appendChild(card);
+            });
+
+            updatePagination();
+
+            if (filteredData.length === 0) {
+                document.getElementById('no-results').style.display = 'block';
+            } else {
+                document.getElementById('no-results').style.display = 'none';
+            }
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            const createPageButton = (page, text) => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = text || page;
+                button.onclick = () => goToPage(page);
+                if (page === currentPage) {
+                    li.classList.add('active');
+                }
+                if (text === '...') {
+                    button.disabled = true;
+                    li.classList.add('ellipsis');
+                }
+                li.appendChild(button);
+                return li;
+            };
+
+            // Previous button
+            pagination.appendChild(createPageButton(currentPage - 1, '←'));
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (startPage > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (startPage > 2) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+                pagination.appendChild(createPageButton(totalPages));
+            }
+
+            // Next button
+            pagination.appendChild(createPageButton(currentPage + 1, '→'));
+
+            // Disable prev/next buttons when at first/last page
+            pagination.firstChild.querySelector('button').disabled = currentPage === 1;
+            pagination.lastChild.querySelector('button').disabled = currentPage === totalPages;
+
+            // Update the max attribute of the jump-to-page input
+            document.getElementById('jump-to-page-input').max = totalPages;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayCards();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('jump-to-page-input');
+            const page = parseInt(input.value);
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                goToPage(page);
+                input.value = ''; // Clear the input after jumping
+            } else {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            }
+        }
+
+        // Add event listener for Enter key on the jump-to-page input
+        document.getElementById('jump-to-page-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function goToPage(page) {
+            if (page < 1 || page > Math.ceil(filteredData.length / itemsPerPage)) {
+                return;
+            }
+            currentPage = page;
+            displayCards();
+            window.scrollTo(0, 0);
+        }
+
+        function updatePaginationButtons() {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage >= Math.ceil(filteredData.length / itemsPerPage);
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            displayCards();
+            window.scrollTo(0, 0);
+        }
+    
+        function openPdfViewer(pdfUrl) {
+            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfIframe = document.getElementById('pdf-iframe');
+            pdfIframe.src = pdfUrl;
+            pdfViewerModal.style.display = 'flex';
+            setTimeout(() => {
+                pdfViewerModal.style.opacity = '1';
+                pdfViewer.style.transform = 'translateY(0)';
+            }, 10);
+        }
+    
+        function closePdfViewer() {
+            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfIframe = document.getElementById('pdf-iframe');
+            pdfViewer.style.transform = 'translateY(100%)';
+            pdfViewerModal.style.opacity = '0';
+            setTimeout(() => {
+                pdfIframe.src = '';
+                pdfViewerModal.style.display = 'none';
+            }, 500);
+        }
+    
+        function filterCards() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            filteredData = pdfData.filter(pdf => {
+                return extractNameFromUrl(pdf.pdfUrl).toLowerCase().includes(searchInput);
+            });
+            currentPage = 1;
+            displayCards();
+        }
+
+    
+        function loadMoreCards() {
+            if (!isLoading && !endOfData && (filteredData.length > currentPage * itemsPerPage)) {
+                isLoading = true;
+                currentPage++;
+                document.getElementById('loading').style.display = 'block';
+                setTimeout(() => {
+                    displayCards();
+                }, 500); // Simulate a loading delay
+            }
+        }
+    
+        window.onscroll = function() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollTopBtn.style.display = 'block';
+            } else {
+                scrollTopBtn.style.display = 'none';
+            }
+    
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+                loadMoreCards();
+            }
+        };
+    
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    
+        window.onload = displayCards;
+    </script>
+    
+</body>
+</html>
+
+

@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Welcome To Glorious Schools, #1 Academic Giant in Ugandan Educational Sector.">
+    <meta name="keyword"
+        content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
+    <meta name="author" content="Fresh Teacher">
+    <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
+    <link data-n-head="ssr" rel="manifest" href="/manifest.json" data-hid="manifest">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta property="og:site_name" content="Fresh Teacher's Library" />
+    <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
+    <title>MIDDLE SCHEMES OF WORK</title>
+    <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
+    <style>
+        body {
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+           margin: 0;
+           padding: 20px;
+           background: linear-gradient(to right, #ff9a9e, #fad0c4);
+           overflow-x: hidden; /* Prevent horizontal scrolling */
+           width: 100%; /* Ensure body takes full width */
+           box-sizing: border-box;
+       }
+       
+       h1 {
+           color: #e65100;
+           margin-bottom: 20px;
+           text-align: center; /* Center-align text for better readability on mobile */
+           font-size: 1.5em; /* Adjust font size for better readability on smaller screens */
+       }
+       
+       .search-container {
+           margin-bottom: 20px;
+           width: 100%;
+           max-width: 500px; /* Limit the width of the search container */
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+           padding: 0 10px; /* Add padding to prevent the search container from touching the edges */
+       }
+       
+       .search-input {
+           padding: 10px;
+           border-radius: 4px;
+           border: 1px solid #ddd;
+           width: 100%; /* Make search input take full width of the container */
+           font-size: 16px;
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+       }
+       
+       .cards-container {
+           display: grid;
+           grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+           gap: 20px;
+           width: 100%;
+           max-width: 1200px; /* Limit the width of the cards container */
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+           padding: 0 10px; /* Add padding to prevent cards from touching the edges */
+       }
+       
+       .no-results {
+           text-align: center;
+           font-size: 18px;
+           color: #e65100;
+           margin-top: 20px;
+           width: 100%;
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+           padding: 0 10px; /* Add padding to prevent text from touching the edges */
+       }
+       
+       .card {
+           border: none;
+           border-radius: 8px;
+           padding: 20px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           text-align: center;
+           background: #ffffff;
+           transition: transform 0.2s;
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+           width: 100%;
+       }
+       
+       .card:hover {
+           transform: scale(1.05);
+       }
+       
+       .card h3 {
+           margin: 0 0 10px 0;
+           color: #ff6f00;
+           font-size: 1em; /* Adjust font size for better readability on smaller screens */
+       }
+       
+       .view-button {
+           color: #ffffff;
+           background-color: #ff6f00;
+           padding: 10px 15px;
+           margin-top: 10px;
+           display: inline-block;
+           border-radius: 4px;
+           cursor: pointer;
+           text-decoration: none;
+           transition: background-color 0.2s;
+           box-sizing: border-box; /* Include padding and border in the element's total width and height */
+           font-size: 1em; /* Adjust font size for better readability on smaller screens */
+       }
+       
+       .view-button:hover {
+           background-color: #e65100;
+       }
+       
+       #pdf-viewer-modal {
+           display: none;
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: rgba(0, 0, 0, 0.5);
+           justify-content: center;
+           align-items: center;
+           z-index: 1000;
+           opacity: 0;
+           transition: opacity 0.5s;
+       }
+       
+       #pdf-viewer {
+           width: 100%; /* Adjust as needed */
+           height: 100%; /* Adjust as needed */
+           background: #ffffff;
+           border-radius: 8px;
+           position: relative;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       }
+       
+       #pdf-viewer iframe {
+           width: 100%; /* Make iframe width 100% of parent */
+           height: 100%; /* Make iframe height 100% of parent */
+           border-radius: 8px;
+       }
+       
+       
+       .close-button {
+           position: absolute;
+           top: 10px;
+           right: 10px;
+           background: #d32f2f;
+           color: white;
+           border: none;
+           padding: 5px 10px;
+           cursor: pointer;
+           border-radius: 3px;
+           transition: background-color 0.2s;
+           font-size: 1em; /* Adjust font size for better readability on smaller screens */
+       }
+       
+       .close-button:hover {
+           background: #b71c1c;
+       }
+       
+       #scrollTopBtn {
+           display: none;
+           position: fixed;
+           bottom: 20px;
+           right: 20px;
+           z-index: 1000;
+           font-size: 18px;
+           border: none;
+           outline: none;
+           background-color: #ff6f00;
+           color: white;
+           cursor: pointer;
+           padding: 15px;
+           border-radius: 4px;
+           transition: background-color 0.2s;
+       }
+       
+       #scrollTopBtn:hover {
+           background-color: #e65100;
+       }
+       
+       @media (max-width: 768px) {
+           .search-container, .no-results, .cards-container {
+               padding: 0 10px; /* Adjust padding for smaller screens */
+           }
+       
+           .card {
+               padding: 15px; /* Adjust padding for smaller screens */
+           }
+       
+           .view-button {
+               padding: 8px 12px; /* Adjust button padding for smaller screens */
+           }
+       }
+       
+
+       
+       .pagination-button {
+           padding: 10px;
+           margin: 0 5px;
+           border: none;
+           background-color: #ff6f00;
+           color: white;
+           cursor: pointer;
+           border-radius: 4px;
+           transition: background-color 0.2s;
+       }
+       
+       .pagination-button:hover {
+           background-color: #e65100;
+       }
+       
+
+       
+       .loading {
+                   text-align: center;
+                   font-size: 16px;
+                   margin: 20px 0;
+                   display: none; /* Initially hidden */
+               }
+       
+               .loading .spinner {
+                   border: 4px solid rgba(0, 0, 0, 0.3);
+                   border-radius: 50%;
+                   border-top: 4px solid #3498db;
+                   width: 30px;
+                   height: 30px;
+                   animation: spin 1s linear infinite;
+                   margin: 0 auto;
+                   margin-bottom: 10px;
+               }
+       
+               @keyframes spin {
+                   0% { transform: rotate(0deg); }
+                   100% { transform: rotate(360deg); }
+               }
+               .navbar {
+                   background-color: #333;
+                   overflow: hidden;
+                   display: flex;
+                   justify-content: space-between;
+                   align-items: center;
+                   padding: 10px 20px;
+               }
+       
+               .logo {
+                   display: flex;
+                   align-items: center;
+                   color: white;
+                   text-decoration: none;
+               }
+       
+               .logo img {
+                   width: 40px; /* Adjust logo size */
+                   height: 40px; /* Adjust logo size */
+                   margin-right: 10px;
+                   border-radius: 50%;
+               }
+       
+               .title {
+                   font-weight: bold;
+                   font-size: 1.2rem;
+               }
+       
+               .toggle {
+                   font-size: 1.5rem;
+                   color: white;
+                   cursor: pointer;
+                   display: none; /* Initially hidden on larger screens */
+               }
+               .navbar {
+                   display: flex;
+                   justify-content: space-between;
+                   align-items: center;
+                   background-color: #ff8c00;
+                   padding: 1rem;
+                   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                   position: sticky;
+                   top: 0;
+                   width: 100%;
+                   z-index: 1000;
+               }
+       
+               .navbar .logo {
+                   display: flex;
+                   align-items: center;
+               }
+       
+               .navbar .logo img {
+                   width: 50px;
+                   height: auto;
+                   margin-right: 10px;
+               }
+       
+               .navbar .logo .title {
+                   color: white;
+                   font-size: 1.8rem;
+                   font-weight: bold;
+               }
+       
+               .navbar ul {
+                   list-style: none;
+                   display: flex;
+                   margin: 0;
+                   padding: 0;
+               }
+       
+               .navbar ul li {
+                   margin-left: 1rem;
+               }
+       
+               .navbar ul li a {
+                   color: white;
+                   text-decoration: none;
+                   padding: 0.5rem 1rem;
+                   display: block;
+                   transition: background-color 0.3s ease;
+                   font-size: 1.1rem;
+                   border-radius: 10px;
+               }
+       
+               .navbar ul li a:hover {
+                   background-color: #e06b00;
+               }
+       
+               .navbar .toggle {
+                   display: none;
+                   color: white;
+                   font-size: 1.8rem;
+                   cursor: pointer;
+               }
+               .logout-button {
+                   background: none;
+                   border: none;
+                   cursor: pointer;
+                   color: inherit;
+                   font-size: inherit;
+               }
+       
+               @media (max-width: 768px) {
+                   .navbar .toggle {
+                       display: block;
+                   }
+       
+                   .navbar ul {
+                       display: none;
+                       flex-direction: column;
+                       width: 100%;
+                   }
+       
+                   .navbar ul li {
+                       margin: 10px 0;
+                       text-align: center;
+                   }
+       
+                   .navbar ul li a,
+                   .navbar ul li .logout-button {
+                       width: 100%;
+                   }
+       
+                   .navbar ul.active {
+                       display: flex;
+                   }
+               }
+          /* Loading spinner styles */
+          .loading-spinner {
+                   position: fixed;
+                   top: 0;
+                   left: 0;
+                   width: 100%;
+                   height: 100%;
+                   background-color: rgba(255, 255, 255, 0.8);
+                   display: flex;
+                   justify-content: center;
+                   align-items: center;
+                   z-index: 9999;
+                   opacity: 0;
+                   pointer-events: none;
+                   transition: opacity 0.3s ease-in-out;
+               }
+       
+               .loading-spinner.show {
+                   opacity: 1;
+                   pointer-events: auto;
+               }
+       
+               .lds-ring {
+                   display: inline-block;
+                   position: relative;
+                   width: 80px;
+                   height: 80px;
+               }
+       
+               .lds-ring div {
+                   box-sizing: border-box;
+                   display: block;
+                   position: absolute;
+                   width: 64px;
+                   height: 64px;
+                   margin: 8px;
+                   border: 8px solid;
+                   border-radius: 50%;
+                   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+                   border-color: #ff6b6b transparent transparent transparent;
+               }
+       
+               .lds-ring div:nth-child(1) {
+                   border-color: #ff6b6b transparent transparent transparent;
+                   animation-delay: -0.45s;
+               }
+       
+               .lds-ring div:nth-child(2) {
+                   border-color: #ffa500 transparent transparent transparent;
+                   animation-delay: -0.3s;
+               }
+       
+               .lds-ring div:nth-child(3) {
+                   border-color: #ffff00 transparent transparent transparent;
+                   animation-delay: -0.15s;
+               }
+       
+               .lds-ring div:nth-child(4) {
+                   border-color: #00ff00 transparent transparent transparent;
+               }
+       
+               @keyframes lds-ring {
+                   0% {
+                       transform: rotate(0deg);
+                   }
+                   100% {
+                       transform: rotate(360deg);
+                   }
+               }
+               .pagination-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+               .pagination-button {
+                   padding: 10px 20px;
+                   margin: 0 5px;
+                   background-color: #ff6f00;
+                   color: white;
+                   border: none;
+                   border-radius: 5px;
+                   cursor: pointer;
+               }
+               .pagination-button:disabled {
+                   background-color: #ccc;
+                   cursor: not-allowed;
+               }
+               .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        .pagination li {
+            margin: 0 3px;
+        }
+
+        .pagination button {
+            background-color: var(--light-orange);
+            border: none;
+            color: #333;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--dark-orange);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .active button {
+            background-color: var(--deep-orange);
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 8px 12px;
+            color: #333;
+        }
+
+        .jump-to-page {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .jump-to-page input {
+            width: 150px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid var(--medium-orange);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .jump-to-page button {
+            background: linear-gradient(145deg, var(--dark-orange), var(--deep-orange));
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .jump-to-page button:hover {
+            background: linear-gradient(145deg, var(--deep-orange), var(--dark-orange));
+        }
+
+        .jump-to-page .search-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        :root {
+            --light-orange: #FFE0B2;
+            --medium-orange: #FFB74D;
+            --dark-orange: #FF9800;
+            --deep-orange: #F57C00;
+        }
+           </style>
+</head>
+<body>
+<!-- Loading spinner -->
+<div class="loading-spinner" id="loading-spinner">
+    <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<script>
+// Get the loading spinner element
+const loadingSpinner = document.getElementById('loading-spinner');
+
+// Show the loading spinner
+function showSpinner() {
+    loadingSpinner.classList.add('show');
+}
+
+// Hide the loading spinner
+function hideSpinner() {
+    loadingSpinner.classList.remove('show');
+}
+
+// Show the loading spinner before the page loads
+window.addEventListener('DOMContentLoaded', showSpinner);
+
+// Hide the loading spinner once the content is ready
+window.addEventListener('load', hideSpinner);
+
+// Handle the back/forward navigation
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        // Page was loaded from cache (user used back/forward button)
+        hideSpinner();
+    }
+});
+
+// Show the loading spinner when clicking a link
+document.addEventListener('click', (event) => {
+    const target = event.target.closest('a');
+    if (target && target.getAttribute('href') && 
+        !target.getAttribute('href').startsWith('#') && 
+        !target.getAttribute('target') &&
+        target.getAttribute('href') !== 'javascript:void(0);') {
+        event.preventDefault();
+        showSpinner();
+        setTimeout(() => {
+            window.location.href = target.getAttribute('href');
+        }, 500); // Delay of 500ms to simulate loading
+    }
+});
+
+// Authentication check function
+function checkAuth(url) {
+    // Your authentication logic here
+    const isAuthenticated = true; // Replace with your actual auth check
+
+    if (isAuthenticated) {
+        showSpinner();
+        setTimeout(() => {
+            window.location.href = url;
+        }, 500);
+    } else {
+        // Show login message or redirect to login page
+        const loginMessage = document.getElementById('login-message');
+        loginMessage.style.display = 'block';
+        setTimeout(() => {
+            loginMessage.style.display = 'none';
+        }, 3000);
+    }
+}
+</script>
+    <div class="navbar">
+        <div class="logo">
+            <img src="schoologo-2-150x150.png" alt="School Logo">
+            <div class="title">Glorious Schools</div>
+        </div>
+        <span class="toggle" onclick="toggleMenu()">&#9776;</span>
+        <ul id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="videos.html">Videos</a></li>
+            <li><a href="library.html">Library</a></li>
+        </ul>
+    </div>
+    <h1>Give Your Child The Best!</h1>
+    <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Search for content here..." onkeyup="filterCards()">
+    </div>
+    <div id="cards-container" class="cards-container"></div>
+    <div class="no-results" id="no-results" style="display: none;">No results found</div>
+    <div class="pagination-container">
+        <ul class="pagination" id="pagination"></ul>
+        <div class="jump-to-page">
+            <input type="number" id="jump-to-page-input" min="1" placeholder="Jump to page">
+            <button onclick="jumpToPage()" title="Jump to page">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
+   <div id="pdf-viewer-modal">
+        <div id="pdf-viewer"><br><br>
+            <button class="close-button" onclick="closePdfViewer()">Close</button>
+            <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+    <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+    
+        const pdfData = 
+        [
+        {
+    "pdfUrl": "middle-main/middle-main/schemes/Middle Aptitude Scheme Term 2.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Middle class English scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Middle class Numbers scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Middle class RE term 3 scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Middle class reading term 3 scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Middle English Scheme Term 2.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/middle literacy third term scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Middle Number Scheme Term 2.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Middle Reading Scheme Term 2.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Middle Writing Scheme Term 2.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/numbers middle class scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/numbers middle class.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/nursery  SCHEME OF WORK LANGUAGE.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY ART AND CRAFT TERM 2 scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY ART AND CRAFT TERM 2.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY GENERAL KNOWLEDGE 2 scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY GENERAL KNOWLEDGE 2.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY general knowledge scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY general knowledge.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY LANGUAGE TERM 2 scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY LANGUAGE TERM 2.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY NUMBERS TERM 2 scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY NUMBERS TERM 2.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY PE TERM 2 (1).pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY PE TERM 2 scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/NURSERY PE TERM 2.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Nursery rhymes term two scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Nursery rhymes term two.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Nursery School Scheme of Work for Aged 0 - 5 Years PDF Download.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/RADIO SCHEME OF WORK FOR NURSERY.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/reading middle class scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/scheme of work for English term 3 for Middle class .pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/Scheme of work for Middle class Writing term 3.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/scheme of work for reading LA 5 term 111 Middle class.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/scheme-of-work-for-English-term-3-for-Middle-class-.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/VIDEO SCHEME OF WORK FOR NURSERY.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/english middle class scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/literacy middle class scheme of work.pdf"
+  },
+  {
+    "pdfUrl": "middle-main/middle-main/schemes/literacy middle class.pdf"
+  },
+    ]
+        ;
+       
+       
+        let currentPage = 1;
+        const itemsPerPage = 12;
+        let filteredData = pdfData;
+        let isLoading = false;
+        let endOfData = false;
+    
+        function extractNameFromUrl(pdfUrl) {
+    const parts = pdfUrl.split('/');
+    const fileName = parts[parts.length - 1].replace('.pdf', '');
+    // Remove special characters except '&' and replace with spaces
+    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&]/g, ' ');
+    // Remove hyphens and underscores and replace with spaces
+    let nameWithoutHyphensUnderscores = nameWithoutSpecialChars.replace(/[-_]/g, ' ');
+    // Capitalize all letters
+    let capitalizedWords = nameWithoutHyphensUnderscores.toUpperCase();
+    return capitalizedWords;
+}
+
+
+
+    
+        function createCard(pdf) {
+            const card = document.createElement('div');
+            card.className = 'card';
+    
+            const title = document.createElement('h3');
+            title.textContent = extractNameFromUrl(pdf.pdfUrl);
+            card.appendChild(title);
+    
+            const viewButton = document.createElement('a');
+            viewButton.className = 'view-button';
+            viewButton.textContent = 'VIEW';
+            viewButton.onclick = () => openPdfViewer(pdf.pdfUrl);
+            card.appendChild(viewButton);
+    
+            return card;
+        }
+    
+        function displayCards() {
+            const cardsContainer = document.getElementById('cards-container');
+            cardsContainer.innerHTML = ''; // Clear previous cards
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const currentItems = filteredData.slice(start, end);
+
+            currentItems.forEach(pdf => {
+                const card = createCard(pdf);
+                cardsContainer.appendChild(card);
+            });
+
+            updatePagination();
+
+            if (filteredData.length === 0) {
+                document.getElementById('no-results').style.display = 'block';
+            } else {
+                document.getElementById('no-results').style.display = 'none';
+            }
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            const createPageButton = (page, text) => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = text || page;
+                button.onclick = () => goToPage(page);
+                if (page === currentPage) {
+                    li.classList.add('active');
+                }
+                if (text === '...') {
+                    button.disabled = true;
+                    li.classList.add('ellipsis');
+                }
+                li.appendChild(button);
+                return li;
+            };
+
+            // Previous button
+            pagination.appendChild(createPageButton(currentPage - 1, '←'));
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (startPage > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (startPage > 2) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+                pagination.appendChild(createPageButton(totalPages));
+            }
+
+            // Next button
+            pagination.appendChild(createPageButton(currentPage + 1, '→'));
+
+            // Disable prev/next buttons when at first/last page
+            pagination.firstChild.querySelector('button').disabled = currentPage === 1;
+            pagination.lastChild.querySelector('button').disabled = currentPage === totalPages;
+
+            // Update the max attribute of the jump-to-page input
+            document.getElementById('jump-to-page-input').max = totalPages;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayCards();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('jump-to-page-input');
+            const page = parseInt(input.value);
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                goToPage(page);
+                input.value = ''; // Clear the input after jumping
+            } else {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            }
+        }
+
+        // Add event listener for Enter key on the jump-to-page input
+        document.getElementById('jump-to-page-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function goToPage(page) {
+            if (page < 1 || page > Math.ceil(filteredData.length / itemsPerPage)) {
+                return;
+            }
+            currentPage = page;
+            displayCards();
+            window.scrollTo(0, 0);
+        }
+
+        function updatePaginationButtons() {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage >= Math.ceil(filteredData.length / itemsPerPage);
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            displayCards();
+            window.scrollTo(0, 0);
+        }
+    
+        function openPdfViewer(pdfUrl) {
+            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfIframe = document.getElementById('pdf-iframe');
+            pdfIframe.src = pdfUrl;
+            pdfViewerModal.style.display = 'flex';
+            setTimeout(() => {
+                pdfViewerModal.style.opacity = '1';
+                pdfViewer.style.transform = 'translateY(0)';
+            }, 10);
+        }
+    
+        function closePdfViewer() {
+            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfIframe = document.getElementById('pdf-iframe');
+            pdfViewer.style.transform = 'translateY(100%)';
+            pdfViewerModal.style.opacity = '0';
+            setTimeout(() => {
+                pdfIframe.src = '';
+                pdfViewerModal.style.display = 'none';
+            }, 500);
+        }
+    
+        function filterCards() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            filteredData = pdfData.filter(pdf => {
+                return extractNameFromUrl(pdf.pdfUrl).toLowerCase().includes(searchInput);
+            });
+            currentPage = 1;
+            displayCards();
+        }
+
+    
+        function loadMoreCards() {
+            if (!isLoading && !endOfData && (filteredData.length > currentPage * itemsPerPage)) {
+                isLoading = true;
+                currentPage++;
+                document.getElementById('loading').style.display = 'block';
+                setTimeout(() => {
+                    displayCards();
+                }, 500); // Simulate a loading delay
+            }
+        }
+    
+        window.onscroll = function() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollTopBtn.style.display = 'block';
+            } else {
+                scrollTopBtn.style.display = 'none';
+            }
+    
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+                loadMoreCards();
+            }
+        };
+    
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    
+        window.onload = displayCards;
+    </script>
+    
+</body>
+</html>
+
+

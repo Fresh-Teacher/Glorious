@@ -17,7 +17,7 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
-      <title>P.3 Work</title>
+    <title>P.3SCIENCEPASTPAPERS</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -202,11 +202,7 @@
            }
        }
        
-       .pagination-container {
-           display: flex;
-           justify-content: center;
-           margin-top: 20px;
-       }
+
        
        .pagination-button {
            padding: 10px;
@@ -223,10 +219,7 @@
            background-color: #e65100;
        }
        
-       .pagination-button:disabled {
-           background-color: #ccc;
-           cursor: not-allowed;
-       }
+
        
        .loading {
                    text-align: center;
@@ -448,10 +441,12 @@
                    }
                }
                .pagination-container {
-                   display: flex;
-                   justify-content: center;
-                   margin-top: 20px;
-               }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
                .pagination-button {
                    padding: 10px 20px;
                    margin: 0 5px;
@@ -465,6 +460,87 @@
                    background-color: #ccc;
                    cursor: not-allowed;
                }
+               .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        .pagination li {
+            margin: 0 3px;
+        }
+
+        .pagination button {
+            background-color: var(--light-orange);
+            border: none;
+            color: #333;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--dark-orange);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .active button {
+            background-color: var(--deep-orange);
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 8px 12px;
+            color: #333;
+        }
+
+        .jump-to-page {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .jump-to-page input {
+            width: 150px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid var(--medium-orange);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .jump-to-page button {
+            background: linear-gradient(145deg, var(--dark-orange), var(--deep-orange));
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .jump-to-page button:hover {
+            background: linear-gradient(145deg, var(--deep-orange), var(--dark-orange));
+        }
+
+        .jump-to-page .search-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        :root {
+            --light-orange: #FFE0B2;
+            --medium-orange: #FFB74D;
+            --dark-orange: #FF9800;
+            --deep-orange: #F57C00;
+        }
            </style>
 </head>
 <body>
@@ -560,11 +636,18 @@ function checkAuth(url) {
     <div id="cards-container" class="cards-container"></div>
     <div class="no-results" id="no-results" style="display: none;">No results found</div>
     <div class="pagination-container">
-        <button id="prevButton" class="pagination-button" onclick="changePage(-1)">Previous</button>
-        <button id="nextButton" class="pagination-button" onclick="changePage(1)">Next</button>
+        <ul class="pagination" id="pagination"></ul>
+        <div class="jump-to-page">
+            <input type="number" id="jump-to-page-input" min="1" placeholder="Jump to page">
+            <button onclick="jumpToPage()" title="Jump to page">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
     </div>
     <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-    <div id="pdf-viewer-modal">
+   <div id="pdf-viewer-modal">
         <div id="pdf-viewer"><br><br>
             <button class="close-button" onclick="closePdfViewer()">Close</button>
             <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
@@ -580,263 +663,374 @@ function checkAuth(url) {
         const pdfData = 
         [
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/BROAD P3 EOT 3 SCIE.pdf"
+    "pdfUrl": "BROAD P3 EOT 3 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/DEVINE P3 SCIE MOT 1.pdf"
+    "pdfUrl": "DEVINE P3 SCIE MOT 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/END OF YEAR P.3 SCIENCE.pdf"
+    "pdfUrl": "END OF YEAR P.3 SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/EOT P.3 SCI BY SMILE.pdf"
+    "pdfUrl": "EOT P.3 SCI BY SMILE.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/Evaluation Workbook P3 Science.pdf"
+    "pdfUrl": "Evaluation Workbook P3 Science.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/FINAL- STANDARD KOLFRAM P3 SCIENCE TERM I WORKBOOK COLOURED.pdf"
+    "pdfUrl": "FINAL- STANDARD KOLFRAM P3 SCIENCE TERM I WORKBOOK COLOURED.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/KOLFRAM P3 SCIENCE MIDTERM II 2023.pdf"
+    "pdfUrl": "KOLFRAM P3 SCIENCE MIDTERM II 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/kolfram p3 science midterm set 1 2023.pdf"
+    "pdfUrl": "kolfram p3 science midterm set 1 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/LITERACY I (SCIENCE).pdf"
+    "pdfUrl": "LITERACY I (SCIENCE).pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/LITERACY P_3 Term II.pdf"
+    "pdfUrl": "LITERACY P_3 Term II.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/MID TERM I P3 LITERACY 1 A 2023-2.pdf"
+    "pdfUrl": "MID TERM I P3 LITERACY 1 A 2023-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/NPEIA END OF TERM III 2023 LIT IA P3.pdf"
+    "pdfUrl": "NPEIA END OF TERM III 2023 LIT IA P3.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P 3 END OF  3RD TERM EXAMS.pdf"
+    "pdfUrl": "P 3 END OF  3RD TERM EXAMS.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P. 3 LIT 1A BOT III.pdf"
+    "pdfUrl": "P. 3 LIT 1A BOT III.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P. 3 LITA BOT I-1.pdf"
+    "pdfUrl": "P. 3 LITA BOT I-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/p.3  literacy midterm 1 sipro.pdf"
+    "pdfUrl": "p.3  literacy midterm 1 sipro.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 BOBI WINE EOT II LIT II(SCI).pdf"
+    "pdfUrl": "P.3 BOBI WINE EOT II LIT II(SCI).pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/p.3 LIT 1 WORKBOOK I-III #CREATIVE PRINTERS.pdf"
+    "pdfUrl": "p.3 LIT 1 WORKBOOK I-III #CREATIVE PRINTERS.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LIT 1A HOME WORK.pdf"
+    "pdfUrl": "P.3 LIT 1A HOME WORK.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 Lit 1A Lockdown activity.pdf"
+    "pdfUrl": "P.3 Lit 1A Lockdown activity.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LIT 1A TERM 1 WORK BOOK 2024.pdf"
+    "pdfUrl": "P.3 LIT 1A TERM 1 WORK BOOK 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 lit 1A.pdf"
+    "pdfUrl": "P.3 lit 1A.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LIT I @ MR KIMULI DERRICK-0754336823-.pdf"
+    "pdfUrl": "P.3 LIT I @ MR KIMULI DERRICK-0754336823-.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LIT I TERM 1, 2 & 3.pdf"
+    "pdfUrl": "P.3 LIT I TERM 1, 2 & 3.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LIT I.pdf"
+    "pdfUrl": "P.3 LIT I.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LIT IB.pdf"
+    "pdfUrl": "P.3 LIT IB.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LIT-1.pdf"
+    "pdfUrl": "P.3 LIT-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LIT.pdf"
+    "pdfUrl": "P.3 LIT.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 Lit1 workbook.pdf"
+    "pdfUrl": "P.3 Lit1 workbook.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 Lit2.pdf"
+    "pdfUrl": "P.3 Lit2.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LITA-1.pdf"
+    "pdfUrl": "P.3 LITA-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LITA.pdf"
+    "pdfUrl": "P.3 LITA.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LITB BOT II.pdf"
+    "pdfUrl": "P.3 LITB BOT II.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LITB.pdf"
+    "pdfUrl": "P.3 LITB.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LITERACY 1A BOT 1 2024.pdf"
+    "pdfUrl": "P.3 LITERACY 1A BOT 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 Literacy 1A Lockdown activiTY (2).pdf"
+    "pdfUrl": "P.3 Literacy 1A Lockdown activiTY (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 Literacy 1A Lockdown activity.pdf"
+    "pdfUrl": "P.3 Literacy 1A Lockdown activity.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LITERACY A WEEK TWO.pdf"
+    "pdfUrl": "P.3 LITERACY A WEEK TWO.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LITERACY I A TERM I.pdf"
+    "pdfUrl": "P.3 LITERACY I A TERM I.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 LITERACY ONE MID TERM II 2022.pdf"
+    "pdfUrl": "P.3 LITERACY ONE MID TERM II 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 Literacy1A Lockdown activity.pdf"
+    "pdfUrl": "P.3 Literacy1A Lockdown activity.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 MID TERM ONE, 2024.pdf"
+    "pdfUrl": "P.3 MID TERM ONE, 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 SCI - MID TERM 1 2024.pdf"
+    "pdfUrl": "P.3 SCI - MID TERM 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 SCIENCE BOT 1 2024.pdf"
+    "pdfUrl": "P.3 SCIENCE BOT 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 SCIENCE E.O.T 1 2024.pdf"
+    "pdfUrl": "P.3 SCIENCE E.O.T 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 Science Revision booklet.pdf"
+    "pdfUrl": "P.3 Science Revision booklet.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 SCIENCE.pdf"
+    "pdfUrl": "P.3 SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 SET 16.pdf"
+    "pdfUrl": "P.3 SET 16.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 SST Lockdown activity (2).pdf"
+    "pdfUrl": "P.3 SST Lockdown activity (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 SST Lockdown activity 2.pdf"
+    "pdfUrl": "P.3 SST Lockdown activity 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 SST Lockdown activity.pdf"
+    "pdfUrl": "P.3 SST Lockdown activity.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3 VSES LIT (SCIE) TERM TWO.pdf"
+    "pdfUrl": "P.3 VSES LIT (SCIE) TERM TWO.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3%20Lit1%20workbook.pdf"
+    "pdfUrl": "P.3%20Lit1%20workbook.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3-LIT-1-A-SET-5.pdf"
+    "pdfUrl": "P.3-LIT-1-A-SET-5.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3-LIT-1-A-SET-II.pdf"
+    "pdfUrl": "P.3-LIT-1-A-SET-II.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3-LIT-1-B-SET5.pdf"
+    "pdfUrl": "P.3-LIT-1-B-SET5.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3-Literacy-One-Term-Three-1 (2).pdf"
+    "pdfUrl": "P.3-Literacy-One-Term-Three-1 (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3-LITERACY-WORKBOOK-TERM-ONE.pdf"
+    "pdfUrl": "P.3-LITERACY-WORKBOOK-TERM-ONE.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3-Tekart-Science-revision-booklet-vol-2.pdf"
+    "pdfUrl": "P.3-Tekart-Science-revision-booklet-vol-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3. TERM I, II & III SCIE (2).pdf"
+    "pdfUrl": "P.3. TERM I, II & III SCIE (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3. TERM I, II & III SCIE.pdf"
+    "pdfUrl": "P.3. TERM I, II & III SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P.3_LITERACY_ONE_WEEK_2 GREEN HILL.pdf"
+    "pdfUrl": "P.3_LITERACY_ONE_WEEK_2 GREEN HILL.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3  LIT 1 SCHEME TERM 1.pdf"
+    "pdfUrl": "P3  LIT 1 SCHEME TERM 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 Abridged Curriculum.pdf"
+    "pdfUrl": "P3 Abridged Curriculum.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 lit1 notes.pdf"
+    "pdfUrl": "P3 lit1 notes.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 LIT1.pdf"
+    "pdfUrl": "P3 LIT1.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/p3 lit2.pdf"
+    "pdfUrl": "p3 lit2.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 LITERACY 1 EOT III 2022.pdf"
+    "pdfUrl": "P3 LITERACY 1 EOT III 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 LITERACY I LESSON NOTES 2016.pdf"
+    "pdfUrl": "P3 LITERACY I LESSON NOTES 2016.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 LITERACY I.pdf"
+    "pdfUrl": "P3 LITERACY I.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 LITERACY II TERMS 1 2.pdf"
+    "pdfUrl": "P3 LITERACY II TERMS 1 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 LITERACY ONE  notes term one .pdf"
+    "pdfUrl": "P3 LITERACY ONE  notes term one .pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 LITERACY ONE EOT III 2022.pdf"
+    "pdfUrl": "P3 LITERACY ONE EOT III 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 Literacy One Term Three-1.pdf"
+    "pdfUrl": "P3 Literacy One Term Three-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 Literacy Scheme of Work Term 2.pdf"
+    "pdfUrl": "P3 Literacy Scheme of Work Term 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/p3 REVISED P3 LITERACY  & SCHEME_out.pdf"
+    "pdfUrl": "p3 REVISED P3 LITERACY  & SCHEME_out.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/p3 science midterm.pdf"
+    "pdfUrl": "p3 science midterm.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 Science.pdf"
+    "pdfUrl": "P3 Science.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 TEKART SCIENCE NOTES.pdf"
+    "pdfUrl": "P3 TEKART SCIENCE NOTES.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3 TERM 3 Literacy 1 WORK BOOK  2019.pdf"
+    "pdfUrl": "P3 TERM 3 Literacy 1 WORK BOOK  2019.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3.pdf"
+    "pdfUrl": "P3.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P3_LITERACY_1A_REVISION_WORK_NAMAGUNGA_PRIMARY_BOARDING_SCHOOL (2).pdf"
+    "pdfUrl": "P3_LITERACY_1A_REVISION_WORK_NAMAGUNGA_PRIMARY_BOARDING_SCHOOL (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/Primary Three Literacy one.pdf"
+    "pdfUrl": "Primary Three Literacy one.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/PRIMARY THREE SCIENCE.pdf"
+    "pdfUrl": "PRIMARY THREE SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P_3_LITERACY_SCIENCE_REVISION_SET_I_2021_MOTHERCARE_PREPARATORY.pdf"
+    "pdfUrl": "P_3_LITERACY_SCIENCE_REVISION_SET_I_2021_MOTHERCARE_PREPARATORY.pdf"
   },
   {
-    "pdfUrl": "Resources/P3/P3 EXAMS/SCIE/P_3_LITERACY_SST_REVISION_SET_I_2021_MOTHERCARE_PREPARATORY_SCHOOLS.pdf"
-  }
+    "pdfUrl": "P_3_LITERACY_SST_REVISION_SET_I_2021_MOTHERCARE_PREPARATORY_SCHOOLS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/kolfram p3 science midterm set 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/LITERACY I (SCIENCE).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/MID TERM I P3 LITERACY 1 A 2023-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/NPEIA END OF TERM III 2023 LIT IA P3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P 3 END OF  3RD TERM EXAMS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P. 3 LIT 1A BOT III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 BOBI WINE EOT II LIT II(SCI).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 LIT 1 B NOTES.docx p3-main/p3-main/exams/Science/P.3 LIT 1A  END YR 2018.docx p3-main/p3-main/exams/Science/P.3 Lit 1A Lockdown activity.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 LIT 1A MID 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 LIT IA.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 LIT1A END III.docx p3-main/p3-main/exams/Science/P.3 LIT1A END III-1.docx p3-main/p3-main/exams/Science/P.3 LITA BOT II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 LITA.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 LITA-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 Literacy 1A Lockdown activiTY (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 Literacy 1A Lockdown activity.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 LITERACY A WEEK TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 LITERACY ONE MID TERM II 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 SCI.docx p3-main/p3-main/exams/Science/P.3 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3 VSES LIT (SCIE) TERM TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3_LITERACY_ONE_WEEK_2 GREEN HILL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3-LIT-1-A-SET-5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3-LIT-1-A-SET-II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P.3-Tekart-Science-revision-booklet-vol-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P_3_LITERACY_SCIENCE_REVISION_SET_I_2021_MOTHERCARE_PREPARATORY.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P3 LIT ONE.docx p3-main/p3-main/exams/Science/P3 LITERACY EOT III 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P3 LITERACY ONE EOT III 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P3 LITRACY 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/P3_LITERACY_1A_REVISION_WORK_NAMAGUNGA_PRIMARY_BOARDING_SCHOOL (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/PRIMARY THREE  SCIENCE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/Primary Three Literacy one.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/PRIMARY THREE SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/PRIMARY-THREE-REVISION-ACTIVITIES-WEEK-FOUR 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/BROAD P3 EOT 3 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/DEVINE P3 SCIE MOT 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/END OF YEAR P.3 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/EOT P.3 SCI BY SMILE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p3/KOLFRAM P3 SCIENCE MIDTERM II 2023.pdf"
+  },
 ]
         ;
        
@@ -890,13 +1084,107 @@ function checkAuth(url) {
                 cardsContainer.appendChild(card);
             });
 
-            updatePaginationButtons();
+            updatePagination();
 
             if (filteredData.length === 0) {
                 document.getElementById('no-results').style.display = 'block';
             } else {
                 document.getElementById('no-results').style.display = 'none';
             }
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            const createPageButton = (page, text) => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = text || page;
+                button.onclick = () => goToPage(page);
+                if (page === currentPage) {
+                    li.classList.add('active');
+                }
+                if (text === '...') {
+                    button.disabled = true;
+                    li.classList.add('ellipsis');
+                }
+                li.appendChild(button);
+                return li;
+            };
+
+            // Previous button
+            pagination.appendChild(createPageButton(currentPage - 1, '←'));
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (startPage > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (startPage > 2) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+                pagination.appendChild(createPageButton(totalPages));
+            }
+
+            // Next button
+            pagination.appendChild(createPageButton(currentPage + 1, '→'));
+
+            // Disable prev/next buttons when at first/last page
+            pagination.firstChild.querySelector('button').disabled = currentPage === 1;
+            pagination.lastChild.querySelector('button').disabled = currentPage === totalPages;
+
+            // Update the max attribute of the jump-to-page input
+            document.getElementById('jump-to-page-input').max = totalPages;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayCards();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('jump-to-page-input');
+            const page = parseInt(input.value);
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                goToPage(page);
+                input.value = ''; // Clear the input after jumping
+            } else {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            }
+        }
+
+        // Add event listener for Enter key on the jump-to-page input
+        document.getElementById('jump-to-page-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function goToPage(page) {
+            if (page < 1 || page > Math.ceil(filteredData.length / itemsPerPage)) {
+                return;
+            }
+            currentPage = page;
+            displayCards();
+            window.scrollTo(0, 0);
         }
 
         function updatePaginationButtons() {
@@ -980,4 +1268,5 @@ function checkAuth(url) {
     
 </body>
 </html>
+
 

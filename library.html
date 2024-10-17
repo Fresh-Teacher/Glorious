@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Library</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Welcome To Glorious Schools' Library, #1 Academic Giant's Resource Centre in Ugandan Educational Sector.">
+    <meta name="keyword"
+        content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
+    <meta name="author" content="Fresh Teacher">
+    <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
+    <link data-n-head="ssr" rel="manifest" href="/manifest.json" data-hid="manifest">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta property="og:site_name" content="Fresh Teacher's Library" />
+    <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
+    <title>Glorious Schools' Library</title>
+    <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
@@ -180,6 +195,20 @@
         <div id="class-list">
             <h2>Select Class</h2>
             <div class="grid-container">
+                <!-- New classes with updated onclick attribute -->
+                <div class="card" onclick="showResources('Baby', true)">
+                    <img src="RAILWAY.png" alt="Baby Class" class="card-image">
+                    <div class="card-content"><h3>Baby Class</h3></div>
+                </div>
+                <div class="card" onclick="showResources('Middle', true)">
+                    <img src="TRAIN.png" alt="Middle Class" class="card-image">
+                    <div class="card-content"><h3>Middle Class</h3></div>
+                </div>
+                <div class="card" onclick="showResources('Top', true)">
+                    <img src="ANIMALS.jpg" alt="Top Class" class="card-image">
+                    <div class="card-content"><h3>Top Class</h3></div>
+                </div>
+                <!-- Existing classes -->
                 <div class="card" onclick="showResources('P.1')">
                     <img src="p1.jpg" alt="Primary One" class="card-image">
                     <div class="card-content"><h3>Primary One</h3></div>
@@ -213,15 +242,15 @@
         <div id="resource-list" style="display: none;">
             <h2 id="class-title"></h2>
             <div class="grid-container">
-                <div class="card" onclick="showSubjects('Lesson Notes')">
+                <div class="card" onclick="showSubjectsOrNavigate('Lesson Notes')">
                     <img src="notes.jpg" alt="Lesson Notes" class="card-image">
                     <div class="card-content"><h3>Lesson Notes</h3></div>
                 </div>
-                <div class="card" onclick="showSubjects('Schemes of Work')">
+                <div class="card" onclick="showSubjectsOrNavigate('Schemes of Work')">
                     <img src="schemes.jpg" alt="Schemes of Work" class="card-image">
                     <div class="card-content"><h3>Schemes of Work</h3></div>
                 </div>
-                <div class="card" onclick="showSubjects('Past Papers')">
+                <div class="card" onclick="showSubjectsOrNavigate('Past Papers')">
                     <img src="papers.jpg" alt="Past Papers" class="card-image">
                     <div class="card-content"><h3>Past Papers</h3></div>
                 </div>
@@ -242,85 +271,108 @@
     </footer>
 
     <script>
-let selectedClass = '';
-let selectedResource = '';
-const subjects = ['MATHEMATICS', 'ENGLISH', 'SCIENCE', 'SOCIAL STUDIES', 'ICT'];
-
-function showResources(className) {
-    selectedClass = className;
-    document.getElementById('class-list').style.display = 'none';
-    document.getElementById('resource-list').style.display = 'block';
-    document.getElementById('subject-list').style.display = 'none';
-    document.getElementById('class-title').innerText = `Resources for ${className}`;
-    history.pushState({ view: 'resources', class: className }, '', `?view=resources&class=${className}`);
-}
-
-function showSubjects(resourceType) {
-    selectedResource = resourceType;
-    document.getElementById('resource-list').style.display = 'none';
-    document.getElementById('subject-list').style.display = 'block';
-    document.getElementById('resource-title').innerText = `${selectedClass} ${resourceType}`;
-
-    const subjectContainer = document.getElementById('subject-container');
-    subjectContainer.innerHTML = ''; // Clear previous subjects
-
-    subjects.forEach(subject => {
-        const subjectCard = document.createElement('div');
-        subjectCard.className = 'card';
-        subjectCard.onclick = () => navigateToResource(subject);
-        subjectCard.innerHTML = `
-            <img src="${subject.toLowerCase()}.jpg" alt="${subject}" class="card-image">
-            <div class="card-content"><h3>${selectedClass} ${subject}</h3></div>
-        `;
-        subjectContainer.appendChild(subjectCard);
-    });
-
-    history.pushState({ view: 'subjects', class: selectedClass, resource: resourceType }, '', `?view=subjects&class=${selectedClass}&resource=${resourceType}`);
-}
-
-function backToClasses() {
-    document.getElementById('resource-list').style.display = 'none';
-    document.getElementById('subject-list').style.display = 'none';
-    document.getElementById('class-list').style.display = 'block';
-    history.pushState({ view: 'classes' }, '', '?view=classes');
-}
-
-function backToResources() {
-    document.getElementById('subject-list').style.display = 'none';
-    document.getElementById('resource-list').style.display = 'block';
-    history.pushState({ view: 'resources', class: selectedClass }, '', `?view=resources&class=${selectedClass}`);
-}
-
-function navigateToResource(subject) {
-    const resourceType = selectedResource.replace(/ /g, '');
-    const pageName = `${selectedClass}${subject}${resourceType}.html`;
-    window.location.href = pageName;
-}
-
-function loadState() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const view = urlParams.get('view');
-    const classParam = urlParams.get('class');
-    const resourceParam = urlParams.get('resource');
-
-    if (view === 'subjects' && classParam && resourceParam) {
-        selectedClass = classParam;
-        showSubjects(resourceParam);
-    } else if (view === 'resources' && classParam) {
-        showResources(classParam);
-    } else {
-        backToClasses();
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    setCurrentYear();
-    loadState();
-});
-
-window.onpopstate = function(event) {
-    loadState();
-};
-    </script>
+        let selectedClass = '';
+        let selectedResource = '';
+        let isSpecialClass = false;
+        const subjects = ['MATHEMATICS', 'ENGLISH', 'SCIENCE', 'SOCIAL STUDIES', 'ICT'];
+        const specialClasses = ['Baby', 'Middle', 'Top'];
+        
+        function showResources(className) {
+            selectedClass = className;
+            isSpecialClass = specialClasses.includes(className);
+            document.getElementById('class-list').style.display = 'none';
+            document.getElementById('resource-list').style.display = 'block';
+            document.getElementById('subject-list').style.display = 'none';
+            document.getElementById('class-title').innerText = `Resources for ${className}`;
+            history.pushState({ view: 'resources', class: className, special: isSpecialClass }, '', `?view=resources&class=${className}&special=${isSpecialClass}`);
+        }
+        
+        function showSubjectsOrNavigate(resourceType) {
+            if (isSpecialClass) {
+                navigateToSpecialResource(resourceType);
+            } else {
+                showSubjects(resourceType);
+            }
+        }
+        
+        function showSubjects(resourceType) {
+            selectedResource = resourceType;
+            document.getElementById('resource-list').style.display = 'none';
+            document.getElementById('subject-list').style.display = 'block';
+            document.getElementById('resource-title').innerText = `${selectedClass} ${resourceType}`;
+        
+            const subjectContainer = document.getElementById('subject-container');
+            subjectContainer.innerHTML = ''; // Clear previous subjects
+        
+            subjects.forEach(subject => {
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'card';
+                subjectCard.onclick = () => navigateToResource(subject);
+                subjectCard.innerHTML = `
+                    <img src="${subject.toLowerCase()}.jpg" alt="${subject}" class="card-image">
+                    <div class="card-content"><h3>${selectedClass} ${subject}</h3></div>
+                `;
+                subjectContainer.appendChild(subjectCard);
+            });
+        
+            history.pushState({ view: 'subjects', class: selectedClass, resource: resourceType }, '', `?view=subjects&class=${selectedClass}&resource=${resourceType}`);
+        }
+        
+        function navigateToSpecialResource(resourceType) {
+            const resourceTypeUpper = resourceType.toUpperCase().replace(/ /g, '');
+            const pageName = `${selectedClass.toUpperCase()}${resourceTypeUpper}.html`;
+            window.location.href = pageName;
+        }
+        
+        function backToClasses() {
+            document.getElementById('resource-list').style.display = 'none';
+            document.getElementById('subject-list').style.display = 'none';
+            document.getElementById('class-list').style.display = 'block';
+            history.pushState({ view: 'classes' }, '', '?view=classes');
+        }
+        
+        function backToResources() {
+            document.getElementById('subject-list').style.display = 'none';
+            document.getElementById('resource-list').style.display = 'block';
+            history.pushState({ view: 'resources', class: selectedClass, special: isSpecialClass }, '', `?view=resources&class=${selectedClass}&special=${isSpecialClass}`);
+        }
+        
+        function navigateToResource(subject) {
+            const resourceType = selectedResource.replace(/ /g, '');
+            const pageName = `${selectedClass}${subject}${resourceType}.html`;
+            window.location.href = pageName;
+        }
+        
+        function loadState() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const view = urlParams.get('view');
+            const classParam = urlParams.get('class');
+            const resourceParam = urlParams.get('resource');
+            const specialParam = urlParams.get('special') === 'true';
+        
+            if (view === 'subjects' && classParam && resourceParam) {
+                selectedClass = classParam;
+                isSpecialClass = specialClasses.includes(classParam);
+                showSubjects(resourceParam);
+            } else if (view === 'resources' && classParam) {
+                showResources(classParam);
+            } else {
+                backToClasses();
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            setCurrentYear();
+            loadState();
+        });
+        
+        window.onpopstate = function(event) {
+            loadState();
+        };
+        
+        function setCurrentYear() {
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        }
+        </script>
 </body>
 </html>

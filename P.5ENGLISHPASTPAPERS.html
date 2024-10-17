@@ -17,7 +17,7 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
-      <title>P.3 Work</title>
+    <title>P.5ENGLISHPASTPAPERS</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -202,11 +202,7 @@
            }
        }
        
-       .pagination-container {
-           display: flex;
-           justify-content: center;
-           margin-top: 20px;
-       }
+
        
        .pagination-button {
            padding: 10px;
@@ -223,10 +219,7 @@
            background-color: #e65100;
        }
        
-       .pagination-button:disabled {
-           background-color: #ccc;
-           cursor: not-allowed;
-       }
+
        
        .loading {
                    text-align: center;
@@ -448,10 +441,12 @@
                    }
                }
                .pagination-container {
-                   display: flex;
-                   justify-content: center;
-                   margin-top: 20px;
-               }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
                .pagination-button {
                    padding: 10px 20px;
                    margin: 0 5px;
@@ -465,6 +460,87 @@
                    background-color: #ccc;
                    cursor: not-allowed;
                }
+               .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        .pagination li {
+            margin: 0 3px;
+        }
+
+        .pagination button {
+            background-color: var(--light-orange);
+            border: none;
+            color: #333;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--dark-orange);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .active button {
+            background-color: var(--deep-orange);
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 8px 12px;
+            color: #333;
+        }
+
+        .jump-to-page {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .jump-to-page input {
+            width: 150px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid var(--medium-orange);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .jump-to-page button {
+            background: linear-gradient(145deg, var(--dark-orange), var(--deep-orange));
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .jump-to-page button:hover {
+            background: linear-gradient(145deg, var(--deep-orange), var(--dark-orange));
+        }
+
+        .jump-to-page .search-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        :root {
+            --light-orange: #FFE0B2;
+            --medium-orange: #FFB74D;
+            --dark-orange: #FF9800;
+            --deep-orange: #F57C00;
+        }
            </style>
 </head>
 <body>
@@ -560,11 +636,18 @@ function checkAuth(url) {
     <div id="cards-container" class="cards-container"></div>
     <div class="no-results" id="no-results" style="display: none;">No results found</div>
     <div class="pagination-container">
-        <button id="prevButton" class="pagination-button" onclick="changePage(-1)">Previous</button>
-        <button id="nextButton" class="pagination-button" onclick="changePage(1)">Next</button>
+        <ul class="pagination" id="pagination"></ul>
+        <div class="jump-to-page">
+            <input type="number" id="jump-to-page-input" min="1" placeholder="Jump to page">
+            <button onclick="jumpToPage()" title="Jump to page">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
     </div>
     <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-    <div id="pdf-viewer-modal">
+   <div id="pdf-viewer-modal">
         <div id="pdf-viewer"><br><br>
             <button class="close-button" onclick="closePdfViewer()">Close</button>
             <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
@@ -580,349 +663,659 @@ function checkAuth(url) {
         const pdfData = 
         [
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/ENG P.5.pdf"
+    "pdfUrl": "ENG P.5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/ENG W P.6 PDF.pdf"
+    "pdfUrl": "ENG W P.6 PDF.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/ENGLISH HOLIDAY PACKAGE YET HAPPY KIDZ SCHOOL.pdf"
+    "pdfUrl": "ENGLISH HOLIDAY PACKAGE YET HAPPY KIDZ SCHOOL.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/ENGLISH P.5 ENGLISH HOLIDAY TEST 1.pdf"
+    "pdfUrl": "ENGLISH P.5 ENGLISH HOLIDAY TEST 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/ENGLISH PAMPHLET FOR P.4 -P.7 - Copy (3).pdf"
+    "pdfUrl": "ENGLISH PAMPHLET FOR P.4 -P.7 - Copy (3).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/ENGLISH PAMPHLET FOR P.4 -P.7(2) - Copy.pdf"
+    "pdfUrl": "ENGLISH PAMPHLET FOR P.4 -P.7(2) - Copy.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/English P_ 5 End of Term I Examination 2018.pdf"
+    "pdfUrl": "English P_ 5 End of Term I Examination 2018.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/EOT P.5 ENG BY SMILE.pdf"
+    "pdfUrl": "EOT P.5 ENG BY SMILE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/GVPS P5 ENG mid3 2023.pdf"
+    "pdfUrl": "GVPS P5 ENG mid3 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/HOLIDAY PACKAGE TERM III, 2022 ENGLISH - P.5.pdf"
+    "pdfUrl": "HOLIDAY PACKAGE TERM III, 2022 ENGLISH - P.5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/JUBRA ENGLISH P.5 END OF YEAR 2022.pdf"
+    "pdfUrl": "JUBRA ENGLISH P.5 END OF YEAR 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/KAPSHA- P.5 ENG EOT II.pdf"
+    "pdfUrl": "KAPSHA- P.5 ENG EOT II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/kolfram bot P.5 Eng 2023 .pdf"
+    "pdfUrl": "kolfram bot P.5 Eng 2023 .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/kolfram bot P.5 ENGLISH MARKING GUIDE 2023 .pdf"
+    "pdfUrl": "kolfram bot P.5 ENGLISH MARKING GUIDE 2023 .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/NJS P.5 ENG - AUGUST.pdf"
+    "pdfUrl": "NJS P.5 ENG - AUGUST.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5  MID TERM III.pdf"
+    "pdfUrl": "P.5  MID TERM III.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG (1).pdf"
+    "pdfUrl": "P.5 ENG (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG - MID TERM 1 2024.pdf"
+    "pdfUrl": "P.5 ENG - MID TERM 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG BOT II.pdf"
+    "pdfUrl": "P.5 ENG BOT II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG BOT III.pdf"
+    "pdfUrl": "P.5 ENG BOT III.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG BOT.pdf"
+    "pdfUrl": "P.5 ENG BOT.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG END II.pdf"
+    "pdfUrl": "P.5 ENG END II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG END OF TERM 1 2022 SIPRO.pdf"
+    "pdfUrl": "P.5 ENG END OF TERM 1 2022 SIPRO.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG Jerox B.O.T1.pdf"
+    "pdfUrl": "P.5 ENG Jerox B.O.T1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 Eng Lockdown activity.pdf"
+    "pdfUrl": "P.5 Eng Lockdown activity.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG MID III-1.pdf"
+    "pdfUrl": "P.5 ENG MID III-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG MID III.pdf"
+    "pdfUrl": "P.5 ENG MID III.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG MID TERM 1 2024.pdf"
+    "pdfUrl": "P.5 ENG MID TERM 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG PRE-END T3   2023.pdf"
+    "pdfUrl": "P.5 ENG PRE-END T3   2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG QUALITY CHECK  (1).pdf"
+    "pdfUrl": "P.5 ENG QUALITY CHECK  (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG QUALITY CHECK .pdf"
+    "pdfUrl": "P.5 ENG QUALITY CHECK .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG QUALITY CHECK 3 GUIDE.pdf"
+    "pdfUrl": "P.5 ENG QUALITY CHECK 3 GUIDE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 Eng Revision booklet MAY.pdf"
+    "pdfUrl": "P.5 Eng Revision booklet MAY.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 Eng Revision booklet-1.pdf"
+    "pdfUrl": "P.5 Eng Revision booklet-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 Eng Revision booklet.pdf"
+    "pdfUrl": "P.5 Eng Revision booklet.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 Eng Tekart Revision booklet.pdf"
+    "pdfUrl": "P.5 Eng Tekart Revision booklet.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 Eng Topical Questions Tekartlearning(0).pdf"
+    "pdfUrl": "P.5 Eng Topical Questions Tekartlearning(0).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 Eng Topical Questions Tekartlearning.pdf"
+    "pdfUrl": "P.5 Eng Topical Questions Tekartlearning.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENG-1 (1).pdf"
+    "pdfUrl": "P.5 ENG-1 (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 Eng-1.pdf"
+    "pdfUrl": "P.5 Eng-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/p.5 eng.pdf"
+    "pdfUrl": "p.5 eng.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH  1.pdf"
+    "pdfUrl": "P.5 ENGLISH  1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH BOT 1 2024-1.pdf"
+    "pdfUrl": "P.5 ENGLISH BOT 1 2024-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH BOT 1 2024.pdf"
+    "pdfUrl": "P.5 ENGLISH BOT 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH CONTINUOUS ASSESMENT.pdf"
+    "pdfUrl": "P.5 ENGLISH CONTINUOUS ASSESMENT.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 English Corona Virus Holiday Package.pdf"
+    "pdfUrl": "P.5 English Corona Virus Holiday Package.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH E.O.T 1 2024.pdf"
+    "pdfUrl": "P.5 ENGLISH E.O.T 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH END OF FIRST MONTH ASSESSMENT 2021 (1).pdf"
+    "pdfUrl": "P.5 ENGLISH END OF FIRST MONTH ASSESSMENT 2021 (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH END OF TERM III P.5.pdf"
+    "pdfUrl": "P.5 ENGLISH END OF TERM III P.5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 English END OF TERM THREE 2023.pdf"
+    "pdfUrl": "P.5 English END OF TERM THREE 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH HOMEWORK.pdf"
+    "pdfUrl": "P.5 ENGLISH HOMEWORK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 English Lock down activity.pdf"
+    "pdfUrl": "P.5 English Lock down activity.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH MID II.pdf"
+    "pdfUrl": "P.5 ENGLISH MID II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH REVISION.pdf"
+    "pdfUrl": "P.5 ENGLISH REVISION.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH SET 3.pdf"
+    "pdfUrl": "P.5 ENGLISH SET 3.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH TERM II EXAM.pdf"
+    "pdfUrl": "P.5 ENGLISH TERM II EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/p.5 english VSES BOT 2 2023.pdf"
+    "pdfUrl": "p.5 english VSES BOT 2 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH WEEK 1.pdf"
+    "pdfUrl": "P.5 ENGLISH WEEK 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH WORK HOME.pdf"
+    "pdfUrl": "P.5 ENGLISH WORK HOME.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENGLISH.pdf"
+    "pdfUrl": "P.5 ENGLISH.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 ENTRY INTERVIEW.pdf"
+    "pdfUrl": "P.5 ENTRY INTERVIEW.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/p.5 EOT 2 English.pdf"
+    "pdfUrl": "p.5 EOT 2 English.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 EXAM ENGLISH  REVISION.pdf"
+    "pdfUrl": "P.5 EXAM ENGLISH  REVISION.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 LEGIT ENGLISH ISSUE 1.pdf"
+    "pdfUrl": "P.5 LEGIT ENGLISH ISSUE 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 LEGIT ENGLISH ZOOM CLASS NOTES .pdf"
+    "pdfUrl": "P.5 LEGIT ENGLISH ZOOM CLASS NOTES .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 SIPRO ENG B.O.T 1 2024.pdf"
+    "pdfUrl": "P.5 SIPRO ENG B.O.T 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5 TERM 3 ENGLISH WORK BOOK.pdf"
+    "pdfUrl": "P.5 TERM 3 ENGLISH WORK BOOK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENG-SET-5.pdf"
+    "pdfUrl": "P.5-ENG-SET-5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENG-SET-II.pdf"
+    "pdfUrl": "P.5-ENG-SET-II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENGLISH-ACTIVITY-4.pdf"
+    "pdfUrl": "P.5-ENGLISH-ACTIVITY-4.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENGLISH-ACTIVITY-5.pdf"
+    "pdfUrl": "P.5-ENGLISH-ACTIVITY-5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/p.5-english-recess.pdf"
+    "pdfUrl": "p.5-english-recess.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENGLISH-REVISION-APRIL-2020 (2).pdf"
+    "pdfUrl": "P.5-ENGLISH-REVISION-APRIL-2020 (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENGLISH-REVISION-APRIL-2020.pdf"
+    "pdfUrl": "P.5-ENGLISH-REVISION-APRIL-2020.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENGLISH-REVISION-JUNE-2020.pdf"
+    "pdfUrl": "P.5-ENGLISH-REVISION-JUNE-2020.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENGLISH-REVISION-SET-2-NAMAGUNGA-PRIMARY-BOARDING-SCHOOL.pdf"
+    "pdfUrl": "P.5-ENGLISH-REVISION-SET-2-NAMAGUNGA-PRIMARY-BOARDING-SCHOOL.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENGLISH-TEST-ONE.pdf"
+    "pdfUrl": "P.5-ENGLISH-TEST-ONE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENGLISH-TEST-THREE.pdf"
+    "pdfUrl": "P.5-ENGLISH-TEST-THREE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENGLISH-TEST-TWO.pdf"
+    "pdfUrl": "P.5-ENGLISH-TEST-TWO.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5-ENGLISH-WORKBOOK-TERM-ONE.pdf"
+    "pdfUrl": "P.5-ENGLISH-WORKBOOK-TERM-ONE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5_ENGLISH_WEEK_2 GREEN HILL.pdf"
+    "pdfUrl": "P.5_ENGLISH_WEEK_2 GREEN HILL.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P.5_ENGLISH_week_6(1).pdf"
+    "pdfUrl": "P.5_ENGLISH_week_6(1).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5  ENGLISH BEGINNING OF TERM II EXAMINATION 2018.pdf"
+    "pdfUrl": "P5  ENGLISH BEGINNING OF TERM II EXAMINATION 2018.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 ASSESSMENT WORK TERM II.pdf"
+    "pdfUrl": "P5 ASSESSMENT WORK TERM II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 BOT 3 ENG PRIME.pdf"
+    "pdfUrl": "P5 BOT 3 ENG PRIME.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 END OF YEAR ENGLISH EXAM.pdf"
+    "pdfUrl": "P5 END OF YEAR ENGLISH EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 ENG ASSESSMENT WORK TERM II.pdf"
+    "pdfUrl": "P5 ENG ASSESSMENT WORK TERM II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 ENG MID.pdf"
+    "pdfUrl": "P5 ENG MID.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/p5 eng sipro.pdf"
+    "pdfUrl": "p5 eng sipro.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 ENGLISH (2).pdf"
+    "pdfUrl": "P5 ENGLISH (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 ENGLISH RECESS WORK.pdf"
+    "pdfUrl": "P5 ENGLISH RECESS WORK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 ENGLISH YET HAPPY KIDZ SCHOOL HOLIDAY WORK.pdf"
+    "pdfUrl": "P5 ENGLISH YET HAPPY KIDZ SCHOOL HOLIDAY WORK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 EOT III 2022 ENGLISH.pdf"
+    "pdfUrl": "P5 EOT III 2022 ENGLISH.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 EOT III EXAM ENGLISH 2022.pdf"
+    "pdfUrl": "P5 EOT III EXAM ENGLISH 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 PRIME BOT 3 ENG.pdf"
+    "pdfUrl": "P5 PRIME BOT 3 ENG.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 TERM 3 ENGLISH WORK BOOK  2019.pdf"
+    "pdfUrl": "P5 TERM 3 ENGLISH WORK BOOK  2019.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P5 TERM 3 ENGLISH WORK BOOK  2019_074645.pdf"
+    "pdfUrl": "P5 TERM 3 ENGLISH WORK BOOK  2019_074645.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/PRIMARY FIVE  ENGLISH LESSON NOTES TERM II.pdf"
+    "pdfUrl": "PRIMARY FIVE  ENGLISH LESSON NOTES TERM II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/PRIMARY FIVE BOT TWO.pdf"
+    "pdfUrl": "PRIMARY FIVE BOT TWO.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/PRIMARY FIVE ENG & SST MONDAY.pdf"
+    "pdfUrl": "PRIMARY FIVE ENG & SST MONDAY.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/Primary Five English (2).pdf"
+    "pdfUrl": "Primary Five English (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/PRIMARY FIVE ENGLISH MID TERM ONE-2023.pdf"
+    "pdfUrl": "PRIMARY FIVE ENGLISH MID TERM ONE-2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/Primary Five English-1.pdf"
+    "pdfUrl": "Primary Five English-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/Primary Five English-2.pdf"
+    "pdfUrl": "Primary Five English-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/Primary Five English-3.pdf"
+    "pdfUrl": "Primary Five English-3.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/Primary Five English.pdf"
+    "pdfUrl": "Primary Five English.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/PRIMARY_FIVE_ENGLISH_WORK_TERM_1,_2020_GREENHILL_PRIMARY_SCHOOL.pdf"
+    "pdfUrl": "PRIMARY_FIVE_ENGLISH_WORK_TERM_1,_2020_GREENHILL_PRIMARY_SCHOOL.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/PRIME P5 ENG EOT 2.pdf"
+    "pdfUrl": "PRIME P5 ENG EOT 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/P_5 ENGLISH SET 5.pdf"
+    "pdfUrl": "P_5 ENGLISH SET 5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/RAAYAT P5 EOT 3 ENG.pdf"
+    "pdfUrl": "RAAYAT P5 EOT 3 ENG.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/SIPRO P.5 MOT 2 ENG.pdf"
+    "pdfUrl": "SIPRO P.5 MOT 2 ENG.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/The Sipro P.5 ENG End of term Two 2023.pdf"
+    "pdfUrl": "The Sipro P.5 ENG End of term Two 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/TR.PAUL P.5 ENG JEROX EOT 3 - 2023 (8).pdf"
+    "pdfUrl": "TR.PAUL P.5 ENG JEROX EOT 3 - 2023 (8).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/ENG/YETp.5_english-1-.pdf"
-  }
+    "pdfUrl": "YETp.5_english-1-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/GVPS P5 ENG mid3 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/HOLIDAY PACKAGE TERM III, 2022 ENGLISH - P.5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/JUBRA ENGLISH P.5 END OF YEAR 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/KAMPALA P5 EOY ENG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/KAPSHA- P.5 ENG EOT II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/kolfram bot P.5 Eng 2023 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/kolfram bot P.5 ENGLISH MARKING GUIDE 2023 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/kolfram p5 English midterm set 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/kolfram p5 MIDTERM II english exams 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/NJS P.5 ENG - AUGUST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5  MID TERM III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG BOT II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG BOT III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG END II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG END III.docx p5-main/p5-main/exams/English/P.5 ENG END OF TERM 1 2022 SIPRO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG Jerox B.O.T1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Eng Lockdown activity.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG MID III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG MID III-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG MID TERM II 2022-1.docx p5-main/p5-main/exams/English/P.5 ENG PRE-END T3   2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG QUALITY CHECK .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG QUALITY CHECK 3 GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Eng Revision booklet.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Eng Revision booklet-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENG-1 (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Eng-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH CONTINUOUS ASSESMENT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 English Corona Virus Holiday Package.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH END OF FIRST MONTH ASSESSMENT 2021 (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH END OF TERM III P.5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 English END OF TERM THREE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH HOMEWORK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 English Lock down activity.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH MID II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH REVISION.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH SET 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH TERM II EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.5 english VSES BOT 2 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH WEEK 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH WORK HOME.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENGLISH.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 ENTRY INTERVIEW.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.5 EOT 2 English.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 EOT-TERM 3-ENG.docx p5-main/p5-main/exams/English/P.5 EXAM ENGLISH  REVISION.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Grammar term iii.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 LEGIT ENGLISH ISSUE 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCI T1-T3_015640.docx p5-main/p5-main/exams/English/P.5 SCI TERM 1.docx p5-main/p5-main/exams/English/P.5 SCIENCE TERM TWO.docx p5-main/p5-main/exams/English/P.5 SST Lesonotes.docx p5-main/p5-main/exams/English/P.5_ENGLISH_WEEK_2 GREEN HILL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5_ENGLISH_week_6(1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENGLISH-ACTIVITY-4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENGLISH-ACTIVITY-5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.5-english-recess.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENGLISH-REVISION-APRIL-2020 (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENGLISH-REVISION-APRIL-2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENGLISH-REVISION-JUNE-2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENGLISH-REVISION-SET-2-NAMAGUNGA-PRIMARY-BOARDING-SCHOOL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENGLISH-TEST-ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENGLISH-TEST-THREE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENGLISH-TEST-TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENG-SET-5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-ENG-SET-II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P_5 ENGLISH SET 5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5  ENGLISH BEGINNING OF TERM II EXAMINATION 2018.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 ASSESSMENT WORK TERM II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 BOT 3 ENG PRIME.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 END OF YEAR ENGLISH EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 ENG ASSESSMENT WORK TERM II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p5 eng sipro.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p5 ENG.docx p5-main/p5-main/exams/English/p5 eng.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 ENGLISH (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 ENGLISH RECESS WORK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 ENGLISH YET HAPPY KIDZ SCHOOL HOLIDAY WORK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 ENGLISH.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 EOT III 2022 ENGLISH.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 EOT III EXAM ENGLISH 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 PRIME BOT 3 ENG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 PRIME EOT 2 ENG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 PRINT MEDIA.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 TERM 3 ENGLISH WORK BOOK  2019.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 TERM 3 ENGLISH WORK BOOK  2019_074645.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIMARY FIVE BOT TWO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIMARY FIVE ENG & SST MONDAY.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Primary Five English (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIMARY FIVE ENGLISH MID TERM ONE-2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIMARY_FIVE_ENGLISH_WORK_TERM_1,_2020_GREENHILL_PRIMARY_SCHOOL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIME P5 ENG EOT 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/RAAYAT P5 EOT 3 ENG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/sipro mid 2 p5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/SIPRO P.5 MOT 2 ENG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/SIPRO P5 ENG EOT3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/sipro P5 mot 2 eng.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/SST P.7 SET 1.docx p5-main/p5-main/exams/English/SUREKEY P5 ENGLISH EOT 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/The Sipro P.5 ENG End of term Two 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/TR.PAUL P.5 ENG JEROX EOT 3 - 2023 (8).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/YETp.5_english-1-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/ENG P.5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/ENG W P.6 PDF.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/ENGLISH HOLIDAY PACKAGE YET HAPPY KIDZ SCHOOL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/ENGLISH P.5 ENGLISH HOLIDAY TEST 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/English P_ 5 End of Term I Examination 2018.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/ENGLISH PAMPHLET FOR P.4 -P.7 - Copy.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/EOT P.5 ENG BY SMILE.pdf"
+  },
 ]
         ;
+       
        
         let currentPage = 1;
         const itemsPerPage = 12;
@@ -974,13 +1367,107 @@ function checkAuth(url) {
                 cardsContainer.appendChild(card);
             });
 
-            updatePaginationButtons();
+            updatePagination();
 
             if (filteredData.length === 0) {
                 document.getElementById('no-results').style.display = 'block';
             } else {
                 document.getElementById('no-results').style.display = 'none';
             }
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            const createPageButton = (page, text) => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = text || page;
+                button.onclick = () => goToPage(page);
+                if (page === currentPage) {
+                    li.classList.add('active');
+                }
+                if (text === '...') {
+                    button.disabled = true;
+                    li.classList.add('ellipsis');
+                }
+                li.appendChild(button);
+                return li;
+            };
+
+            // Previous button
+            pagination.appendChild(createPageButton(currentPage - 1, '←'));
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (startPage > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (startPage > 2) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+                pagination.appendChild(createPageButton(totalPages));
+            }
+
+            // Next button
+            pagination.appendChild(createPageButton(currentPage + 1, '→'));
+
+            // Disable prev/next buttons when at first/last page
+            pagination.firstChild.querySelector('button').disabled = currentPage === 1;
+            pagination.lastChild.querySelector('button').disabled = currentPage === totalPages;
+
+            // Update the max attribute of the jump-to-page input
+            document.getElementById('jump-to-page-input').max = totalPages;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayCards();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('jump-to-page-input');
+            const page = parseInt(input.value);
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                goToPage(page);
+                input.value = ''; // Clear the input after jumping
+            } else {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            }
+        }
+
+        // Add event listener for Enter key on the jump-to-page input
+        document.getElementById('jump-to-page-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function goToPage(page) {
+            if (page < 1 || page > Math.ceil(filteredData.length / itemsPerPage)) {
+                return;
+            }
+            currentPage = page;
+            displayCards();
+            window.scrollTo(0, 0);
         }
 
         function updatePaginationButtons() {
@@ -1064,4 +1551,5 @@ function checkAuth(url) {
     
 </body>
 </html>
+
 

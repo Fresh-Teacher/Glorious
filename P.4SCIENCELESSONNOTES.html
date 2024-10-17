@@ -17,7 +17,7 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
-      <title>P.3 Work</title>
+    <title>P.4SCIENCELESSONNOTES</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -202,11 +202,7 @@
            }
        }
        
-       .pagination-container {
-           display: flex;
-           justify-content: center;
-           margin-top: 20px;
-       }
+
        
        .pagination-button {
            padding: 10px;
@@ -223,10 +219,7 @@
            background-color: #e65100;
        }
        
-       .pagination-button:disabled {
-           background-color: #ccc;
-           cursor: not-allowed;
-       }
+
        
        .loading {
                    text-align: center;
@@ -448,10 +441,12 @@
                    }
                }
                .pagination-container {
-                   display: flex;
-                   justify-content: center;
-                   margin-top: 20px;
-               }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
                .pagination-button {
                    padding: 10px 20px;
                    margin: 0 5px;
@@ -465,6 +460,87 @@
                    background-color: #ccc;
                    cursor: not-allowed;
                }
+               .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        .pagination li {
+            margin: 0 3px;
+        }
+
+        .pagination button {
+            background-color: var(--light-orange);
+            border: none;
+            color: #333;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--dark-orange);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .active button {
+            background-color: var(--deep-orange);
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 8px 12px;
+            color: #333;
+        }
+
+        .jump-to-page {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .jump-to-page input {
+            width: 150px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid var(--medium-orange);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .jump-to-page button {
+            background: linear-gradient(145deg, var(--dark-orange), var(--deep-orange));
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .jump-to-page button:hover {
+            background: linear-gradient(145deg, var(--deep-orange), var(--dark-orange));
+        }
+
+        .jump-to-page .search-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        :root {
+            --light-orange: #FFE0B2;
+            --medium-orange: #FFB74D;
+            --dark-orange: #FF9800;
+            --deep-orange: #F57C00;
+        }
            </style>
 </head>
 <body>
@@ -560,11 +636,18 @@ function checkAuth(url) {
     <div id="cards-container" class="cards-container"></div>
     <div class="no-results" id="no-results" style="display: none;">No results found</div>
     <div class="pagination-container">
-        <button id="prevButton" class="pagination-button" onclick="changePage(-1)">Previous</button>
-        <button id="nextButton" class="pagination-button" onclick="changePage(1)">Next</button>
+        <ul class="pagination" id="pagination"></ul>
+        <div class="jump-to-page">
+            <input type="number" id="jump-to-page-input" min="1" placeholder="Jump to page">
+            <button onclick="jumpToPage()" title="Jump to page">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
     </div>
     <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-    <div id="pdf-viewer-modal">
+   <div id="pdf-viewer-modal">
         <div id="pdf-viewer"><br><br>
             <button class="close-button" onclick="closePdfViewer()">Close</button>
             <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
@@ -580,76 +663,154 @@ function checkAuth(url) {
         const pdfData = 
         [
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4 sci notes (1).pdf"
+    "pdfUrl": "P.4 sci notes (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4 sci notes 2024.pdf"
+    "pdfUrl": "P.4 sci notes 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4 sci notes.pdf"
+    "pdfUrl": "P.4 sci notes.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4 SCIENCE LESSON NOTES 2021_compressed (1).pdf"
+    "pdfUrl": "P.4 SCIENCE LESSON NOTES 2021_compressed (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4 SCIENCE LESSON NOTES FOR ALL TERMS.pdf"
+    "pdfUrl": "P.4 SCIENCE LESSON NOTES FOR ALL TERMS.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/p.4 science lesson notes-1.pdf"
+    "pdfUrl": "p.4 science lesson notes-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4 SCIENCE LESSON NOTES.pdf"
+    "pdfUrl": "P.4 SCIENCE LESSON NOTES.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4 SCIENCE Notes &amp; Exercises.pdf"
+    "pdfUrl": "P.4 SCIENCE Notes &amp; Exercises.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4 SCIENCE NOTES ALL TERMS.pdf"
+    "pdfUrl": "P.4 SCIENCE NOTES ALL TERMS.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4 Science Notes.pdf"
+    "pdfUrl": "P.4 Science Notes.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4-SCIENCE-TERM-I-NOTES.pdf"
+    "pdfUrl": "P.4-SCIENCE-TERM-I-NOTES.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4-Tekart-Science-revision-booklet-vol-2-1.pdf"
+    "pdfUrl": "P.4-Tekart-Science-revision-booklet-vol-2-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4-Tekart-Science-revision-booklet-vol-2.pdf"
+    "pdfUrl": "P.4-Tekart-Science-revision-booklet-vol-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P.4. TERM I, II, III SCIE NOTES.pdf"
+    "pdfUrl": "P.4. TERM I, II, III SCIE NOTES.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P4 Integrated Science Syllabus.pdf"
+    "pdfUrl": "P4 Integrated Science Syllabus.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P4 SCIENCE BRIEF NOTES AND TOPICAL QUESTIONS DISNEY KINDERGARTEN AND PRIMARY SCHOOL.pdf"
+    "pdfUrl": "P4 SCIENCE BRIEF NOTES AND TOPICAL QUESTIONS DISNEY KINDERGARTEN AND PRIMARY SCHOOL.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P4 SCIENCE LESSON NOTES ALL TERMS-1.pdf"
+    "pdfUrl": "P4 SCIENCE LESSON NOTES ALL TERMS-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P4 SCIENCE LESSON NOTES ALL TERMS.pdf"
+    "pdfUrl": "P4 SCIENCE LESSON NOTES ALL TERMS.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/p4 SCIENCE_notes_term1 -.pdf"
+    "pdfUrl": "p4 SCIENCE_notes_term1 -.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P4-SCIENCE-LESSON-NOTES-ALL-TERMS (1).pdf"
+    "pdfUrl": "P4-SCIENCE-LESSON-NOTES-ALL-TERMS (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/P_4 SCIENCE LESSON NOTES term 1.pdf"
+    "pdfUrl": "P_4 SCIENCE LESSON NOTES term 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/SCIENCE LESSON NOTES FOR P_4 Madia.pdf"
+    "pdfUrl": "SCIENCE LESSON NOTES FOR P_4 Madia.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 NOTES/SCIENCE/SCIENCE LESSON NOTES FOR P_4 TERM I 2018.pdf"
-  }
+    "pdfUrl": "SCIENCE LESSON NOTES FOR P_4 TERM I 2018.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 Science Notes.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/p.4 SCIENCE WORKBOOK (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 TERM TWO SCIENCE LESSON NOTES 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4. TERM I, II, III SCIE NOTES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4. TERM I, II, III SCIE NOTES-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4-PRIMARY-FOUR-SCI-NOTES_TEACHER.AC_.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/p.4-SCIENCE-WORKBOOK-1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4-SCIENCE-WORK-BOOK-TERM-ONE..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P_4 SCIENCE LESSON NOTES term 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 Integrated Science Syllabus.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 SCIENCE BRIEF NOTES AND TOPICAL QUESTIONS DISNEY KINDERGARTEN AND PRIMARY SCHOOL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 SCIENCE LESSON NOTES 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 SCIENCE LESSON NOTES TERM II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 TERM 3 SCIENCE WORK BOOK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4_SCIENCE_BRIEF_NOTES_AND_TOPICAL_QUESTIONS_DISNEY_KINDERGARTEN.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/PRIMARY FOUR ABRIDGED CURRICULUM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/SCIENCE LESSON NOTES FOR P_4 Madia.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/SCIENCE LESSON NOTES FOR P_4 TERM I 2018.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/Updated P4 science lesson notes.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/desk best workbook for p4 science term iii 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/p. 4 Notes good .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 sci notes.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 SCIENCE LESSON NOTES FOR ALL TERMS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 SCIENCE LESSON NOTES TERM II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 SCIENCE LESSON NOTES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 SCIENCE Notes &amp; Exercises.pdf" },
 ]
         ;
+       
        
         let currentPage = 1;
         const itemsPerPage = 12;
@@ -701,13 +862,107 @@ function checkAuth(url) {
                 cardsContainer.appendChild(card);
             });
 
-            updatePaginationButtons();
+            updatePagination();
 
             if (filteredData.length === 0) {
                 document.getElementById('no-results').style.display = 'block';
             } else {
                 document.getElementById('no-results').style.display = 'none';
             }
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            const createPageButton = (page, text) => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = text || page;
+                button.onclick = () => goToPage(page);
+                if (page === currentPage) {
+                    li.classList.add('active');
+                }
+                if (text === '...') {
+                    button.disabled = true;
+                    li.classList.add('ellipsis');
+                }
+                li.appendChild(button);
+                return li;
+            };
+
+            // Previous button
+            pagination.appendChild(createPageButton(currentPage - 1, '←'));
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (startPage > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (startPage > 2) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+                pagination.appendChild(createPageButton(totalPages));
+            }
+
+            // Next button
+            pagination.appendChild(createPageButton(currentPage + 1, '→'));
+
+            // Disable prev/next buttons when at first/last page
+            pagination.firstChild.querySelector('button').disabled = currentPage === 1;
+            pagination.lastChild.querySelector('button').disabled = currentPage === totalPages;
+
+            // Update the max attribute of the jump-to-page input
+            document.getElementById('jump-to-page-input').max = totalPages;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayCards();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('jump-to-page-input');
+            const page = parseInt(input.value);
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                goToPage(page);
+                input.value = ''; // Clear the input after jumping
+            } else {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            }
+        }
+
+        // Add event listener for Enter key on the jump-to-page input
+        document.getElementById('jump-to-page-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function goToPage(page) {
+            if (page < 1 || page > Math.ceil(filteredData.length / itemsPerPage)) {
+                return;
+            }
+            currentPage = page;
+            displayCards();
+            window.scrollTo(0, 0);
         }
 
         function updatePaginationButtons() {
@@ -791,4 +1046,5 @@ function checkAuth(url) {
     
 </body>
 </html>
+
 

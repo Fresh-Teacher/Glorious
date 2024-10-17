@@ -17,7 +17,7 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
-      <title>P.3 Work</title>
+    <title>P.4MATHEMATICSPASTPAPERS</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -202,11 +202,7 @@
            }
        }
        
-       .pagination-container {
-           display: flex;
-           justify-content: center;
-           margin-top: 20px;
-       }
+
        
        .pagination-button {
            padding: 10px;
@@ -223,10 +219,7 @@
            background-color: #e65100;
        }
        
-       .pagination-button:disabled {
-           background-color: #ccc;
-           cursor: not-allowed;
-       }
+
        
        .loading {
                    text-align: center;
@@ -448,10 +441,12 @@
                    }
                }
                .pagination-container {
-                   display: flex;
-                   justify-content: center;
-                   margin-top: 20px;
-               }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
                .pagination-button {
                    padding: 10px 20px;
                    margin: 0 5px;
@@ -465,6 +460,87 @@
                    background-color: #ccc;
                    cursor: not-allowed;
                }
+               .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        .pagination li {
+            margin: 0 3px;
+        }
+
+        .pagination button {
+            background-color: var(--light-orange);
+            border: none;
+            color: #333;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--dark-orange);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .active button {
+            background-color: var(--deep-orange);
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 8px 12px;
+            color: #333;
+        }
+
+        .jump-to-page {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .jump-to-page input {
+            width: 150px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid var(--medium-orange);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .jump-to-page button {
+            background: linear-gradient(145deg, var(--dark-orange), var(--deep-orange));
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .jump-to-page button:hover {
+            background: linear-gradient(145deg, var(--deep-orange), var(--dark-orange));
+        }
+
+        .jump-to-page .search-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        :root {
+            --light-orange: #FFE0B2;
+            --medium-orange: #FFB74D;
+            --dark-orange: #FF9800;
+            --deep-orange: #F57C00;
+        }
            </style>
 </head>
 <body>
@@ -560,11 +636,18 @@ function checkAuth(url) {
     <div id="cards-container" class="cards-container"></div>
     <div class="no-results" id="no-results" style="display: none;">No results found</div>
     <div class="pagination-container">
-        <button id="prevButton" class="pagination-button" onclick="changePage(-1)">Previous</button>
-        <button id="nextButton" class="pagination-button" onclick="changePage(1)">Next</button>
+        <ul class="pagination" id="pagination"></ul>
+        <div class="jump-to-page">
+            <input type="number" id="jump-to-page-input" min="1" placeholder="Jump to page">
+            <button onclick="jumpToPage()" title="Jump to page">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
     </div>
     <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-    <div id="pdf-viewer-modal">
+   <div id="pdf-viewer-modal">
         <div id="pdf-viewer"><br><br>
             <button class="close-button" onclick="closePdfViewer()">Close</button>
             <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
@@ -580,385 +663,665 @@ function checkAuth(url) {
         const pdfData = 
         [
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/EOT P.4 MTC BY SMILE.pdf"
+    "pdfUrl": "EOT P.4 MTC BY SMILE.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/HORM MTC SET 4.pdf"
+    "pdfUrl": "HORM MTC SET 4.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/JJEB Maths P4251.pdf"
+    "pdfUrl": "JJEB Maths P4251.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/KAMPALA P4 EOY MTC.pdf"
+    "pdfUrl": "KAMPALA P4 EOY MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/KESK p4 MATHS MIDTERM II 2023.pdf"
+    "pdfUrl": "KESK p4 MATHS MIDTERM II 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/math P.4 mika.pdf"
+    "pdfUrl": "math P.4 mika.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/MATHEMATICS MT2, SET FOUR.pdf"
+    "pdfUrl": "MATHEMATICS MT2, SET FOUR.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/MATHEMATICS P.4 pdf.pdf"
+    "pdfUrl": "MATHEMATICS P.4 pdf.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/MATHEMATICS PAMPHLET P.4-P.7 - Copy (2).pdf"
+    "pdfUrl": "MATHEMATICS PAMPHLET P.4-P.7 - Copy (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/MATHEMATICS PAMPHLET P.4-P.7-2.pdf"
+    "pdfUrl": "MATHEMATICS PAMPHLET P.4-P.7-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/MATHS P.4.pdf"
+    "pdfUrl": "MATHS P.4.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/MTC HUB SET 4.pdf"
+    "pdfUrl": "MTC HUB SET 4.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/MTC p.4.pdf"
+    "pdfUrl": "MTC p.4.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P 4 MATHEMATICS  END OF YEAR EXAMS.PDF"
+    "pdfUrl": "P 4 MATHEMATICS  END OF YEAR EXAMS.PDF"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P. 4 MTC BOT III.pdf"
+    "pdfUrl": "P. 4 MTC BOT III.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P. 4 MTC SET 1.pdf"
+    "pdfUrl": "P. 4 MTC SET 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P. 4 MTC SET I.pdf"
+    "pdfUrl": "P. 4 MTC SET I.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 2023 MTC LPTE MOCK.pdf"
+    "pdfUrl": "P.4 2023 MTC LPTE MOCK.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 EOT 2023.pdf"
+    "pdfUrl": "P.4 EOT 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 guide scans.pdf"
+    "pdfUrl": "P.4 guide scans.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 LEGIT MTC ISSUE 1 & 2.pdf"
+    "pdfUrl": "P.4 LEGIT MTC ISSUE 1 & 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 LEGIT MTC ISSUE 1 _ 2.pdf"
+    "pdfUrl": "P.4 LEGIT MTC ISSUE 1 _ 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATH BOT 1 2024.pdf"
+    "pdfUrl": "P.4 MATH BOT 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATH FINAL.pdf"
+    "pdfUrl": "P.4 MATH FINAL.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 Math Revision booklet(2).pdf"
+    "pdfUrl": "P.4 Math Revision booklet(2).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 Math Revision booklet-1(0).pdf"
+    "pdfUrl": "P.4 Math Revision booklet-1(0).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 Math Revision booklet.pdf"
+    "pdfUrl": "P.4 Math Revision booklet.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHEMATICS END OF TERM 1 2022.pdf"
+    "pdfUrl": "P.4 MATHEMATICS END OF TERM 1 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 Mathematics Lock down activity.pdf"
+    "pdfUrl": "P.4 Mathematics Lock down activity.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 Mathematics Mid term 1 .pdf"
+    "pdfUrl": "P.4 Mathematics Mid term 1 .pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHEMATICS REVISION WORK  ACTIVITY THREE 2020 LOHANA SCHOOLS.pdf.pdf"
+    "pdfUrl": "P.4 MATHEMATICS REVISION WORK  ACTIVITY THREE 2020 LOHANA SCHOOLS.pdf.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHEMATICS REVISION WORK  ACTIVITY TWO 2020 LOHANA SCHOOLS.pdf.pdf"
+    "pdfUrl": "P.4 MATHEMATICS REVISION WORK  ACTIVITY TWO 2020 LOHANA SCHOOLS.pdf.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHEMATICS REVISION WORK ACTIVITY ONE 2020 LOHANA SCHOOLS.pdf.pdf"
+    "pdfUrl": "P.4 MATHEMATICS REVISION WORK ACTIVITY ONE 2020 LOHANA SCHOOLS.pdf.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHEMATICS SET 1.pdf"
+    "pdfUrl": "P.4 MATHEMATICS SET 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHEMATICS SET 4 TOPICAL EVALUATION SERIES 4 2024 OSEB 0775787978  SAMPLE.pdf"
+    "pdfUrl": "P.4 MATHEMATICS SET 4 TOPICAL EVALUATION SERIES 4 2024 OSEB 0775787978  SAMPLE.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHEMATICS WORK BOOK TERM ONE (ecolebooks.com)-1.pdf"
+    "pdfUrl": "P.4 MATHEMATICS WORK BOOK TERM ONE (ecolebooks.com)-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHEMATICS WORKBOOK.pdf"
+    "pdfUrl": "P.4 MATHEMATICS WORKBOOK.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHS (5).pdf"
+    "pdfUrl": "P.4 MATHS (5).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 Maths (6).pdf"
+    "pdfUrl": "P.4 Maths (6).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHS MID I 2024.pdf"
+    "pdfUrl": "P.4 MATHS MID I 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHS MID II-1.pdf"
+    "pdfUrl": "P.4 MATHS MID II-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHS MID II.pdf"
+    "pdfUrl": "P.4 MATHS MID II.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHS MIDTERM ONE.pdf"
+    "pdfUrl": "P.4 MATHS MIDTERM ONE.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHS mon6.pdf"
+    "pdfUrl": "P.4 MATHS mon6.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MATHS set ii.pdf"
+    "pdfUrl": "P.4 MATHS set ii.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 Maths term1 (1).pdf"
+    "pdfUrl": "P.4 Maths term1 (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 Maths term1.pdf"
+    "pdfUrl": "P.4 Maths term1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC - MID TERM 1 2024.pdf"
+    "pdfUrl": "P.4 MTC - MID TERM 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/p.4 MTC .pdf"
+    "pdfUrl": "p.4 MTC .pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC BOT II.pdf"
+    "pdfUrl": "P.4 MTC BOT II.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC BOT-2-1.pdf"
+    "pdfUrl": "P.4 MTC BOT-2-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC BOT-2.pdf"
+    "pdfUrl": "P.4 MTC BOT-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC E.O.T 1 2024.pdf"
+    "pdfUrl": "P.4 MTC E.O.T 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC E.O.T2 KAPSHA 2023.pdf"
+    "pdfUrl": "P.4 MTC E.O.T2 KAPSHA 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC END III.pdf"
+    "pdfUrl": "P.4 MTC END III.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC EOT EXAM.pdf"
+    "pdfUrl": "P.4 MTC EOT EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC LPTE PREP SET 2.pdf"
+    "pdfUrl": "P.4 MTC LPTE PREP SET 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC MID III.pdf"
+    "pdfUrl": "P.4 MTC MID III.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC MID TERM 1 2023.pdf"
+    "pdfUrl": "P.4 MTC MID TERM 1 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC PLACEMENT SET GUIDE.pdf"
+    "pdfUrl": "P.4 MTC PLACEMENT SET GUIDE.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC SSEB BOT.pdf"
+    "pdfUrl": "P.4 MTC SSEB BOT.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC TOPICS(ABRIDGED CURRICULAM).pdf"
+    "pdfUrl": "P.4 MTC TOPICS(ABRIDGED CURRICULAM).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTC.pdf"
+    "pdfUrl": "P.4 MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 MTE II MTC-1 seeta.pdf"
+    "pdfUrl": "P.4 MTE II MTC-1 seeta.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 SIPRO MTC B.O.T 1 2024.pdf"
+    "pdfUrl": "P.4 SIPRO MTC B.O.T 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4 taand mtc eot.pdf"
+    "pdfUrl": "P.4 taand mtc eot.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4-Lesson-Notes-Mathematics_Term1-2019-2.pdf"
+    "pdfUrl": "P.4-Lesson-Notes-Mathematics_Term1-2019-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4-MATHEMATICS-WORK-BOOK-TERM-ONE.pdf"
+    "pdfUrl": "P.4-MATHEMATICS-WORK-BOOK-TERM-ONE.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4-MATHEMATICS-WORKBOOK-1(1).pdf"
+    "pdfUrl": "P.4-MATHEMATICS-WORKBOOK-1(1).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4-MATHEMATICS-WORKBOOK-1.pdf"
+    "pdfUrl": "P.4-MATHEMATICS-WORKBOOK-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4-MATHS-1 (1).pdf"
+    "pdfUrl": "P.4-MATHS-1 (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4-MTC-SET-5.pdf"
+    "pdfUrl": "P.4-MTC-SET-5.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4-MTC-SET-II.pdf"
+    "pdfUrl": "P.4-MTC-SET-II.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4-Week-1-pdf.pdf"
+    "pdfUrl": "P.4-Week-1-pdf.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4-Week-2-pdf.pdf"
+    "pdfUrl": "P.4-Week-2-pdf.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4-Week-3-pdf.pdf"
+    "pdfUrl": "P.4-Week-3-pdf.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.4_holiday_work.pdf"
+    "pdfUrl": "P.4_holiday_work.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P.7 MTC SET 4.pdf"
+    "pdfUrl": "P.7 MTC SET 4.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 BOT 3 MTC PRIME.pdf"
+    "pdfUrl": "P4 BOT 3 MTC PRIME.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 Broad mtc end of term II.pdf"
+    "pdfUrl": "P4 Broad mtc end of term II.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/p4 MATHEMATICS MATHEMATICS HOLIDAY TEST 1.pdf"
+    "pdfUrl": "p4 MATHEMATICS MATHEMATICS HOLIDAY TEST 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 Mathematics.pdf"
+    "pdfUrl": "P4 Mathematics.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 Maths Mid III Sipro.pdf"
+    "pdfUrl": "P4 Maths Mid III Sipro.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 Maths Sipro end ot term 1.pdf"
+    "pdfUrl": "P4 Maths Sipro end ot term 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MATHS.pdf"
+    "pdfUrl": "P4 MATHS.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 Mid 3 MTC 2023.pdf"
+    "pdfUrl": "P4 Mid 3 MTC 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/p4 mid term 3 sipro.pdf"
+    "pdfUrl": "p4 mid term 3 sipro.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MID TERM III EXAM.pdf"
+    "pdfUrl": "P4 MID TERM III EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MOT 3 MTC.pdf"
+    "pdfUrl": "P4 MOT 3 MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MTC (4).pdf"
+    "pdfUrl": "P4 MTC (4).pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MTC END OF TERM 3.pdf"
+    "pdfUrl": "P4 MTC END OF TERM 3.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MTC HOLIDAY PACKAGE.pdf"
+    "pdfUrl": "P4 MTC HOLIDAY PACKAGE.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MTC LPTE PREP SET 1.pdf"
+    "pdfUrl": "P4 MTC LPTE PREP SET 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MTC MID TERM III EXAM.pdf"
+    "pdfUrl": "P4 MTC MID TERM III EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MTC MOT 1.pdf"
+    "pdfUrl": "P4 MTC MOT 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MTC Sipro by Tr.Lawrance.pdf"
+    "pdfUrl": "P4 MTC Sipro by Tr.Lawrance.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MTC SKYLINE EOT 2.pdf"
+    "pdfUrl": "P4 MTC SKYLINE EOT 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MTC Term III.pdf"
+    "pdfUrl": "P4 MTC Term III.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 MUKONO MTC EOT 2.pdf"
+    "pdfUrl": "P4 MUKONO MTC EOT 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 SIPRO EOT 2 MTC.pdf"
+    "pdfUrl": "P4 SIPRO EOT 2 MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 TERM 3 MATHEMATICS WORK BOOK  2022.pdf"
+    "pdfUrl": "P4 TERM 3 MATHEMATICS WORK BOOK  2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P4 TERM 3 MATHEMATICS WORK BOOK.pdf"
+    "pdfUrl": "P4 TERM 3 MATHEMATICS WORK BOOK.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/PRIMARY FOUR  MATHS.pdf"
+    "pdfUrl": "PRIMARY FOUR  MATHS.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/primary four Mathematics COVID-19 doc.pdf"
+    "pdfUrl": "primary four Mathematics COVID-19 doc.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/Primary four mathematics-1.pdf"
+    "pdfUrl": "Primary four mathematics-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/Primary four mathematics-2.pdf"
+    "pdfUrl": "Primary four mathematics-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/Primary four mathematics-3.pdf"
+    "pdfUrl": "Primary four mathematics-3.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/Primary four mathematics-4.pdf"
+    "pdfUrl": "Primary four mathematics-4.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/Primary four mathematics.pdf"
+    "pdfUrl": "Primary four mathematics.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/PRIME MOT 2 P4 MTC GUIDE.pdf"
+    "pdfUrl": "PRIME MOT 2 P4 MTC GUIDE.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/PRIME P4 BOT 3 MTC.pdf"
+    "pdfUrl": "PRIME P4 BOT 3 MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/PRIME P4 EOY MTC.pdf"
+    "pdfUrl": "PRIME P4 EOY MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/PRIME P4 MOT 2 MTC.pdf"
+    "pdfUrl": "PRIME P4 MOT 2 MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/P_4 MATHEMATICS MID-TERM I  EXAMINATION.PDF"
+    "pdfUrl": "P_4 MATHEMATICS MID-TERM I  EXAMINATION.PDF"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/sipro beginning two four.pdf"
+    "pdfUrl": "sipro beginning two four.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/SIPRO MOT 2 P4 MTC.pdf"
+    "pdfUrl": "SIPRO MOT 2 P4 MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/SIPRO P.4 MOT 3 MTC.pdf"
+    "pdfUrl": "SIPRO P.4 MOT 3 MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/SIPRO P.4 MTC EOT3.pdf"
+    "pdfUrl": "SIPRO P.4 MTC EOT3.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/SIPRO P4 BOT 2 MTC.pdf"
+    "pdfUrl": "SIPRO P4 BOT 2 MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/SIPRO P4 BOT 3 MTC.pdf"
+    "pdfUrl": "SIPRO P4 BOT 3 MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/SIPRO P4 MOT 2 MTC.pdf"
+    "pdfUrl": "SIPRO P4 MOT 2 MTC.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/SIPRO P4 MTC BOT 3.pdf"
+    "pdfUrl": "SIPRO P4 MTC BOT 3.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/The jerox end of term 1 P.4 Mathematics 2023.pdf"
+    "pdfUrl": "The jerox end of term 1 P.4 Mathematics 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/TIAN MATH 4 BOOOK.pdf"
+    "pdfUrl": "TIAN MATH 4 BOOOK.pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/TIAN, UNIVERSE MATH TRAVELLER .pdf"
+    "pdfUrl": "TIAN, UNIVERSE MATH TRAVELLER .pdf"
   },
   {
-    "pdfUrl": "Resources/P4/P4 EXAMS/MTC/TR.PAUL P.4 MTC JEROX EOT 3 - 2023 (8).pdf"
-  }
+    "pdfUrl": "TR.PAUL P.4 MTC JEROX EOT 3 - 2023 (8).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/MATHEMATICS P.4 pdf.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/MATHS P.4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/MTC HUB SET 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/MTC p.4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P 4 MATHEMATICS  END OF YEAR EXAMS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P. 4 MTC BOT III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P. 4 MTC SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P. 4 MTC SET I.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 All ASK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 LEGIT MTC ISSUE 1 & 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATH FINAL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 Math Revision booklet.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHEMATICS END OF TERM 1 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 Mathematics Lock down activity.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 Mathematics Mid term 1 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHEMATICS REVISION WORK  ACTIVITY THREE 2020 LOHANA SCHOOLS.pdf.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHEMATICS REVISION WORK  ACTIVITY TWO 2020 LOHANA SCHOOLS.pdf.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHEMATICS REVISION WORK ACTIVITY ONE 2020 LOHANA SCHOOLS.pdf.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHEMATICS SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHEMATICS WORKBOOK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHS (5).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 Maths (6).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHS END OF YEAR 2022.docx p4-main/p4-main/exams/MTC/P.4 MATHS MID II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHS MID II-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHS MIDTERM ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHS mon6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MATHS set ii.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 Maths term1 (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 Maths term1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MTC .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MTC BOT II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MTC E.O.T2 KAPSHA 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MTC END III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MTC EOT EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MTC LPTE PREP SET 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MTC MID III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MTC PLACEMENT SET GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MTC.docx p4-main/p4-main/exams/MTC/P.4 MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 MTE II MTC-1 seeta.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 taand mtc eot.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4-MATHEMATICS-WORK-BOOK-TERM-ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4-MATHS-1 (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4-MTC-SET-5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.4-MTC-SET-II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P.7 MTC SET 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P_4 MATHEMATICS MID-TERM I  EXAMINATION.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 BOT 3 MTC PRIME.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 Broad mtc end of term II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 Maths Sipro end ot term 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MATHS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 Mid 3 MTC 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/p4 mid term 3 sipro.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MID TERM III EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MTC (4).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MTC END OF TERM 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MTC HOLIDAY PACKAGE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MTC LPTE PREP SET 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MTC MID TERM III EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MTC Sipro by Tr.Lawrance.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MTC SKYLINE EOT 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MTC Term III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 MUKONO MTC EOT 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4 SIPRO EOT 2 MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/P4_MATHEMATICS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/PRIMARY FOUR  MATHS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/primary four Mathematics COVID-19 doc.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/Primary four mathematics.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/Primary four mathematics-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/Primary four mathematics-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/Primary four mathematics-3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/Primary four mathematics-4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/PRIME MOT 2 P4 MTC GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/PRIME P4 BOT 3 MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/PRIME P4 EOY MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/PRIME P4 MOT 2 MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/sipro beginning two four.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/SIPRO MOT 2 P4 MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/SIPRO P.4 MOT 3 MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/SIPRO P.4 MTC EOT3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/SIPRO P4 BOT 2 MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/SIPRO P4 BOT 3 MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/SIPRO P4 MOT 2 MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/SIPRO P4 MTC BOT 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/Susan P4 MATHS LESSON NOTES , SCHEMES TERM I, II, III 2015.1docx.docx p4-main/p4-main/exams/MTC/The jerox end of term 1 P.4 Mathematics 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/TIAN MATH 4 BOOOK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/TIAN, UNIVERSE MATH TRAVELLER .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/TR.PAUL P.4 MTC JEROX EOT 3 - 2023 (8).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/EOT P.4 MTC BY SMILE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/HORM MTC SET 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/KAMPALA P4 EOY MTC.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/KESK p4 MATHS MIDTERM II 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/math P.4 mika.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p4/MATHEMATICS MT2, SET FOUR.pdf"
+  },
 ]
         ;
+       
        
         let currentPage = 1;
         const itemsPerPage = 12;
@@ -1010,13 +1373,107 @@ function checkAuth(url) {
                 cardsContainer.appendChild(card);
             });
 
-            updatePaginationButtons();
+            updatePagination();
 
             if (filteredData.length === 0) {
                 document.getElementById('no-results').style.display = 'block';
             } else {
                 document.getElementById('no-results').style.display = 'none';
             }
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            const createPageButton = (page, text) => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = text || page;
+                button.onclick = () => goToPage(page);
+                if (page === currentPage) {
+                    li.classList.add('active');
+                }
+                if (text === '...') {
+                    button.disabled = true;
+                    li.classList.add('ellipsis');
+                }
+                li.appendChild(button);
+                return li;
+            };
+
+            // Previous button
+            pagination.appendChild(createPageButton(currentPage - 1, '←'));
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (startPage > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (startPage > 2) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+                pagination.appendChild(createPageButton(totalPages));
+            }
+
+            // Next button
+            pagination.appendChild(createPageButton(currentPage + 1, '→'));
+
+            // Disable prev/next buttons when at first/last page
+            pagination.firstChild.querySelector('button').disabled = currentPage === 1;
+            pagination.lastChild.querySelector('button').disabled = currentPage === totalPages;
+
+            // Update the max attribute of the jump-to-page input
+            document.getElementById('jump-to-page-input').max = totalPages;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayCards();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('jump-to-page-input');
+            const page = parseInt(input.value);
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                goToPage(page);
+                input.value = ''; // Clear the input after jumping
+            } else {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            }
+        }
+
+        // Add event listener for Enter key on the jump-to-page input
+        document.getElementById('jump-to-page-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function goToPage(page) {
+            if (page < 1 || page > Math.ceil(filteredData.length / itemsPerPage)) {
+                return;
+            }
+            currentPage = page;
+            displayCards();
+            window.scrollTo(0, 0);
         }
 
         function updatePaginationButtons() {
@@ -1100,4 +1557,5 @@ function checkAuth(url) {
     
 </body>
 </html>
+
 

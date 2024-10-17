@@ -17,7 +17,7 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
-      <title>P.3 Work</title>
+    <title>P.6SOCIAL STUDIESPASTPAPERS</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -202,11 +202,7 @@
            }
        }
        
-       .pagination-container {
-           display: flex;
-           justify-content: center;
-           margin-top: 20px;
-       }
+
        
        .pagination-button {
            padding: 10px;
@@ -223,10 +219,7 @@
            background-color: #e65100;
        }
        
-       .pagination-button:disabled {
-           background-color: #ccc;
-           cursor: not-allowed;
-       }
+
        
        .loading {
                    text-align: center;
@@ -448,10 +441,12 @@
                    }
                }
                .pagination-container {
-                   display: flex;
-                   justify-content: center;
-                   margin-top: 20px;
-               }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
                .pagination-button {
                    padding: 10px 20px;
                    margin: 0 5px;
@@ -465,6 +460,87 @@
                    background-color: #ccc;
                    cursor: not-allowed;
                }
+               .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        .pagination li {
+            margin: 0 3px;
+        }
+
+        .pagination button {
+            background-color: var(--light-orange);
+            border: none;
+            color: #333;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--dark-orange);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .active button {
+            background-color: var(--deep-orange);
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 8px 12px;
+            color: #333;
+        }
+
+        .jump-to-page {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .jump-to-page input {
+            width: 150px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid var(--medium-orange);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .jump-to-page button {
+            background: linear-gradient(145deg, var(--dark-orange), var(--deep-orange));
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .jump-to-page button:hover {
+            background: linear-gradient(145deg, var(--deep-orange), var(--dark-orange));
+        }
+
+        .jump-to-page .search-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        :root {
+            --light-orange: #FFE0B2;
+            --medium-orange: #FFB74D;
+            --dark-orange: #FF9800;
+            --deep-orange: #F57C00;
+        }
            </style>
 </head>
 <body>
@@ -560,11 +636,18 @@ function checkAuth(url) {
     <div id="cards-container" class="cards-container"></div>
     <div class="no-results" id="no-results" style="display: none;">No results found</div>
     <div class="pagination-container">
-        <button id="prevButton" class="pagination-button" onclick="changePage(-1)">Previous</button>
-        <button id="nextButton" class="pagination-button" onclick="changePage(1)">Next</button>
+        <ul class="pagination" id="pagination"></ul>
+        <div class="jump-to-page">
+            <input type="number" id="jump-to-page-input" min="1" placeholder="Jump to page">
+            <button onclick="jumpToPage()" title="Jump to page">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
     </div>
     <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-    <div id="pdf-viewer-modal">
+   <div id="pdf-viewer-modal">
         <div id="pdf-viewer"><br><br>
             <button class="close-button" onclick="closePdfViewer()">Close</button>
             <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
@@ -580,427 +663,791 @@ function checkAuth(url) {
         const pdfData = 
         [
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/BOT III P6 SST.pdf"
+    "pdfUrl": "BOT III P6 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/BROAD P6 EOT 3 SST.pdf"
+    "pdfUrl": "BROAD P6 EOT 3 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/BROAD P6 SST EOT 3.pdf"
+    "pdfUrl": "BROAD P6 SST EOT 3.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/END OF YEAR  P.6 SST E-LEARN EXAMS 2023.pdf"
+    "pdfUrl": "END OF YEAR  P.6 SST E-LEARN EXAMS 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/End of year SST Prime.pdf"
+    "pdfUrl": "End of year SST Prime.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/EOT P.6 SST BY SMILE.pdf"
+    "pdfUrl": "EOT P.6 SST BY SMILE.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/GVPS P.6 mid 3 SST 2023.pdf"
+    "pdfUrl": "GVPS P.6 mid 3 SST 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/HAPPY HOUR P6 TERM 3 SST.pdf"
+    "pdfUrl": "HAPPY HOUR P6 TERM 3 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/Hillside P.6 SST Term 3 2022 by E-Learn Platform.pdf"
+    "pdfUrl": "Hillside P.6 SST Term 3 2022 by E-Learn Platform.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/JOREX SST & RE P.6 EOT3 .pdf"
+    "pdfUrl": "JOREX SST & RE P.6 EOT3 .pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/JUBRA P6 EOT 3 SST.pdf"
+    "pdfUrl": "JUBRA P6 EOT 3 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/KAMPALA P6 ASSESSMENT SST TERM 3.pdf"
+    "pdfUrl": "KAMPALA P6 ASSESSMENT SST TERM 3.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/KAPSHA P6 EOT 2 SST.pdf"
+    "pdfUrl": "KAPSHA P6 EOT 2 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/KES BEGINING SOCIAL STUDIES P.6 - 2023-07-02T231825.243.pdf"
+    "pdfUrl": "KES BEGINING SOCIAL STUDIES P.6 - 2023-07-02T231825.243.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/KESK P.6 ABRIGDED CURRICULUM SST TERM I WORKBOOK.pdf"
+    "pdfUrl": "KESK P.6 ABRIGDED CURRICULUM SST TERM I WORKBOOK.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/KOLFRAM P6 SST MIDTERM II 2023.pdf"
+    "pdfUrl": "KOLFRAM P6 SST MIDTERM II 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/kolfram p6 SST midterm set 1 2023.pdf"
+    "pdfUrl": "kolfram p6 SST midterm set 1 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/MID TERM I SOCIAL STUDIES 2023-2.pdf"
+    "pdfUrl": "MID TERM I SOCIAL STUDIES 2023-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/Mid-Term Exam P.6 SST.pdf"
+    "pdfUrl": "Mid-Term Exam P.6 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/p. 6 SST SIPRO BOT TREE 2023.pdf"
+    "pdfUrl": "p. 6 SST SIPRO BOT TREE 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P. 6 SST W PDF.pdf"
+    "pdfUrl": "P. 6 SST W PDF.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6  MID TERM ONE.pdf"
+    "pdfUrl": "P.6  MID TERM ONE.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 E.O.T 3 SST YEEKO.pdf"
+    "pdfUrl": "P.6 E.O.T 3 SST YEEKO.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/p.6 eot 2 sst prime.pdf"
+    "pdfUrl": "p.6 eot 2 sst prime.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 EOT TERM I SST.pdf"
+    "pdfUrl": "P.6 EOT TERM I SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/p.6 grobal end of term two .pdf"
+    "pdfUrl": "p.6 grobal end of term two .pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 Jerox SST B.O.T1.pdf"
+    "pdfUrl": "P.6 Jerox SST B.O.T1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 kcca sst.pdf"
+    "pdfUrl": "P.6 kcca sst.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 PROMOTIONAL SST.pdf"
+    "pdfUrl": "P.6 PROMOTIONAL SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 S.S.T.pdf"
+    "pdfUrl": "P.6 S.S.T.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 S.ST BOT III.pdf"
+    "pdfUrl": "P.6 S.ST BOT III.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 S.ST KAPSHA 2023.pdf"
+    "pdfUrl": "P.6 S.ST KAPSHA 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 S.ST.pdf"
+    "pdfUrl": "P.6 S.ST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SOCIAL STUDIES & RE E.O.Y.pdf"
+    "pdfUrl": "P.6 SOCIAL STUDIES & RE E.O.Y.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SOCIAL STUDIES & RE EOY.pdf"
+    "pdfUrl": "P.6 SOCIAL STUDIES & RE EOY.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST BOT 1 2024-1.pdf"
+    "pdfUrl": "P.6 SST BOT 1 2024-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST BOT 1 2024.pdf"
+    "pdfUrl": "P.6 SST BOT 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST BOT 2023.pdf"
+    "pdfUrl": "P.6 SST BOT 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST BOT II.pdf"
+    "pdfUrl": "P.6 SST BOT II.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST E.O.T 1 2024.pdf"
+    "pdfUrl": "P.6 SST E.O.T 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST END III.pdf"
+    "pdfUrl": "P.6 SST END III.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST EXAM.pdf"
+    "pdfUrl": "P.6 SST EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST GUIDING QUESTIONS.pdf"
+    "pdfUrl": "P.6 SST GUIDING QUESTIONS.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST MID 2-1.pdf"
+    "pdfUrl": "P.6 SST MID 2-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST MID 2.pdf"
+    "pdfUrl": "P.6 SST MID 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST MID TERM 1 2024-1.pdf"
+    "pdfUrl": "P.6 SST MID TERM 1 2024-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST MID TERM 1 2024-2.pdf"
+    "pdfUrl": "P.6 SST MID TERM 1 2024-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST MID TERM 1 2024.pdf"
+    "pdfUrl": "P.6 SST MID TERM 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST MID TERM I.pdf"
+    "pdfUrl": "P.6 SST MID TERM I.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST mid term.pdf"
+    "pdfUrl": "P.6 SST mid term.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST QUALITY CHECK 1 GUIDE.pdf"
+    "pdfUrl": "P.6 SST QUALITY CHECK 1 GUIDE.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST QUALITY CHECK 1-1-1.pdf"
+    "pdfUrl": "P.6 SST QUALITY CHECK 1-1-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST QUALITY CHECK 1-1.pdf"
+    "pdfUrl": "P.6 SST QUALITY CHECK 1-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST QUALITY CHECK 1.pdf"
+    "pdfUrl": "P.6 SST QUALITY CHECK 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST QUALITY CHECK 3 GUIDE-1.pdf"
+    "pdfUrl": "P.6 SST QUALITY CHECK 3 GUIDE-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST QUALITY CHECK 3 GUIDE.pdf"
+    "pdfUrl": "P.6 SST QUALITY CHECK 3 GUIDE.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST QUALITY CHECK III .pdf"
+    "pdfUrl": "P.6 SST QUALITY CHECK III .pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST QUALITY CHECK III _121300_102930.pdf"
+    "pdfUrl": "P.6 SST QUALITY CHECK III _121300_102930.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST QUALITY CHECK IV.pdf"
+    "pdfUrl": "P.6 SST QUALITY CHECK IV.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST Revision booklet (1).pdf"
+    "pdfUrl": "P.6 SST Revision booklet (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST Revision booklet.pdf"
+    "pdfUrl": "P.6 SST Revision booklet.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST S (1).pdf"
+    "pdfUrl": "P.6 SST S (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST S.pdf"
+    "pdfUrl": "P.6 SST S.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST set 4.pdf"
+    "pdfUrl": "P.6 SST set 4.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST termII-1.pdf"
+    "pdfUrl": "P.6 SST termII-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST VSES BOT TWO 2023 2.pdf"
+    "pdfUrl": "P.6 SST VSES BOT TWO 2023 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST VSES MID 2023.pdf"
+    "pdfUrl": "P.6 SST VSES MID 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST VSES MID.pdf"
+    "pdfUrl": "P.6 SST VSES MID.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST-1.pdf"
+    "pdfUrl": "P.6 SST-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6 SST.pdf"
+    "pdfUrl": "P.6 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6-.SST-II.pdf"
+    "pdfUrl": "P.6-.SST-II.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6-SST-NEW.pdf"
+    "pdfUrl": "P.6-SST-NEW.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6-SST-SET-5.pdf"
+    "pdfUrl": "P.6-SST-SET-5.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6-SST-WORK-BOOK-TERM-ONE-.pdf"
+    "pdfUrl": "P.6-SST-WORK-BOOK-TERM-ONE-.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P.6-SST.pdf"
+    "pdfUrl": "P.6-SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/p.6. SST end of term three 2023.pdf"
+    "pdfUrl": "p.6. SST end of term three 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 BOT 3 SST PRIME.pdf"
+    "pdfUrl": "P6 BOT 3 SST PRIME.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 end of year 2022 SST.pdf"
+    "pdfUrl": "P6 end of year 2022 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 END OF YEAR LITERACY II EXAM.pdf"
+    "pdfUrl": "P6 END OF YEAR LITERACY II EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 END OF YEAR SST EXAM THE JUBRA EDUCATIONAL SERVICES.pdf"
+    "pdfUrl": "P6 END OF YEAR SST EXAM THE JUBRA EDUCATIONAL SERVICES.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 END OF YEAR SST EXAM.pdf"
+    "pdfUrl": "P6 END OF YEAR SST EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 EOT III 2022 SST EXAM.pdf"
+    "pdfUrl": "P6 EOT III 2022 SST EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 EOT III 2022 SST.pdf"
+    "pdfUrl": "P6 EOT III 2022 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 EOT III SST 2022.pdf"
+    "pdfUrl": "P6 EOT III SST 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 EOT III SST EXAM.pdf"
+    "pdfUrl": "P6 EOT III SST EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 EOT SOCIAL STUDIES AND RELIGIOUS EDUCATION.pdf"
+    "pdfUrl": "P6 EOT SOCIAL STUDIES AND RELIGIOUS EDUCATION.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 mid spr.pdf"
+    "pdfUrl": "P6 mid spr.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 MOT 1 SST.pdf"
+    "pdfUrl": "P6 MOT 1 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 SOCIAL STUDIES WITH RELIGIOUS EDUCATION.pdf"
+    "pdfUrl": "P6 SOCIAL STUDIES WITH RELIGIOUS EDUCATION.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 SST (2).pdf"
+    "pdfUrl": "P6 SST (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 SST (3).pdf"
+    "pdfUrl": "P6 SST (3).pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 SST CONTINUOUS ASSESMENT.pdf"
+    "pdfUrl": "P6 SST CONTINUOUS ASSESMENT.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 sst end of term II 2023 fimal. marking guidesdoc.pdf"
+    "pdfUrl": "P6 sst end of term II 2023 fimal. marking guidesdoc.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 SST END OF TERM III EXAMINATIONS.pdf"
+    "pdfUrl": "P6 SST END OF TERM III EXAMINATIONS.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 SST EOT III 2022 EXAM.pdf"
+    "pdfUrl": "P6 SST EOT III 2022 EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 SST EOT III 2022.pdf"
+    "pdfUrl": "P6 SST EOT III 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 sst eot.pdf"
+    "pdfUrl": "P6 sst eot.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 SST EXAM.pdf"
+    "pdfUrl": "P6 SST EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 SST HOLIDAY WORK YET HAPPY KIDZ SCHOOL.pdf"
+    "pdfUrl": "P6 SST HOLIDAY WORK YET HAPPY KIDZ SCHOOL.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/p6 sst sipro end 3.pdf"
+    "pdfUrl": "p6 sst sipro end 3.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 SST.pdf"
+    "pdfUrl": "P6 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6 TERM 3 SST WORK BOOK.pdf"
+    "pdfUrl": "P6 TERM 3 SST WORK BOOK.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P6-SST-Test.pdf"
+    "pdfUrl": "P6-SST-Test.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/primary six Social studies COVID-19.pdf"
+    "pdfUrl": "primary six Social studies COVID-19.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/primary six Social studies.pdf"
+    "pdfUrl": "primary six Social studies.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/PRIMARY SIX SST END OF TERM III EXAMS-2.pdf"
+    "pdfUrl": "PRIMARY SIX SST END OF TERM III EXAMS-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/PRIMARY SIX SST END OF TERM III EXAMS.pdf"
+    "pdfUrl": "PRIMARY SIX SST END OF TERM III EXAMS.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/PRIMARY-SIX-SOCIAL-STUDIES.pdf"
+    "pdfUrl": "PRIMARY-SIX-SOCIAL-STUDIES.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/primary-six-tekart-revision-R.E.pdf"
+    "pdfUrl": "primary-six-tekart-revision-R.E.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/PRIME EOT 2 SST P6.pdf"
+    "pdfUrl": "PRIME EOT 2 SST P6.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/PRIME EOT 3 P6 SST.pdf"
+    "pdfUrl": "PRIME EOT 3 P6 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/PRIME P6 BOT 3 SST.pdf"
+    "pdfUrl": "PRIME P6 BOT 3 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/Prime SST P6 EOT3 by Juve.pdf"
+    "pdfUrl": "Prime SST P6 EOT3 by Juve.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P_6 SOCIAL STUDIES WITH RELIGIOUS EDUCATION.pdf"
+    "pdfUrl": "P_6 SOCIAL STUDIES WITH RELIGIOUS EDUCATION.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/P_6 SST B_O_T 2.pdf"
+    "pdfUrl": "P_6 SST B_O_T 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/RAAYAT P6 EOT 3 SST.pdf"
+    "pdfUrl": "RAAYAT P6 EOT 3 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SAMPLE SST REPORT E-LEARN UGANDA.pdf"
+    "pdfUrl": "SAMPLE SST REPORT E-LEARN UGANDA.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/Seeta Parents Social Studies Set 2-1.pdf"
+    "pdfUrl": "Seeta Parents Social Studies Set 2-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/Seeta Parents Social Studies Set 3-1.pdf"
+    "pdfUrl": "Seeta Parents Social Studies Set 3-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/Seeta Parents Social Studies Set 4.pdf"
+    "pdfUrl": "Seeta Parents Social Studies Set 4.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SEMI- CANDIDATE SPECIAL PACKAGE   SOCIAL STUDIES SET 1-2023-2024 0775787978.pdf"
+    "pdfUrl": "SEMI- CANDIDATE SPECIAL PACKAGE   SOCIAL STUDIES SET 1-2023-2024 0775787978.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/sipro beginning two six.pdf"
+    "pdfUrl": "sipro beginning two six.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SIPRO MID TERM 3 P6.pdf"
+    "pdfUrl": "SIPRO MID TERM 3 P6.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/sipro mid term iii sst p6.pdf"
+    "pdfUrl": "sipro mid term iii sst p6.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SIPRO MOT 2 P6 SST.pdf"
+    "pdfUrl": "SIPRO MOT 2 P6 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SIPRO P6 EOT 2.pdf"
+    "pdfUrl": "SIPRO P6 EOT 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/sipro P6 mot 2 SST.pdf"
+    "pdfUrl": "sipro P6 mot 2 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/Sipro sst beginning of term 3 P6 by Kalulu Brian 0755518221.pdf"
+    "pdfUrl": "Sipro sst beginning of term 3 P6 by Kalulu Brian 0755518221.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SKYLINE EOY P6 SST.pdf"
+    "pdfUrl": "SKYLINE EOY P6 SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/social studies_11_10_2023(2).pdf"
+    "pdfUrl": "social studies_11_10_2023(2).pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SST E-LEARN P.5 TERM III 2023.pdf"
+    "pdfUrl": "SST E-LEARN P.5 TERM III 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SST P.5 W pdf.pdf"
+    "pdfUrl": "SST P.5 W pdf.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SST P_6 JEROX JOSH MADE  END.pdf"
+    "pdfUrl": "SST P_6 JEROX JOSH MADE  END.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SST-3.pdf"
+    "pdfUrl": "SST-3.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SST-7.pdf"
+    "pdfUrl": "SST-7.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/SST.1.pdf"
+    "pdfUrl": "SST.1.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/sure key p6.PDF"
+    "pdfUrl": "sure key p6.PDF"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/TR.PAUL P.6 SST JEROX EOT 3 - 2023 (4).pdf"
+    "pdfUrl": "TR.PAUL P.6 SST JEROX EOT 3 - 2023 (4).pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/TR.PAUL P.6 SST PRIME EOT 3 - 2023.pdf"
+    "pdfUrl": "TR.PAUL P.6 SST PRIME EOT 3 - 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P6/P6 EXAMS/SST/YET P.6_sst_Int_end_.pdf"
+    "pdfUrl": "YET P.6_sst_Int_end_.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/End of year SST Prime.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/EOT P.6 SST BY SMILE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/GVPS P.6 mid 3 SST 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/HAPPY HOUR P6 TERM 3 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/Hillside P.6 SST Term 3 2022 by E-Learn Platform.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/JIM PPS P.6 SST.docx p6-main/p6-main/exams/SST/JOREX SST & RE P.6 EOT3 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/JUBRA P6 EOT 3 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/KAMPALA P6 ASSESSMENT SST TERM 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/KAPSHA P6 EOT 2 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/KES BEGINING SOCIAL STUDIES P.6 - 2023-07-02T231825.243.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/KESK P.6 ABRIGDED CURRICULUM SST TERM I WORKBOOK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/KOLFRAM P6 SST MIDTERM II 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/kolfram p6 SST midterm set 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/MID TERM I SOCIAL STUDIES 2023-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/Mid-Term Exam P.6 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/p. 6 SST SIPRO BOT TREE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P. 6 SST W PDF.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6  MID TERM ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 E.O.T 3 SST YEEKO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 E.O.T 3 SST.docx p6-main/p6-main/exams/SST/p.6 eot 2 sst prime.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 EOT TERM I SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 Jerox SST B.O.T1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 kcca sst.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 MTC  LESSON NOTES  MTC -2023.doc p6-main/p6-main/exams/SST/P.6 PROMOTIONAL SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 S.S.T.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 S.ST BOT III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 S.ST KAPSHA 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 S.ST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST BOT 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST BOT II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST END III.docx p6-main/p6-main/exams/SST/P.6 SST END III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST GUIDING QUESTIONS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST MID 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST MID 2-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST MID TERM I.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST mid term.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST NOTE TERM 123.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST QUALITY CHECK 1 GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST QUALITY CHECK 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST QUALITY CHECK 1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST QUALITY CHECK 1-1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST QUALITY CHECK 3 GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST QUALITY CHECK 3 GUIDE-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST QUALITY CHECK III .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST Revision booklet (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST Revision booklet.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST S (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST S.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST set 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST VSES BOT TWO 2023 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST VSES BOT TWO 2023 22222.docx p6-main/p6-main/exams/SST/P.6 SST VSES MID 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST VSES MID.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST.docx p6-main/p6-main/exams/SST/P.6 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6 SST-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/p.6. SST end of term three 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6-.SST-II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6-SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6-SST-NEW.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P.6-SST-SET-5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P_6 SOCIAL STUDIES WITH RELIGIOUS EDUCATION.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P_6 SST B_O_T 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 (2)SST.docx p6-main/p6-main/exams/SST/P6 BOT 3 SST PRIME.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 end of year 2022 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 END OF YEAR SST EXAM THE JUBRA EDUCATIONAL SERVICES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 END OF YEAR SST EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 EOT III 2022 SST EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 EOT III 2022 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 EOT III SST 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 EOT III SST EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 SOCIAL STUDIES WITH RELIGIOUS EDUCATION.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 SST (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 SST (3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 SST CONTINUOUS ASSESMENT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 sst end of term II 2023 fimal. marking guidesdoc.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 SST EOT III 2022 EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 SST EOT III 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 sst eot.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 SST EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 SST HOLIDAY WORK YET HAPPY KIDZ SCHOOL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/p6 sst sipro end 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6 TERM 3 SST WORK BOOK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/P6-SST-Test.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/PRIMARY 6 SET III 2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/primary six Social studies COVID-19.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/PRIMARY SIX SST END OF TERM III EXAMS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/PRIMARY SIX SST END OF TERM III EXAMS-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/PRIMARY-SIX-SOCIAL-STUDIES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/PRIME EOT 2 SST P6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/PRIME EOT 3 P6 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/PRIME P6 BOT 3 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/Prime SST P6 EOT3 by Juve.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/RAAYAT P6 EOT 3 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/Seeta Parents Social Studies Set 2-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/Seeta Parents Social Studies Set 3-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/Seeta Parents Social Studies Set 4.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SEMI- CANDIDATE SPECIAL PACKAGE   SOCIAL STUDIES SET 1-2023-2024 0775787978.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SIPRO MID TERM 3 P6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/sipro mid term iii sst p6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SIPRO MOT 2 P6 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/sipro P6 mot 2 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/Sipro sst beginning of term 3 P6 by Kalulu Brian 0755518221.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SKYLINE EOY P6 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/Social Studies P6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/social studies_11_10_2023(2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SST BREAKDOWN.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SST E-LEARN P.5 TERM III 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SST P.5 W pdf.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SST P_6 JEROX JOSH MADE  END.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SST.1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SST-3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/SST-7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/sure key p6.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/TR.PAUL P.6 SST JEROX EOT 3 - 2023 (4).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/TR.PAUL P.6 SST PRIME EOT 3 - 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/YET P.6_sst_Int_end_.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/BOT III P6 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/BROAD P6 EOT 3 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/BROAD P6 SST EOT 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p6/END OF YEAR  P.6 SST E-LEARN EXAMS 2023.pdf"
   }
 ]
         ;
+       
        
         let currentPage = 1;
         const itemsPerPage = 12;
@@ -1052,13 +1499,107 @@ function checkAuth(url) {
                 cardsContainer.appendChild(card);
             });
 
-            updatePaginationButtons();
+            updatePagination();
 
             if (filteredData.length === 0) {
                 document.getElementById('no-results').style.display = 'block';
             } else {
                 document.getElementById('no-results').style.display = 'none';
             }
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            const createPageButton = (page, text) => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = text || page;
+                button.onclick = () => goToPage(page);
+                if (page === currentPage) {
+                    li.classList.add('active');
+                }
+                if (text === '...') {
+                    button.disabled = true;
+                    li.classList.add('ellipsis');
+                }
+                li.appendChild(button);
+                return li;
+            };
+
+            // Previous button
+            pagination.appendChild(createPageButton(currentPage - 1, '←'));
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (startPage > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (startPage > 2) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+                pagination.appendChild(createPageButton(totalPages));
+            }
+
+            // Next button
+            pagination.appendChild(createPageButton(currentPage + 1, '→'));
+
+            // Disable prev/next buttons when at first/last page
+            pagination.firstChild.querySelector('button').disabled = currentPage === 1;
+            pagination.lastChild.querySelector('button').disabled = currentPage === totalPages;
+
+            // Update the max attribute of the jump-to-page input
+            document.getElementById('jump-to-page-input').max = totalPages;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayCards();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('jump-to-page-input');
+            const page = parseInt(input.value);
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                goToPage(page);
+                input.value = ''; // Clear the input after jumping
+            } else {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            }
+        }
+
+        // Add event listener for Enter key on the jump-to-page input
+        document.getElementById('jump-to-page-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function goToPage(page) {
+            if (page < 1 || page > Math.ceil(filteredData.length / itemsPerPage)) {
+                return;
+            }
+            currentPage = page;
+            displayCards();
+            window.scrollTo(0, 0);
         }
 
         function updatePaginationButtons() {
@@ -1142,4 +1683,5 @@ function checkAuth(url) {
     
 </body>
 </html>
+
 

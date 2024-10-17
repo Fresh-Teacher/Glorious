@@ -17,7 +17,7 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
-      <title>P.3 Work</title>
+    <title>P.5SCIENCEPASTPAPERS</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -202,11 +202,7 @@
            }
        }
        
-       .pagination-container {
-           display: flex;
-           justify-content: center;
-           margin-top: 20px;
-       }
+
        
        .pagination-button {
            padding: 10px;
@@ -223,10 +219,7 @@
            background-color: #e65100;
        }
        
-       .pagination-button:disabled {
-           background-color: #ccc;
-           cursor: not-allowed;
-       }
+
        
        .loading {
                    text-align: center;
@@ -448,10 +441,12 @@
                    }
                }
                .pagination-container {
-                   display: flex;
-                   justify-content: center;
-                   margin-top: 20px;
-               }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
                .pagination-button {
                    padding: 10px 20px;
                    margin: 0 5px;
@@ -465,6 +460,87 @@
                    background-color: #ccc;
                    cursor: not-allowed;
                }
+               .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        .pagination li {
+            margin: 0 3px;
+        }
+
+        .pagination button {
+            background-color: var(--light-orange);
+            border: none;
+            color: #333;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--dark-orange);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .active button {
+            background-color: var(--deep-orange);
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 8px 12px;
+            color: #333;
+        }
+
+        .jump-to-page {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .jump-to-page input {
+            width: 150px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid var(--medium-orange);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .jump-to-page button {
+            background: linear-gradient(145deg, var(--dark-orange), var(--deep-orange));
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .jump-to-page button:hover {
+            background: linear-gradient(145deg, var(--deep-orange), var(--dark-orange));
+        }
+
+        .jump-to-page .search-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        :root {
+            --light-orange: #FFE0B2;
+            --medium-orange: #FFB74D;
+            --dark-orange: #FF9800;
+            --deep-orange: #F57C00;
+        }
            </style>
 </head>
 <body>
@@ -560,11 +636,18 @@ function checkAuth(url) {
     <div id="cards-container" class="cards-container"></div>
     <div class="no-results" id="no-results" style="display: none;">No results found</div>
     <div class="pagination-container">
-        <button id="prevButton" class="pagination-button" onclick="changePage(-1)">Previous</button>
-        <button id="nextButton" class="pagination-button" onclick="changePage(1)">Next</button>
+        <ul class="pagination" id="pagination"></ul>
+        <div class="jump-to-page">
+            <input type="number" id="jump-to-page-input" min="1" placeholder="Jump to page">
+            <button onclick="jumpToPage()" title="Jump to page">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
     </div>
     <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-    <div id="pdf-viewer-modal">
+   <div id="pdf-viewer-modal">
         <div id="pdf-viewer"><br><br>
             <button class="close-button" onclick="closePdfViewer()">Close</button>
             <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
@@ -580,499 +663,977 @@ function checkAuth(url) {
         const pdfData = 
         [
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/BOT Science p.5 Sipro.pdf"
+    "pdfUrl": "BOT Science p.5 Sipro.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/Broad p.5 SCI Mid term 2 2023.pdf"
+    "pdfUrl": "Broad p.5 SCI Mid term 2 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/BROAD P5 EOT 3 SCIE.pdf"
+    "pdfUrl": "BROAD P5 EOT 3 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/END OF YEAR P.5 SCIENCE.pdf"
+    "pdfUrl": "END OF YEAR P.5 SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/END P.5 SCIENCE.pdf"
+    "pdfUrl": "END P.5 SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/EOT III 2022 SCIENCE EXAM RAYAT.pdf"
+    "pdfUrl": "EOT III 2022 SCIENCE EXAM RAYAT.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/EOT P.5 SCI BY SMILE.pdf"
+    "pdfUrl": "EOT P.5 SCI BY SMILE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/Evaluation Workbook P5 Science #CREATIVE.pdf"
+    "pdfUrl": "Evaluation Workbook P5 Science #CREATIVE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/JUBRA SCIENCE END OF YEAR.pdf"
+    "pdfUrl": "JUBRA SCIENCE END OF YEAR.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/KARLMARX EDUCATION SERVICES PRIMARY FIVE SCIENCE.pdf"
+    "pdfUrl": "KARLMARX EDUCATION SERVICES PRIMARY FIVE SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/kolfram bot P.5 science  MARKING GUIDE 2023 .pdf"
+    "pdfUrl": "kolfram bot P.5 science  MARKING GUIDE 2023 .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/kolfram bot P.5 science 2023 .pdf"
+    "pdfUrl": "kolfram bot P.5 science 2023 .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/MID TERM I SCIENCE 2023..-1.pdf"
+    "pdfUrl": "MID TERM I SCIENCE 2023..-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/MID TERM I SCIENCE 2023...pdf"
+    "pdfUrl": "MID TERM I SCIENCE 2023...pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/MID TERM I SCIENCE 2023.pdf"
+    "pdfUrl": "MID TERM I SCIENCE 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P 5  SCIENCE WORK BOOK TERM 1 2020-1.pdf"
+    "pdfUrl": "P 5  SCIENCE WORK BOOK TERM 1 2020-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P 5  SCIENCE WORK BOOK TERM 1 2020.pdf"
+    "pdfUrl": "P 5  SCIENCE WORK BOOK TERM 1 2020.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P 5 Science part 1.pdf"
+    "pdfUrl": "P 5 Science part 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P 5 Science part 2.pdf"
+    "pdfUrl": "P 5 Science part 2.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P. 5 GREENHILL MID-TERM SCIENCE.pdf"
+    "pdfUrl": "P. 5 GREENHILL MID-TERM SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P. 5 SCIE BOT III.pdf"
+    "pdfUrl": "P. 5 SCIE BOT III.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P. 5 SCIENCE END II.pdf"
+    "pdfUrl": "P. 5 SCIENCE END II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P. 5 SCIENCE NOTE.pdf"
+    "pdfUrl": "P. 5 SCIENCE NOTE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.-5-SCIENCE-SET-1 (1).pdf"
+    "pdfUrl": "P.-5-SCIENCE-SET-1 (1).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.-5-SCIENCE-SET-1.pdf"
+    "pdfUrl": "P.-5-SCIENCE-SET-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.-5-SCIENCE-SET-2(1).pdf"
+    "pdfUrl": "P.-5-SCIENCE-SET-2(1).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.-5-SCIENCE-SET-2.pdf"
+    "pdfUrl": "P.-5-SCIENCE-SET-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.3 Science Revision booklet.pdf"
+    "pdfUrl": "P.3 Science Revision booklet.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.3 SCIENCE WORK BOOBLET.pdf.pdf"
+    "pdfUrl": "P.3 SCIENCE WORK BOOBLET.pdf.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5  SCIENCE  Education Source 2024.pdf"
+    "pdfUrl": "P.5  SCIENCE  Education Source 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5  SCIENCE.pdf"
+    "pdfUrl": "P.5  SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.5 & p.6 sci midterm 1.pdf"
+    "pdfUrl": "p.5 & p.6 sci midterm 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 & P.6 SCIE Revision Book.pdf"
+    "pdfUrl": "P.5 & P.6 SCIE Revision Book.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 B.OT 1 2023.pdf"
+    "pdfUrl": "P.5 B.OT 1 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 BOT Sci_Broad 2024 term one..pdf"
+    "pdfUrl": "P.5 BOT Sci_Broad 2024 term one..pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 BOT TERM I SCIE.pdf"
+    "pdfUrl": "P.5 BOT TERM I SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 END OF TERM 1- 2023.pdf"
+    "pdfUrl": "P.5 END OF TERM 1- 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 EOT TERM I SCIE.pdf"
+    "pdfUrl": "P.5 EOT TERM I SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 Globe Science Mid term three.pdf"
+    "pdfUrl": "P.5 Globe Science Mid term three.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 jerox end of term 1 science 2023.pdf"
+    "pdfUrl": "P.5 jerox end of term 1 science 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 MID TERM I SCIENCE 2023...pdf"
+    "pdfUrl": "P.5 MID TERM I SCIENCE 2023...pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 MID TERM ONE, 2024.pdf"
+    "pdfUrl": "P.5 MID TERM ONE, 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.5 mid term sipro SCIE.pdf"
+    "pdfUrl": "p.5 mid term sipro SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.5 mid term sipro.pdf"
+    "pdfUrl": "p.5 mid term sipro.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 PARAMOUNT SCI T1-T3 .pdf"
+    "pdfUrl": "P.5 PARAMOUNT SCI T1-T3 .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 prime BOT 1 SCI 2023.pdf"
+    "pdfUrl": "P.5 prime BOT 1 SCI 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 Prime Scie Mid term 11 2023 and it's guide .pdf"
+    "pdfUrl": "P.5 Prime Scie Mid term 11 2023 and it's guide .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCE W PDF.pdf"
+    "pdfUrl": "P.5 SCE W PDF.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI  END OF TERM II  2022(0).pdf"
+    "pdfUrl": "P.5 SCI  END OF TERM II  2022(0).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI BOT II.pdf"
+    "pdfUrl": "P.5 SCI BOT II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI BOT III-PAPER 12.pdf"
+    "pdfUrl": "P.5 SCI BOT III-PAPER 12.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI BOT-1.pdf"
+    "pdfUrl": "P.5 SCI BOT-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI BOT-2.pdf"
+    "pdfUrl": "P.5 SCI BOT-2.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI BOT.pdf"
+    "pdfUrl": "P.5 SCI BOT.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.5 sci end of term iii 2021.pdf"
+    "pdfUrl": "p.5 sci end of term iii 2021.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI MID III.pdf"
+    "pdfUrl": "P.5 SCI MID III.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI MID TERM 1 2024.pdf"
+    "pdfUrl": "P.5 SCI MID TERM 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI MID TERM 1.pdf"
+    "pdfUrl": "P.5 SCI MID TERM 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI MID TERM THREE  2023.pdf"
+    "pdfUrl": "P.5 SCI MID TERM THREE  2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 Sci Revision booklet-1.pdf"
+    "pdfUrl": "P.5 Sci Revision booklet-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 Sci Revision booklet.pdf"
+    "pdfUrl": "P.5 Sci Revision booklet.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI SSEB BOT.pdf"
+    "pdfUrl": "P.5 SCI SSEB BOT.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 sci.pdf"
+    "pdfUrl": "P.5 sci.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIE END OF TERM III P.5.pdf"
+    "pdfUrl": "P.5 SCIE END OF TERM III P.5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIE GUIDING QNS.pdf"
+    "pdfUrl": "P.5 SCIE GUIDING QNS.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIE Jerox B.O.T1.pdf"
+    "pdfUrl": "P.5 SCIE Jerox B.O.T1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIE MOT 1 PRIME 2024.pdf"
+    "pdfUrl": "P.5 SCIE MOT 1 PRIME 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIE PRE-END OF TERM 2 2023.pdf"
+    "pdfUrl": "P.5 SCIE PRE-END OF TERM 2 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIE sipro B.O.T 1 2024.pdf"
+    "pdfUrl": "P.5 SCIE sipro B.O.T 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIE SIPRO GUIDE EOT 3 BY TR.EPIDU PAUL (2).pdf"
+    "pdfUrl": "P.5 SCIE SIPRO GUIDE EOT 3 BY TR.EPIDU PAUL (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.5 scie TAAND bot1 2023-1.pdf"
+    "pdfUrl": "p.5 scie TAAND bot1 2023-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.5 scie TAAND bot1 2023.pdf"
+    "pdfUrl": "p.5 scie TAAND bot1 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 Scie-1.pdf"
+    "pdfUrl": "P.5 Scie-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIE.pdf"
+    "pdfUrl": "P.5 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.5 science  B.O.T 2024.pdf"
+    "pdfUrl": "p.5 science  B.O.T 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE ACTIVITY.pdf"
+    "pdfUrl": "P.5 SCIENCE ACTIVITY.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE BOT 1 2024.pdf"
+    "pdfUrl": "P.5 SCIENCE BOT 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE E.O.T 1 2024.pdf"
+    "pdfUrl": "P.5 SCIENCE E.O.T 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE END OF JUNE EXAM 2023.pdf"
+    "pdfUrl": "P.5 SCIENCE END OF JUNE EXAM 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE END OF TERM 1 2022 SIPRO.pdf"
+    "pdfUrl": "P.5 SCIENCE END OF TERM 1 2022 SIPRO.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 Science End of term three 2023.pdf"
+    "pdfUrl": "P.5 Science End of term three 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE GUIDING QUESTIONS Tekart Learning.pdf"
+    "pdfUrl": "P.5 SCIENCE GUIDING QUESTIONS Tekart Learning.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE HOME WORK.pdf"
+    "pdfUrl": "P.5 SCIENCE HOME WORK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE MID II.pdf"
+    "pdfUrl": "P.5 SCIENCE MID II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE MID TERM (2).pdf"
+    "pdfUrl": "P.5 SCIENCE MID TERM (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE REVISION APRIL 2020 (ecolebooks.com).pdf"
+    "pdfUrl": "P.5 SCIENCE REVISION APRIL 2020 (ecolebooks.com).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCIENCE SET 3 REVISION WORK BUDO JUNIOR SCHOOL.pdf"
+    "pdfUrl": "P.5 SCIENCE SET 3 REVISION WORK BUDO JUNIOR SCHOOL.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.5 SCIENCE WORKBOOK.pdf"
+    "pdfUrl": "p.5 SCIENCE WORKBOOK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 SCI_Sipro mid term III examinations-super.pdf"
+    "pdfUrl": "P.5 SCI_Sipro mid term III examinations-super.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5 TERM 3 SCIENCE WORK BOOK.pdf"
+    "pdfUrl": "P.5 TERM 3 SCIENCE WORK BOOK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.5 VSES SCI 2 2023.pdf"
+    "pdfUrl": "p.5 VSES SCI 2 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5-SCI-HOLIDAY-PACKAGE-TM-1-2020.pdf"
+    "pdfUrl": "P.5-SCI-HOLIDAY-PACKAGE-TM-1-2020.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5-SCI-SET-5.pdf"
+    "pdfUrl": "P.5-SCI-SET-5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5-SCIE-JUNE....pdf"
+    "pdfUrl": "P.5-SCIE-JUNE....pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5-SCIENCE-REVISION-APRIL-2020.pdf"
+    "pdfUrl": "P.5-SCIENCE-REVISION-APRIL-2020.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P.5-SCIENCE-WORK-BOOK-TERM-ONE-.pdf"
+    "pdfUrl": "P.5-SCIENCE-WORK-BOOK-TERM-ONE-.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.6 science.pdf"
+    "pdfUrl": "p.6 science.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p.five science sipro mid.pdf"
+    "pdfUrl": "p.five science sipro mid.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 & P6 SCIENCE REVISION BOOK.pdf"
+    "pdfUrl": "P5 & P6 SCIENCE REVISION BOOK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 BOT SCIE MTC PRIME.pdf"
+    "pdfUrl": "P5 BOT SCIE MTC PRIME.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 BROAD SCIE TERM 1.pdf"
+    "pdfUrl": "P5 BROAD SCIE TERM 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 END OF YEAR EXAM SCIENCE.pdf"
+    "pdfUrl": "P5 END OF YEAR EXAM SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 END OF YEAR SCI EXAM.pdf"
+    "pdfUrl": "P5 END OF YEAR SCI EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 end of year science 2022.pdf"
+    "pdfUrl": "P5 end of year science 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 END OF YEAR SCIENCE EXAM.pdf"
+    "pdfUrl": "P5 END OF YEAR SCIENCE EXAM.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 EOT III 2022 SCIENCE.pdf"
+    "pdfUrl": "P5 EOT III 2022 SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 EOT III SCIENCE 2022.pdf"
+    "pdfUrl": "P5 EOT III SCIENCE 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 INTEGRATED SCIENCE END OF TERM 2 EXAMINATIONS 2022..pdf"
+    "pdfUrl": "P5 INTEGRATED SCIENCE END OF TERM 2 EXAMINATIONS 2022..pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 KCCA EOT 3 SCIE.pdf"
+    "pdfUrl": "P5 KCCA EOT 3 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 MID TERM III SCIENCE.pdf"
+    "pdfUrl": "P5 MID TERM III SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 MID TERM SCIE.pdf"
+    "pdfUrl": "P5 MID TERM SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 prime BOT 1 SCI 2023.pdf"
+    "pdfUrl": "P5 prime BOT 1 SCI 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 prime sci BOT3.pdf"
+    "pdfUrl": "P5 prime sci BOT3.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 RAAYAT EOT 3 SCIE.pdf"
+    "pdfUrl": "P5 RAAYAT EOT 3 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 sci Prime BOT3.pdf"
+    "pdfUrl": "P5 sci Prime BOT3.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p5 sci sipro end 3.pdf"
+    "pdfUrl": "p5 sci sipro end 3.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p5 sci topical workbook.pdf"
+    "pdfUrl": "p5 sci topical workbook.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 SCIENCE (2).pdf"
+    "pdfUrl": "P5 SCIENCE (2).pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 SCIENCE EOT III 2022.pdf"
+    "pdfUrl": "P5 SCIENCE EOT III 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 science eot2 .pdf"
+    "pdfUrl": "P5 science eot2 .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 science eot3 .pdf"
+    "pdfUrl": "P5 science eot3 .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 SCIENCE EXAM & MG.pdf"
+    "pdfUrl": "P5 SCIENCE EXAM & MG.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 SCIENCE EXAM _ MG.pdf"
+    "pdfUrl": "P5 SCIENCE EXAM _ MG.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 science mid term 1 .pdf"
+    "pdfUrl": "P5 science mid term 1 .pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/p5 science mid term.pdf"
+    "pdfUrl": "p5 science mid term.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 SCIENCE MOT 1.pdf"
+    "pdfUrl": "P5 SCIENCE MOT 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 SCIENCE YET HAPPY KIDZ SCHOOL HOLIDAY WORK.pdf"
+    "pdfUrl": "P5 SCIENCE YET HAPPY KIDZ SCHOOL HOLIDAY WORK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 SCIENCE.pdf"
+    "pdfUrl": "P5 SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 SIPRO MID-TERM 3 SCIENCE.pdf"
+    "pdfUrl": "P5 SIPRO MID-TERM 3 SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 TERM III SCIENCE.pdf"
+    "pdfUrl": "P5 TERM III SCIENCE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5 _ P6 SCIENCE REVISION BOOK.pdf"
+    "pdfUrl": "P5 _ P6 SCIENCE REVISION BOOK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5-Science-2021-SA2-Tao-Nan.pdf"
+    "pdfUrl": "P5-Science-2021-SA2-Tao-Nan.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P5_Science_Revision-1.pdf"
+    "pdfUrl": "P5_Science_Revision-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/primary Five Intergrated Science-COVID doc.pdf"
+    "pdfUrl": "primary Five Intergrated Science-COVID doc.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/PRIMARY FIVE KCCA.pdf"
+    "pdfUrl": "PRIMARY FIVE KCCA.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/PRIMARY FIVE SCIENCE CONTINUOUS ASSESSMENT.pdf"
+    "pdfUrl": "PRIMARY FIVE SCIENCE CONTINUOUS ASSESSMENT.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/PRIMARY FIVE SCIENCE TOPICAL WORK.pdf"
+    "pdfUrl": "PRIMARY FIVE SCIENCE TOPICAL WORK.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/Primary Five Science-5.pdf"
+    "pdfUrl": "Primary Five Science-5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/Primary Five Science.pdf"
+    "pdfUrl": "Primary Five Science.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/Primary Five Social Studies.pdf"
+    "pdfUrl": "Primary Five Social Studies.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/PRIME P.5 EOT 3 EXAMS 2023.pdf"
+    "pdfUrl": "PRIME P.5 EOT 3 EXAMS 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/PRIME P5 BOT 3 SCIE.pdf"
+    "pdfUrl": "PRIME P5 BOT 3 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/PRIME P5 BOT 3.pdf"
+    "pdfUrl": "PRIME P5 BOT 3.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/PRIME P5 EOT SCIE.pdf"
+    "pdfUrl": "PRIME P5 EOT SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/PRIME SCIE P.5 EOT 3 EXAMS 2023.pdf"
+    "pdfUrl": "PRIME SCIE P.5 EOT 3 EXAMS 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/Pursuit of Excellence P.5 Eot.pdf"
+    "pdfUrl": "Pursuit of Excellence P.5 Eot.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/P_5 PROLINE SCI END OF TERM II.pdf"
+    "pdfUrl": "P_5 PROLINE SCI END OF TERM II.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/RAAYAT P5 EOT 3 SCIE.pdf"
+    "pdfUrl": "RAAYAT P5 EOT 3 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/scie P.5 sipro EOT 1.pdf"
+    "pdfUrl": "scie P.5 sipro EOT 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/SCIENCE E-LEARN P.5 TERM III 2023.pdf"
+    "pdfUrl": "SCIENCE E-LEARN P.5 TERM III 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/science p.5.pdf"
+    "pdfUrl": "science p.5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/SCIENCE TOPICAL QNS P.4 AND P.5.pdf"
+    "pdfUrl": "SCIENCE TOPICAL QNS P.4 AND P.5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/Sipro end of term 11 Sci p5.pdf"
+    "pdfUrl": "Sipro end of term 11 Sci p5.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/Sipro p.5 science.pdf"
+    "pdfUrl": "Sipro p.5 science.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/SIPRO P5 BOT 2 SCIE.pdf"
+    "pdfUrl": "SIPRO P5 BOT 2 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/Sipro P5 End of Term 3 Sci. Guide.pdf"
+    "pdfUrl": "Sipro P5 End of Term 3 Sci. Guide.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/SIPRO P5 MOT 2 SCIE.pdf"
+    "pdfUrl": "SIPRO P5 MOT 2 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/SKYLINE P5 EOT 2 SCIE.pdf"
+    "pdfUrl": "SKYLINE P5 EOT 2 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/TAAND P.5 SCIE TERM 1.pdf"
+    "pdfUrl": "TAAND P.5 SCIE TERM 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/TAAND P5 EOT 3 SCIE.pdf"
+    "pdfUrl": "TAAND P5 EOT 3 SCIE.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/TAAND P5 SCIE TERM 1.pdf"
+    "pdfUrl": "TAAND P5 SCIE TERM 1.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/The jerox end of term 1 P.5 science 2023.pdf"
+    "pdfUrl": "The jerox end of term 1 P.5 science 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/TR.PAUL P.5 SCIENCE JEROX EOT 3 - 2023.pdf"
+    "pdfUrl": "TR.PAUL P.5 SCIENCE JEROX EOT 3 - 2023.pdf"
   },
   {
-    "pdfUrl": "Resources/P5/P5 EXAMS/SCIE/YET p.5_science-1-.pdf"
-  }
+    "pdfUrl": "YET p.5_science-1-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/ENTEBBE P5 EOT 3 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/EOT III 2022 SCIENCE EXAM RAYAT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/EOT P.5 SCI BY SMILE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/JUBRA SCIENCE END OF YEAR.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/KAPSHA P5 EOT 2 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/KARLMARX EDUCATION SERVICES PRIMARY FIVE SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/KESK p5 science MIDTERM II 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/kolfram bot P.5 science  MARKING GUIDE 2023 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/kolfram bot P.5 science 2023 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/kolfram p5 science midterm set 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/kolfram p5 science midterm set 1 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/MID TERM I SCIENCE 2023...pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/MID TERM I SCIENCE 2023..-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/MID TERM I SCIENCE 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P 5  SCIENCE WORK BOOK TERM 1 2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P 5 Science part 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P 5 Science part 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P. 5 GREENHILL MID-TERM SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P. 5 SCIE BOT III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P. 5 SCIENCE END II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.3 Science Revision booklet.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.3 SCIENCE WORK BOOBLET.pdf.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5  SCIENCE  Education Source 2024.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 & P.6 SCIE Revision Book.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 B.OT 1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 BOT TERM I SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 END OF TERM 1- 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 EOT TERM I SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Globe Science Mid term three.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 jerox end of term 1 science 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 MID TERM I SCIENCE 2023...pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.5 mid term sipro SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.5 mid term sipro.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 prime BOT 1 SCI 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Prime Scie Mid term 11 2023 and it's guide .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCE W PDF.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCI  END OF TERM II  2022(0).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCI BOT II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCI BOT III-PAPER 12.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCI END III.docx p5-main/p5-main/exams/Science/p.5 sci end of term iii 2021.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCI MID III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCI MID TERM 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCI MID TERM THREE  2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Sci Revision booklet.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 sci.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCI_Sipro mid term III examinations-super.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIE END OF TERM III P.5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIE GUIDING QNS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIE Jerox B.O.T1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIE PRE-END OF TERM 2 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIE SIPRO GUIDE EOT 3 BY TR.EPIDU PAUL (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.5 scie TAAND bot1 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.5 scie TAAND bot1 2023-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Scie.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Scie-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIENCE ACTIVITY.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIENCE By MUTAKA.docx p5-main/p5-main/exams/Science/P.5 SCIENCE END OF JUNE EXAM 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIENCE END OF TERM 1 2022 SIPRO.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 Science End of term three 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIENCE GUIDING QUESTIONS Tekart Learning.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIENCE Lesson notes term 3.doc p5-main/p5-main/exams/Science/P.5 SCIENCE MID II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIENCE MID TERM (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIENCE REVISION APRIL 2020 (ecolebooks.com).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIENCE SET 3 REVISION WORK BUDO JUNIOR SCHOOL.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5 SCIENCE-1.docx p5-main/p5-main/exams/Science/p.5 VSES SCI 2 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-SCIE-JUNE....pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-SCIENCE-REVISION-APRIL-2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.-5-SCIENCE-SET-1 (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.-5-SCIENCE-SET-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.-5-SCIENCE-SET-2(1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.-5-SCIENCE-SET-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-SCIENCE-WORK-BOOK-TERM-ONE-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-SCI-HOLIDAY-PACKAGE-TM-1-2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P.5-SCI-SET-5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.6 science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p.five science sipro mid.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P_5 PROLINE SCI END OF TERM II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 & P6 SCIENCE REVISION BOOK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 _ P6 SCIENCE REVISION BOOK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 BROAD SCIE TERM 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 END OF YEAR EXAM SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 END OF YEAR SCI EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 end of year science 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 END OF YEAR SCIENCE EXAM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 EOT III 2022 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 EOT III SCIENCE 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 INTEGRATED SCIENCE END OF TERM 2 EXAMINATIONS 2022..pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 KCCA EOT 3 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 MID TERM III SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 MID TERM SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 prime BOT 1 SCI 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 PRIME EOT 2 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 prime sci BOT3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 RAAYAT EOT 3 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 Sci Mortar EOT3 @Juve.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 sci Prime BOT3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SCI QUALITY CHECK 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SCI QUALITY CHECK 3 GUIDE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SCI QUALITY CHECK 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p5 sci sipro end 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p5 sci.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SCIE BOT 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SCIENCE (2).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SCIENCE EOT III 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 science eot2 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 science eot3 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SCIENCE EXAM & MG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SCIENCE EXAM _ MG.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 science mid term 1 .pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 Science Term 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SCIENCE YET HAPPY KIDZ SCHOOL HOLIDAY WORK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/p5 science.docx p5-main/p5-main/exams/Science/P5 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 sipro EOT3 Science 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 sipro mid term 2 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SIPRO MID TERM 2 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 SIPRO MID-TERM 3 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 TERM II SCIENCE WORKBOOK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5 TERM III SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5_Science_Revision.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/P5_Science_Revision-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/primary Five Intergrated Science-COVID doc.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIMARY FIVE KCCA.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIMARY FIVE SCIENCE CONTINUOUS ASSESSMENT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIMARY FIVE SCIENCE TOPICAL WORK.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Primary Five Science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Primary Five Science-5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/prime BOT 3 2023 p5 science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIME P.5 EOT 3 EXAMS 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIME P5 BOT 3 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIME P5 BOT 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIME P5 EOT SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Prime SCI P5 EOT3 by Juve.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/PRIME SCIE P.5 EOT 3 EXAMS 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Pursuit of Excellence P.5 Eot.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/RAAYAT P5 EOT 3 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Salfah EOT 2 P.5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/scie P.5 sipro EOT 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/SCIENCE E-LEARN P.5 TERM III 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/science p.5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/SCIENCE TOPICAL QNS P.4 AND P.5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Sipro end of term 11 Sci p5.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Sipro p.5 science.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/SIPRO P5 BOT 2 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Sipro P5 End of Term 3 Sci. Guide.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/SIPRO P5 MOT 2 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/SKYLINE P5 EOT 2 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/TAAND P.5 SCIE TERM 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/TAAND P5 EOT 3 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/TAAND P5 SCIE TERM 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/The jerox end of term 1 P.5 science 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/TR.PAUL P.5 SCIENCE JEROX EOT 3 - 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/YET p.5_science-1-.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/BOT Science p.5 Sipro.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Broad p.5 SCI Mid term 2 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/Broad P5 end of term II SCI.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/BROAD P5 EOT 3 SCIE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/END OF YEAR P.5 SCIENCE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p5/END P.5 SCIENCE.pdf"
+  },
 ]
         ;
+       
        
         let currentPage = 1;
         const itemsPerPage = 12;
@@ -1124,13 +1685,107 @@ function checkAuth(url) {
                 cardsContainer.appendChild(card);
             });
 
-            updatePaginationButtons();
+            updatePagination();
 
             if (filteredData.length === 0) {
                 document.getElementById('no-results').style.display = 'block';
             } else {
                 document.getElementById('no-results').style.display = 'none';
             }
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            const createPageButton = (page, text) => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = text || page;
+                button.onclick = () => goToPage(page);
+                if (page === currentPage) {
+                    li.classList.add('active');
+                }
+                if (text === '...') {
+                    button.disabled = true;
+                    li.classList.add('ellipsis');
+                }
+                li.appendChild(button);
+                return li;
+            };
+
+            // Previous button
+            pagination.appendChild(createPageButton(currentPage - 1, '←'));
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (startPage > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (startPage > 2) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+                pagination.appendChild(createPageButton(totalPages));
+            }
+
+            // Next button
+            pagination.appendChild(createPageButton(currentPage + 1, '→'));
+
+            // Disable prev/next buttons when at first/last page
+            pagination.firstChild.querySelector('button').disabled = currentPage === 1;
+            pagination.lastChild.querySelector('button').disabled = currentPage === totalPages;
+
+            // Update the max attribute of the jump-to-page input
+            document.getElementById('jump-to-page-input').max = totalPages;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayCards();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('jump-to-page-input');
+            const page = parseInt(input.value);
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                goToPage(page);
+                input.value = ''; // Clear the input after jumping
+            } else {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            }
+        }
+
+        // Add event listener for Enter key on the jump-to-page input
+        document.getElementById('jump-to-page-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function goToPage(page) {
+            if (page < 1 || page > Math.ceil(filteredData.length / itemsPerPage)) {
+                return;
+            }
+            currentPage = page;
+            displayCards();
+            window.scrollTo(0, 0);
         }
 
         function updatePaginationButtons() {
@@ -1214,4 +1869,5 @@ function checkAuth(url) {
     
 </body>
 </html>
+
 

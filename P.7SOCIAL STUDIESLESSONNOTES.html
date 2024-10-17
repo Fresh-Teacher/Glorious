@@ -17,7 +17,7 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
-      <title>P.3 Work</title>
+    <title>P.7SOCIAL STUDIESLESSONNOTES</title>
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -202,11 +202,7 @@
            }
        }
        
-       .pagination-container {
-           display: flex;
-           justify-content: center;
-           margin-top: 20px;
-       }
+
        
        .pagination-button {
            padding: 10px;
@@ -223,10 +219,7 @@
            background-color: #e65100;
        }
        
-       .pagination-button:disabled {
-           background-color: #ccc;
-           cursor: not-allowed;
-       }
+
        
        .loading {
                    text-align: center;
@@ -448,10 +441,12 @@
                    }
                }
                .pagination-container {
-                   display: flex;
-                   justify-content: center;
-                   margin-top: 20px;
-               }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
                .pagination-button {
                    padding: 10px 20px;
                    margin: 0 5px;
@@ -465,6 +460,87 @@
                    background-color: #ccc;
                    cursor: not-allowed;
                }
+               .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        .pagination li {
+            margin: 0 3px;
+        }
+
+        .pagination button {
+            background-color: var(--light-orange);
+            border: none;
+            color: #333;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--dark-orange);
+            color: white;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .active button {
+            background-color: var(--deep-orange);
+            color: white;
+        }
+
+        .pagination .ellipsis {
+            padding: 8px 12px;
+            color: #333;
+        }
+
+        .jump-to-page {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .jump-to-page input {
+            width: 150px;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid var(--medium-orange);
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .jump-to-page button {
+            background: linear-gradient(145deg, var(--dark-orange), var(--deep-orange));
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .jump-to-page button:hover {
+            background: linear-gradient(145deg, var(--deep-orange), var(--dark-orange));
+        }
+
+        .jump-to-page .search-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        :root {
+            --light-orange: #FFE0B2;
+            --medium-orange: #FFB74D;
+            --dark-orange: #FF9800;
+            --deep-orange: #F57C00;
+        }
            </style>
 </head>
 <body>
@@ -560,11 +636,18 @@ function checkAuth(url) {
     <div id="cards-container" class="cards-container"></div>
     <div class="no-results" id="no-results" style="display: none;">No results found</div>
     <div class="pagination-container">
-        <button id="prevButton" class="pagination-button" onclick="changePage(-1)">Previous</button>
-        <button id="nextButton" class="pagination-button" onclick="changePage(1)">Next</button>
+        <ul class="pagination" id="pagination"></ul>
+        <div class="jump-to-page">
+            <input type="number" id="jump-to-page-input" min="1" placeholder="Jump to page">
+            <button onclick="jumpToPage()" title="Jump to page">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
     </div>
     <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-    <div id="pdf-viewer-modal">
+   <div id="pdf-viewer-modal">
         <div id="pdf-viewer"><br><br>
             <button class="close-button" onclick="closePdfViewer()">Close</button>
             <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
@@ -580,49 +663,266 @@ function checkAuth(url) {
         const pdfData = 
         [
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/LESSON NOTES SST P.7.pdf"
+    "pdfUrl": "LESSON NOTES SST P.7.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/notes SST p 7.pdf"
+    "pdfUrl": "notes SST p 7.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7 GOOD SST NOTES.pdf"
+    "pdfUrl": "P.7 GOOD SST NOTES.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7 S.S.T LESSON  NOTES.pdf"
+    "pdfUrl": "P.7 S.S.T LESSON  NOTES.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7 SST LESSON NOTES TERM 1 2024.pdf"
+    "pdfUrl": "P.7 SST LESSON NOTES TERM 1 2024.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7 SST NOTES ALL YEAR 2022.pdf"
+    "pdfUrl": "P.7 SST NOTES ALL YEAR 2022.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7 TERM I, II, III SST 2019.pdf"
+    "pdfUrl": "P.7 TERM I, II, III SST 2019.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7 TERM I, II, III SST.pdf"
+    "pdfUrl": "P.7 TERM I, II, III SST.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7-BEST-SST-LESSON-NOTES-TERM-ONE_TEACHER.AC_.pdf"
+    "pdfUrl": "P.7-BEST-SST-LESSON-NOTES-TERM-ONE_TEACHER.AC_.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7-SST-LESSON-NOTES-TERM-ONE-2020-1.pdf"
+    "pdfUrl": "P.7-SST-LESSON-NOTES-TERM-ONE-2020-1.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7-SST-LESSON-NOTES-TERM-ONE-2020.pdf"
+    "pdfUrl": "P.7-SST-LESSON-NOTES-TERM-ONE-2020.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7-SST-NOTES-TERM-2-AND-3(1).pdf"
+    "pdfUrl": "P.7-SST-NOTES-TERM-2-AND-3(1).pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/P.7-TERM-ONE-LESSON-NOTES-SST-P.7.pdf"
+    "pdfUrl": "P.7-TERM-ONE-LESSON-NOTES-SST-P.7.pdf"
   },
   {
-    "pdfUrl": "Resources/P7/P7 NOTES/SST/SST P.7 LESSON NOTES.pdf"
-  }
+    "pdfUrl": "SST P.7 LESSON NOTES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/PRIMARY SEVEN EXCEL SST NOTES ALL TERMS.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/road signs.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/S.S.T P.7 ALL YEAR 2023,.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SST LESSON NOTES FOR P.4 ALL TERMS(3).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SST P.7 All Terms.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SST P.7 LESSON NOTES (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SST P.7 LESSON NOTES VICTORY.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/SST P.7 LESSON NOTES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/THE CONSTITUTION OF UGANDA.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/THE REAL AFRICAN CHWEZI-TEMBUZI STORY.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/THE UNEB ACT, 2021.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/UGA_The_Buganda_Agreement_1955_EN-SW.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/WEATHER CHART.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Xalda maps.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/𝐑𝐨𝐚𝐝 𝐒𝐢𝐠𝐧𝐬 𝐛𝐲 𝐈𝐧𝐭𝐞𝐥𝐥𝐞𝐜𝐭𝐮𝐚𝐥 𝐎𝐬𝐜𝐚𝐫.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/1900 BUGANDA AGREEMENT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/ALL SST NOTES P.4 TO P.7 ALL TERMS EXCEL-1-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/au_anthem.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/BUGANDA AGREEMENT.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Common Mistakes 1 IN SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/COMMON MISTAKES IN SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Constitution of the Republic of Uganda.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Constitution of Uganda 2023.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Constitution_1995.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/EDITED PRIMARY SEVEN SST LESSON NOTES 2ND  TERM.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/EDUCATION-NOTES-FOR-PRIMARY-TEACHER-EDUCATION-PTE-Teacher.co_.ke_.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/EXCEL P.7 SST TERM I.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/EXCEL P.7 SST TERM II.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/EXCEL P.7 SST TERM III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/EXCEL P_7 Social Studies TERM I.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/EXCEL P7 SST TERM I_221128_135542.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/LESSON NOTES SST P_7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/Managing Classroom Behavior and Discipline ( PDFDrive ).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/National Teacher Policy.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/notes SST p 7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P. 7 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 LESSON NOTES TERM 2 SST(0).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 LESSON NOTES TERM 2 SST.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 S.S.T LESSON  NOTES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 S.S.T NOTES TERM 2 AND 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST  TERM ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST LESSON NOTES FOR TERM  I - III.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST LESSON NOTES TERM 1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST LESSON NOTES TERM 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST NOTES ALL YEAR 2022.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST NOTES TERM 2 AND 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST NOTES TERM 2 AND 3-1.doc p.7-main/p.7-main/notes/SST/P.7 SST NOTES TERM 2 AND 3-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST notes.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST TERM 2 LESSON NOTES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7 SST term 2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/p.7 SST term ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-BEST-SST-LESSON-NOTES-TERM-ONE_TEACHER.AC_.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-LESSON-NOTES-TERM-2-SST (1).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-S.S.T-NOTES-TERM-2-AND-3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SST-LESSON-NOTES-TERM-1,2,3-2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SST-LESSON-NOTES-TERM-1,2,3-2020-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SST-LESSON-NOTES-TERM-1-2019.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SST-LESSON-NOTES-TERM-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SST-LESSON-NOTES-TERM-ONE-2020.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SST-LESSON-NOTES-TERM-ONE-2020-1.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SST-NOTES-TERM-1-2.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SST-NOTES-TERM-2-AND-3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-SST-TERM-2-LESSON-NOTES(0).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-TERM-ONE-LESSON-NOTES-SST-P.7(0).pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P.7-TERM-ONE-LESSON-NOTES-SST-P.7.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P_7 SST NOTES TERM 2 AND 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P_7-SST-LESSON-NOTES-TERM-ONE.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 Social studies  NOTES TERM 2 AND 3.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/p7 sst lesson notes.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SST NOTES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7_SST NOTES.pdf"
+  },
+  {
+    "pdfUrl": "https://fresh-teacher.github.io/p.7/P7_Standard curriculum_Set_One_book - Copy (2).pdf"
+}
 ]
         ;
+  
        
         let currentPage = 1;
         const itemsPerPage = 12;
@@ -674,13 +974,107 @@ function checkAuth(url) {
                 cardsContainer.appendChild(card);
             });
 
-            updatePaginationButtons();
+            updatePagination();
 
             if (filteredData.length === 0) {
                 document.getElementById('no-results').style.display = 'block';
             } else {
                 document.getElementById('no-results').style.display = 'none';
             }
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            const createPageButton = (page, text) => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = text || page;
+                button.onclick = () => goToPage(page);
+                if (page === currentPage) {
+                    li.classList.add('active');
+                }
+                if (text === '...') {
+                    button.disabled = true;
+                    li.classList.add('ellipsis');
+                }
+                li.appendChild(button);
+                return li;
+            };
+
+            // Previous button
+            pagination.appendChild(createPageButton(currentPage - 1, '←'));
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (startPage > 1) {
+                pagination.appendChild(createPageButton(1));
+                if (startPage > 2) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    pagination.appendChild(createPageButton(null, '...'));
+                }
+                pagination.appendChild(createPageButton(totalPages));
+            }
+
+            // Next button
+            pagination.appendChild(createPageButton(currentPage + 1, '→'));
+
+            // Disable prev/next buttons when at first/last page
+            pagination.firstChild.querySelector('button').disabled = currentPage === 1;
+            pagination.lastChild.querySelector('button').disabled = currentPage === totalPages;
+
+            // Update the max attribute of the jump-to-page input
+            document.getElementById('jump-to-page-input').max = totalPages;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayCards();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function jumpToPage() {
+            const input = document.getElementById('jump-to-page-input');
+            const page = parseInt(input.value);
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if (page >= 1 && page <= totalPages) {
+                goToPage(page);
+                input.value = ''; // Clear the input after jumping
+            } else {
+                alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            }
+        }
+
+        // Add event listener for Enter key on the jump-to-page input
+        document.getElementById('jump-to-page-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                jumpToPage();
+            }
+        });
+
+        function goToPage(page) {
+            if (page < 1 || page > Math.ceil(filteredData.length / itemsPerPage)) {
+                return;
+            }
+            currentPage = page;
+            displayCards();
+            window.scrollTo(0, 0);
         }
 
         function updatePaginationButtons() {
@@ -764,4 +1158,5 @@ function checkAuth(url) {
     
 </body>
 </html>
+
 
