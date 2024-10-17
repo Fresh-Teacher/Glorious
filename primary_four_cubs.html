@@ -1,0 +1,2322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glorious Electoral Commission</title>
+    <style>
+                .switch-post-button {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .switch-post-button:hover {
+            background-color: #ffae33;
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Update the styling for other buttons to make them more appealing for kids */
+        #englishButton, #ictButton, .vote-button {
+            background-color: #b35a00;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+
+        #englishButton:hover, #ictButton:hover, .vote-button:hover {
+            background-color: #ff9e0c;
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .hidden {
+          display: none;
+      }
+         .error {
+          border: 2px solid red;
+      }
+      .error-message {
+          color: red;
+          display: none;
+          margin-top: 5px;
+      }
+      body {
+          font-family: 'Comic Sans MS', cursive;
+          background: linear-gradient(135deg, #ffaf7b, #ffa07a, #ff8c00);
+          margin: 0;
+          padding: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+      }
+      .container {
+          background-color: rgba(255, 255, 255, 0.9);
+          border-radius: 20px;
+          padding: 30px;
+          box-shadow: 0 8px 32px rgba(255, 140, 0, 0.3);
+          max-width: 600px;
+          width: 100%;
+      }
+      
+      h1 {
+          color: #ff6b00;
+          text-align: center;
+          font-size: 2.5em;
+          margin-bottom: 20px;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      }
+      .candidate {
+          background-color: #ffe4b5;
+          border-radius: 15px;
+          padding: 15px;
+          margin-bottom: 15px;
+          transition: transform 0.3s ease;
+      }
+      .candidate:hover {
+          transform: scale(1.05);
+      }
+      .candidate img {
+          width: 120px;
+          height: 120px;
+          object-fit: cover;
+          border-radius: 30px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          border: 3px solid #ff8c00;
+          margin-right: 15px;
+      }
+      .candidate-info {
+          display: flex;
+          align-items: center;
+      }
+      .candidate-details {
+          flex-grow: 1;
+      }
+      .vote-button {
+          background-color: #ff8c00;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 20px;
+          cursor: pointer;
+          font-size: 1em;
+          transition: all 0.3s ease;
+      }
+      .vote-button:hover {
+          background-color: #ff6b00;
+      }
+      .vote-button:disabled {
+          background-color: #838383;
+          cursor: not-allowed;
+      }
+      .voted-button {
+          background-color: #4CAF50;
+          color: white;
+          font-weight: bold;
+      }
+       .dashboard-item {
+          margin-bottom: 20px;
+      }
+      .modal {
+          display: none;
+          position: fixed;
+          z-index: 1;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0,0,0,0.5);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+      }
+      .modal-content {
+          background-color: #fefefe;
+          margin: 15% auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%;
+          max-width: 400px;
+          border-radius: 15px;
+          text-align: center;
+          transform: translateY(-50px);
+          opacity: 0;
+          transition: all 0.3s ease;
+      }
+      .modal.show {
+          opacity: 1;
+      }
+      .modal.show .modal-content {
+          transform: translateY(0);
+          opacity: 1;
+      }
+      .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+      }
+      .close:hover {
+          color: #000;
+      }
+      @keyframes confetti-fall {
+          0% { transform: translateY(-100vh) rotate(0deg); }
+          100% { transform: translateY(100vh) rotate(720deg); }
+      }
+      .confetti {
+          position: fixed;
+          width: 10px;
+          height: 10px;
+          background-color: #f0f;
+          animation: confetti-fall 4s linear infinite;
+      }
+      #nameInput, #emailInput {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 10px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+      }
+      #loginButton {
+          background-color: #aa6600;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 20px;
+          cursor: pointer;
+          font-size: 1em;
+          transition: all 0.3s ease;
+      }
+      #loginButton:hover {
+          background-color: #ffb11f;
+      }
+      #logoutButton {
+          background-color: #f44336;
+          color: white;
+          border: none;
+          padding: 5px 10px;
+          border-radius: 10px;
+          cursor: pointer;
+          font-size: 0.8em;
+          transition: all 0.3s ease;
+          margin-left: 10px;
+      }
+      #logoutButton:hover {
+          background-color: #d32f2f;
+      }
+      #userInfo {
+          margin-bottom: 20px;
+          font-weight: bold;
+      }
+      #autoSuggest {
+          position: absolute;
+          width: 100%;
+          max-height: 150px;
+          overflow-y: auto;
+          background-color: white;
+          border: 1px solid #ccc;
+          border-top: none;
+          border-radius: 0 0 5px 5px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          display: none;
+      }
+      .suggestion {
+          padding: 10px;
+          cursor: pointer;
+      }
+      .suggestion:hover {
+          background-color: #f0f0f0;
+      }
+      #loginSection {
+          position: relative;
+      }
+      .suggestion-name {
+  font-weight: bold;
+}
+
+.suggestion-email {
+  font-size: 0.8em;
+  color: #666;
+}
+#noMatchFeedback {
+          color: red;
+          font-style: italic;
+          margin-top: 5px;
+          display: none;
+      }
+      #passwordInput {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 10px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+      }
+      .feedback-error {
+          color: red;
+          font-style: italic;
+          margin-top: 5px;
+          display: none;
+      }
+      .container {
+          text-align: center;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+      }
+      .logo {
+          width: 150px;
+          height: 150px;
+          margin-bottom: 20px;
+      }
+      h1 {
+          color: rgb(245, 151, 0);
+          margin-bottom: 30px;
+      }
+      .vote-count {
+          font-weight: bold;
+          margin-top: 10px;
+      }
+      select, input, button {
+          margin: 10px 0;
+          padding: 5px;
+          width: 100%;
+          max-width: 300px;
+      }
+      .image-preview-modal {
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.9);
+      }
+
+      .image-preview-content {
+          margin: auto;
+          display: block;
+          width: auto;
+          height: auto;
+          max-width: 90%;
+          max-height: 90%;
+          object-fit: contain;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+      }
+
+      .image-preview-close {
+          position: absolute;
+          top: 15px;
+          right: 35px;
+          color: #f1f1f1;
+          font-size: 40px;
+          font-weight: bold;
+          cursor: pointer;
+      }
+
+      /* Add this new style for candidate images */
+      .candidate-image {
+          cursor: pointer;
+          transition: transform 0.3s ease;
+      }
+
+      .candidate-image:hover {
+          transform: scale(1.05);
+      }
+       /* Updated and new styles for the vote confirmation modal */
+       .modal {
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.4);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+      }
+
+      .modal.show {
+          opacity: 1;
+      }
+
+      .modal-content {
+          background-color: #f8f9fa;
+          margin: 15% auto;
+          padding: 30px;
+          border-radius: 15px;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+          position: relative;
+          width: 80%;
+          max-width: 500px;
+          transform: scale(0.7);
+          opacity: 0;
+          transition: all 0.3s ease;
+      }
+
+      .modal.show .modal-content {
+          transform: scale(1);
+          opacity: 1;
+      }
+
+      .close {
+          color: #aaa;
+          position: absolute;
+          top: 10px;
+          right: 20px;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: color 0.3s ease;
+      }
+
+      .close:hover,
+      .close:focus {
+          color: #555;
+          text-decoration: none;
+      }
+
+      .modal h2 {
+          color: #333;
+          margin-top: 0;
+          margin-bottom: 20px;
+          font-size: 24px;
+          text-align: center;
+      }
+
+      .modal p {
+          color: #555;
+          font-size: 18px;
+          margin-bottom: 30px;
+          text-align: center;
+      }
+
+      #candidateName {
+          font-weight: bold;
+          color: #007bff;
+      }
+
+      #confirmVote {
+          display: block;
+          width: 100%;
+          padding: 12px;
+          background-color: #28a745;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          font-size: 18px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+      }
+
+      #confirmVote:hover {
+          background-color: #218838;
+      }
+/* Existing button styles */
+.close-modal-button {
+    background-color: #ff4500;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 10px 2px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    position: relative; /* For positioning rings */
+    animation: shake 1.8s cubic-bezier(.36,.07,.19,.97) infinite;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.close-modal-button:hover {
+    background-color: #ff6347;
+}
+
+/* Shaking animation */
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Vibrating rings */
+.close-modal-button::before,
+.close-modal-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #ff4500;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.close-modal-button::before {
+    animation: ring 1.5s infinite;
+}
+
+.close-modal-button::after {
+    animation: ring 1.5s infinite 0.3s;
+}
+
+@keyframes ring {
+    0% {
+        width: 100%;
+        height: 100%;
+        opacity: 0.7;
+    }
+    100% {
+        width: 150%;
+        height: 150%;
+        opacity: 0;
+    }
+}
+  </style>
+</head>
+<body>
+    
+    <style>
+        .intro-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0,0,0,0.8);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .intro-modal-content {
+            background-color: #fefefe;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            transition: transform 0.5s ease;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+        }
+
+        .intro-modal h1 {
+            font-size: 2em;
+            color: #ff4500;
+            margin: 0 0 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .intro-modal h2 {
+            font-size: 1.5em;
+            color: #4a4a4a;
+            margin: 0 0 10px;
+        }
+
+/* Existing button styles */
+.close-modal-button {
+    background-color: #ff4500;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 10px 2px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    position: relative; /* Added for positioning rings */
+}
+
+.close-modal-button:hover {
+    background-color: #ff6347;
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Shaking animation */
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Vibrating rings */
+.close-modal-button::before,
+.close-modal-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #ff4500;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.close-modal-button:hover::before {
+    animation: ring 1.5s infinite;
+}
+
+.close-modal-button:hover::after {
+    animation: ring 1.5s infinite 0.3s;
+}
+
+@keyframes ring {
+    0% {
+        width: 100%;
+        height: 100%;
+        opacity: 0.7;
+    }
+    100% {
+        width: 150%;
+        height: 150%;
+        opacity: 0;
+    }
+}
+
+        .fade-in {
+            opacity: 1 !important;
+        }
+
+        .contestant-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 10px 0;
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contestant-pair {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            position: absolute;
+            transition: transform 0.5s ease;
+        }
+
+        .contestant {
+            width: 150px;
+            text-align: center;
+        }
+
+        .contestant img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .contestant.left {
+            transform: translateX(-100%);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .contestant.right {
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .contestant.animate {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .vs {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff4500;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .vs.show {
+            opacity: 1;
+        }
+
+        .contestant-name {
+            margin-top: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        @keyframes vsAnimation {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .vs.animate {
+            animation: vsAnimation 1s ease-in-out infinite;
+        }
+
+        .spark {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, #ff6347, #ff4500);
+            border-radius: 50%;
+            filter: blur(1px);
+            opacity: 0;
+            animation: spark 2s ease-out infinite;
+        }
+
+        @keyframes spark {
+            0% { transform: scale(0) translateY(0); opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { transform: scale(1) translateY(-50px) rotate(360deg); opacity: 0; }
+        }
+
+        .sparks-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .vote-count-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .vote-count-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .vote-count-content {
+            background-color: #fefefe;
+            margin: 2% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 95%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .vote-count-columns {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .vote-count-column {
+            width: 48%;
+            margin-bottom: 20px;
+        }
+
+        .vote-count-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .vote-count-table th, .vote-count-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .vote-count-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .vote-count-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .vote-count-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .candidate-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .close-vote-count-button {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .close-vote-count-button:hover {
+            background-color: #d32f2f;
+        }
+
+        @media (max-width: 768px) {
+            .vote-count-column {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="introModal" class="intro-modal">
+        <div class="intro-modal-content">
+            <h1>THE BATTLE IS ON!</h1>
+            <h2>WHO is WHO? 💪</h2>
+            <div id="contestantContainer" class="contestant-container">
+                <!-- Contestant pairs will be dynamically inserted here -->
+            </div>
+            <button id="voteCountButton" class="vote-count-button">VOTE COUNT 🗳️</button>
+            <button id="closeModalButton" class="close-modal-button">SHOOT YOUR SHOT! 🔫</button>
+           </div>
+        <div class="sparks-container"></div>
+    </div>
+
+    <div id="voteCountModal" class="vote-count-modal">
+        <div class="vote-count-content">
+            <h2>Current Vote Counts</h2>
+            <div class="vote-count-columns">
+                <div class="vote-count-column">
+                    <h3>English Class Co-ordinators</h3>
+                    <table id="englishVoteCounts" class="vote-count-table"></table>
+                </div>
+                <div class="vote-count-column">
+                    <h3>ICT Class Co-ordinators</h3>
+                    <table id="ictVoteCounts" class="vote-count-table"></table>
+                </div>
+            </div>
+            <button id="closeVoteCountButton" class="close-vote-count-button">BACK TO BATTLEFIELD 🔥</button>
+        </div>
+    </div>
+
+    <audio id="bigBangSound" src="Bomb-SoundBible.com-891110113.mp3" preload="auto"></audio>
+
+    <script>
+        
+        const voteCountButton = document.getElementById('voteCountButton');
+        const voteCountModal = document.getElementById('voteCountModal');
+        const closeVoteCountButton = document.getElementById('closeVoteCountButton');
+
+        voteCountButton.addEventListener('click', showVoteCountModal);
+        closeVoteCountButton.addEventListener('click', closeVoteCountModal);
+
+        function showVoteCountModal() {
+    updateVoteCountDisplay();
+    openModal(voteCountModal);
+}
+
+// Add this function to periodically update the vote count modal if it's open
+function setupVoteCountAutoUpdate() {
+    setInterval(() => {
+        if (voteCountModal.style.display === 'block') {
+            updateVoteCountDisplay();
+        }
+    }, 1000); // Update every second
+}
+
+        function closeVoteCountModal() {
+            closeModal(voteCountModal);
+        }
+
+        function updateVoteCountDisplay() {
+    const englishVoteCounts = document.getElementById('englishVoteCounts');
+    const ictVoteCounts = document.getElementById('ictVoteCounts');
+
+    if (englishVoteCounts) {
+        englishVoteCounts.innerHTML = getVoteCountHTML('english');
+    }
+    if (ictVoteCounts) {
+        ictVoteCounts.innerHTML = getVoteCountHTML('ict');
+    }
+}
+
+// Update the getVoteCountHTML function to always pull from localStorage
+function getVoteCountHTML(post) {
+    const voteCounts = JSON.parse(localStorage.getItem(`voteCounts_${post}`)) || {};
+    let html = `
+        <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Votes</th>
+        </tr>
+    `;
+    html += candidates[post].map(candidate => `
+        <tr>
+            <td><img src="${candidate.image}" alt="${candidate.name}" class="candidate-photo clickable-photo" onclick="showLightbox('${candidate.image}', '${candidate.name}')"></td>
+            <td><span class="candidate-name clickable" onclick="showCandidateDetails('${candidate.name}', '${post}', ${voteCounts[candidate.name] || 0})">${candidate.name}</span></td>
+            <td>${voteCounts[candidate.name] || 0}</td>
+        </tr>
+    `).join('');
+    return html;
+}
+
+function showLightbox(imageSrc, altText) {
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = `
+        <div class="lightbox-content">
+            <img src="${imageSrc}" alt="${altText}" class="lightbox-image">
+            <span class="close-lightbox">&times;</span>
+        </div>
+    `;
+    document.body.appendChild(lightbox);
+
+    const closeBtn = lightbox.querySelector('.close-lightbox');
+    closeBtn.onclick = function(e) {
+        e.stopPropagation();
+        document.body.removeChild(lightbox);
+    }
+
+    lightbox.onclick = function() {
+        document.body.removeChild(lightbox);
+    }
+}
+
+// Utility function to create a modal
+function createModal(className, content) {
+    const modal = document.createElement('div');
+    modal.className = className;
+    modal.innerHTML = `
+        <div class="${className}-content">
+            <span class="close-modal">&times;</span>
+            ${content}
+        </div>
+    `;
+    document.body.appendChild(modal);
+    return modal;
+}
+
+// Utility function to remove a modal
+function removeModal(modal) {
+    document.body.removeChild(modal);
+}
+
+// Function to show candidate details
+function showCandidateDetails(name, post, votes) {
+    const candidate = candidates[post].find(c => c.name === name);
+    
+    if (!candidate) {
+        console.error(`Candidate ${name} not found for post ${post}`);
+        return;
+    }
+
+    const content = `
+        <div class="candidate-info">
+            <img src="${candidate.image}" alt="${name}" class="candidate-modal-photo">
+            <div class="candidate-details">
+                <h3>${name}</h3>
+                <p>Post: ${post}</p>
+                <p>Votes: ${votes}</p>
+            </div>
+        </div>
+    `;
+
+    const modal = createModal('candidate-modal', content);
+
+    const closeBtn = modal.querySelector('.close-modal');
+    closeBtn.onclick = () => removeModal(modal);
+
+    window.onclick = (event) => {
+        if (event.target == modal) {
+            removeModal(modal);
+        }
+    };
+}
+
+// Function to show lightbox
+function showLightbox(imageSrc, altText) {
+    const content = `<img src="${imageSrc}" alt="${altText}" class="lightbox-image">`;
+    const lightbox = createModal('lightbox', content);
+
+    const closeBtn = lightbox.querySelector('.close-modal');
+    closeBtn.onclick = (e) => {
+        e.stopPropagation();
+        removeModal(lightbox);
+    };
+
+    lightbox.onclick = () => removeModal(lightbox);
+}
+
+// Add styles
+const style = document.createElement('style');
+style.textContent = `
+    .clickable-photo, .candidate-name.clickable {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    .clickable-photo:hover, .candidate-name.clickable:hover {
+        transform: scale(1.1);
+    }
+    .lightbox, .candidate-modal {
+        position: fixed;
+        z-index: 10001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .lightbox-content, .candidate-modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        position: relative;
+    }
+    .lightbox-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        width: auto;
+        height: auto;
+        max-width: 400px;
+        max-height: 400px;
+    }
+    .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .candidate-modal-content {
+        text-align: center;
+        max-width: 400px;
+        margin: 15% auto;
+        background-color: #f4f4f4;
+    }
+    .candidate-info {
+        display: flex;
+        align-items: center;
+    }
+    .candidate-modal-photo {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 20px;
+    }
+    .candidate-details {
+        flex-grow: 1;
+        text-align: left;
+    }
+    .candidate-details h3 {
+        margin-top: 0;
+    }
+`;
+document.head.appendChild(style);
+        const contestants = {
+            english: [
+                { name: "MUBEEZI SHADIA", image: "Mubezi Shadia.jpg" },
+                { name: "TEMITOPE GRACE", image: "Temitope Grace.jpg" },
+                { name: "KEMIGISHA ALEXANDRIA", image: "Kemigisha Alexandria (2).jpg" },
+                { name: "TWESIGYE ADRIAN", image: "Twesigye Adrian.jpg" },
+                { name: "MANZI EVANS", image: "Manzi Evans (2).jpg" },
+                { name: "BUYUNGO ERIC", image: "Buyungo Eric (2).jpg" },
+                { name: "NVANNUNGI SHANIEZ", image: "Nvannungi Shaniz.jpg" },
+                { name: "NINSIIMA MARY SHALOM", image: "NINSIIMA MARY SHALOM.jpg" },
+                { name: "LUKANDWA PHILLIP", image: "lukanda philip.jpg" },
+                { name: "ASHABA ELIZABETH", image: "ashaba elizabeth.jpg" },
+            ],
+            ict: [
+                { name: "AINOMUGISHA ANGEL", image: "Ainomugisha Angel (2).jpg" },
+                { name: "SSENGENDO PRITA", image: "Ssengendo  Prita.jpg" },
+                { name: "NAKAWEESI MICHELLE", image: "Nakaweesi Michelle (2).jpg" },
+                { name: "SSUUNA RAPHAEL", image: "Ssuuna Raphael (2).jpg" },
+                { name: "MULANGIRA JOSEPH", image: "Mulangira Joseph (2).jpg" },
+                { name: "ALIYA ADAMS", image: "Aliya Adams.jpg" },
+                { name: "SSEBABENGA KERON", image: "Ssebabenga Keron (2).jpg" },
+                { name: "MUYINZA CYRUS", image: "Muyinza Syrus.jpg" },
+                { name: "KAKONA JORDAN", image: "KAKONA JORDAN.jpg" },
+                { name: "ITAGA NICHOLAS", image: "ITAGA NICHOLAS.jpg" },
+                { name: "MANZI EVANS", image: "MANZI EVANS.jpg" },
+                { name: "TWESIGE ADRIAN", image: "TWESIGE ADRIAN.jpg" },
+                { name: "ADAM MOKHTAR", image: "ADRIAN MOKHTAR.jpg" },
+                { name: "NANNUNGI DRUCILA SSANYU", image: "NANNUNGI DRUCILA SSANYU.jpg" },
+                { name: "KEMIGISHA ALEXANDRIA", image: "KEMIGISHA ALEXANDRIA.jpg" },
+                { name: "BUYUNGO ERIC", image: "BUYUNGO ERICK.jpg" },
+                { name: "LUBEGA MALCOM", image: "lubega malcom.jpg" },
+                { name: "NANJOBE VANESSA", image: "Anonymous.jpg" },
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const introModal = document.getElementById('introModal');
+            const introModalContent = introModal.querySelector('.intro-modal-content');
+            const bigBangSound = document.getElementById('bigBangSound');
+            const closeModalButton = document.getElementById('closeModalButton');
+            const contestantContainer = document.getElementById('contestantContainer');
+            const sparksContainer = introModal.querySelector('.sparks-container');
+
+// Modify the getRandomContestants function to include vote counts
+function getRandomContestants() {
+    const categories = Object.keys(contestants);
+    const category = categories[Math.floor(Math.random() * categories.length)];
+    const categoryList = contestants[category];
+    const contestant1 = categoryList[Math.floor(Math.random() * categoryList.length)];
+    let contestant2;
+    do {
+        contestant2 = categoryList[Math.floor(Math.random() * categoryList.length)];
+    } while (contestant2 === contestant1);
+    return [
+        { ...contestant1, votes: getVoteCount(category, contestant1.name) },
+        { ...contestant2, votes: getVoteCount(category, contestant2.name) }
+    ];
+}
+
+// Update the createContestantPair function to display vote counts
+function createContestantPair() {
+    const [contestant1, contestant2] = getRandomContestants();
+    const pairDiv = document.createElement('div');
+    pairDiv.className = 'contestant-pair';
+    pairDiv.innerHTML = `
+        <div class="contestant left">
+            <img src="${contestant1.image}" alt="${contestant1.name}">
+            <div class="contestant-name">${contestant1.name}</div>
+            <div class="vote-count">Votes: ${contestant1.votes}</div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="contestant right">
+            <img src="${contestant2.image}" alt="${contestant2.name}">
+            <div class="contestant-name">${contestant2.name}</div>
+            <div class="vote-count">Votes: ${contestant2.votes}</div>
+        </div>
+    `;
+    return pairDiv;
+}
+
+            function animateContestantPair(pairDiv) {
+                const leftContestant = pairDiv.querySelector('.contestant.left');
+                const rightContestant = pairDiv.querySelector('.contestant.right');
+                const vs = pairDiv.querySelector('.vs');
+
+                setTimeout(() => {
+                    leftContestant.classList.add('animate');
+                    rightContestant.classList.add('animate');
+                    setTimeout(() => {
+                        vs.classList.add('show', 'animate');
+                    }, 500);
+                }, 100);
+
+                setTimeout(() => {
+                    leftContestant.classList.remove('animate');
+                    rightContestant.classList.remove('animate');
+                    vs.classList.remove('show', 'animate');
+                    setTimeout(() => {
+                        pairDiv.remove();
+                    }, 500);
+                }, 4500);
+            }
+
+            function createSpark() {
+                const spark = document.createElement('div');
+                spark.classList.add('spark');
+                spark.style.left = Math.random() * 100 + '%';
+                spark.style.top = Math.random() * 100 + '%';
+                spark.style.animationDelay = Math.random() * 2 + 's';
+                sparksContainer.appendChild(spark);
+                
+                setTimeout(() => {
+                    spark.remove();
+                }, 2000);
+            }
+
+            function createSparks() {
+                for (let i = 0; i < 20; i++) {
+                    createSpark();
+                }
+            }
+
+// Modify the cycleContestantPairs function to update more frequently
+function cycleContestantPairs() {
+    const newPair = createContestantPair();
+    const contestantContainer = document.getElementById('contestantContainer');
+    contestantContainer.innerHTML = ''; // Clear previous pair
+    contestantContainer.appendChild(newPair);
+    animateContestantPair(newPair);
+    createSparks();
+}
+
+            function startIntroSequence() {
+                introModal.style.display = 'block';
+                setTimeout(() => {
+                    introModal.classList.add('fade-in');
+                    introModalContent.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cycleContestantPairs();
+                    setInterval(cycleContestantPairs, 5000);
+                    setInterval(createSparks, 2000);
+                }, 0);
+            }
+
+            startIntroSequence();
+
+            closeModalButton.addEventListener('click', function() {
+                bigBangSound.play().catch(error => console.log('Error playing sound:', error));
+                introModal.style.opacity = '0';
+                setTimeout(() => {
+                    introModal.style.display = 'none';
+                    contestantContainer.innerHTML = '';
+                    sparksContainer.innerHTML = '';
+                }, 500);
+            });
+        });
+    </script>
+
+    <div class="container">
+        <img src="schoologo-2-150x150.png" alt="Glorious Electoral Commission Logo" class="logo">
+        <h1>Glorious Electoral Commission</h1>
+        <div id="loginSection">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            <div id="nameError" class="error-message">Please enter a valid name</div>
+            
+            <div id="autoSuggest"></div>
+            <div id="noMatchFeedback" class="feedback-error">No matches found!</div>
+            
+            <input type="email" id="emailInput" placeholder="Your e-mail will automatically appear here" readonly>
+            <div id="emailError" class="error-message">Please enter a valid e-mail address</div>
+            
+            <input type="password" id="passwordInput" placeholder="Enter your password">
+            <div id="passwordError" class="error-message">Incorrect password!</div>
+            
+            <button id="loginButton">Login</button>
+        </div>
+        <div id="userInfo" style="display: none;"></div>
+        <div id="postSelection" style="display: none;">
+            <h2>Select a Post to Vote</h2>
+            <button id="englishButton">English Class Co-ordinator</button>
+            <button id="ictButton">ICT Class Co-ordinator</button>
+        </div>
+        <div id="candidateList" style="display: none;">
+            <button id="switchPostButton" class="switch-post-button">Switch Post</button>
+        </div>
+    </div>
+
+    <!-- Image preview modal (unchanged) -->
+    <div id="imagePreviewModal" class="image-preview-modal">
+        <span class="image-preview-close">&times;</span>
+        <img class="image-preview-content" id="previewImage">
+    </div>
+
+    <!-- Updated vote confirmation modal -->
+    <div id="voteModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Confirm Your Vote</h2>
+            <p>You're about to vote for <span id="candidateName"> </span>!</p>
+            <center><button id="confirmVote">YES, CAST MY VOTE! 🗳️</button></center>
+        </div>
+    </div>
+
+    <div id="thankYouModal" class="modal">
+        <div class="modal-content">
+            <h2>Thank You for Voting!</h2>
+            <p>Your vote has been counted. You're a super voter!</p>
+        </div>
+    </div>
+
+    <div id="alreadyVotedModal" class="modal">
+        <div class="modal-content">
+            <h2>Oops!</h2>
+            <p>You've already voted for this post. Each person gets one super vote per post!</p>
+        </div>
+    </div>
+
+    <audio id="clapSound" src="SMALL_CROWD_APPLAUSE-Yannick_Lemieux-1268806408.mp3"></audio>
+
+    <script>
+        // Candidate lists for each post
+       const candidates = {
+           english: [
+    { name: "MUBEEZI SHADIA", image: "Mubezi Shadia.jpg" },
+    { name: "TEMITOPE GRACE", image: "Temitope Grace.jpg" },
+    { name: "KEMIGISHA ALEXANDRIA", image: "Kemigisha Alexandria (2).jpg" },
+    { name: "TWESIGYE ADRIAN", image: "Twesigye Adrian.jpg" },
+    { name: "MANZI EVANS", image: "Manzi Evans (2).jpg" },
+    { name: "BUYUNGO ERIC", image: "Buyungo Eric (2).jpg" },
+    { name: "NVANNUNGI SHANIEZ", image: "Nvannungi Shaniz.jpg" }  ,
+               { name: "NINSIIMA MARY SHALOM", image: "NINSIIMA MARY SHALOM.jpg" },
+               { name: "LUKANDWA PHILLIP", image: "lukanda philip.jpg" },
+               { name: "ASHABA ELIZABETH", image: "ashaba elizabeth.jpg" },
+               
+           ],
+           ict: [           { name: "AINOMUGISHA ANGEL", image: "Ainomugisha Angel (2).jpg" },
+       { name: "SSENGENDO PRITA", image: "Ssengendo  Prita.jpg" },
+
+                { name: "NAKAWEESI MICHELLE", image: "Nakaweesi Michelle (2).jpg" },
+ { name: "SSUUNA RAPHAEL", image: "Ssuuna Raphael (2).jpg" },
+           { name: "MULANGIRA JOSEPH", image: "Mulangira Joseph (2).jpg" },
+           { name: "ALIYA ADAMS", image: "Aliya Adams.jpg" },
+    { name: "SSEBABENGA KERON", image: "Ssebabenga Keron (2).jpg" },
+
+           { name: "MUYINZA CYRUS", image: "Muyinza Syrus.jpg" },
+               { name: "KAKONA JORDAN", image: "KAKONA JORDAN.jpg" },
+               { name: "ITAGA NICHOLAS", image: "ITAGA NICHOLAS.jpg" },
+               { name: "MANZI EVANS", image: "MANZI EVANS.jpg" },
+               { name: "TWESIGE ADRIAN", image: "TWESIGE ADRIAN.jpg" },
+               { name: "ADAM MOKHTAR", image: "ADRIAN MOKHTAR.jpg" },
+               { name: "NANNUNGI DRUCILA SSANYU", image: "NANNUNGI DRUCILA SSANYU.jpg" },
+               { name: "KEMIGISHA ALEXANDRIA", image: "KEMIGISHA ALEXANDRIA.jpg" },
+               { name: "BUYUNGO ERIC", image: "BUYUNGO ERICK.jpg" },
+               { name: "LUBEGA MALCOM", image: "lubega malcom.jpg" },
+               { name: "NANJOBE VANESSA", image: "Anonymous.jpg" },
+               
+           ]
+       };
+       
+       const students = [
+       'AHEREZA HONOUR',
+      'ALIYAH ADAMS K.',
+      'AKARABO GOLDA',
+      'BLESSING SHILOH',
+      'AINOMUGISHA ANGEL',
+      'KEMIGISHA ALEXANDRIA',
+      'LUBUULWA MELINA J',
+      'MUBEEZI SHADIA L.',
+      'NAKUNGU PRECIOUS',
+      'NASSANGA MARIA A.',
+      'NAMIREMBE ALPHA',
+      'NANUNGI DRUCILLA L.',
+      'NAMAGANDA IMRAH',
+      'NAKAWEESI MICHELLE',
+      'NAMUTEBI GERTRUDE',
+      'NANJOBE VANESSA',
+      'NINSIIMA MARY S.',
+      'NVANUNGI SHANIEZ F.',
+      'TEMITOPE GRACE A.',
+      'ASHABA ELIZABETH',
+      'NANSUBUGA MANUELLA',
+      'NAMAKULA SOPHIA',
+      'OBANG SHALLOM S.',
+      'BUKIRWA LETICIA',
+      'KISMART DAUDA',
+      'KASOZI AAMRAT',
+      'NANTONGO BUSHIRAH',
+      'MOKHTA ADAM SALAM',
+      'BAGONZA JOAB',
+      'KAYONGO JAWAD',
+      'KAKONA JORDAN',
+      'KIGGUNDU LUKE',
+      'BUYUNGO ERIC',
+      'LUBEGA MALCOM',
+      'LUKANDWA PHILLIP',
+      'MURUNGI IAN',
+      'MUYINZA CYRUS',
+      'MULANGIRA JOSEPH',
+      'MANZI EVANS',
+      'ITAAGA NICHOLAST',
+      'LUYIGA  RAYAN',
+      'SSEWAKIRYANGA HOSEA',
+      'SSUUNA RAFAN W',
+      'SSEMATIMBA MARK',
+      'SSEBABENGA KERON',
+      'TWESIGYE ADRIAN',
+      'WALLIGO ETHAN',
+      'NAMWANJA JOHN BAPTIST',
+      'SSENGENDO PRITA',
+      'KALULE CARLOS',
+      'MUHUMUZA ADHELITO',
+      'LUGGYA AKRAM',
+      'SSEMOMBWE ANDERSON'
+       ];
+       
+       function generateEmail(name) {
+           return name.replace(/ /g, '').replace(/\.+$/, '').toLowerCase() + '@glorious.com';
+       }
+       
+       const nameInput = document.getElementById('nameInput');
+       const emailInput = document.getElementById('emailInput');
+       const passwordInput = document.getElementById('passwordInput');
+       const postSelect = document.getElementById('postSelect');
+       const autoSuggest = document.getElementById('autoSuggest');
+       const loginButton = document.getElementById('loginButton');
+       const loginSection = document.getElementById('loginSection');
+       const userInfo = document.getElementById('userInfo');
+       const candidateList = document.getElementById('candidateList');
+       const voteModal = document.getElementById('voteModal');
+       const thankYouModal = document.getElementById('thankYouModal');
+       const alreadyVotedModal = document.getElementById('alreadyVotedModal');
+       const closeButtons = document.getElementsByClassName('close');
+       const confirmVoteBtn = document.getElementById('confirmVote');
+       const candidateNameSpan = document.getElementById('candidateName');
+       const clapSound = document.getElementById('clapSound');
+       const passwordFeedback = document.getElementById('passwordFeedback');
+       const noMatchFeedback = document.getElementById('noMatchFeedback');
+       
+       let selectedCandidate = null;
+       let currentUser = null;
+       let currentPost = null;
+       
+// Replace initializeVoteCounts function
+function initializeVoteCounts() {
+    ['english', 'ict'].forEach(post => {
+        let voteCounts = JSON.parse(localStorage.getItem(`voteCounts_${post}`)) || {};
+        
+        // Ensure all candidates have a vote count
+        candidates[post].forEach(candidate => {
+            if (typeof voteCounts[candidate.name] !== 'number') {
+                voteCounts[candidate.name] = 0;
+            }
+        });
+        
+        localStorage.setItem(`voteCounts_${post}`, JSON.stringify(voteCounts));
+    });
+}
+
+// Update getVoteCount function
+function getVoteCount(post, candidateName) {
+    const voteCounts = JSON.parse(localStorage.getItem(`voteCounts_${post}`)) || {};
+    return voteCounts[candidateName] || 0;
+}
+       
+           function renderCandidates() {
+            candidateList.innerHTML = `
+                <h2>${currentPost === 'english' ? 'English' : 'ICT'} Class Co-ordinator Candidates</h2>
+                <button id="switchPostButton" class="switch-post-button">Switch to ${currentPost === 'english' ? 'ICT' : 'English'} Candidates 🔄 </button>
+            `;
+            candidates[currentPost].forEach(candidate => {
+                   const voteCount = getVoteCount(currentPost, candidate.name);
+                   const candidateEl = document.createElement('div');
+                   candidateEl.className = 'candidate';
+                   candidateEl.innerHTML = `
+                       <div class="candidate-info">
+                           <img src="${candidate.image}" alt="${candidate.name}" class="candidate-image" onclick="openImagePreview('${candidate.image}')">
+                           <div class="candidate-details">
+                               <h3>${candidate.name}</h3>
+                               <p class="vote-count">Number of Votes on this Device: ${voteCount}</p>
+                               <button class="vote-button" onclick="openVoteModal('${candidate.name}')">VOTE FOR ${candidate.name} 🗳️</button>
+                           </div>
+                       </div>
+                   `;
+                   candidateList.appendChild(candidateEl);
+               });
+               updateVoteButtons();
+
+// Add event listener for the switch post button
+document.getElementById('switchPostButton').addEventListener('click', switchPost);
+}
+
+function switchPost() {
+            currentPost = currentPost === 'english' ? 'ict' : 'english';
+            saveSession(currentUser, nameInput.value, currentPost); // Save the new post selection
+            renderCandidates();
+        }
+       
+           // Add these new functions for image preview
+       
+           const imagePreviewModal = document.getElementById('imagePreviewModal');
+           const previewImage = document.getElementById('previewImage');
+           const imagePreviewClose = document.getElementsByClassName('image-preview-close')[0];
+       
+           // Add this function to ensure the image is fully loaded before showing the modal
+           function openImagePreview(imageSrc) {
+               previewImage.onload = function() {
+                   openModal(imagePreviewModal);
+               }
+               previewImage.src = imageSrc;
+           }
+       
+           imagePreviewClose.onclick = function() {
+               closeModal(imagePreviewModal);
+           }
+       
+           // Modify the existing window.onclick function
+           window.onclick = function(event) {
+               if (event.target.classList.contains('modal') || event.target === imagePreviewModal) {
+                   closeModal(event.target);
+               }
+           }
+       
+           function openModal(modal) {
+               modal.style.display = 'block';
+               setTimeout(() => {
+                   modal.classList.add('show');
+               }, 10);
+           }
+       
+           // Update the closeModal function to remove the 'show' class
+           function closeModal(modal) {
+               modal.classList.remove('show');
+               setTimeout(() => {
+                   modal.style.display = 'none';
+               }, 300);
+           }
+       
+       function openVoteModal(name) {
+           if (hasVoted(currentUser, currentPost)) {
+               openModal(alreadyVotedModal);
+               setTimeout(() => closeModal(alreadyVotedModal), 3000);
+               return;
+           }
+           selectedCandidate = name;
+           candidateNameSpan.textContent = name;
+           openModal(voteModal);
+       }
+       
+       Array.from(closeButtons).forEach(btn => {
+           btn.onclick = function() {
+               closeModal(this.closest('.modal'));
+           }
+       });
+       
+       confirmVoteBtn.onclick = function() {
+           saveVote(currentUser, currentPost, selectedCandidate);
+           closeModal(voteModal);
+           openModal(thankYouModal);
+           updateVoteButtons();
+           createConfetti();
+           clapSound.play();
+           setTimeout(() => closeModal(thankYouModal), 3000);
+       }
+       
+       function updateVoteButtons() {
+           const buttons = document.querySelectorAll('.vote-button');
+           const votedCandidate = getVote(currentUser, currentPost);
+           buttons.forEach(button => {
+               if (votedCandidate && button.textContent.includes(votedCandidate)) {
+                   button.textContent = `YOU VOTED FOR ${votedCandidate} ✔️`;
+                   button.classList.add('voted-button');
+                   button.disabled = true;
+               } else if (votedCandidate) {
+                   button.disabled = true;
+               } else {
+                   button.disabled = false;
+               }
+           });
+       }
+       
+       window.onclick = function(event) {
+           if (event.target.classList.contains('modal')) {
+               closeModal(event.target);
+           }
+       }
+       
+       function createConfetti() {
+           for (let i = 0; i < 50; i++) {
+               const confetti = document.createElement('div');
+               confetti.className = 'confetti';
+               confetti.style.left = Math.random() * 100 + 'vw';
+               confetti.style.animationDelay = Math.random() * 3 + 's';
+               confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+               document.body.appendChild(confetti);
+               setTimeout(() => confetti.remove(), 4000);
+           }
+       }
+       
+// Modify the saveVote function to update the intro modal
+// Update saveVote function
+// Update the saveVote function to trigger a vote count update
+function saveVote(email, post, candidate) {
+    let voteCounts = JSON.parse(localStorage.getItem(`voteCounts_${post}`)) || {};
+    voteCounts[candidate] = (voteCounts[candidate] || 0) + 1;
+    localStorage.setItem(`voteCounts_${post}`, JSON.stringify(voteCounts));
+    localStorage.setItem(`${email}_${post}`, candidate);
+    
+    renderCandidates();
+    updateVoteCountDisplay(); // Update the vote count modal
+    updateIntroModalVoteCounts();
+}
+
+
+// Update getVote function
+function getVote(email, post) {
+    return localStorage.getItem(`${email}_${post}`);
+}
+
+// Update hasVoted function
+function hasVoted(email, post) {
+    return localStorage.getItem(`${email}_${post}`) !== null;
+}
+       
+       const specialUsers = [
+       {
+                "email": "nakijjepriscaresty@glorious.com",
+                "password": "100"
+            },
+            {
+                "email": "bugingojoram@glorious.com",
+                "password": "581"
+            },
+            {
+                "email": "mukiibijoseph@glorious.com",
+                "password": "1212"
+            },
+            {
+                "email": "jjumbaangello@glorious.com",
+                "password": "556"
+            },
+            {
+                "email": "kiwendocalvin@glorious.com",
+                "password": "7879"
+            },
+            {
+                "email": "aturindakelton@glorious.com",
+                "password": "Manishiimwe"
+            },
+            {
+                "email": "byeganjejosemaryrovisah@glorious.com",
+                "password": "2012"
+            },
+            {
+                "email": "mutandaleonarthur@glorious.com",
+                "password": "1900"
+            },
+
+            {
+                "email": "mulwanajonathan@glorious.com",
+                "password": "1980"
+            },
+            {
+                "email": "nansambaesther@glorious.com",
+                "password": "29204"
+            },
+            {
+                "email": "opiodanielopolot@glorious.com",
+                "password": "2012"
+            },
+            {
+                "email": "odongdavidisa@glorious.com",
+                "password": "4444"
+            },
+            {
+                "email": "aliyahadamsk@glorious.com",
+                "password": "2014"
+            },
+            {
+                "email": "muyinzacyrus@glorious.com",
+                "password": "890"
+            },
+            {
+                "email": "nakaweesimichelle@glorious.com",
+                "password": "sharon"
+            }
+            ,
+            {
+                "email": "akarabogolda@glorious.com",
+                "password": "055"
+            },
+            {
+                "email": "ssebabengakeron@glorious.com",
+                "password": "088"
+            }
+            ,
+            {
+                "email": "itaaganicholast@glorious.com",
+                "password": "987"
+            },
+            {
+                "email": "buyungoeric@glorious.com",
+                "password": "988"
+            },
+            {
+                "email": "nabuumavanessa@glorious.com",
+                "password": "faith"
+            },
+            {
+                "email": "ainebyonaisaiah@glorious.com",
+                "password": "3030"
+            },
+            {
+                "email": "tendohasifahhakim@glorious.com",
+                "password": "257"
+            },
+            {
+                "email": "ssejjuukopedro@glorious.com",
+                "password": "1246"
+            },
+            {
+                "email": "ahabwealvin@glorious.com",
+                "password": "Ahabwe"
+            },
+
+            {
+                "email": "atuhaireangella@glorious.com",
+                "password": "2020"
+            },
+            {
+                "email": "mbazirajoel@glorious.com",
+                "password": "777"
+            },
+            {
+                "email": "mubirumiguelhero@glorious.com",
+                "password": "666"
+            },
+            {
+                "email": "tusuubiraarthur@glorious.com",
+                "password": "554"
+            },
+            {
+                "email": "namutalefederico@glorious.com",
+                "password": "554"
+            },
+
+            {
+                "email": "mawejjeukasha@glorious.com",
+                "password": "992"
+            },
+            {
+                "email": "mpangafahad@glorious.com",
+                "password": "075"
+            },
+            {
+                "email": "nakittohappydaniella@glorious.com",
+                "password": "2024"
+            },
+            {
+                "email": "kakandeblessed@glorious.com",
+                "password": "625"
+            },
+            {
+                "email": "nabiryeprecious@glorious.com",
+                "password": "333"
+            },
+            {
+                "email": "mikkatyabanicholas@glorious.com",
+                "password": "603"
+            },
+            {
+                "email": "odongdavidisa@glorious.com",
+                "password": "603"
+            },
+            {
+                "email": "ahabwejosiah@glorious.com",
+                "password": "Josi2"
+            },
+            {
+                "email": "odangdavidisa@glorious.com",
+                "password": "444"
+            },
+            {
+                "email": "kayongojawad@glorious.com",
+                "password": "4333"
+            },
+            {
+                "email": "mukisaphilemon@glorious.com",
+                "password": "oculist"
+            },
+            {
+                "email": "muwanguzijeremiah@glorious.com",
+                "password": "Teddy"
+            },
+            {
+                "email": "nyonyozishifrahmirembe@glorious.com",
+                "password": "124"
+            },
+            {
+                "email": "mubirurajab@glorious.com",
+                "password": "pin1"
+            },
+            {
+                "email": "najibalshafiq@glorious.com",
+                "password": "Mary"
+            },
+            {
+                "email": "kasemireblessing@glorious.com",
+                "password": "2222"
+            },
+            {
+                "email": "ninsiimakiraboarianah@glorious.com",
+                "password": "Mayson"
+            },
+            {
+                "email": "mulindwaeddy@glorious.com",
+                "password": "muliik@"
+            },
+            {
+                "email": "lymiahavrilsalim@glorious.com",
+                "password": "emiah"
+            },
+            {
+                "email": "kyazzemartha@glorious.com",
+                "password": "15may"
+            },
+            {
+                "email": "mukisasamson@glorious.com",
+                "password": "Soyam"
+            },
+            {
+                "email": "nambinaava@glorious.com",
+                "password": "An-known"
+            },
+            {
+                "email": "ankundadenise@glorious.com",
+                "password": "2014"
+            },
+            {
+                "email": "melvinkimbugwe@glorious.com",
+                "password": "family"
+            },
+            {
+                "email": "michoroannaalexa@glorious.com",
+                "password": "012"
+            },
+            {
+                "email": "kharundaesther@glorious.com",
+                "password": "2023"
+            },
+            {
+                "email": "lwangaraphael@glorious.com",
+                "password": "l@Ng"
+            },
+            {
+                "email": "kayembashan@glorious.com",
+                "password": "Matrix"
+            },
+            {
+                "email": "kasozinelson@glorious.com",
+                "password": "Hezron"
+            },
+            {
+                "email": "ddumbafrancis@glorious.com",
+                "password": "ddumb@"
+            },
+            {
+                "email": "jibeimmaculate@glorious.com",
+                "password": "faith"
+            },
+            {
+                "email": "blessingshiloh@glorious.com",
+                "password": "2015"
+            },
+            {
+                "email": "ayebareyesuexcellent@glorious.com",
+                "password": "lovely God"
+            },
+            {
+                "email": "ahumuzapraise@glorious.com",
+                "password": "841"
+            },
+            {
+                "email": "atukundagramia@glorious.com",
+                "password": "Ruth"
+            },
+            {
+                "email": "nakasiisasheilahk@glorious.com",
+                "password": "magi3c"
+            },
+            {
+                "email": "namubiruriah@glorious.com",
+                "password": "PaSsWaRd"
+            },
+            {
+                "email": "mukisanathan@glorious.com",
+                "password": "Ge616@"
+            },
+            {
+                "email": "nandawuladesire@glorious.com",
+                "password": "2039"
+            },
+            {
+                "email": "kasoziamrat@glorious.com",
+                "password": "Isaac"
+            },
+            {
+                "email": "manzievans@glorious.com",
+                "password": "918"
+            },
+            {
+                "email": "nvanungi@glorious.com",
+                "password": ""
+            },
+            {
+                "email": "nvanungishaniezf@glorious.com",
+                "password": "1462"
+            },
+            {
+                "email": "ssengendoprita@glorious.com",
+                "password": "heart"
+            },
+            {
+                "email": "kakonojordan@glorious.com",
+                "password": "1000"
+            },
+            {
+                "email": "nassangamariaa@glorious.com",
+                "password": "486"
+            },
+            {
+                "email": "namirembealpha@glorious.com",
+                "password": "ALPHA"
+            },
+            {
+                "email": "ssemombweanderson@glorious.com",
+                "password": "Hanifah"
+            },
+            {
+                "email": "willymayivaleria@glorious.com",
+                "password": "2525"
+            },
+            {
+                "email": "kiggunduluke@glorious.com",
+                "password": "1002"
+            },
+            {
+                "email": "waliggoethan@glorious.com",
+                "password": "1432"
+            },
+            {
+                "email": "mulangirajoseph@glorious.com",
+                "password": "7617"
+            },
+            {
+                "email": "namagandaimrah@glorious.com",
+                "password": "Halimah"
+            },
+            {
+                "email": "twesigyeadrian@glorious.com",
+                "password": "25800"
+            },
+            {
+                "email": "namutebigetrude@glorious.com",
+                "password": "248"
+            },
+            {
+                "email": "nakunguprecious@glorious.com",
+                "password": "172"
+            },
+            {
+                "email": "ssuunarafanw@glorious.com",
+                "password": "105"
+            },
+            {
+                "email": "nanungidrucillal@glorious.com",
+                "password": "12345"
+            },
+            {
+                "email": "mutumbajesse@glorious.com",
+                "password": "666"
+            },
+            {
+                "email": "namubiruafrica@glorious.com",
+                "password": "winners"
+            },
+            {
+                "email": "atuhairerania@glorious.com",
+                "password": "Golden girl"
+            },
+            {
+                "email": "namazzihildah@glorious.com",
+                "password": "Believers"
+            },
+            {
+                "email": "namirembekahlanmartha@glorious.com",
+                "password": "Bernice"
+            },
+
+            {
+                "email": "jazminebids@glorious.com",
+                "password": "2266"
+            },
+
+            {
+                "email": "magandajuliantendo@glorious.com",
+                "password": "246"
+            },
+
+            {
+                "email": "lukwagoluckyahmet@glorious.com",
+                "password": "777"
+            },
+
+            {
+                "email": "karemeraabdulhanan@glorious.com",
+                "password": "kabaalu"
+            },
+            {
+                "email": "tumusiimeelijah@glorious.com",
+                "password": "7864"
+            },
+
+            {
+                "email": "kazibajoshua@glorious.com",
+                "password": "1@3$"
+            },
+
+            {
+                "email": "lubwamamartinwasswa@glorious.com",
+                "password": "13"
+            },
+
+            {
+                "email": "noah@glorious.com",
+                "password": "549"
+            },
+
+            {
+                "email": "jjumbaangello@glorious.com",
+                "password": "5566"
+            },
+
+            {
+                "email": "katendehamir@glorious.com",
+                "password": "K@tende"
+            },
+
+            {
+                "email": "nyiranezavivian@glorious.com",
+                "password": "1234"
+            },
+
+            {
+                "email": "mukisaphilemon@glorious.com",
+                "password": "Fio"
+            },
+
+            {
+                "email": "kiraboevas@glorious.com",
+                "password": "meron"
+            },
+
+            {
+                "email": "kalungijonathan@glorious.com",
+                "password": "0740737435"
+            },
+
+            {
+                "email": "ahabwejosiah@glorious.com",
+                "password": "Josiah@kakona"
+            },
+
+            {
+                "email": "amugelyndseymiles@glorious.com",
+                "password": "26B3"
+            },
+
+            {
+                "email": "muwongepeniel@glorious.com",
+                "password": "11459"
+            },
+
+            {
+                "email": "bukirwashamraddumba@glorious.com",
+                "password": "784298"
+            },
+
+            {
+                "email": "sserukumaabrielleprosper@glorious.com",
+                "password": "549"
+            },
+
+            {
+                "email": "owaruhangajonathan@glorious.com",
+                "password": "04321"
+            },
+
+            {
+                "email": "mwebazadivinepeace@glorious.com",
+                "password": "kid girl"
+            },
+            {
+                "email": "atulindaaisha@glorious.com",
+                "password": "9289"
+            },
+            {
+                "email": "kiggundulia@glorious.com",
+                "password": "yahoo"
+            },
+            {
+                "email": "jamesbimanywa@glorious.com",
+                "password": "Glorious."
+            },
+            {
+                "email": "nkabimericia@glorious.com",
+                "password": "starlight"
+            },
+            {
+                "email": "ssentongovincent@glorious.com",
+                "password": "Glorious."
+            },    
+                    {
+                "email": "tekulibettynassali@glorious.com",
+                "password": "Glorious."
+            },           
+            {
+                "email": "tekulizziwa@glorious.com",
+                "password": "Glorious."
+            },
+            {
+                "email": "asiimwesheena@glorious.com",
+                "password": "sunset."
+            }
+       ];
+       
+       function checkPassword(email, password) {
+           const specialUser = specialUsers.find(user => user.email === email);
+           if (specialUser) {
+               return specialUser.password === password;
+           } else {
+               return password === "123";
+           }
+       }
+       
+// Replace saveSession function
+function saveSession(email, name, post) {
+    localStorage.setItem('currentUser', JSON.stringify({ email, name, post }));
+}
+
+function loadSession() {
+    const savedUser = localStorage.getItem('currentUser');
+    return savedUser ? JSON.parse(savedUser) : null;
+}
+
+// Replace clearSession function
+function clearSession() {
+    localStorage.removeItem('currentUser');
+}
+
+// Optional: Add a function to completely reset all data (for testing)
+function resetAllData() {
+    Object.keys(localStorage).forEach(key => {
+        localStorage.removeItem(key);
+    });
+    initializeVoteCounts();
+}
+       
+loginButton.onclick = function() {
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value;
+
+    // Reset all error states
+    [nameInput, emailInput, passwordInput].forEach(el => el.classList.remove('error'));
+    document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+
+    let isValid = true;
+
+    if (!students.includes(name)) {
+        nameInput.classList.add('error');
+        document.getElementById('nameError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (email !== generateEmail(name)) {
+        emailInput.classList.add('error');
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (!checkPassword(email, password)) {
+        passwordInput.classList.add('error');
+        document.getElementById('passwordError').style.display = 'block';
+        isValid = false;
+    }
+
+    if (isValid) {
+        currentUser = email;
+        saveSession(email, name, null); // Initially, no post is selected
+        loginSection.style.display = 'none';
+        showPostSelection(name, email);
+    }
+}
+
+// Add this function to show the intro modal// Update the showIntroModal function
+function showIntroModal() {
+    const introModal = document.getElementById('introModal');
+    const introModalContent = introModal.querySelector('.intro-modal-content');
+    introModal.style.display = 'block';
+    setTimeout(() => {
+        introModal.classList.add('fade-in');
+        introModalContent.style.transform = 'translate(-50%, -50%) scale(1)';
+        cycleContestantPairs();
+        setInterval(cycleContestantPairs, 3000); // Update every 3 seconds
+        setInterval(createSparks, 2000);
+    }, 0);
+}
+// Add this function to update vote counts in the intro modal
+ // Update the existing updateIntroModalVoteCounts function
+ function updateIntroModalVoteCounts() {
+            if (document.getElementById('introModal').style.display === 'block') {
+                cycleContestantPairs();
+                updateVoteCountDisplay();
+            }
+        }
+
+// Modify the logout function
+function logout() {
+    clearSession();
+    currentUser = null;
+    currentPost = null;
+    loginSection.style.display = 'block';
+    userInfo.style.display = 'none';
+    postSelection.style.display = 'none';
+    candidateList.style.display = 'none';
+    nameInput.value = '';
+    emailInput.value = '';
+    passwordInput.value = '';
+    autoSuggest.style.display = 'none';
+    noMatchFeedback.style.display = 'none';
+    
+    // Show the intro modal
+    showIntroModal();
+}
+
+// Modify the initializeApp function
+function initializeApp() {
+    initializeVoteCounts();
+    const savedUser = loadSession();
+    if (savedUser) {
+        currentUser = savedUser.email;
+        loginSection.style.display = 'none';
+        if (savedUser.post) {
+            currentPost = savedUser.post;
+            showPostSelection(savedUser.name, savedUser.email);
+            selectPost(currentPost);
+        } else {
+            showPostSelection(savedUser.name, savedUser.email);
+        }
+    } else {
+        // Show the intro modal if no user is logged in
+        showIntroModal();
+    }
+}
+
+
+        function showPostSelection(name, email) {
+            userInfo.style.display = 'block';
+            userInfo.innerHTML = `Logged in as: ${name}<br>e-mail: ${email}<br><button id="logoutButton">Logout</button>`;
+            postSelection.style.display = 'block';
+            document.getElementById('logoutButton').onclick = logout;
+            document.getElementById('englishButton').onclick = () => selectPost('english');
+            document.getElementById('ictButton').onclick = () => selectPost('ict');
+        }
+
+        function selectPost(post) {
+    currentPost = post;
+    const savedUser = loadSession();
+    if (savedUser) {
+        saveSession(savedUser.email, savedUser.name, post); // Save the selected post
+    }
+    renderCandidates();
+    postSelection.style.display = 'none';
+    candidateList.style.display = 'block';
+}
+       
+       nameInput.addEventListener('input', function() {
+           const input = this.value.toLowerCase();
+           const suggestions = students.filter(student => 
+               student.toLowerCase().includes(input)
+           );
+       
+           if (suggestions.length > 0 && input.length > 0) {
+               autoSuggest.innerHTML = suggestions.map(student => 
+                   `<div class="suggestion" data-name="${student}" data-email="${generateEmail(student)}">
+                       <div class="suggestion-name">${student}</div>
+                       <div class="suggestion-email">${generateEmail(student)}</div>
+                   </div>`
+               ).join('');
+               autoSuggest.style.display = 'block';
+               noMatchFeedback.style.display = 'none';
+           } else if (input.length > 0) {
+               autoSuggest.style.display = 'none';
+               noMatchFeedback.style.display = 'block';
+           } else {
+               autoSuggest.style.display = 'none';
+               noMatchFeedback.style.display = 'none';
+           }
+           passwordFeedback.style.display = 'none';
+       });
+       
+       autoSuggest.addEventListener('click', function(e) {
+           const suggestion = e.target.closest('.suggestion');
+           if (suggestion) {
+               nameInput.value = suggestion.dataset.name;
+               emailInput.value = suggestion.dataset.email;
+               autoSuggest.style.display = 'none';
+           }
+       });
+       
+       passwordInput.addEventListener('input', function() {
+           passwordFeedback.style.display = 'none';
+       });
+       
+       passwordInput.addEventListener('keydown', function(event) {
+           if (event.key === 'Enter') {
+               event.preventDefault();
+               loginButton.click();
+           }
+       });
+       
+  // Update the window.onload function// Call this in your window.onload function
+window.onload = function() {
+    initializeVoteCounts();
+    initializeApp();
+    setupVoteCountAutoUpdate();
+    
+    // Set up an interval to update the intro modal vote counts
+    setInterval(updateIntroModalVoteCounts, 5000);
+};
+   </script>
+</body>
+</html>

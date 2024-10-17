@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainfall Statistics Excel Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rainfall Statistics Excel Generator</h1>
+    <button id="generateBtn">Download Excel File</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            // Rainfall data
+            const months = ['February', 'March', 'April', 'May', 'June', 'July', 'August'];
+            const rainfall = [286, 281, 291, 158, 181, 133, 191];
+
+            // Calculate average, max, and min values
+            const avgRainfall = rainfall.reduce((a, b) => a + b, 0) / rainfall.length;
+            const maxRainfall = Math.max(...rainfall);
+            const minRainfall = Math.min(...rainfall);
+
+            // Create the workbook
+            const wb = XLSX.utils.book_new();
+            
+            // Sheet 1 (Table)
+            const wsData = [
+                ['Rainfall Statistics'],
+                ['Month', 'Rainfall (mm)'],
+                ...months.map((month, index) => [month, rainfall[index]]),
+                [],
+                ['Average monthly rainfall', avgRainfall],
+                ['Maximum monthly rainfall', maxRainfall],
+                ['Minimum monthly rainfall', minRainfall]
+            ];
+
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+            // Style the heading
+            ws['A1'].s = { font: { sz: 20.5, bold: true }, alignment: { horizontal: 'center' } };
+
+            // Add borders to the cells
+            const borderStyle = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' }};
+            for (let i = 2; i <= 9; i++) {
+                ws[`A${i}`].s = { border: borderStyle };
+                ws[`B${i}`].s = { border: borderStyle };
+            }
+
+            // Add the worksheet to the workbook
+            XLSX.utils.book_append_sheet(wb, ws, 'Table');
+
+            // Sheet 2 (Graphs - Placeholder)
+            const wsGraphs = XLSX.utils.aoa_to_sheet([
+                ['This is a placeholder for graphs. Please use Excel to create charts.']
+            ]);
+            XLSX.utils.book_append_sheet(wb, wsGraphs, 'Graphs');
+
+            // Generate the Excel file
+            XLSX.writeFile(wb, 'Rainfall_Statistics.xlsx');
+        });
+    </script>
+</body>
+</html>
