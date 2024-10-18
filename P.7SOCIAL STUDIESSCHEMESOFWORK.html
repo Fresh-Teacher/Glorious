@@ -18,6 +18,9 @@
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
     <title>P.7SOCIAL STUDIESSCHEMESOFWORK</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+ 
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -541,6 +544,134 @@
             --dark-orange: #FF9800;
             --deep-orange: #F57C00;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: 1% auto;
+            padding: 10px;
+            border: 1px solid #888;
+            width: 95%;
+            max-width: 900px;
+            height: 95%;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 5px;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+
+        #pdf-viewer {
+            flex-grow: 1;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #pdf-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #pdf-controls button {
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
+
+        #pdf-controls button:hover {
+            background-color: #e0e0e0;
+        }
+
+        #page-num {
+            margin: 0 5px;
+            font-size: 14px;
+        }
+
+        #pdf-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            color: #333;
+        }
+
+        #download-button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #download-button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 600px) {
+            .modal-content {
+                padding: 5px;
+            }
+
+            #pdf-controls button {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+
+            #page-num {
+                font-size: 12px;
+            }
+
+            #download-button {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+        }
            </style>
 </head>
 <body>
@@ -646,13 +777,21 @@ function checkAuth(url) {
             </button>
         </div>
     </div>
-    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-   <div id="pdf-viewer-modal">
-        <div id="pdf-viewer"><br><br>
-            <button class="close-button" onclick="closePdfViewer()">Close</button>
-            <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
+    <div id="pdf-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="pdf-controls">
+                <button id="prev-page" title="Previous Page"><i class="fas fa-chevron-left"></i></button>
+                <span id="page-num"></span>
+                <button id="next-page" title="Next Page"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div id="pdf-viewer"></div>
+            <button id="download-button">Download File <i class="fas fa-download"></i> </button>
+            <div id="pdf-loading">Loading File...</div>
         </div>
     </div>
+    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
+
     <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
     <script>
         function toggleMenu() {
@@ -662,7 +801,6 @@ function checkAuth(url) {
     
         const pdfData = 
         [
-            
   {
     "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SST SCHEMES III  III.pdf"
   },
@@ -774,7 +912,6 @@ function checkAuth(url) {
         ;
     
        
-        let currentPage = 1;
         const itemsPerPage = 12;
         let filteredData = pdfData;
         let isLoading = false;
@@ -809,28 +946,145 @@ function navigateToResource(subject) {
     pageName = capitalizeFilename(pageName);
     window.location.href = pageName;
 }
-
-
-
-
-    
-        function createCard(pdf) {
+function createCard(pdf) {
             const card = document.createElement('div');
             card.className = 'card';
-    
+
             const title = document.createElement('h3');
             title.textContent = extractNameFromUrl(pdf.pdfUrl);
             card.appendChild(title);
-    
+
             const viewButton = document.createElement('a');
             viewButton.className = 'view-button';
             viewButton.textContent = 'VIEW';
             viewButton.onclick = () => openPdfViewer(pdf.pdfUrl);
             card.appendChild(viewButton);
-    
+
             return card;
         }
-    
+
+        let currentPdf = null;
+        let currentPage = 1;
+        let pdfViewer = document.getElementById('pdf-viewer');
+        let currentPdfUrl = '';
+
+        function openPdfViewer(pdfUrl) {
+            const modal = document.getElementById('pdf-modal');
+            const loading = document.getElementById('pdf-loading');
+            pdfViewer.innerHTML = '';
+            modal.style.display = 'block';
+            loading.style.display = 'block';
+            currentPdfUrl = pdfUrl;
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+                currentPdf = pdf;
+                currentPage = 1;
+                renderPage(currentPage);
+                loading.style.display = 'none';
+                updatePageNum();
+            }).catch(function(error) {
+                console.error('Error loading PDF:', error);
+                pdfViewer.textContent = 'Error loading PDF. Please try again.';
+                loading.style.display = 'none';
+            });
+        }
+
+        function renderPage(num) {
+            pdfViewer.innerHTML = '';
+            currentPdf.getPage(num).then(function(page) {
+                const scale = 1.5;
+                const viewport = page.getViewport({ scale: scale });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+
+                page.render(renderContext);
+                pdfViewer.appendChild(canvas);
+            });
+        }
+
+        function updatePageNum() {
+            document.getElementById('page-num').textContent = `${currentPage} / ${currentPdf.numPages}`;
+        }
+
+        // Event listeners for controls
+        document.getElementById('prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage(currentPage);
+                updatePageNum();
+            }
+        });
+
+        document.getElementById('next-page').addEventListener('click', () => {
+            if (currentPage < currentPdf.numPages) {
+                currentPage++;
+                renderPage(currentPage);
+                updatePageNum();
+            }
+        });
+
+        document.getElementById('download-button').addEventListener('click', () => {
+            // Create a temporary anchor element
+            const link = document.createElement('a');
+            link.href = currentPdfUrl;
+            link.download = 'document.pdf'; // You can set a custom name here
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Close modal when clicking on <span> (x)
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('pdf-modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('pdf-modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Add touch swipe functionality for mobile devices
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        pdfViewer.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        pdfViewer.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchendX < touchstartX) {
+                // Swipe left, go to next page
+                if (currentPage < currentPdf.numPages) {
+                    currentPage++;
+                    renderPage(currentPage);
+                    updatePageNum();
+                }
+            }
+            if (touchendX > touchstartX) {
+                // Swipe right, go to previous page
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderPage(currentPage);
+                    updatePageNum();
+                }
+            }
+        }
+ 
         function displayCards() {
             const cardsContainer = document.getElementById('cards-container');
             cardsContainer.innerHTML = ''; // Clear previous cards
@@ -959,30 +1213,7 @@ function navigateToResource(subject) {
             displayCards();
             window.scrollTo(0, 0);
         }
-    
-        function openPdfViewer(pdfUrl) {
-            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
-            const pdfViewer = document.getElementById('pdf-viewer');
-            const pdfIframe = document.getElementById('pdf-iframe');
-            pdfIframe.src = pdfUrl;
-            pdfViewerModal.style.display = 'flex';
-            setTimeout(() => {
-                pdfViewerModal.style.opacity = '1';
-                pdfViewer.style.transform = 'translateY(0)';
-            }, 10);
-        }
-    
-        function closePdfViewer() {
-            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
-            const pdfViewer = document.getElementById('pdf-viewer');
-            const pdfIframe = document.getElementById('pdf-iframe');
-            pdfViewer.style.transform = 'translateY(100%)';
-            pdfViewerModal.style.opacity = '0';
-            setTimeout(() => {
-                pdfIframe.src = '';
-                pdfViewerModal.style.display = 'none';
-            }, 500);
-        }
+
     
         function filterCards() {
             const searchInput = document.getElementById('search-input').value.toLowerCase();
