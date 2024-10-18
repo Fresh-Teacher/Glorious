@@ -1100,20 +1100,26 @@ function checkAuth(url) {
     let currentScale = 1;
     let startX = 0;
     let startY = 0;
+    let lastX = 0;
+    let lastY = 0;
     let startDistance = 0;
     let isZooming = false;
     let isPanning = false;
     let translateX = 0;
     let translateY = 0;
+    let touchStartTime = 0;
+    const SWIPE_THRESHOLD = 50;
+    const SWIPE_TIME_THRESHOLD = 300; // milliseconds
 
     pdfViewer.addEventListener('touchstart', handleTouchStart, false);
     pdfViewer.addEventListener('touchmove', handleTouchMove, false);
     pdfViewer.addEventListener('touchend', handleTouchEnd, false);
 
     function handleTouchStart(e) {
+        touchStartTime = new Date().getTime();
         if (e.touches.length === 1) {
-            startX = e.touches[0].pageX - translateX;
-            startY = e.touches[0].pageY - translateY;
+            startX = lastX = e.touches[0].pageX - translateX;
+            startY = lastY = e.touches[0].pageY - translateY;
             isPanning = currentScale > 1;
         } else if (e.touches.length === 2) {
             startDistance = getDistance(e.touches[0], e.touches[1]);
@@ -1136,20 +1142,26 @@ function checkAuth(url) {
             translateX = deltaX;
             translateY = deltaY;
             pdfViewer.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
-        } else if (e.touches.length === 1 && currentScale === 1) {
-            const deltaX = e.touches[0].pageX - startX;
-            if (Math.abs(deltaX) > 50) { // Threshold for swipe
+            lastX = e.touches[0].pageX;
+            lastY = e.touches[0].pageY;
+        }
+    }
+
+    function handleTouchEnd(e) {
+        const touchEndTime = new Date().getTime();
+        const touchDuration = touchEndTime - touchStartTime;
+
+        if (!isZooming && !isPanning && currentScale === 1 && touchDuration < SWIPE_TIME_THRESHOLD) {
+            const deltaX = lastX - startX;
+            if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
                 if (deltaX > 0) {
                     goToPreviousPage();
                 } else {
                     goToNextPage();
                 }
-                startX = e.touches[0].pageX;
             }
         }
-    }
 
-    function handleTouchEnd(e) {
         isZooming = false;
         isPanning = false;
     }
