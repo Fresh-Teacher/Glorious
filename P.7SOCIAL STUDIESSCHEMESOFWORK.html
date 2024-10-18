@@ -21,6 +21,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+ 
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -977,7 +980,7 @@ function checkAuth(url) {
     <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
 
     <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
-    <script>
+      <script>
         function toggleMenu() {
             const navLinks = document.getElementById('nav-links');
             navLinks.classList.toggle('active');
@@ -1094,6 +1097,7 @@ function checkAuth(url) {
   },
 ]
         ;
+    
     
         document.addEventListener('DOMContentLoaded', function() {
     const pdfViewer = document.getElementById('pdf-viewer');
@@ -1543,5 +1547,3 @@ function createCard(pdf) {
     
 </body>
 </html>
-
-

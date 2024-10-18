@@ -18,6 +18,9 @@
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
     <title>P.4ENGLISHLessonNotes</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+ 
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -541,6 +544,316 @@
             --dark-orange: #FF9800;
             --deep-orange: #F57C00;
         }
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 1% auto;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 95%;
+    max-width: 900px;
+    height: 95%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+#pdf-viewer {
+    flex: 1;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+#pdf-viewer canvas {
+    max-width: 100%;
+    height: auto !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Enhanced PDF controls with orange style */
+#pdf-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 10px;
+    background: linear-gradient(to bottom, #FFA500 0%, #FFA500 3px, #f8f9fa 3px, #f8f9fa 100%);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#pdf-controls button {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid #ff7f50;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    color: #ff7f50;
+}
+
+#pdf-controls button:hover {
+    background-color: #ff7f50;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 127, 80, 0.3);
+}
+
+#pdf-controls button:active {
+    transform: translateY(0);
+}
+
+#page-num {
+    margin: 0 10px;
+    font-size: 15px;
+    color: #444;
+    font-weight: 500;
+    background: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* Animated Download Button */
+#download-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #ff7700, #7c3600);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px auto;
+    box-shadow: 0 4px 15px rgb(254, 173, 0);
+    position: relative;
+    overflow: hidden;
+    animation: bulge 2s infinite;
+}
+
+#download-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+/* Add infinite bulging animation to the download button */
+@keyframes bulge {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+#download-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 157, 20, 0.4);
+    background: linear-gradient(45deg, #fe9400, #b96c00);
+}
+
+#download-button:hover::before {
+    left: 100%;
+}
+
+#download-button:active {
+    transform: translateY(0);
+}
+
+#download-button i {
+    font-size: 24px;
+
+    transition: transform 0.3s ease;
+}
+
+#download-button:hover i {
+    transform: translateY(2px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    #pdf-controls {
+        padding: 12px 8px;
+    }
+
+    #pdf-controls button {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    #page-num {
+        font-size: 13px;
+        padding: 4px 8px;
+    }
+
+    #download-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+/* Prevent text selection on buttons */
+#pdf-controls, #download-button {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.spinner-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-right: 5px solid #e74c3c;
+    border-bottom: 5px solid #2ecc71;
+    border-left: 5px solid #f1c40f;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#download-button {
+    animation: bulge 2s infinite;
+
+    padding: 8px 16px;
+    background-color: #ad6200;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .modal-content {
+        padding: 5px;
+        margin: 0.5% auto;
+        width: 98%;
+        height: 98%;
+    }
+
+    #pdf-controls button {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+
+    #page-num {
+        font-size: 12px;
+    }
+
+    #download-button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border-width: 4px;
+    }
+}
+
+/* Prevent text selection on controls */
+#pdf-controls, #download-button {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
            </style>
 </head>
 <body>
@@ -646,15 +959,25 @@ function checkAuth(url) {
             </button>
         </div>
     </div>
-    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-   <div id="pdf-viewer-modal">
-        <div id="pdf-viewer"><br><br>
-            <button class="close-button" onclick="closePdfViewer()">Close</button>
-            <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
+    <div id="pdf-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="pdf-controls">
+                <button id="prev-page" title="Previous Page"><i class="fas fa-chevron-left"></i></button>
+                <span id="page-num"></span>
+                <button id="next-page" title="Next Page"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div id="pdf-viewer"></div>
+            <button id="download-button">Download File <i class="fas fa-download"></i></button>
+            <div id="pdf-loading" class="spinner-container">
+                <div class="spinner"></div>
+            </div>
         </div>
     </div>
+    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
+
     <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
-    <script>
+      <script>
         function toggleMenu() {
             const navLinks = document.getElementById('nav-links');
             navLinks.classList.toggle('active');
@@ -735,19 +1058,130 @@ function checkAuth(url) {
     "pdfUrl": "https://fresh-teacher.github.io/p4/P.4 ENG GRAMMAR LESSON NOTES FOR TERM 11.pdf"},
 ]
         ;
-       
-       
-        let currentPage = 1;
+    
+        document.addEventListener('DOMContentLoaded', function() {
+    const pdfViewer = document.getElementById('pdf-viewer');
+    let currentScale = 1;
+    let startX = 0;
+    let startY = 0;
+    let lastX = 0;
+    let lastY = 0;
+    let startDistance = 0;
+    let isZooming = false;
+    let isPanning = false;
+    let translateX = 0;
+    let translateY = 0;
+    let touchStartTime = 0;
+    const SWIPE_THRESHOLD = 50;
+    const SWIPE_TIME_THRESHOLD = 900; // 9 milliseconds
+
+    pdfViewer.addEventListener('touchstart', handleTouchStart, false);
+    pdfViewer.addEventListener('touchmove', handleTouchMove, false);
+    pdfViewer.addEventListener('touchend', handleTouchEnd, false);
+
+    function handleTouchStart(e) {
+        touchStartTime = new Date().getTime();
+        if (e.touches.length === 1) {
+            startX = lastX = e.touches[0].pageX - translateX;
+            startY = lastY = e.touches[0].pageY - translateY;
+            isPanning = currentScale > 1;
+        } else if (e.touches.length === 2) {
+            startDistance = getDistance(e.touches[0], e.touches[1]);
+            isZooming = true;
+            isPanning = false;
+        }
+    }
+
+    function handleTouchMove(e) {
+        e.preventDefault(); // Prevent default scrolling
+
+        if (isZooming && e.touches.length === 2) {
+            const currentDistance = getDistance(e.touches[0], e.touches[1]);
+            const scale = currentDistance / startDistance;
+            currentScale = Math.max(1, Math.min(currentScale * scale, 3));
+            pdfViewer.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+        } else if (isPanning && e.touches.length === 1) {
+            const deltaX = e.touches[0].pageX - startX;
+            const deltaY = e.touches[0].pageY - startY;
+            translateX = deltaX;
+            translateY = deltaY;
+            pdfViewer.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+            lastX = e.touches[0].pageX;
+            lastY = e.touches[0].pageY;
+        }
+    }
+
+    function handleTouchEnd(e) {
+        const touchEndTime = new Date().getTime();
+        const touchDuration = touchEndTime - touchStartTime;
+
+        if (!isZooming && !isPanning && currentScale === 1 && touchDuration < SWIPE_TIME_THRESHOLD) {
+            const deltaX = lastX - startX;
+            if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+                if (deltaX > 0) {
+                    goToPreviousPage();
+                } else {
+                    goToNextPage();
+                }
+            }
+        }
+
+        isZooming = false;
+        isPanning = false;
+    }
+
+    function getDistance(touch1, touch2) {
+        const dx = touch1.pageX - touch2.pageX;
+        const dy = touch1.pageY - touch2.pageY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function goToNextPage() {
+        if (currentPage < currentPdf.numPages) {
+            currentPage++;
+            renderPage(currentPage);
+            updatePageNum();
+            resetZoomAndPan();
+        }
+    }
+
+    function goToPreviousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage);
+            updatePageNum();
+            resetZoomAndPan();
+        }
+    }
+
+    function resetZoomAndPan() {
+        currentScale = 1;
+        translateX = 0;
+        translateY = 0;
+        pdfViewer.style.transform = 'scale(1) translate(0px, 0px)';
+    }
+});   
         const itemsPerPage = 12;
         let filteredData = pdfData;
         let isLoading = false;
         let endOfData = false;
     
-        function extractNameFromUrl(pdfUrl) {
+        function capitalizeFilename(filename) {
+    // Split the filename into parts
+    let parts = filename.split('.');
+    
+    // Capitalize each part
+    parts = parts.map(part => part.toUpperCase());
+    
+    // Join the parts back together
+    return parts.join('.');
+}
+
+function extractNameFromUrl(pdfUrl) {
     const parts = pdfUrl.split('/');
     const fileName = parts[parts.length - 1].replace('.pdf', '');
-    // Remove special characters except '&' and replace with spaces
-    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&]/g, ' ');
+    // Remove special characters except '&' and '.' and replace with spaces
+    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&.]/g, ' ');
     // Remove hyphens and underscores and replace with spaces
     let nameWithoutHyphensUnderscores = nameWithoutSpecialChars.replace(/[-_]/g, ' ');
     // Capitalize all letters
@@ -755,26 +1189,151 @@ function checkAuth(url) {
     return capitalizedWords;
 }
 
-
-
-    
-        function createCard(pdf) {
+function navigateToResource(subject) {
+    const resourceType = selectedResource.replace(/ /g, '');
+    let pageName = `${selectedClass}${subject}${resourceType}.html`;
+    pageName = capitalizeFilename(pageName);
+    window.location.href = pageName;
+}
+function createCard(pdf) {
             const card = document.createElement('div');
             card.className = 'card';
-    
+
             const title = document.createElement('h3');
             title.textContent = extractNameFromUrl(pdf.pdfUrl);
             card.appendChild(title);
-    
+
             const viewButton = document.createElement('a');
             viewButton.className = 'view-button';
             viewButton.textContent = 'VIEW';
             viewButton.onclick = () => openPdfViewer(pdf.pdfUrl);
             card.appendChild(viewButton);
-    
+
             return card;
         }
-    
+
+        let currentPdf = null;
+        let currentPage = 1;
+        let pdfViewer = document.getElementById('pdf-viewer');
+        let currentPdfUrl = '';
+
+        function openPdfViewer(pdfUrl) {
+            const modal = document.getElementById('pdf-modal');
+            const loading = document.getElementById('pdf-loading');
+            pdfViewer.innerHTML = '';
+            modal.style.display = 'block';
+            loading.style.display = 'block';
+            currentPdfUrl = pdfUrl;
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+                currentPdf = pdf;
+                currentPage = 1;
+                renderPage(currentPage);
+                loading.style.display = 'none';
+                updatePageNum();
+            }).catch(function(error) {
+                console.error('Error loading PDF:', error);
+                pdfViewer.textContent = 'Error loading PDF. Please try again.';
+                loading.style.display = 'none';
+            });
+        }
+
+        function renderPage(num) {
+            pdfViewer.innerHTML = '';
+            currentPdf.getPage(num).then(function(page) {
+                const scale = 1.5;
+                const viewport = page.getViewport({ scale: scale });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+
+                page.render(renderContext);
+                pdfViewer.appendChild(canvas);
+            });
+        }
+
+        function updatePageNum() {
+            document.getElementById('page-num').textContent = `${currentPage} / ${currentPdf.numPages}`;
+        }
+
+        // Event listeners for controls
+        document.getElementById('prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage(currentPage);
+                updatePageNum();
+            }
+        });
+
+        document.getElementById('next-page').addEventListener('click', () => {
+            if (currentPage < currentPdf.numPages) {
+                currentPage++;
+                renderPage(currentPage);
+                updatePageNum();
+            }
+        });
+
+        document.getElementById('download-button').addEventListener('click', () => {
+            // Create a temporary anchor element
+            const link = document.createElement('a');
+            link.href = currentPdfUrl;
+            link.download = 'document.pdf'; // You can set a custom name here
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Close modal when clicking on <span> (x)
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('pdf-modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('pdf-modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Add touch swipe functionality for mobile devices
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        pdfViewer.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        pdfViewer.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchendX < touchstartX) {
+                // Swipe left, go to next page
+                if (currentPage < currentPdf.numPages) {
+                    currentPage++;
+                    renderPage(currentPage);
+                    updatePageNum();
+                }
+            }
+            if (touchendX > touchstartX) {
+                // Swipe right, go to previous page
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderPage(currentPage);
+                    updatePageNum();
+                }
+            }
+        }
+ 
         function displayCards() {
             const cardsContainer = document.getElementById('cards-container');
             cardsContainer.innerHTML = ''; // Clear previous cards
@@ -903,30 +1462,7 @@ function checkAuth(url) {
             displayCards();
             window.scrollTo(0, 0);
         }
-    
-        function openPdfViewer(pdfUrl) {
-            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
-            const pdfViewer = document.getElementById('pdf-viewer');
-            const pdfIframe = document.getElementById('pdf-iframe');
-            pdfIframe.src = pdfUrl;
-            pdfViewerModal.style.display = 'flex';
-            setTimeout(() => {
-                pdfViewerModal.style.opacity = '1';
-                pdfViewer.style.transform = 'translateY(0)';
-            }, 10);
-        }
-    
-        function closePdfViewer() {
-            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
-            const pdfViewer = document.getElementById('pdf-viewer');
-            const pdfIframe = document.getElementById('pdf-iframe');
-            pdfViewer.style.transform = 'translateY(100%)';
-            pdfViewerModal.style.opacity = '0';
-            setTimeout(() => {
-                pdfIframe.src = '';
-                pdfViewerModal.style.display = 'none';
-            }, 500);
-        }
+
     
         function filterCards() {
             const searchInput = document.getElementById('search-input').value.toLowerCase();
@@ -971,5 +1507,3 @@ function checkAuth(url) {
     
 </body>
 </html>
-
-
