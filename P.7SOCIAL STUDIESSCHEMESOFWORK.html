@@ -1098,59 +1098,59 @@ function checkAuth(url) {
         document.addEventListener('DOMContentLoaded', function() {
     const pdfViewer = document.getElementById('pdf-viewer');
     let currentScale = 1;
-    let startScale = 1;
-    let isPinching = false;
-    let lastTapTime = 0;
-    const doubleTapDelay = 300; // milliseconds
+    let startX = 0;
+    let startY = 0;
+    let startDistance = 0;
+    let isZooming = false;
+    let isSwiping = false;
 
-    const hammer = new Hammer(pdfViewer);
-    hammer.get('pinch').set({ enable: true });
-    hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+    pdfViewer.addEventListener('touchstart', handleTouchStart, false);
+    pdfViewer.addEventListener('touchmove', handleTouchMove, false);
+    pdfViewer.addEventListener('touchend', handleTouchEnd, false);
 
-    hammer.on('pinchstart', function(e) {
-        isPinching = true;
-        startScale = currentScale || 1;
-    });
-
-    hammer.on('pinch', function(e) {
-        currentScale = Math.max(0.5, Math.min(startScale * e.scale, 3));
-        pdfViewer.style.transform = `scale(${currentScale})`;
-        pdfViewer.style.transformOrigin = '0 0';
-    });
-
-    hammer.on('pinchend', function(e) {
-        isPinching = false;
-        startScale = currentScale;
-    });
-
-    hammer.on('swipe', function(e) {
-        if (!isPinching && currentScale === 1) {
-            if (e.direction === Hammer.DIRECTION_LEFT) {
-                goToNextPage();
-            } else if (e.direction === Hammer.DIRECTION_RIGHT) {
-                goToPreviousPage();
-            }
+    function handleTouchStart(e) {
+        if (e.touches.length === 1) {
+            startX = e.touches[0].pageX;
+            startY = e.touches[0].pageY;
+            isSwiping = true;
+        } else if (e.touches.length === 2) {
+            startDistance = getDistance(e.touches[0], e.touches[1]);
+            isZooming = true;
+            isSwiping = false;
         }
-    });
+    }
 
-    hammer.on('tap', function(e) {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTapTime;
-        
-        if (tapLength < doubleTapDelay && tapLength > 0) {
-            // Double tap detected
-            if (currentScale > 1) {
-                // If zoomed in, zoom out to original size
-                currentScale = 1;
-            } else {
-                // If at original size, zoom in
-                currentScale = 2;
-            }
+    function handleTouchMove(e) {
+        e.preventDefault(); // Prevent default scrolling
+
+        if (isZooming && e.touches.length === 2) {
+            const currentDistance = getDistance(e.touches[0], e.touches[1]);
+            const scale = currentDistance / startDistance;
+            currentScale = Math.max(1, Math.min(currentScale * scale, 3));
             pdfViewer.style.transform = `scale(${currentScale})`;
+        } else if (isSwiping && e.touches.length === 1 && currentScale === 1) {
+            const deltaX = e.touches[0].pageX - startX;
+            if (Math.abs(deltaX) > 50) { // Threshold for swipe
+                if (deltaX > 0) {
+                    goToPreviousPage();
+                } else {
+                    goToNextPage();
+                }
+                isSwiping = false;
+            }
         }
-        
-        lastTapTime = currentTime;
-    });
+    }
+
+    function handleTouchEnd(e) {
+        isZooming = false;
+        isSwiping = false;
+    }
+
+    function getDistance(touch1, touch2) {
+        const dx = touch1.pageX - touch2.pageX;
+        const dy = touch1.pageY - touch2.pageY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
 
     function goToNextPage() {
         if (currentPage < currentPdf.numPages) {
@@ -1167,8 +1167,7 @@ function checkAuth(url) {
             updatePageNum();
         }
     }
-});
-       
+});   
         const itemsPerPage = 12;
         let filteredData = pdfData;
         let isLoading = false;
