@@ -1109,7 +1109,7 @@ function checkAuth(url) {
     let translateY = 0;
     let touchStartTime = 0;
     const SWIPE_THRESHOLD = 50;
-    const SWIPE_TIME_THRESHOLD = 300; // milliseconds
+    const SWIPE_TIME_THRESHOLD = 900; // 9 milliseconds
 
     pdfViewer.addEventListener('touchstart', handleTouchStart, false);
     pdfViewer.addEventListener('touchmove', handleTouchMove, false);
