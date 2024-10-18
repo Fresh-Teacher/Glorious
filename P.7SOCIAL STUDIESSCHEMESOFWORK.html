@@ -662,6 +662,7 @@ function checkAuth(url) {
     
         const pdfData = 
         [
+            
   {
     "pdfUrl": "https://fresh-teacher.github.io/p.7/P7 SST SCHEMES III  III.pdf"
   },
@@ -779,17 +780,36 @@ function checkAuth(url) {
         let isLoading = false;
         let endOfData = false;
     
-        function extractNameFromUrl(pdfUrl) {
+        function capitalizeFilename(filename) {
+    // Split the filename into parts
+    let parts = filename.split('.');
+    
+    // Capitalize each part
+    parts = parts.map(part => part.toUpperCase());
+    
+    // Join the parts back together
+    return parts.join('.');
+}
+
+function extractNameFromUrl(pdfUrl) {
     const parts = pdfUrl.split('/');
     const fileName = parts[parts.length - 1].replace('.pdf', '');
-    // Remove special characters except '&' and replace with spaces
-    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&]/g, ' ');
+    // Remove special characters except '&' and '.' and replace with spaces
+    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&.]/g, ' ');
     // Remove hyphens and underscores and replace with spaces
     let nameWithoutHyphensUnderscores = nameWithoutSpecialChars.replace(/[-_]/g, ' ');
     // Capitalize all letters
     let capitalizedWords = nameWithoutHyphensUnderscores.toUpperCase();
     return capitalizedWords;
 }
+
+function navigateToResource(subject) {
+    const resourceType = selectedResource.replace(/ /g, '');
+    let pageName = `${selectedClass}${subject}${resourceType}.html`;
+    pageName = capitalizeFilename(pageName);
+    window.location.href = pageName;
+}
+
 
 
 
