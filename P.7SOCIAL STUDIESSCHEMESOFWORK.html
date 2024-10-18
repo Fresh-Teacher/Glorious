@@ -714,8 +714,8 @@
 
 #download-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-    background: linear-gradient(45deg, #45a049, #4CAF50);
+    box-shadow: 0 6px 20px rgba(255, 157, 20, 0.4);
+    background: linear-gradient(45deg, #fe9400, #b96c00);
 }
 
 #download-button:hover::before {
@@ -801,7 +801,7 @@
     animation: bulge 2s infinite;
 
     padding: 8px 16px;
-    background-color: #4CAF50;
+    background-color: #ad6200;
     color: white;
     border: none;
     border-radius: 4px;
@@ -1095,6 +1095,79 @@ function checkAuth(url) {
 ]
         ;
     
+        document.addEventListener('DOMContentLoaded', function() {
+    const pdfViewer = document.getElementById('pdf-viewer');
+    let currentScale = 1;
+    let startScale = 1;
+    let isPinching = false;
+    let lastTapTime = 0;
+    const doubleTapDelay = 300; // milliseconds
+
+    const hammer = new Hammer(pdfViewer);
+    hammer.get('pinch').set({ enable: true });
+    hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+
+    hammer.on('pinchstart', function(e) {
+        isPinching = true;
+        startScale = currentScale || 1;
+    });
+
+    hammer.on('pinch', function(e) {
+        currentScale = Math.max(0.5, Math.min(startScale * e.scale, 3));
+        pdfViewer.style.transform = `scale(${currentScale})`;
+        pdfViewer.style.transformOrigin = '0 0';
+    });
+
+    hammer.on('pinchend', function(e) {
+        isPinching = false;
+        startScale = currentScale;
+    });
+
+    hammer.on('swipe', function(e) {
+        if (!isPinching && currentScale === 1) {
+            if (e.direction === Hammer.DIRECTION_LEFT) {
+                goToNextPage();
+            } else if (e.direction === Hammer.DIRECTION_RIGHT) {
+                goToPreviousPage();
+            }
+        }
+    });
+
+    hammer.on('tap', function(e) {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTapTime;
+        
+        if (tapLength < doubleTapDelay && tapLength > 0) {
+            // Double tap detected
+            if (currentScale > 1) {
+                // If zoomed in, zoom out to original size
+                currentScale = 1;
+            } else {
+                // If at original size, zoom in
+                currentScale = 2;
+            }
+            pdfViewer.style.transform = `scale(${currentScale})`;
+        }
+        
+        lastTapTime = currentTime;
+    });
+
+    function goToNextPage() {
+        if (currentPage < currentPdf.numPages) {
+            currentPage++;
+            renderPage(currentPage);
+            updatePageNum();
+        }
+    }
+
+    function goToPreviousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage);
+            updatePageNum();
+        }
+    }
+});
        
         const itemsPerPage = 12;
         let filteredData = pdfData;
