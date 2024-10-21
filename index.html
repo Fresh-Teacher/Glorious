@@ -919,6 +919,14 @@ button {
     background-color: #2196F3;
     color: white;
 }
+#tv-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #games-button {
+            background-color: #9C27B0;
+            color: white;
+        }
 
 button:hover {
     transform: scale(1.05);
@@ -1012,6 +1020,107 @@ button:active {
                 transform: rotate(360deg);
             }
         }
+        .floating-button {
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+    background-color: #ffa200;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    animation: pulse 2s infinite;
+    transition: transform 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(255, 234, 0, 0.4);
+    }
+}
+
+.floating-button::before,
+.floating-button::after {
+    content: '';
+    position: absolute;
+    border: 2px solid #fea500;
+    border-radius: 50%;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    animation: ripple 2s linear infinite;
+}
+
+.floating-button::after {
+    animation-delay: 0.5s;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.floating-button:hover {
+    transform: translateY(-5px);
+}
+
+.floating-button img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.floating-button:hover img {
+    transform: scale(1.1);
+}
+
+.profile-pane {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 300px;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.profile-pane.open {
+    display: block;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.profile-info {
+    margin-top: 20px;
+}
     </style>
 </head>
 <body>
@@ -1134,49 +1243,40 @@ function checkAuth(url) {
 
     <div class="content-container" id="content-container">
         <div class="content padded-content">
-            <h1 id="greeting">Welcome to Glorious Schools ☺</h1><br><br><br>
+            <h1 id="greeting">Welcome to Glorious Schools ☺</h1>
             <div class="resource-container">
-                <div class="resource-item">
-                    <img src="" alt="Profile" id="profileResourceImage">
-                    <a href="#" onclick="showProfile()">User Profile</a>
+                <div class="floating-button-container">
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                    <div class="floating-button" onclick="showProfile()">
+                        <img src="dp.png" alt="Profile" id="profileResourceImage">
+                    </div>
                 </div>
-                <div class="resource-item">
-                    <img src="2da1ba1038792dc4771df86ec65442ad.gif" alt="Birthdays">
-                    <a href="birthdays.html">Birthdays</a>
-                </div>
+              
                 <div class="resource-item">
                     <img src="5cc2c82aeb804d30302c7ca3f12b7308.gif" alt="Gallery">
-                    <a href="#" onclick="showGalleryModal()">Library</a>
+                    <a href="#" onclick="showGalleryModal()">Academics</a>
                 </div>
 
+            
                 <div class="resource-item">
-                    <img src="tv.gif" alt="Educational Games">
-                    <a href="tv.html"> Glorious TV</a>
-                </div>
-                <div class="resource-item">
-                    <img src="7TGCGa.gif" alt="Activities">
-                    <a href="games.html">Games</a>
-                </div>
-
-                <div class="resource-item">
-                    <img src="Screenshot (782).png" alt="Results">
-                    <a href="results.html">Results Centre</a>
-                </div>
-                <div class="resource-item">
-                    <img src="gallery.jpg" alt="Library">
-                    <a href="#" id="library-link">Gallery</a>
+                    <img src="dance.gif" alt="Library">
+                    <a href="#" id="library-link">Entertainment</a>
                 </div>
                 <div class="resource-item">
                     <img src="bear.gif" alt="Activities">
-                    <a href="votes.html">Elections</a>
+                    <a href="votes.html">Miscellaneous</a>
                 </div>
                 
                 <!-- Modal -->
                 <div id="libmodal" class="libmodal">
                     <div class="libmodal-content">                
-                        <h2> Choose a Gallery</h2>
-                        <button id="offline-library"> Photo Gallery  📸</button>
+                        <h2>Select One Option</h2>
+                        <button id="offline-library">Photo Gallery 📸</button>
                         <button id="online-library">Video Gallery 🎬</button>
+                        <button id="tv-button">TV 📺</button>
+                        <button id="games-button">Games 🎮</button>
                     </div>
                 </div>
                 <div id="profilePane" class="profile-pane">
@@ -1188,6 +1288,7 @@ function checkAuth(url) {
                         </div>
                     </div>
                 </div>
+            
 
                 <div id="fullsizeImageModal" class="fullsize-image-modal">
                     <span class="fullsize-image-close" onclick="closeFullsizeImage()">&times;</span>
@@ -1205,9 +1306,9 @@ function checkAuth(url) {
                     <div class="modal-content">
                         <div class="curtain curtain-left"></div>
                         <div class="curtain curtain-right"></div>
-                        <h2>Choose Library Type</h2>
-                        <a href="library.html" class="gallery-btn">LOCAL LIBRARY 📖 </a>
-                        <a href="https://fresh-teacher.github.io" class="gallery-btn">ONLINE LIBRARY 📚</a>
+                        <h2>Choose an Option</h2>
+                        <a href="library.html" class="gallery-btn">E-Library 📚</a>
+                        <a href="results.html" class="gallery-btn">Examination Centre 📝</a>
                     </div>
                 </div>
 
@@ -1227,10 +1328,12 @@ function checkAuth(url) {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    const libraryLink = document.getElementById('library-link');
-    const libmodal = document.getElementById('libmodal');
-    const offlineLibraryBtn = document.getElementById('offline-library');
-    const onlineLibraryBtn = document.getElementById('online-library');
+            const libraryLink = document.getElementById('library-link');
+            const libmodal = document.getElementById('libmodal');
+            const offlineLibraryBtn = document.getElementById('offline-library');
+            const onlineLibraryBtn = document.getElementById('online-library');
+            const tvButton = document.getElementById('tv-button');
+            const gamesButton = document.getElementById('games-button');
 
     let confettiInterval;
 
@@ -1273,6 +1376,16 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'player.html';
     });
 
+    tvButton.addEventListener('click', function() {
+                stopConfetti();
+                window.location.href = 'tv.html';
+            });
+
+            gamesButton.addEventListener('click', function() {
+                stopConfetti();
+                window.location.href = 'games.html';
+            });
+
     window.addEventListener('click', function(e) {
         if (e.target === libmodal) {
             libmodal.style.display = 'none';
@@ -1288,10 +1401,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         function showProfile() {
-    const profilePane = document.getElementById('profilePane');
-    const profileContent = document.getElementById('profileContent');
-    const email = localStorage.getItem('email') || sessionStorage.getItem('email');
-    const user = validUsers.find(u => u.email === email);
+            const profilePane = document.getElementById('profilePane');
+            const profileContent = document.getElementById('profileContent');
+            const email = localStorage.getItem('email') || sessionStorage.getItem('email');
+            const user = validUsers.find(u => u.email === email);
+
 
     function calculateAge(birthdate) {
         if (!birthdate) return null;
@@ -1380,18 +1494,20 @@ ${dob !== null ? `<p><strong>D.O.B:</strong> ${dob}</p>` : ''}
 }
 
 function closeProfileOutside(event) {
-    const profilePane = document.getElementById('profilePane');
-    const closeBtn = document.querySelector('.close-btn');
-    if (!profilePane.contains(event.target) && !event.target.closest('.resource-item') && event.target !== closeBtn) {
-        closeProfile();
-    }
-}
+            const profilePane = document.getElementById('profilePane');
+            const closeBtn = document.querySelector('.close-btn');
+            if (!profilePane.contains(event.target) && !event.target.closest('.floating-button') && event.target !== closeBtn) {
+                closeProfile();
+            }
+        }
 
-function closeProfile() {
-    const profilePane = document.getElementById('profilePane');
-    profilePane.classList.remove('open');
-    document.removeEventListener('click', closeProfileOutside);
-}
+
+        function closeProfile() {
+            const profilePane = document.getElementById('profilePane');
+            profilePane.classList.remove('open');
+            document.removeEventListener('click', closeProfileOutside);
+        }
+
 
 function showFullsizeImage(imageSrc) {
     const modal = document.getElementById('fullsizeImageModal');
@@ -1406,22 +1522,22 @@ function closeFullsizeImage() {
 }
 
 function updateProfileImage() {
-    const email = localStorage.getItem('email') || sessionStorage.getItem('email');
-    const user = validUsers.find(u => u.email === email);
+            const email = localStorage.getItem('email') || sessionStorage.getItem('email');
+            const user = validUsers.find(u => u.email === email);
 
-    if (user) {
-        const photoSrc = user.photo || 'dp.png';
+            if (user) {
+                const photoSrc = user.photo || 'dp.png';
+                const profileResourceImage = document.getElementById('profileResourceImage');
+                profileResourceImage.src = photoSrc + '?t=' + new Date().getTime(); // Force reload
+            }
+        }
 
-        // Update the profile resource image
-        const profileResourceImage = document.getElementById('profileResourceImage');
-        profileResourceImage.src = photoSrc + '?t=' + new Date().getTime(); // Force reload
-    }
-}
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('profilePane').addEventListener('click', function (event) {
+                event.stopPropagation();
+            });
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('profilePane').addEventListener('click', function (event) {
-        event.stopPropagation();
-    });
+            updateProfileImage();
 
     window.addEventListener('click', function (event) {
         const modal = document.getElementById('fullsizeImageModal');

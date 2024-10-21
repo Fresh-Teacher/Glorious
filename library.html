@@ -338,10 +338,10 @@
         }
         
         function navigateToResource(subject) {
-    const resourceType = selectedResource.replace(/ /g, '');
-    const pageName = `${selectedClass.toUpperCase()}${subject}${resourceType.toUpperCase()}.html`;
-    window.location.href = pageName;
-}
+            const resourceType = selectedResource.replace(/ /g, '');
+            const pageName = `${selectedClass}${subject}${resourceType}.html`;
+            window.location.href = pageName;
+        }
         
         function loadState() {
             const urlParams = new URLSearchParams(window.location.search);
