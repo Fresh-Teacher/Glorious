@@ -1121,6 +1121,106 @@ button:active {
 .profile-info {
     margin-top: 20px;
 }
+.misc-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 152, 0, 0.2);
+    z-index: 1000;
+}
+
+.misc-dialog-content {
+    background: linear-gradient(135deg, #fff8f0 0%, #fff2e6 100%);
+    width: 90%;
+    max-width: 500px;
+    margin: -200px auto 0;
+    padding: 20px;
+    border-radius: 12px;
+    position: relative;
+    transition: margin-top 0.3s ease-out;
+    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.2);
+    border: 1px solid rgba(255, 140, 0, 0.1);
+}
+
+.misc-dialog.show {
+    display: block;
+}
+
+.misc-dialog.show .misc-dialog-content {
+    margin-top: 50px;
+}
+
+.misc-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 140, 0, 0.1);
+    padding-bottom: 10px;
+}
+
+.misc-dialog-header h2 {
+    color: #ff8c00;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(255, 140, 0, 0.1);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    color: #ff8c00;
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-btn:hover {
+    background-color: rgba(255, 140, 0, 0.1);
+    transform: rotate(90deg);
+}
+
+.misc-dialog-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.misc-option-btn {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #ff8c00, #ffa500);
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.misc-option-btn:hover {
+    background: linear-gradient(145deg, #ffa500, #ff8c00);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.3);
+}
+
+.misc-option-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(255, 140, 0, 0.2);
+}
     </style>
 </head>
 <body>
@@ -1195,8 +1295,45 @@ function checkAuth(url) {
         }, 3000);
     }
 }
+document.addEventListener('DOMContentLoaded', function() {
+    const miscLink = document.querySelector('.resource-item a[href="votes.html"]');
+    if (miscLink) {
+        miscLink.href = "#";
+        miscLink.onclick = showMiscDialog;
+    }
+});
 
+function showMiscDialog(e) {
+    if (e) e.preventDefault();
+    const dialog = document.getElementById('miscDialog');
+    dialog.classList.add('show');
+    
+    // Force reflow to ensure animation plays
+    dialog.offsetHeight;
+    
+    const content = dialog.querySelector('.misc-dialog-content');
+    content.style.marginTop = '50px';
+}
 
+function closeMiscDialog() {
+    const dialog = document.getElementById('miscDialog');
+    const content = dialog.querySelector('.misc-dialog-content');
+    
+    // Animate up
+    content.style.marginTop = '-200px';
+    
+    // Remove dialog after animation
+    setTimeout(() => {
+        dialog.classList.remove('show');
+    }, 300);
+}
+
+function navigateTo(url) {
+    closeMiscDialog();
+    setTimeout(() => {
+        window.location.href = url;
+    }, 300);
+}
 </script>
     <div class="navbar">
         <div class="logo">
@@ -1268,6 +1405,20 @@ function checkAuth(url) {
                     <img src="bear.gif" alt="Activities">
                     <a href="votes.html">Miscellaneous</a>
                 </div>
+                
+                <!-- Add this HTML just before the closing body tag -->
+<div id="miscDialog" class="misc-dialog">
+    <div class="misc-dialog-content">
+        <div class="misc-dialog-header">
+            <h2>Choose an Option</h2>
+            <button class="close-btn" onclick="closeMiscDialog()">&times;</button>
+        </div>
+        <div class="misc-dialog-body">
+            <button class="misc-option-btn" onclick="navigateTo('votes.html')">Votes 🗳️</button>
+            <button class="misc-option-btn" onclick="navigateTo('birthdays.html')">Birthdays 🎂</button>
+        </div>
+    </div>
+</div>
                 
                 <!-- Modal -->
                 <div id="libmodal" class="libmodal">
