@@ -18,6 +18,9 @@
     <meta property="og:site_name" content="Fresh Teacher's Library" />
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
     <title>P.5SCIENCEPASTPAPERS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+ 
     <link rel="icon" href="schoologo-2-150x150.png" type="image/x-icon">
     <style>
         body {
@@ -541,6 +544,316 @@
             --dark-orange: #FF9800;
             --deep-orange: #F57C00;
         }
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 1% auto;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 95%;
+    max-width: 900px;
+    height: 95%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+#pdf-viewer {
+    flex: 1;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+#pdf-viewer canvas {
+    max-width: 100%;
+    height: auto !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Enhanced PDF controls with orange style */
+#pdf-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 10px;
+    background: linear-gradient(to bottom, #FFA500 0%, #FFA500 3px, #f8f9fa 3px, #f8f9fa 100%);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#pdf-controls button {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid #ff7f50;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    color: #ff7f50;
+}
+
+#pdf-controls button:hover {
+    background-color: #ff7f50;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 127, 80, 0.3);
+}
+
+#pdf-controls button:active {
+    transform: translateY(0);
+}
+
+#page-num {
+    margin: 0 10px;
+    font-size: 15px;
+    color: #444;
+    font-weight: 500;
+    background: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* Animated Download Button */
+#download-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #ff7700, #7c3600);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px auto;
+    box-shadow: 0 4px 15px rgb(254, 173, 0);
+    position: relative;
+    overflow: hidden;
+    animation: bulge 2s infinite;
+}
+
+#download-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+/* Add infinite bulging animation to the download button */
+@keyframes bulge {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+#download-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 157, 20, 0.4);
+    background: linear-gradient(45deg, #fe9400, #b96c00);
+}
+
+#download-button:hover::before {
+    left: 100%;
+}
+
+#download-button:active {
+    transform: translateY(0);
+}
+
+#download-button i {
+    font-size: 24px;
+
+    transition: transform 0.3s ease;
+}
+
+#download-button:hover i {
+    transform: translateY(2px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    #pdf-controls {
+        padding: 12px 8px;
+    }
+
+    #pdf-controls button {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    #page-num {
+        font-size: 13px;
+        padding: 4px 8px;
+    }
+
+    #download-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+/* Prevent text selection on buttons */
+#pdf-controls, #download-button {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.spinner-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-right: 5px solid #e74c3c;
+    border-bottom: 5px solid #2ecc71;
+    border-left: 5px solid #f1c40f;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#download-button {
+    animation: bulge 2s infinite;
+
+    padding: 8px 16px;
+    background-color: #ad6200;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .modal-content {
+        padding: 5px;
+        margin: 0.5% auto;
+        width: 98%;
+        height: 98%;
+    }
+
+    #pdf-controls button {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+
+    #page-num {
+        font-size: 12px;
+    }
+
+    #download-button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border-width: 4px;
+    }
+}
+
+/* Prevent text selection on controls */
+#pdf-controls, #download-button {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
            </style>
 </head>
 <body>
@@ -646,15 +959,25 @@ function checkAuth(url) {
             </button>
         </div>
     </div>
-    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
-   <div id="pdf-viewer-modal">
-        <div id="pdf-viewer"><br><br>
-            <button class="close-button" onclick="closePdfViewer()">Close</button>
-            <iframe id="pdf-iframe" src="" frameborder="0"></iframe>
+    <div id="pdf-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="pdf-controls">
+                <button id="prev-page" title="Previous Page"><i class="fas fa-chevron-left"></i></button>
+                <span id="page-num"></span>
+                <button id="next-page" title="Next Page"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div id="pdf-viewer"></div>
+            <button id="download-button">Download File <i class="fas fa-download"></i></button>
+            <div id="pdf-loading" class="spinner-container">
+                <div class="spinner"></div>
+            </div>
         </div>
     </div>
+    <div class="end-message" id="end-message" style="display: none;">No more items to display</div>
+
     <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
-    <script>
+      <script>
         function toggleMenu() {
             const navLinks = document.getElementById('nav-links');
             navLinks.classList.toggle('active');
@@ -662,498 +985,6 @@ function checkAuth(url) {
     
         const pdfData = 
         [
-  {
-    "pdfUrl": "BOT Science p.5 Sipro.pdf"
-  },
-  {
-    "pdfUrl": "Broad p.5 SCI Mid term 2 2023.pdf"
-  },
-  {
-    "pdfUrl": "BROAD P5 EOT 3 SCIE.pdf"
-  },
-  {
-    "pdfUrl": "END OF YEAR P.5 SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "END P.5 SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "EOT III 2022 SCIENCE EXAM RAYAT.pdf"
-  },
-  {
-    "pdfUrl": "EOT P.5 SCI BY SMILE.pdf"
-  },
-  {
-    "pdfUrl": "Evaluation Workbook P5 Science #CREATIVE.pdf"
-  },
-  {
-    "pdfUrl": "JUBRA SCIENCE END OF YEAR.pdf"
-  },
-  {
-    "pdfUrl": "KARLMARX EDUCATION SERVICES PRIMARY FIVE SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "kolfram bot P.5 science  MARKING GUIDE 2023 .pdf"
-  },
-  {
-    "pdfUrl": "kolfram bot P.5 science 2023 .pdf"
-  },
-  {
-    "pdfUrl": "MID TERM I SCIENCE 2023..-1.pdf"
-  },
-  {
-    "pdfUrl": "MID TERM I SCIENCE 2023...pdf"
-  },
-  {
-    "pdfUrl": "MID TERM I SCIENCE 2023.pdf"
-  },
-  {
-    "pdfUrl": "P 5  SCIENCE WORK BOOK TERM 1 2020-1.pdf"
-  },
-  {
-    "pdfUrl": "P 5  SCIENCE WORK BOOK TERM 1 2020.pdf"
-  },
-  {
-    "pdfUrl": "P 5 Science part 1.pdf"
-  },
-  {
-    "pdfUrl": "P 5 Science part 2.pdf"
-  },
-  {
-    "pdfUrl": "P. 5 GREENHILL MID-TERM SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "P. 5 SCIE BOT III.pdf"
-  },
-  {
-    "pdfUrl": "P. 5 SCIENCE END II.pdf"
-  },
-  {
-    "pdfUrl": "P. 5 SCIENCE NOTE.pdf"
-  },
-  {
-    "pdfUrl": "P.-5-SCIENCE-SET-1 (1).pdf"
-  },
-  {
-    "pdfUrl": "P.-5-SCIENCE-SET-1.pdf"
-  },
-  {
-    "pdfUrl": "P.-5-SCIENCE-SET-2(1).pdf"
-  },
-  {
-    "pdfUrl": "P.-5-SCIENCE-SET-2.pdf"
-  },
-  {
-    "pdfUrl": "P.3 Science Revision booklet.pdf"
-  },
-  {
-    "pdfUrl": "P.3 SCIENCE WORK BOOBLET.pdf.pdf"
-  },
-  {
-    "pdfUrl": "P.5  SCIENCE  Education Source 2024.pdf"
-  },
-  {
-    "pdfUrl": "P.5  SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "p.5 & p.6 sci midterm 1.pdf"
-  },
-  {
-    "pdfUrl": "P.5 & P.6 SCIE Revision Book.pdf"
-  },
-  {
-    "pdfUrl": "P.5 B.OT 1 2023.pdf"
-  },
-  {
-    "pdfUrl": "P.5 BOT Sci_Broad 2024 term one..pdf"
-  },
-  {
-    "pdfUrl": "P.5 BOT TERM I SCIE.pdf"
-  },
-  {
-    "pdfUrl": "P.5 END OF TERM 1- 2023.pdf"
-  },
-  {
-    "pdfUrl": "P.5 EOT TERM I SCIE.pdf"
-  },
-  {
-    "pdfUrl": "P.5 Globe Science Mid term three.pdf"
-  },
-  {
-    "pdfUrl": "P.5 jerox end of term 1 science 2023.pdf"
-  },
-  {
-    "pdfUrl": "P.5 MID TERM I SCIENCE 2023...pdf"
-  },
-  {
-    "pdfUrl": "P.5 MID TERM ONE, 2024.pdf"
-  },
-  {
-    "pdfUrl": "p.5 mid term sipro SCIE.pdf"
-  },
-  {
-    "pdfUrl": "p.5 mid term sipro.pdf"
-  },
-  {
-    "pdfUrl": "P.5 PARAMOUNT SCI T1-T3 .pdf"
-  },
-  {
-    "pdfUrl": "P.5 prime BOT 1 SCI 2023.pdf"
-  },
-  {
-    "pdfUrl": "P.5 Prime Scie Mid term 11 2023 and it's guide .pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCE W PDF.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI  END OF TERM II  2022(0).pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI BOT II.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI BOT III-PAPER 12.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI BOT-1.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI BOT-2.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI BOT.pdf"
-  },
-  {
-    "pdfUrl": "p.5 sci end of term iii 2021.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI MID III.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI MID TERM 1 2024.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI MID TERM 1.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI MID TERM THREE  2023.pdf"
-  },
-  {
-    "pdfUrl": "P.5 Sci Revision booklet-1.pdf"
-  },
-  {
-    "pdfUrl": "P.5 Sci Revision booklet.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI SSEB BOT.pdf"
-  },
-  {
-    "pdfUrl": "P.5 sci.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIE END OF TERM III P.5.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIE GUIDING QNS.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIE Jerox B.O.T1.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIE MOT 1 PRIME 2024.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIE PRE-END OF TERM 2 2023.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIE sipro B.O.T 1 2024.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIE SIPRO GUIDE EOT 3 BY TR.EPIDU PAUL (2).pdf"
-  },
-  {
-    "pdfUrl": "p.5 scie TAAND bot1 2023-1.pdf"
-  },
-  {
-    "pdfUrl": "p.5 scie TAAND bot1 2023.pdf"
-  },
-  {
-    "pdfUrl": "P.5 Scie-1.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIE.pdf"
-  },
-  {
-    "pdfUrl": "p.5 science  B.O.T 2024.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE ACTIVITY.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE BOT 1 2024.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE E.O.T 1 2024.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE END OF JUNE EXAM 2023.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE END OF TERM 1 2022 SIPRO.pdf"
-  },
-  {
-    "pdfUrl": "P.5 Science End of term three 2023.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE GUIDING QUESTIONS Tekart Learning.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE HOME WORK.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE MID II.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE MID TERM (2).pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE REVISION APRIL 2020 (ecolebooks.com).pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCIENCE SET 3 REVISION WORK BUDO JUNIOR SCHOOL.pdf"
-  },
-  {
-    "pdfUrl": "p.5 SCIENCE WORKBOOK.pdf"
-  },
-  {
-    "pdfUrl": "P.5 SCI_Sipro mid term III examinations-super.pdf"
-  },
-  {
-    "pdfUrl": "P.5 TERM 3 SCIENCE WORK BOOK.pdf"
-  },
-  {
-    "pdfUrl": "p.5 VSES SCI 2 2023.pdf"
-  },
-  {
-    "pdfUrl": "P.5-SCI-HOLIDAY-PACKAGE-TM-1-2020.pdf"
-  },
-  {
-    "pdfUrl": "P.5-SCI-SET-5.pdf"
-  },
-  {
-    "pdfUrl": "P.5-SCIE-JUNE....pdf"
-  },
-  {
-    "pdfUrl": "P.5-SCIENCE-REVISION-APRIL-2020.pdf"
-  },
-  {
-    "pdfUrl": "P.5-SCIENCE-WORK-BOOK-TERM-ONE-.pdf"
-  },
-  {
-    "pdfUrl": "p.6 science.pdf"
-  },
-  {
-    "pdfUrl": "p.five science sipro mid.pdf"
-  },
-  {
-    "pdfUrl": "P5 & P6 SCIENCE REVISION BOOK.pdf"
-  },
-  {
-    "pdfUrl": "P5 BOT SCIE MTC PRIME.pdf"
-  },
-  {
-    "pdfUrl": "P5 BROAD SCIE TERM 1.pdf"
-  },
-  {
-    "pdfUrl": "P5 END OF YEAR EXAM SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "P5 END OF YEAR SCI EXAM.pdf"
-  },
-  {
-    "pdfUrl": "P5 end of year science 2022.pdf"
-  },
-  {
-    "pdfUrl": "P5 END OF YEAR SCIENCE EXAM.pdf"
-  },
-  {
-    "pdfUrl": "P5 EOT III 2022 SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "P5 EOT III SCIENCE 2022.pdf"
-  },
-  {
-    "pdfUrl": "P5 INTEGRATED SCIENCE END OF TERM 2 EXAMINATIONS 2022..pdf"
-  },
-  {
-    "pdfUrl": "P5 KCCA EOT 3 SCIE.pdf"
-  },
-  {
-    "pdfUrl": "P5 MID TERM III SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "P5 MID TERM SCIE.pdf"
-  },
-  {
-    "pdfUrl": "P5 prime BOT 1 SCI 2023.pdf"
-  },
-  {
-    "pdfUrl": "P5 prime sci BOT3.pdf"
-  },
-  {
-    "pdfUrl": "P5 RAAYAT EOT 3 SCIE.pdf"
-  },
-  {
-    "pdfUrl": "P5 sci Prime BOT3.pdf"
-  },
-  {
-    "pdfUrl": "p5 sci sipro end 3.pdf"
-  },
-  {
-    "pdfUrl": "p5 sci topical workbook.pdf"
-  },
-  {
-    "pdfUrl": "P5 SCIENCE (2).pdf"
-  },
-  {
-    "pdfUrl": "P5 SCIENCE EOT III 2022.pdf"
-  },
-  {
-    "pdfUrl": "P5 science eot2 .pdf"
-  },
-  {
-    "pdfUrl": "P5 science eot3 .pdf"
-  },
-  {
-    "pdfUrl": "P5 SCIENCE EXAM & MG.pdf"
-  },
-  {
-    "pdfUrl": "P5 SCIENCE EXAM _ MG.pdf"
-  },
-  {
-    "pdfUrl": "P5 science mid term 1 .pdf"
-  },
-  {
-    "pdfUrl": "p5 science mid term.pdf"
-  },
-  {
-    "pdfUrl": "P5 SCIENCE MOT 1.pdf"
-  },
-  {
-    "pdfUrl": "P5 SCIENCE YET HAPPY KIDZ SCHOOL HOLIDAY WORK.pdf"
-  },
-  {
-    "pdfUrl": "P5 SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "P5 SIPRO MID-TERM 3 SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "P5 TERM III SCIENCE.pdf"
-  },
-  {
-    "pdfUrl": "P5 _ P6 SCIENCE REVISION BOOK.pdf"
-  },
-  {
-    "pdfUrl": "P5-Science-2021-SA2-Tao-Nan.pdf"
-  },
-  {
-    "pdfUrl": "P5_Science_Revision-1.pdf"
-  },
-  {
-    "pdfUrl": "primary Five Intergrated Science-COVID doc.pdf"
-  },
-  {
-    "pdfUrl": "PRIMARY FIVE KCCA.pdf"
-  },
-  {
-    "pdfUrl": "PRIMARY FIVE SCIENCE CONTINUOUS ASSESSMENT.pdf"
-  },
-  {
-    "pdfUrl": "PRIMARY FIVE SCIENCE TOPICAL WORK.pdf"
-  },
-  {
-    "pdfUrl": "Primary Five Science-5.pdf"
-  },
-  {
-    "pdfUrl": "Primary Five Science.pdf"
-  },
-  {
-    "pdfUrl": "Primary Five Social Studies.pdf"
-  },
-  {
-    "pdfUrl": "PRIME P.5 EOT 3 EXAMS 2023.pdf"
-  },
-  {
-    "pdfUrl": "PRIME P5 BOT 3 SCIE.pdf"
-  },
-  {
-    "pdfUrl": "PRIME P5 BOT 3.pdf"
-  },
-  {
-    "pdfUrl": "PRIME P5 EOT SCIE.pdf"
-  },
-  {
-    "pdfUrl": "PRIME SCIE P.5 EOT 3 EXAMS 2023.pdf"
-  },
-  {
-    "pdfUrl": "Pursuit of Excellence P.5 Eot.pdf"
-  },
-  {
-    "pdfUrl": "P_5 PROLINE SCI END OF TERM II.pdf"
-  },
-  {
-    "pdfUrl": "RAAYAT P5 EOT 3 SCIE.pdf"
-  },
-  {
-    "pdfUrl": "scie P.5 sipro EOT 1.pdf"
-  },
-  {
-    "pdfUrl": "SCIENCE E-LEARN P.5 TERM III 2023.pdf"
-  },
-  {
-    "pdfUrl": "science p.5.pdf"
-  },
-  {
-    "pdfUrl": "SCIENCE TOPICAL QNS P.4 AND P.5.pdf"
-  },
-  {
-    "pdfUrl": "Sipro end of term 11 Sci p5.pdf"
-  },
-  {
-    "pdfUrl": "Sipro p.5 science.pdf"
-  },
-  {
-    "pdfUrl": "SIPRO P5 BOT 2 SCIE.pdf"
-  },
-  {
-    "pdfUrl": "Sipro P5 End of Term 3 Sci. Guide.pdf"
-  },
-  {
-    "pdfUrl": "SIPRO P5 MOT 2 SCIE.pdf"
-  },
-  {
-    "pdfUrl": "SKYLINE P5 EOT 2 SCIE.pdf"
-  },
-  {
-    "pdfUrl": "TAAND P.5 SCIE TERM 1.pdf"
-  },
-  {
-    "pdfUrl": "TAAND P5 EOT 3 SCIE.pdf"
-  },
-  {
-    "pdfUrl": "TAAND P5 SCIE TERM 1.pdf"
-  },
-  {
-    "pdfUrl": "The jerox end of term 1 P.5 science 2023.pdf"
-  },
-  {
-    "pdfUrl": "TR.PAUL P.5 SCIENCE JEROX EOT 3 - 2023.pdf"
-  },
-  {
-    "pdfUrl": "YET p.5_science-1-.pdf"
-  },
   {
     "pdfUrl": "https://fresh-teacher.github.io/p5/ENTEBBE P5 EOT 3 SCIE.pdf"
   },
@@ -1633,19 +1464,130 @@ function checkAuth(url) {
   },
 ]
         ;
-       
-       
-        let currentPage = 1;
+   
+        document.addEventListener('DOMContentLoaded', function() {
+    const pdfViewer = document.getElementById('pdf-viewer');
+    let currentScale = 1;
+    let startX = 0;
+    let startY = 0;
+    let lastX = 0;
+    let lastY = 0;
+    let startDistance = 0;
+    let isZooming = false;
+    let isPanning = false;
+    let translateX = 0;
+    let translateY = 0;
+    let touchStartTime = 0;
+    const SWIPE_THRESHOLD = 50;
+    const SWIPE_TIME_THRESHOLD = 900; // 9 milliseconds
+
+    pdfViewer.addEventListener('touchstart', handleTouchStart, false);
+    pdfViewer.addEventListener('touchmove', handleTouchMove, false);
+    pdfViewer.addEventListener('touchend', handleTouchEnd, false);
+
+    function handleTouchStart(e) {
+        touchStartTime = new Date().getTime();
+        if (e.touches.length === 1) {
+            startX = lastX = e.touches[0].pageX - translateX;
+            startY = lastY = e.touches[0].pageY - translateY;
+            isPanning = currentScale > 1;
+        } else if (e.touches.length === 2) {
+            startDistance = getDistance(e.touches[0], e.touches[1]);
+            isZooming = true;
+            isPanning = false;
+        }
+    }
+
+    function handleTouchMove(e) {
+        e.preventDefault(); // Prevent default scrolling
+
+        if (isZooming && e.touches.length === 2) {
+            const currentDistance = getDistance(e.touches[0], e.touches[1]);
+            const scale = currentDistance / startDistance;
+            currentScale = Math.max(1, Math.min(currentScale * scale, 3));
+            pdfViewer.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+        } else if (isPanning && e.touches.length === 1) {
+            const deltaX = e.touches[0].pageX - startX;
+            const deltaY = e.touches[0].pageY - startY;
+            translateX = deltaX;
+            translateY = deltaY;
+            pdfViewer.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+            lastX = e.touches[0].pageX;
+            lastY = e.touches[0].pageY;
+        }
+    }
+
+    function handleTouchEnd(e) {
+        const touchEndTime = new Date().getTime();
+        const touchDuration = touchEndTime - touchStartTime;
+
+        if (!isZooming && !isPanning && currentScale === 1 && touchDuration < SWIPE_TIME_THRESHOLD) {
+            const deltaX = lastX - startX;
+            if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+                if (deltaX > 0) {
+                    goToPreviousPage();
+                } else {
+                    goToNextPage();
+                }
+            }
+        }
+
+        isZooming = false;
+        isPanning = false;
+    }
+
+    function getDistance(touch1, touch2) {
+        const dx = touch1.pageX - touch2.pageX;
+        const dy = touch1.pageY - touch2.pageY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function goToNextPage() {
+        if (currentPage < currentPdf.numPages) {
+            currentPage++;
+            renderPage(currentPage);
+            updatePageNum();
+            resetZoomAndPan();
+        }
+    }
+
+    function goToPreviousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage);
+            updatePageNum();
+            resetZoomAndPan();
+        }
+    }
+
+    function resetZoomAndPan() {
+        currentScale = 1;
+        translateX = 0;
+        translateY = 0;
+        pdfViewer.style.transform = 'scale(1) translate(0px, 0px)';
+    }
+});   
         const itemsPerPage = 12;
         let filteredData = pdfData;
         let isLoading = false;
         let endOfData = false;
     
-        function extractNameFromUrl(pdfUrl) {
+        function capitalizeFilename(filename) {
+    // Split the filename into parts
+    let parts = filename.split('.');
+    
+    // Capitalize each part
+    parts = parts.map(part => part.toUpperCase());
+    
+    // Join the parts back together
+    return parts.join('.');
+}
+
+function extractNameFromUrl(pdfUrl) {
     const parts = pdfUrl.split('/');
     const fileName = parts[parts.length - 1].replace('.pdf', '');
-    // Remove special characters except '&' and replace with spaces
-    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&]/g, ' ');
+    // Remove special characters except '&' and '.' and replace with spaces
+    let nameWithoutSpecialChars = fileName.replace(/[^\w\s&.]/g, ' ');
     // Remove hyphens and underscores and replace with spaces
     let nameWithoutHyphensUnderscores = nameWithoutSpecialChars.replace(/[-_]/g, ' ');
     // Capitalize all letters
@@ -1653,26 +1595,151 @@ function checkAuth(url) {
     return capitalizedWords;
 }
 
-
-
-    
-        function createCard(pdf) {
+function navigateToResource(subject) {
+    const resourceType = selectedResource.replace(/ /g, '');
+    let pageName = `${selectedClass}${subject}${resourceType}.html`;
+    pageName = capitalizeFilename(pageName);
+    window.location.href = pageName;
+}
+function createCard(pdf) {
             const card = document.createElement('div');
             card.className = 'card';
-    
+
             const title = document.createElement('h3');
             title.textContent = extractNameFromUrl(pdf.pdfUrl);
             card.appendChild(title);
-    
+
             const viewButton = document.createElement('a');
             viewButton.className = 'view-button';
             viewButton.textContent = 'VIEW';
             viewButton.onclick = () => openPdfViewer(pdf.pdfUrl);
             card.appendChild(viewButton);
-    
+
             return card;
         }
-    
+
+        let currentPdf = null;
+        let currentPage = 1;
+        let pdfViewer = document.getElementById('pdf-viewer');
+        let currentPdfUrl = '';
+
+        function openPdfViewer(pdfUrl) {
+            const modal = document.getElementById('pdf-modal');
+            const loading = document.getElementById('pdf-loading');
+            pdfViewer.innerHTML = '';
+            modal.style.display = 'block';
+            loading.style.display = 'block';
+            currentPdfUrl = pdfUrl;
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+                currentPdf = pdf;
+                currentPage = 1;
+                renderPage(currentPage);
+                loading.style.display = 'none';
+                updatePageNum();
+            }).catch(function(error) {
+                console.error('Error loading PDF:', error);
+                pdfViewer.textContent = 'Error loading PDF. Please try again.';
+                loading.style.display = 'none';
+            });
+        }
+
+        function renderPage(num) {
+            pdfViewer.innerHTML = '';
+            currentPdf.getPage(num).then(function(page) {
+                const scale = 1.5;
+                const viewport = page.getViewport({ scale: scale });
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+
+                page.render(renderContext);
+                pdfViewer.appendChild(canvas);
+            });
+        }
+
+        function updatePageNum() {
+            document.getElementById('page-num').textContent = `${currentPage} / ${currentPdf.numPages}`;
+        }
+
+        // Event listeners for controls
+        document.getElementById('prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage(currentPage);
+                updatePageNum();
+            }
+        });
+
+        document.getElementById('next-page').addEventListener('click', () => {
+            if (currentPage < currentPdf.numPages) {
+                currentPage++;
+                renderPage(currentPage);
+                updatePageNum();
+            }
+        });
+
+        document.getElementById('download-button').addEventListener('click', () => {
+            // Create a temporary anchor element
+            const link = document.createElement('a');
+            link.href = currentPdfUrl;
+            link.download = 'document.pdf'; // You can set a custom name here
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Close modal when clicking on <span> (x)
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('pdf-modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('pdf-modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Add touch swipe functionality for mobile devices
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        pdfViewer.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        pdfViewer.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchendX < touchstartX) {
+                // Swipe left, go to next page
+                if (currentPage < currentPdf.numPages) {
+                    currentPage++;
+                    renderPage(currentPage);
+                    updatePageNum();
+                }
+            }
+            if (touchendX > touchstartX) {
+                // Swipe right, go to previous page
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderPage(currentPage);
+                    updatePageNum();
+                }
+            }
+        }
+ 
         function displayCards() {
             const cardsContainer = document.getElementById('cards-container');
             cardsContainer.innerHTML = ''; // Clear previous cards
@@ -1801,30 +1868,7 @@ function checkAuth(url) {
             displayCards();
             window.scrollTo(0, 0);
         }
-    
-        function openPdfViewer(pdfUrl) {
-            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
-            const pdfViewer = document.getElementById('pdf-viewer');
-            const pdfIframe = document.getElementById('pdf-iframe');
-            pdfIframe.src = pdfUrl;
-            pdfViewerModal.style.display = 'flex';
-            setTimeout(() => {
-                pdfViewerModal.style.opacity = '1';
-                pdfViewer.style.transform = 'translateY(0)';
-            }, 10);
-        }
-    
-        function closePdfViewer() {
-            const pdfViewerModal = document.getElementById('pdf-viewer-modal');
-            const pdfViewer = document.getElementById('pdf-viewer');
-            const pdfIframe = document.getElementById('pdf-iframe');
-            pdfViewer.style.transform = 'translateY(100%)';
-            pdfViewerModal.style.opacity = '0';
-            setTimeout(() => {
-                pdfIframe.src = '';
-                pdfViewerModal.style.display = 'none';
-            }, 500);
-        }
+
     
         function filterCards() {
             const searchInput = document.getElementById('search-input').value.toLowerCase();
@@ -1869,5 +1913,3 @@ function checkAuth(url) {
     
 </body>
 </html>
-
-
