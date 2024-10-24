@@ -489,6 +489,338 @@ select {
     font-weight: 500;
     text-align: center;
 }
+.scoreboard-btn {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .scoreboard-btn:hover {
+            background-color: #1976D2;
+        }
+
+        .scoreboard-modal {
+    /* Remove the duplicate display property */
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 1000;
+    max-width: 90%;
+    width: 800px;
+    max-height: 90vh;
+    /* Move the flex properties to a separate class */
+    flex-direction: column;
+}
+
+/* Add a new class for when the modal is visible */
+.scoreboard-modal.visible {
+    display: flex;
+}
+
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            backdrop-filter: blur(2px);
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            cursor: pointer;
+            font-size: 24px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            transition: background-color 0.3s;
+        }
+
+        .close-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .select-class {
+            margin: 20px 0;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .select-class:focus {
+            border-color: #2196F3;
+        }
+
+        /* Scoreboard table styles */
+        #scoreboardContent {
+            overflow-y: auto;
+            max-height: calc(90vh - 160px);
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        #scoreboardContent table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            table-layout: fixed;
+        }
+
+        #scoreboardContent thead {
+            position: sticky;
+            top: 0;
+            background-color: #f5f5f5;
+            z-index: 1;
+        }
+
+        #scoreboardContent th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        #scoreboardContent td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* Column widths */
+        #scoreboardContent th:nth-child(1), 
+        #scoreboardContent td:nth-child(1) {
+            width: 10%;
+            text-align: center;
+        }
+
+        #scoreboardContent th:nth-child(2), 
+        #scoreboardContent td:nth-child(2) {
+            width: 40%;
+        }
+
+        #scoreboardContent th:nth-child(3), 
+        #scoreboardContent td:nth-child(3) {
+            width: 30%;
+        }
+
+        #scoreboardContent th:nth-child(4), 
+        #scoreboardContent td:nth-child(4) {
+            width: 20%;
+            text-align: right;
+        }
+
+        /* Zebra striping for rows */
+        #scoreboardContent tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        /* Hover effect on rows */
+        #scoreboardContent tbody tr:hover {
+            background-color: #f0f4f8;
+        }
+
+        /* Rank styling */
+        .rank-1, .rank-2, .rank-3 {
+            font-weight: bold;
+        }
+
+        .rank-1 {
+            color: #ffd700; /* Gold */
+        }
+
+        .rank-2 {
+            color: #c0c0c0; /* Silver */
+        }
+
+        .rank-3 {
+            color: #cd7f32; /* Bronze */
+        }
+
+        /* Empty state message */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .scoreboard-modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+
+            #scoreboardContent td, 
+            #scoreboardContent th {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+        }
+             /* Preview Modal Styles */
+             .preview-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .preview-btn:hover {
+            background-color: #45a049;
+        }
+
+        .preview-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-width: 90%;
+            width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .preview-content {
+            margin-top: 20px;
+        }
+
+        .question-preview {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 0;
+        }
+
+        .question-preview:last-child {
+            border-bottom: none;
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: #2196F3;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            margin-bottom: 10px;
+        }
+
+        .option-preview {
+            margin-left: 20px;
+            padding: 4px 0;
+            color: #666;
+        }
+
+        .correct-option {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+          /* Animated Play Again Button Styles */
+          #playAgain {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            animation: pulse 2s infinite;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        #playAgain:hover {
+            transform: scale(1.05);
+            animation: none;
+            background: linear-gradient(45deg, #1976D2, #1565C0);
+        }
+
+        #playAgain::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 4px 20px rgba(33, 150, 243, 0.5);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                left: -50%;
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
+        }
+        .admin-controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-group, .admin-controls {
+    transition: display 0.3s ease;
+}
     </style>
 </head>
 <body>
@@ -505,7 +837,41 @@ select {
 </div>
     <div class="quiz-container">
         <h1>ICT TEST</h1>
-        
+
+    
+            <!-- Add Preview Modal -->
+            <div id="previewModal" class="preview-modal">
+                <span class="close-btn" id="closePreview">&times;</span>
+                <h2>Preview Questions</h2>
+                <select id="previewClassSelect" class="select-class">
+                    <option value="">Select a class</option>
+                </select>
+                <div id="previewContent" class="preview-content"></div>
+            </div>
+    
+         <!-- Add Scoreboard Modal -->
+         <div id="scoreboardModal" class="scoreboard-modal">
+             <span class="close-btn" id="closeScoreboard">&times;</span>
+             <h2>Class Scoreboard</h2>
+             <select id="scoreboardClassSelect" class="select-class">
+                 <option value="">Select a class</option>
+             </select>
+             <div id="scoreboardContent">
+                 <table>
+                     <thead>
+                         <tr>
+                             <th>Rank</th>
+                             <th>Name</th>
+                             <th>Stream</th>
+                             <th>Score</th>
+                         </tr>
+                     </thead>
+                     <tbody id="scoreboardModalBody"></tbody>
+                 </table>
+             </div>
+         </div>
+         <div id="modalBackdrop" class="modal-backdrop"></div>
+ 
         <!-- Player Selection Section -->
         <div id="playerSelection">
             <div class="selection-group">
@@ -528,6 +894,12 @@ select {
             </div>
             <button id="startQuiz" disabled>Start Quiz</button>
         </div>
+
+                      <!-- Add Preview Button next to Scoreboard Button -->
+                      <div class="button-group">
+                        <button id="viewScoreboard" class="scoreboard-btn">View Scoreboard 📊</button>
+                        <button id="previewQuestions" class="preview-btn">Preview Questions 📝</button>
+                    </div>
         <!-- First, add this line to the quiz section in your HTML, just before the question div -->
 <div id="quiz" class="hidden">
     <div class="question-counter" id="questionCounter">Question 1 of 20</div>
@@ -566,11 +938,277 @@ select {
                 </thead>
                 <tbody id="scoreboardBody"></tbody>
             </table>
-            <button id="playAgain">Play Again</button>
+            <button id="playAgain">RETURN TO QUIZ 🔙</button>
         </div>
     </div>
 
     <script>
+        // Add this function to control button visibility
+        function toggleButtonGroup(show) {
+    // Control scoreboard and preview buttons
+    const buttonGroup = document.querySelector('.button-group');
+    if (buttonGroup) {
+        buttonGroup.style.display = show ? 'flex' : 'none';
+    }
+    
+    // Control admin reset button
+    const adminControls = document.querySelector('.admin-controls');
+    if (adminControls) {
+        adminControls.style.display = show ? 'block' : 'none';
+    }
+}
+
+// Modify the startQuizButton click handler
+document.addEventListener('DOMContentLoaded', () => {
+    const startQuizButton = document.getElementById('startQuiz');
+    
+    startQuizButton.addEventListener('click', () => {
+        if (hasUserAttemptedQuiz(selectedClass, selectedStream, selectedName)) {
+            modal.show('warning', 'Quiz Already Attempted', 
+                `${selectedName} has already completed this quiz!`, [
+                    { text: 'OK', type: 'primary' }
+                ]
+            );
+            return;
+        }
+        document.getElementById('playerSelection').classList.add('hidden');
+        document.getElementById('quiz').classList.remove('hidden');
+        // Hide the button group when starting quiz
+        toggleButtonGroup(false);
+        loadQuestion();
+    });
+});
+
+         // Add this to your existing JavaScript
+         document.addEventListener('DOMContentLoaded', () => {
+            const previewBtn = document.getElementById('previewQuestions');
+            const previewModal = document.getElementById('previewModal');
+            const closePreview = document.getElementById('closePreview');
+            const previewClassSelect = document.getElementById('previewClassSelect');
+            const previewContent = document.getElementById('previewContent');
+
+            // Populate preview class select
+            Object.keys(questions).forEach(className => {
+                const option = document.createElement('option');
+                option.value = className;
+                option.textContent = className;
+                previewClassSelect.appendChild(option);
+            });
+
+            // Show preview modal
+            previewBtn.addEventListener('click', () => {
+                previewModal.style.display = 'block';
+                document.getElementById('modalBackdrop').style.display = 'block';
+            });
+
+            // Hide preview modal
+            closePreview.addEventListener('click', () => {
+                previewModal.style.display = 'none';
+                document.getElementById('modalBackdrop').style.display = 'none';
+            });
+
+            // Handle class selection for preview
+            previewClassSelect.addEventListener('change', (e) => {
+                const selectedClass = e.target.value;
+                if (!selectedClass) {
+                    previewContent.innerHTML = '<p>Please select a class to view questions</p>';
+                    return;
+                }
+
+                const classQuestions = questions[selectedClass];
+                previewContent.innerHTML = classQuestions.map((q, index) => `
+                    <div class="question-preview">
+                        <div class="question-number">Question ${index + 1}</div>
+                        <div class="question-text">${q.question}</div>
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option-preview ${optIndex === q.correctAnswer ? 'correct-option' : ''}">
+                                ${String.fromCharCode(65 + optIndex)}. ${option}
+                                ${optIndex === q.correctAnswer ? ' ✓' : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `).join('');
+            });
+
+            // Close modal on backdrop click
+            document.getElementById('modalBackdrop').addEventListener('click', () => {
+                previewModal.style.display = 'none';
+                document.getElementById('modalBackdrop').style.display = 'none';
+            });
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    previewModal.style.display = 'none';
+                    document.getElementById('modalBackdrop').style.display = 'none';
+                }
+            });
+        });
+
+         // Function to show the scoreboard modal
+         function showScoreboardModal() {
+            document.getElementById('scoreboardModal').style.display = 'block';
+            document.getElementById('modalBackdrop').style.display = 'block';
+        }
+
+        // Function to hide the scoreboard modal
+        function hideScoreboardModal() {
+            document.getElementById('scoreboardModal').style.display = 'none';
+            document.getElementById('modalBackdrop').style.display = 'none';
+        }
+
+        // Function to populate scoreboard in modal
+// Function to format rank with special styling for top performers
+function formatRank(rank) {
+    const rankEmojis = ['🥇', '🥈', '🥉'];
+    return rank <= 3 ? `${rank} ${rankEmojis[rank - 1]}` : rank;
+}
+
+// Enhanced scoreboard population function
+function populateModalScoreboard(className) {
+    const scoreboardBody = document.getElementById('scoreboardModalBody');
+    scoreboardBody.innerHTML = '';
+
+    try {
+        let scores = JSON.parse(localStorage.getItem(`quizScores_${className}`)) || [];
+        
+        // Handle empty scores
+        if (scores.length === 0) {
+            scoreboardBody.innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 20px; color: #666;">
+                        No scores available for ${className} yet
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        // Sort scores by highest first
+        scores.sort((a, b) => b.score - a.score);
+
+        scores.forEach((score, index) => {
+            const row = scoreboardBody.insertRow();
+            row.className = index % 2 === 0 ? 'even-row' : 'odd-row';
+
+            // Rank cell with special formatting
+            const rankCell = row.insertCell(0);
+            rankCell.textContent = formatRank(index + 1);
+            rankCell.className = `rank rank-${index + 1}`;
+            
+            // Name cell
+            const nameCell = row.insertCell(1);
+            nameCell.textContent = score.name.toUpperCase();
+            nameCell.className = 'name-cell';
+            
+            // Stream cell
+            const streamCell = row.insertCell(2);
+            streamCell.textContent = score.stream;
+            streamCell.className = 'stream-cell';
+            
+            // Score cell with color coding
+            const scoreCell = row.insertCell(3);
+            scoreCell.textContent = `${score.score}%`;
+            scoreCell.className = 'score-cell';
+            
+            // Add color coding based on score
+            if (score.score >= 80) {
+                scoreCell.style.color = '#2e7d32'; // Green for excellent
+            } else if (score.score >= 60) {
+                scoreCell.style.color = '#1976d2'; // Blue for good
+            } else if (score.score >= 40) {
+                scoreCell.style.color = '#f57c00'; // Orange for average
+            } else {
+                scoreCell.style.color = '#c62828'; // Red for needs improvement
+            }
+        });
+    } catch (error) {
+        console.error('Error populating scoreboard:', error);
+        scoreboardBody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align: center; padding: 20px; color: #dc3545;">
+                    Error loading scoreboard. Please try again.
+                </td>
+            </tr>`;
+    }
+}
+
+// Initialize all scoreboard functionality
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize UI elements
+    const viewScoreboardBtn = document.getElementById('viewScoreboard');
+    const closeScoreboardBtn = document.getElementById('closeScoreboard');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const scoreboardClassSelect = document.getElementById('scoreboardClassSelect');
+    
+    // Add loading state indicator
+    const addLoadingState = () => {
+        scoreboardBody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align: center; padding: 20px;">
+                    Loading scores... ⌛
+                </td>
+            </tr>`;
+    };
+
+    // Populate class select with available classes
+    try {
+        Object.keys(players).forEach(className => {
+            const option = document.createElement('option');
+            option.value = className;
+            option.textContent = className;
+            scoreboardClassSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error populating class select:', error);
+        scoreboardClassSelect.innerHTML = '<option value="">Error loading classes</option>';
+    }
+
+    // Event Listeners
+    viewScoreboardBtn.addEventListener('click', () => {
+        showScoreboardModal();
+        // Clear previous selection
+        scoreboardClassSelect.value = '';
+        scoreboardBody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align: center; padding: 20px;">
+                    Please select a class to view scores
+                </td>
+            </tr>`;
+    });
+
+    closeScoreboardBtn.addEventListener('click', hideScoreboardModal);
+    modalBackdrop.addEventListener('click', hideScoreboardModal);
+    
+    // Handle class selection with loading state
+    scoreboardClassSelect.addEventListener('change', (e) => {
+        if (e.target.value) {
+            addLoadingState();
+            // Small delay to show loading state
+            setTimeout(() => {
+                populateModalScoreboard(e.target.value);
+            }, 300);
+        }
+    });
+
+    // Handle escape key to close modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            hideScoreboardModal();
+        }
+    });
+});
+
+  // Add to your DOMContentLoaded event listener
+  document.addEventListener('DOMContentLoaded', () => {
+            // [Previous initialization code remains]
+
+            // Add resize listener for responsive height adjustment
+            window.addEventListener('resize', adjustModalHeight);
+            
+            // Call once on initial load
+            adjustModalHeight();
+        });
+        
         // Add this function to check if user has already taken the quiz
 function hasUserAttemptedQuiz(className, streamName, userName) {
     const scores = JSON.parse(localStorage.getItem(`quizScores_${className}`)) || [];
@@ -1623,22 +2261,54 @@ function initializeSelectors() {
 // Modify the updateStartButton function to check for previous attempts
 function updateStartButton() {
     const startQuizButton = document.getElementById('startQuiz');
+    
+    // Reset button to default state first
+    startQuizButton.disabled = true;
+    startQuizButton.className = 'start-button'; // Add base class for styling
+    
     if (selectedClass && selectedStream && selectedName) {
         if (hasUserAttemptedQuiz(selectedClass, selectedStream, selectedName)) {
-            startQuizButton.disabled = true;
-            startQuizButton.textContent = 'Quiz Already Completed';
-            // Optional: Add a visual indicator
+            startQuizButton.textContent = '❌ Quiz Already Completed';
+            startQuizButton.className += ' completed';
             startQuizButton.style.backgroundColor = '#ffcdd2';
+            startQuizButton.style.color = '#d32f2f';
+            startQuizButton.style.border = '2px solid #ef5350';
+            startQuizButton.style.cursor = 'not-allowed';
         } else {
             startQuizButton.disabled = false;
-            startQuizButton.textContent = 'Start Quiz';
-            startQuizButton.style.backgroundColor = '';
+            startQuizButton.textContent = '▶️ Start Quiz';
+            startQuizButton.className += ' ready';
+            startQuizButton.style.backgroundColor = '#4CAF50';
+            startQuizButton.style.color = 'white';
+            startQuizButton.style.border = '2px solid #45a049';
+            startQuizButton.style.cursor = 'pointer';
+            startQuizButton.style.transform = 'scale(1)';
+            // Add hover effect
+            startQuizButton.onmouseover = () => {
+                startQuizButton.style.backgroundColor = '#45a049';
+                startQuizButton.style.transform = 'scale(1.05)';
+            };
+            startQuizButton.onmouseout = () => {
+                startQuizButton.style.backgroundColor = '#4CAF50';
+                startQuizButton.style.transform = 'scale(1)';
+            };
         }
     } else {
-        startQuizButton.disabled = true;
-        startQuizButton.textContent = 'Start Quiz';
-        startQuizButton.style.backgroundColor = '';
+        startQuizButton.textContent = '⏳ Select Required Fields';
+        startQuizButton.style.backgroundColor = '#f5f5f5';
+        startQuizButton.style.color = '#757575';
+        startQuizButton.style.border = '2px solid #bdbdbd';
+        startQuizButton.style.cursor = 'not-allowed';
+        startQuizButton.onmouseover = null;
+        startQuizButton.onmouseout = null;
     }
+    
+    // Common styles
+    startQuizButton.style.padding = '12px 24px';
+    startQuizButton.style.borderRadius = '8px';
+    startQuizButton.style.fontWeight = 'bold';
+    startQuizButton.style.transition = 'all 0.3s ease';
+    startQuizButton.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
 }
 
 // Modified loadQuestion function
@@ -1770,11 +2440,13 @@ function showResult() {
     document.getElementById('processing').classList.add('hidden');
     const resultElement = document.getElementById('result');
     resultElement.classList.remove('hidden');
-    // No need to calculate percentage since score is now directly the percentage (out of 100)
     
     resultElement.textContent = `${selectedName}, you got ${score} out of 100 marks! `;
     resultElement.classList.add('bounce');
     playSoundEffect('finish');
+
+    // Show the button group when showing results
+    toggleButtonGroup(true);
 
     saveScore(score);
     updateScoreboard();
@@ -1782,7 +2454,7 @@ function showResult() {
 
 function resetQuiz() {
     currentQuestion = 0;
-    score = 0; // Reset score to 0
+    score = 0;
     selectedClass = '';
     selectedStream = '';
     selectedName = '';
@@ -1791,6 +2463,9 @@ function resetQuiz() {
     document.getElementById('result').classList.add('hidden');
     document.getElementById('quiz').classList.add('hidden');
     document.getElementById('playerSelection').classList.remove('hidden');
+    
+    // Show the button group when returning to selection screen
+    toggleButtonGroup(true);
     
     document.getElementById('classSelect').value = '';
     document.getElementById('streamSelect').value = '';
@@ -1823,30 +2498,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const startQuizButton = document.getElementById('startQuiz');
     const playAgainButton = document.getElementById('playAgain');
     
-    // Add admin reset button
+    // Add admin reset button with a class for easier control
     const adminControls = document.createElement('div');
+    adminControls.className = 'admin-controls'; // Add class for styling and selection
     adminControls.innerHTML = `
         <button id="adminReset" style="margin-top: 10px; background-color: #ff9800;">
             Clear Cache and Cookies 🚮
         </button>
     `;
     document.querySelector('.quiz-container').appendChild(adminControls);
-    
-    // Event Listeners
-// Modify the start button click handler
-startQuizButton.addEventListener('click', () => {
-    if (hasUserAttemptedQuiz(selectedClass, selectedStream, selectedName)) {
-        modal.show('warning', 'Quiz Already Attempted', 
-            `${selectedName} has already completed this quiz!`, [
-                { text: 'OK', type: 'primary' }
-            ]
-        );
-        return;
-    }
-    document.getElementById('playerSelection').classList.add('hidden');
-    document.getElementById('quiz').classList.remove('hidden');
-    loadQuestion();
-});
+   
+
 
     playAgainButton.addEventListener('click', resetQuiz);
     

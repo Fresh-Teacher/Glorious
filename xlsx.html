@@ -36,6 +36,9 @@
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             border: 2px solid #DEB887;
+            position: relative;
+            min-height: 100vh;
+
         }
 
         h1 {
@@ -128,13 +131,13 @@
         }
 
         #clearBtn {
-            background: linear-gradient(145deg, #8B4513, #A0522D);
+            background: linear-gradient(145deg,#5e0202, #ff1100);
             color: white;
-            border: 1px solid #8B4513;
+            border: 1px solid #8b1313;
         }
 
         #clearBtn:hover {
-            background: linear-gradient(145deg, #A0522D, #8B4513);
+            background: linear-gradient(145deg, #ff1100, #5e0202);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(139, 69, 19, 0.3);
         }
@@ -514,14 +517,313 @@
                 transition: none !important;
             }
         }
+ /* Flash Message Styles */
+ .flash-message {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { top: -100px; opacity: 0; }
+            to { top: 20px; opacity: 1; }
+        }
+
+        .flash-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .flash-icon {
+            font-size: 20px;
+        }
+
+        .flash-close {
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+     /* Enhanced Progress Bar Styles */
+     .progress-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 25px;
+            background: linear-gradient(145deg, #f0f0f0, #e6e6e6);
+            border-radius: 12.5px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            position: relative;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, 
+                #4CAF50, #45a049,
+                #2196F3, #1976D2,
+                #9C27B0, #7B1FA2,
+                #4CAF50
+            );
+            background-size: 300% 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: gradientMove 3s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #333;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+
+        /* Enhanced Loading Spinner Styles */
+        .spinner-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.15);
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid transparent;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            position: relative;
+            animation: spinnerRotate 1.5s linear infinite;
+        }
+
+        .spinner::before,
+        .spinner::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 5px solid transparent;
+            border-radius: 50%;
+        }
+
+        .spinner::before {
+            border-top-color: #4CAF50;
+            border-right-color: #2196F3;
+            border-bottom-color: #9C27B0;
+            animation: spinnerRotate 2s linear infinite;
+        }
+
+        .spinner::after {
+            border-top-color: #FFC107;
+            border-right-color: #FF5722;
+            border-bottom-color: #E91E63;
+            animation: spinnerRotateReverse 1s linear infinite;
+        }
+
+        @keyframes spinnerRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spinnerRotateReverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        #conversionText {
+            color: #333;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 15px;
+            background: linear-gradient(45deg, #4CAF50, #2196F3, #9C27B0, #4CAF50);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientText 3s linear infinite;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: rgb(255, 128, 0);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            z-index: 2001;
+        }
+
+        /* Ensure file input section is behind modals */
+        .input-section {
+            position: relative;
+            z-index: 1;
+        }
+        /* Internet Connection Modal Styles */
+        .internet-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .internet-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .retry-button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+
+        .retry-button:hover {
+            background: #45a049;
+        }
+
+        /* Flash Notification Styles */
+        #flashNotification {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 3500;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                top: -100px;
+                opacity: 0;
+            }
+            to {
+                top: 20px;
+                opacity: 1;
+            }
+        }
+
+        #flashNotification.success {
+            background-color: #4CAF50;
+        }
+
+        #flashNotification.error {
+            background-color: #f44336;
+        }
+
     </style>
 </head>
 <body>
+    <!-- Progress Bar HTML -->
+<div class="progress-container" id="progressContainer">
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-text" id="progressText">Uploading: 0%</div>
+</div>
+
+<!-- Loading Spinner HTML -->
+<div class="spinner-container" id="spinnerContainer">
+    <div class="spinner"></div>
+    <div id="conversionText">Converting: 0%</div>
+</div>
+
+<!-- Success Modal HTML -->
+<div class="modal" id="successModal">
+    <div class="modal-content">
+        <h2 class="modal-title">Success! 🎉</h2>
+        <p>Your file has been converted and downloaded successfully!</p><br>
+        <button class="modal-button" onclick="closeModal()">OK</button>
+    </div>
+</div>
     <!-- Flash Message Container -->
     <div id="flashMessage" class="flash-message">
-        <span class="flash-icon">●</span>
-        <div class="flash-content"></div>
         <span class="flash-close" onclick="hideFlash()">×</span>
+
+        <span class="flash-icon"></span>
+        <div class="flash-content"></div>
     </div>
     <div class="container">
         <h1>JSON to Excel Converter</h1>
@@ -540,140 +842,256 @@
         
         <div class="button-group">
             <button id="convertBtn" disabled>Convert to Excel 📊</button>
-            <button id="clearBtn">Clear 🚮</button>
+            <button id="clearBtn">Clear cache and cookies 🚮</button>
         </div>
         
         <div id="status"></div>
     </div>
+    <!-- Flash Notification -->
+    <div id="flashNotification">
+        <span id="flashMessage">⚠️</span>
+    </div>
+
+    <!-- Internet Connection Modal -->
+    <div id="internetConnectionModal" class="internet-modal">
+        <div class="internet-modal-content">
+            <h2>No Internet Connection 📶</h2>
+            <p>Please check your internet connection and try again.</p>
+            <button class="retry-button" onclick="retryConnection()">Retry Connection</button>
+        </div>
+    </div>
 
     <script>
-   let currentFile = null;
-        const fileInput = document.getElementById('fileInput');
-        const fileName = document.getElementById('fileName');
-        const convertBtn = document.getElementById('convertBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const dragZone = document.getElementById('dragZone');
+          let isOnline = navigator.onLine;
+        let currentOpenModal = null;
 
-        // Function to clean student names
-        function cleanStudentName(name) {
-            return name
-                .replace(/^\d+\.\s*/, '') // Remove numbers and dots at the start
-                .replace(/\s*Edit\s*/g, '') // Remove "Edit"
-                .replace(/\s*Delete\s*/g, '') // Remove "Delete"
-                .trim(); // Remove extra whitespace
+        function showFlashNotification(message, isSuccess) {
+            const flashNotification = document.getElementById('flashNotification');
+            const flashMessage = document.getElementById('flashMessage');
+            flashMessage.textContent = message;
+            
+            flashNotification.classList.remove('success', 'error');
+            flashNotification.classList.add(isSuccess ? 'success' : 'error');
+            
+            flashNotification.style.display = 'block';
+            setTimeout(() => {
+                flashNotification.style.display = 'none';
+            }, 3000);
         }
 
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length) {
-                handleFile(e.target.files[0]);
-            }
-        });
-
-        function determineJsonFormat(data) {
-            if (data.students && data.students[0] && 
-                (data.students[0].lit || data.students[0].re || 
-                 data.students[0].lit2 || data.students[0].lug)) {
-                return 'newFormat';
-            }
-            return 'oldFormat';
-        }
-
-        function getHeadersForFormat(format) {
-            if (format === 'newFormat') {
-                return [
-                    'No.', 'Name', 
-                    'ENG Marks', 'ENG Grade',
-                    'MTC Marks', 'MTC Grade',
-                    'LIT Marks', 'LIT Grade',
-                    'RE Marks', 'RE Grade',
-                    'LIT2 Marks', 'LIT2 Grade',
-                    'LUG Marks', 'LUG Grade',
-                    'ICT Marks', 'ICT Grade',
-                    'Total Aggregates', 'Division'
-                ];
+        function checkInternetConnection() {
+            if (navigator.onLine) {
+                if (!isOnline) {
+                    showFlashNotification("Internet connection received 📡", true);
+                    isOnline = true;
+                    if (currentOpenModal === 'internetConnectionModal') {
+                        closeInternetConnectionModal();
+                    }
+                }
             } else {
-                return [
-                    'No.', 'Name',
-                    'ENG Marks', 'ENG Grade',
-                    'MTC Marks', 'MTC Grade',
-                    'SCIE Marks', 'SCIE Grade',
-                    'SST Marks', 'SST Grade',
-                    'ICT Marks', 'ICT Grade',
-                    'KISW Marks', 'KISW Grade',
-                    'Total Aggregates', 'Division'
-                ];
+                if (isOnline) {
+                    showFlashNotification("Internet connection lost 📶", false);
+                    isOnline = false;
+                    openInternetConnectionModal();
+                }
             }
         }
 
-        function getStudentDataForFormat(student, format, index) {
-            const cleanedName = cleanStudentName(student.name);
-            const baseData = [
-                index + 1,
-                cleanedName
-            ];
+        function openInternetConnectionModal() {
+            document.getElementById('internetConnectionModal').style.display = 'flex';
+            currentOpenModal = 'internetConnectionModal';
+        }
 
-            if (format === 'newFormat') {
-                return [
-                    ...baseData,
-                    student.eng?.marks || '', student.eng?.grade || '',
-                    student.mtc?.marks || '', student.mtc?.grade || '',
-                    student.lit?.avg || '', student.lit?.grade || '',
-                    student.re?.marks || '', student.re?.grade || '',
-                    student.lit2?.marks || '', student.lit2?.grade || '',
-                    student.lug?.marks || '', student.lug?.grade || '',
-                    student.ict?.marks || '', student.ict?.grade || '',
-                    student.totalAggregates || '',
-                    student.division || ''
-                ];
+        function closeInternetConnectionModal() {
+            document.getElementById('internetConnectionModal').style.display = 'none';
+            currentOpenModal = null;
+        }
+
+        function retryConnection() {
+            checkInternetConnection();
+            if (isOnline) {
+                closeInternetConnectionModal();
             } else {
-                return [
-                    ...baseData,
-                    student.eng?.marks || '', student.eng?.grade || '',
-                    student.mtc?.marks || '', student.mtc?.grade || '',
-                    student.scie?.marks || '', student.scie?.grade || '',
-                    student.sst?.marks || '', student.sst?.grade || '',
-                    student.ict?.marks || '', student.ict?.grade || '',
-                    student.kisw?.marks || '', student.kisw?.grade || '',
-                    student.totalAggregates || '',
-                    student.division || ''
-                ];
+                showFlashNotification("Still no internet connection 😔", false);
             }
         }
 
-        function showFlash(message, type = 'success') {
+                // Add these new functions for flash messages
+                function showFlash(message, type = 'success') {
             const flash = document.getElementById('flashMessage');
             const content = flash.querySelector('.flash-content');
-            const icon = flash.querySelector('.flash-icon');
-            
-            flash.classList.remove('flash-success', 'flash-error');
-            flash.classList.add(`flash-${type}`);
-            
-            icon.innerHTML = type === 'success' ? '✓' : '⚠';
+            flash.style.display = 'block';
+            flash.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
             content.textContent = message;
-            flash.classList.add('show');
             
-            setTimeout(hideFlash, 5000);
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                hideFlash();
+            }, 3000);
         }
 
         function hideFlash() {
             const flash = document.getElementById('flashMessage');
-            flash.classList.remove('show');
+            flash.style.display = 'none';
         }
 
-        function showLoading() {
-            showFlash('Processing... Please wait', 'success');
-            const content = document.querySelector('.flash-content');
-            const spinner = document.createElement('div');
-            spinner.className = 'loading-spinner';
-            content.prepend(spinner);
+let currentFile = null;
+const fileInput = document.getElementById('fileInput');
+const fileName = document.getElementById('fileName');
+const convertBtn = document.getElementById('convertBtn');
+const clearBtn = document.getElementById('clearBtn');
+const dragZone = document.getElementById('dragZone');
+const progressContainer = document.getElementById('progressContainer');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const spinnerContainer = document.getElementById('spinnerContainer');
+const conversionText = document.getElementById('conversionText');
+const successModal = document.getElementById('successModal');
+
+// Function to clean student names
+function cleanStudentName(name) {
+    return name
+        .replace(/^\d+\.\s*/, '') // Remove numbers and dots at the start
+        .replace(/\s*Edit\s*/g, '') // Remove "Edit"
+        .replace(/\s*Delete\s*/g, '') // Remove "Delete"
+        .trim(); // Remove extra whitespace
+}
+
+// Simulates file upload progress
+function simulateUploadProgress() {
+            let progress = 0;
+            progressContainer.style.display = 'block';
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 10; // Slightly slower for better visual effect
+                if (progress > 100) progress = 100;
+                
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = `Uploading: ${Math.round(progress)}%`;
+                
+                if (progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                        convertBtn.disabled = false;
+                    }, 800); // Slightly longer display time
+                }
+            }, 100);
         }
 
-        function handleFile(file) {
+        function simulateConversion() {
+            return new Promise((resolve) => {
+                let progress = 0;
+                spinnerContainer.style.display = 'block';
+                
+                const interval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress > 100) progress = 100;
+                    
+                    conversionText.textContent = `Converting: ${Math.round(progress)}%`;
+                    
+                    if (progress === 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            spinnerContainer.style.display = 'none';
+                            resolve();
+                        }, 800); // Slightly longer display time
+                    }
+                }, 200);
+            });
+        }
+
+// Modal functions
+function showModal() {
+    successModal.style.display = 'flex';
+}
+
+function closeModal() {
+    successModal.style.display = 'none';
+}
+
+// Determines the format of the JSON data
+function determineJsonFormat(data) {
+    if (data.students && data.students[0] && 
+        (data.students[0].lit || data.students[0].re || 
+         data.students[0].lit2 || data.students[0].lug)) {
+        return 'newFormat';
+    }
+    return 'oldFormat';
+}
+
+// Gets headers based on the data format
+function getHeadersForFormat(format) {
+    if (format === 'newFormat') {
+        return [
+            'No.', 'NAME', 
+            'ENG', 'AGG',
+            'MTC', 'AGG',
+            'LIT', 'AGG',
+            'RE', 'AGG',
+            'LIT 2', 'AGG',
+            'LUG', 'AGG',
+            'ICT', 'AGG',
+            'TAG', 'DIV'
+        ];
+    } else {
+        return [
+            'No.', 'NAME',
+            'ENG', 'AGG',
+            'MTC', 'AGG',
+            'SCIE', 'AGG',
+            'SST', 'AGG',
+            'ICT', 'AGG',
+            'KISW', 'AGG',
+            'TAG', 'DIV'
+        ];
+    }
+}
+
+// Gets student data based on the format
+function getStudentDataForFormat(student, format, index) {
+    const cleanedName = cleanStudentName(student.name);
+    const baseData = [
+        index + 1,
+        cleanedName
+    ];
+
+    if (format === 'newFormat') {
+        return [
+            ...baseData,
+            student.eng?.marks || '', student.eng?.grade || '',
+            student.mtc?.marks || '', student.mtc?.grade || '',
+            student.lit?.avg || '', student.lit?.grade || '',
+            student.re?.marks || '', student.re?.grade || '',
+            student.lit2?.marks || '', student.lit2?.grade || '',
+            student.lug?.marks || '', student.lug?.grade || '',
+            student.ict?.marks || '', student.ict?.grade || '',
+            student.totalAggregates || '',
+            student.division || ''
+        ];
+    } else {
+        return [
+            ...baseData,
+            student.eng?.marks || '', student.eng?.grade || '',
+            student.mtc?.marks || '', student.mtc?.grade || '',
+            student.scie?.marks || '', student.scie?.grade || '',
+            student.sst?.marks || '', student.sst?.grade || '',
+            student.ict?.marks || '', student.ict?.grade || '',
+            student.kisw?.marks || '', student.kisw?.grade || '',
+            student.totalAggregates || '',
+            student.division || ''
+        ];
+    }
+}
+
+// Handles file selection
+function handleFile(file) {
             if (file && file.type === "application/json") {
                 currentFile = file;
                 fileName.textContent = `Selected file: ${file.name}`;
-                convertBtn.disabled = false;
-                showFlash(`File "${file.name}" selected successfully`, 'success');
+                convertBtn.disabled = true;
+                showFlash('Uploading file, please wait... ⬆️', 'success');
+                simulateUploadProgress();
             } else {
                 fileName.textContent = "Please select a JSON file";
                 convertBtn.disabled = true;
@@ -681,104 +1099,128 @@
             }
         }
 
-        convertBtn.addEventListener('click', () => {
-            if (!currentFile) return;
+// Converts data to Excel
+async function convertToExcel(data) {
+            if (!navigator.onLine) {
+                showFlashNotification("No internet connection. Please check your connection.", false);
+                openInternetConnectionModal();
+                return;
+            }
 
-            showLoading();
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    convertToExcel(data);
-                } catch (error) {
-                    showFlash('Invalid JSON format. Please check your file.', 'error');
-                    console.error(error);
-                }
-            };
-
-            reader.onerror = function() {
-                showFlash('Error reading file. Please try again.', 'error');
-            };
-
-            reader.readAsText(currentFile);
-        });
-
-        function convertToExcel(data) {
             try {
+                showFlash('Converting your file...', 'success');
+                await simulateConversion();
+                
                 const format = determineJsonFormat(data);
                 const headers = getHeadersForFormat(format);
-                
-                const wsData = [
-                    ['Class:', data.class],
-                    ['Stream:', data.stream],
-                    [],
-                    headers
-                ];
+        
+        const wsData = [
+            ['Class:', data.class],
+            ['Stream:', data.stream],
+            [],
+            headers
+        ];
 
-                data.students.forEach((student, index) => {
-                    const rowData = getStudentDataForFormat(student, format, index);
-                    wsData.push(rowData);
-                });
+        data.students.forEach((student, index) => {
+            const rowData = getStudentDataForFormat(student, format, index);
+            wsData.push(rowData);
+        });
 
-                const wb = XLSX.utils.book_new();
-                const ws = XLSX.utils.aoa_to_sheet(wsData);
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(wsData);
 
-                const colWidths = [
-                    {wch: 5},
-                    {wch: 30},
-                    ...Array(headers.length - 2).fill({wch: 12})
-                ];
-                ws['!cols'] = colWidths;
+        // Set column widths
+        const colWidths = [
+            {wch: 5},  // No.
+            {wch: 30}, // NAME
+            ...Array(headers.length - 2).fill({wch: 12}) // Other columns
+        ];
+        ws['!cols'] = colWidths;
 
-                for (let i = 0; i < 4; i++) {
-                    const range = XLSX.utils.decode_range(ws['!ref']);
-                    for (let C = range.s.c; C <= range.e.c; C++) {
-                        const address = XLSX.utils.encode_cell({r: i, c: C});
-                        if (!ws[address]) continue;
-                        ws[address].s = {
-                            font: { bold: true },
-                            alignment: { horizontal: 'center' }
-                        };
-                    }
-                }
+        // Style headers
+        for (let i = 0; i < 4; i++) {
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            for (let C = range.s.c; C <= range.e.c; C++) {
+                const address = XLSX.utils.encode_cell({r: i, c: C});
+                if (!ws[address]) continue;
+                ws[address].s = {
+                    font: { bold: true },
+                    alignment: { horizontal: 'center' }
+                };
+            }
+        }
 
-                XLSX.utils.book_append_sheet(wb, ws, 'Student Results');
-                XLSX.writeFile(wb, `${data.class}_${data.stream}_Results.xlsx`);
+        XLSX.utils.book_append_sheet(wb, ws, 'Student Results');
+        XLSX.writeFile(wb, `${data.class}_${data.stream}_Results.xlsx`);
 
-                showFlash('Excel file generated successfully!', 'success');
+        showFlash('File converted and downloaded successfully!', 'success');
+                showModal();
             } catch (error) {
                 showFlash('Failed to process the JSON data. Please check the file format.', 'error');
                 console.error(error);
             }
         }
 
-        clearBtn.addEventListener('click', () => {
-            fileInput.value = '';
-            fileName.textContent = '';
-            convertBtn.disabled = true;
-            currentFile = null;
-            showFlash('Form cleared successfully', 'success');
+         // Add event listeners for online/offline status
+         window.addEventListener('online', checkInternetConnection);
+        window.addEventListener('offline', checkInternetConnection);
+
+        // Initial check when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            checkInternetConnection();
         });
 
-        dragZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dragZone.classList.add('dragover');
-        });
+// Event Listeners
+convertBtn.addEventListener('click', () => {
+    if (!currentFile) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            convertToExcel(data);
+        } catch (error) {
+            alert('Invalid JSON format. Please check your file.');
+            console.error(error);
+        }
+    };
+    reader.readAsText(currentFile);
+});
 
-        dragZone.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            dragZone.classList.remove('dragover');
-        });
+clearBtn.addEventListener('click', () => {
+    fileInput.value = '';
+    fileName.textContent = '';
+    convertBtn.disabled = true;
+    currentFile = null;
+    progressContainer.style.display = 'none';
+    spinnerContainer.style.display = 'none';
+});
 
-        dragZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dragZone.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length) {
-                handleFile(files[0]);
-            }
-        });
+// Drag and drop handlers
+dragZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dragZone.classList.add('dragover');
+});
+
+dragZone.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    dragZone.classList.remove('dragover');
+});
+
+dragZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dragZone.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length) {
+        handleFile(files[0]);
+    }
+});
+
+fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length) {
+        handleFile(e.target.files[0]);
+    }
+});
     </script>
 </body>
 </html>

@@ -1573,13 +1573,13 @@ function convertToExcel() {
         // Create headers based on the format
         let headers;
         if (format === 'original') {
-            headers = ['Name', 'English', 'Grade', 'Mathematics', 'Grade', 'Science', 'Grade', 
-                       'Social Studies', 'Grade', 'ICT', 'Grade', 'Kiswahili', 'Grade', 
-                       'Total Aggregates', 'Division'];
+            headers = ['NAME', 'ENG', 'AGG', 'MTC', 'AGG', 'SCI', 'AGG', 
+                       'SST', 'AGG', 'ICT', 'AGG', 'KISW', 'AGG', 
+                       'TAG', 'DIV'];
         } else {
-            headers = ['Name', 'English', 'Grade', 'Mathematics', 'Grade', 'Literature A', 'Literature B', 
-                       'Literature Avg', 'Literature Grade', 'RE', 'Grade', 'Literature 2', 'Grade', 
-                       'Luganda', 'Grade', 'Total Aggregates', 'Division'];
+            headers = ['NAME', 'ENG', 'AGG', 'MTC', 'AGG', 'LIT A', 'LIT B', 
+                       'AVG', 'AGG', 'R.E', 'AGG', 'LIT 2', 'AGG', 
+                       'LUG', 'AGG', 'TAG', 'DIV'];
         }
 
         // Create worksheet
