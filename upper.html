@@ -16,7 +16,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta property="og:site_name" content="Fresh Teacher's Library" />
-    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
       <title>Glorious Examinations Board</title>
     <style>
@@ -226,7 +225,11 @@
             color: #ff0000;
         }
         
-
+        #saveDraftBtn, #importDataBtn {
+            margin-top: 20px;
+            margin-right: 10px;
+            margin-left: 10px;
+        }
         
         #fileInput {
             display: none;
@@ -374,7 +377,10 @@ input.minor-subject {
 
 
 @media print {
-
+    @page {
+        size: landscape;
+        margin: 0.5cm; /* Reduce page margins */
+    }
     body {
         font-size: 14pt;
         font-family: 'Times New Roman', Georgia, serif;
@@ -472,8 +478,12 @@ input.minor-subject {
   /* Hide specific buttons */
   #saveJsonBtn,
     #importJsonBtn,
-
-    #generatePdfBtn{
+    #exportCsvBtn,
+    #importCsvBtn,
+    #generatePdfBtn,
+    #importDataBtn,
+    #saveDraftBtn,
+    #exportBtn {
         display: none !important;
     }
 
@@ -942,250 +952,52 @@ main {
 .flash-message.fade-out {
     opacity: 0;
 }
-#excelConversionModal {
-        display: none;
-        position: fixed;
-        z-index: 1000;  /* Ensure it's above other elements */
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.4);
-    }
-
-    #excelConversionModal .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 500px;
-    }
-
-    #excelConversionModal h2 {
-        margin-top: 0;
-    }
-
-    #excelConversionModal input[type="file"] {
-        margin: 10px 0;
-    }
-
-    #excelConversionModal button {
-        margin: 5px;
-        padding: 5px 10px;
-    }
-    .flash-notification {
-    display: none;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    border-radius: 4px;
-    z-index: 1001;
-}
-
-#internetConnectionModal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
-
-#internetConnectionModal .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-}
-.flash-notification {
-        display: none;
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 16px;
-        border-radius: 4px;
-        z-index: 1001;
-        color: white;
-        font-weight: bold;
-    }
-
-    .flash-notification.success {
-        background-color: #4CAF50; /* Green */
-    }
-
-    .flash-notification.error {
-        background-color: #f44336; /* Red */
-    }
-    #connectionSuggestions {
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: 15px;
-}
-
-#connectionSuggestions li {
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #666;
-}
-@media print {
-        #convertToExcelBtn {
-            display: none;
-        }
-    }
-    /* Loading spinner styles */
-.loading-spinner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        .loading-spinner.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .lds-ring {
-            display: inline-block;
-            position: relative;
-            width: 80px;
-            height: 80px;
-        }
-
-        .lds-ring div {
-            box-sizing: border-box;
-            display: block;
-            position: absolute;
-            width: 64px;
-            height: 64px;
-            margin: 8px;
-            border: 8px solid;
-            border-radius: 50%;
-            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            border-color: #ff6b6b transparent transparent transparent;
-        }
-
-        .lds-ring div:nth-child(1) {
-            border-color: #ff6b6b transparent transparent transparent;
-            animation-delay: -0.45s;
-        }
-
-        .lds-ring div:nth-child(2) {
-            border-color: #ffa500 transparent transparent transparent;
-            animation-delay: -0.3s;
-        }
-
-        .lds-ring div:nth-child(3) {
-            border-color: #ffff00 transparent transparent transparent;
-            animation-delay: -0.15s;
-        }
-
-        .lds-ring div:nth-child(4) {
-            border-color: #00ff00 transparent transparent transparent;
-        }
-
-        @keyframes lds-ring {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
     </style>
 </head>
-<body>
-<!-- Loading spinner -->
-<div class="loading-spinner" id="loading-spinner">
-    <div class="lds-ring">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-</div>
 <script>
-// Get the loading spinner element
-const loadingSpinner = document.getElementById('loading-spinner');
-
-// Show the loading spinner
-function showSpinner() {
-    loadingSpinner.classList.add('show');
+    // navbar-script.js
+function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    navLinks.classList.toggle('show');
 }
 
-// Hide the loading spinner
-function hideSpinner() {
-    loadingSpinner.classList.remove('show');
+function logout() {
+    localStorage.removeItem("rememberMe");
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("password");
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("intendedPage");
+    window.location.href = 'index.html';
 }
 
-// Show the loading spinner before the page loads
-window.addEventListener('DOMContentLoaded', showSpinner);
+// function checkAuth(page) {
+//     if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+//         window.location.href = page;
+//     } else {
+//         sessionStorage.setItem("intendedPage", page);
+//         showLoginMessage();
+//     }
+// }
 
-// Hide the loading spinner once the content is ready
-window.addEventListener('load', hideSpinner);
+// function showLoginMessage() {
+//     // Implement this function if you want to show a login message
+//     console.log("Please log in to access this page.");
+// }
 
-// Handle the back/forward navigation
-window.addEventListener('pageshow', (event) => {
-    if (event.persisted) {
-        // Page was loaded from cache (user used back/forward button)
-        hideSpinner();
-    }
-});
+// function checkAuthStatus() {
+//     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+//     document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
+// }
 
-// Show the loading spinner when clicking a link
-document.addEventListener('click', (event) => {
-    const target = event.target.closest('a');
-    if (target && target.getAttribute('href') && 
-        !target.getAttribute('href').startsWith('#') && 
-        !target.getAttribute('target') &&
-        target.getAttribute('href') !== 'javascript:void(0);') {
-        event.preventDefault();
-        showSpinner();
-        setTimeout(() => {
-            window.location.href = target.getAttribute('href');
-        }, 500); // Delay of 500ms to simulate loading
-    }
-});
-
-// Authentication check function
-function checkAuth(url) {
-    // Your authentication logic here
-    const isAuthenticated = true; // Replace with your actual auth check
-
-    if (isAuthenticated) {
-        showSpinner();
-        setTimeout(() => {
-            window.location.href = url;
-        }, 500);
-    } else {
-        // Show login message or redirect to login page
-        const loginMessage = document.getElementById('login-message');
-        loginMessage.style.display = 'block';
-        setTimeout(() => {
-            loginMessage.style.display = 'none';
-        }, 3000);
-    }
-}
+// document.addEventListener("DOMContentLoaded", function() {
+//     checkAuthStatus();
+//     document.getElementById('currentYear').textContent = new Date().getFullYear();
+// });
 </script>
+<body>
      <!-- Add the navbar -->
      <!-- <div class="navbar">
         <div class="logo">
@@ -1247,106 +1059,82 @@ function checkAuth(url) {
             <button id="saveJsonBtn" style="margin-top: 20px;">Export as JSON { }</button>
             <button id="importJsonBtn" style="margin-top: 20px;">Import JSON { }</button>
             <button id="convertToExcelBtn" style="margin-top: 20px;">Convert to Excel 📊</button>
-              <button id="generatePdfBtn" style="margin-top: 20px;">Print Preview 🖶</button>
+            <button id="exportCsvBtn" style="margin-top: 20px;">Export as CSV 📄</button>
+            <button id="importCsvBtn" style="margin-top: 20px;">Import CSV 📄</button>
+<input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+            <button id="generatePdfBtn" style="margin-top: 20px;">Print Preview 🖶</button>
             <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
             
+            <button id="importDataBtn" style="display: none;">Import Data</button>
             <input type="file" id="fileInput" accept=".json" style="display: none;">
+            <button id="saveDraftBtn" style="display: none;">Save Draft</button>
+            <button id="exportBtn" style="display: none;">Export Results</button>
              </div>
-
-<!-- No Internet Connection Modal -->
-<div id="internetConnectionModal" class="modal">
-    <div class="modal-content">
-        <h2>No Internet Connection 🌐 </h2>
-        <p>You appear to be offline. Some functionalities may not work.</p>
-        
-        <button onclick="retryConnection()">Retry</button>
-        <button onclick="closeInternetConnectionModal()">Close</button>
-        <h3>Here are some friendly suggestions:</h3>
-        <ul id="connectionSuggestions">
-            <li>Turn on Wi-Fi</li>
-            <li>Check if you're in airplane mode</li>
-            <li>Restart your router</li>
-            <li>Move closer to your Wi-Fi router</li>
-            <li>Try connecting to a different network</li>
-        </ul>
+<!-- Add this modal HTML at the end of your body tag -->
+<div id="leavePageModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+    background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;">
+    <h3>WARNING ⚠️</h3>
+    <p>If you leave this page, you will lose all the unsaved changes!</p>
+    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 15px;">
+        <button id="stayButton" style="padding: 8px 16px; background-color: #f0f0f0; border: none; border-radius: 4px; cursor: pointer;">
+            Stay on Page
+        </button>
+        <button id="continueButton" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Continue
+        </button>
     </div>
 </div>
 
-<!-- Excel Conversion Modal -->
-<div id="excelConversionModal" class="modal">
-    <div class="modal-content">
-        <h2>Convert JSON to Excel</h2>
-        <input type="file" id="jsonExcelInput" accept=".json">
-        <button onclick="convertToExcel()">Convert</button>
-        <button onclick="closeExcelConversionModal()">Cancel</button>
-    </div>
+<div id="modalOverlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+    background-color: rgba(0,0,0,0.5); z-index: 999;">
 </div>
+
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const convertToExcelBtn = document.getElementById('convertToExcelBtn');
+    const leavePageModal = document.getElementById('leavePageModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const stayButton = document.getElementById('stayButton');
+    const continueButton = document.getElementById('continueButton');
 
-    // navbar-script.js
-function toggleMenu() {
-    const navLinks = document.getElementById('nav-links');
-    navLinks.classList.toggle('show');
-}
+    // Show modal when Convert to Excel button is clicked
+    convertToExcelBtn.addEventListener('click', function() {
+        leavePageModal.style.display = 'block';
+        modalOverlay.style.display = 'block';
+    });
 
-function logout() {
-    localStorage.removeItem("rememberMe");
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
-    localStorage.removeItem("isLoggedIn");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("password");
-    sessionStorage.removeItem("isLoggedIn");
-    sessionStorage.removeItem("intendedPage");
-    window.location.href = 'index.html';
-}
+    // Stay on page
+    stayButton.addEventListener('click', function() {
+        leavePageModal.style.display = 'none';
+        modalOverlay.style.display = 'none';
+    });
 
-function checkAuth(page) {
-    if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
-        window.location.href = page;
-    } else {
-        sessionStorage.setItem("intendedPage", page);
-        showLoginMessage();
-    }
-}
+    // Continue to Excel page
+    continueButton.addEventListener('click', function() {
+        window.location.href = 'xlsx.html';
+    });
 
-function showLoginMessage() {
-    // Implement this function if you want to show a login message
-    console.log("Please log in to access this page.");
-}
-
-function checkAuthStatus() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
-    document.getElementById("logout-nav").style.display = isLoggedIn ? "block" : "none";
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    checkAuthStatus();
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    // Close modal when clicking outside
+    modalOverlay.addEventListener('click', function() {
+        leavePageModal.style.display = 'none';
+        modalOverlay.style.display = 'none';
+    });
 });
 </script>
-<!-- Flash Notification -->
-<div id="flashNotification" class="flash-notification">
-    <p id="flashMessage"></p>
-</div>
-
-
              <div class="analysis-wrapper">
-                <div class="analysis-section">
-                    <h3>Division Analysis</h3>
-                    <table id="divisionAnalysisTable">
-                        <thead>
-                            <tr>
-                                <th>Division</th>
-                                <th>Number of Pupils</th>
-                                <th>%</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Division analysis rows will be added here dynamically -->
-                        </tbody>
-                    </table>
-            
+             <div class="analysis-section">
+                <h3>Division Analysis</h3>
+                <table id="divisionAnalysisTable">
+                    <thead>
+                        <tr>
+                            <th>Division</th>
+                            <th>Number of Pupils</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Division analysis rows will be added here dynamically -->
+                    </tbody>
+                </table>
             
                 <h3>Aggregate Analysis</h3>
                 <table id="aggregateAnalysisTable">
@@ -1419,223 +1207,7 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
 </footer>
     <script>
-let isOnline = navigator.onLine;
-let currentOpenModal = null;
-
-function showFlashNotification(message, isSuccess) {
-    const flashNotification = document.getElementById('flashNotification');
-    const flashMessage = document.getElementById('flashMessage');
-    flashMessage.textContent = message;
-    
-    // Remove any existing classes
-    flashNotification.classList.remove('success', 'error');
-    
-    // Add the appropriate class based on the message type
-    if (isSuccess) {
-        flashNotification.classList.add('success');
-    } else {
-        flashNotification.classList.add('error');
-    }
-    
-    flashNotification.style.display = 'block';
-    setTimeout(() => {
-        flashNotification.style.display = 'none';
-    }, 3000);
-}
-
-function checkInternetConnection() {
-    if (navigator.onLine) {
-        if (!isOnline) {
-            showFlashNotification("Internet connection received 📡", true);
-            isOnline = true;
-            if (currentOpenModal === 'internetConnectionModal') {
-                closeInternetConnectionModal();
-                openExcelConversionModal();
-            }
-        }
-    } else {
-        if (isOnline) {
-            showFlashNotification("Internet connection lost 📶", false);
-            isOnline = false;
-            if (currentOpenModal === 'excelConversionModal') {
-                closeExcelConversionModal();
-                openInternetConnectionModal();
-            }
-        }
-    }
-}
-
-function openInternetConnectionModal() {
-    document.getElementById('internetConnectionModal').style.display = 'block';
-    currentOpenModal = 'internetConnectionModal';
-}
-
-function closeInternetConnectionModal() {
-    document.getElementById('internetConnectionModal').style.display = 'none';
-    currentOpenModal = null;
-}
-
-function openExcelConversionModal() {
-    document.getElementById('excelConversionModal').style.display = 'block';
-    document.getElementById('jsonExcelInput').value = '';
-    currentOpenModal = 'excelConversionModal';
-}
-
-function closeExcelConversionModal() {
-    document.getElementById('excelConversionModal').style.display = 'none';
-    currentOpenModal = null;
-}
-
-function retryConnection() {
-    checkInternetConnection();
-    if (isOnline) {
-        closeInternetConnectionModal();
-        openExcelConversionModal();
-    } else {
-        showFlashNotification("Still no internet connection 😔", false);
-    }
-}
-
-document.getElementById('convertToExcelBtn').addEventListener('click', function() {
-    if (navigator.onLine) {
-        openExcelConversionModal();
-    } else {
-        openInternetConnectionModal();
-    }
-});
-
-function convertToExcel() {
-    if (!navigator.onLine) {
-        openInternetConnectionModal();
-        return;
-    }
-
-    const fileInput = document.getElementById('jsonExcelInput');
-    const file = fileInput.files[0];
-
-    if (!file) {
-        alert('Please select a JSON file.');
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        let data;
-        try {
-            data = JSON.parse(e.target.result);
-        } catch (error) {
-            alert('Invalid JSON file. Please check your input.');
-            return;
-        }
-
-        const schoolName = "GLORIOUS KINDERGARTEN & PRIMARY SCHOOL";
-        const className = data.class;
-        const stream = data.stream;
-        const students = data.students;
-
-        // Determine the format based on the first student's data
-        const format = students[0].hasOwnProperty('scie') ? 'original' : 'new';
-
-        // Create headers based on the format
-        let headers;
-        if (format === 'original') {
-            headers = ['Name', 'English', 'Grade', 'Mathematics', 'Grade', 'Science', 'Grade', 
-                       'Social Studies', 'Grade', 'ICT', 'Grade', 'Kiswahili', 'Grade', 
-                       'Total Aggregates', 'Division'];
-        } else {
-            headers = ['Name', 'English', 'Grade', 'Mathematics', 'Grade', 'Literature A', 'Literature B', 
-                       'Literature Avg', 'Literature Grade', 'RE', 'Grade', 'Literature 2', 'Grade', 
-                       'Luganda', 'Grade', 'Total Aggregates', 'Division'];
-        }
-
-        // Create worksheet
-        const ws = XLSX.utils.aoa_to_sheet([
-            [schoolName],
-            [`Class: ${className}`, `Stream: ${stream}`],
-            [],  // Empty row for spacing
-            headers
-        ]);
-
-        // Add student data
-        const studentData = students.map(student => {
-            if (format === 'original') {
-                return [
-                    student.name,
-                    student.eng.marks, student.eng.grade,
-                    student.mtc.marks, student.mtc.grade,
-                    student.scie.marks, student.scie.grade,
-                    student.sst.marks, student.sst.grade,
-                    student.ict.marks, student.ict.grade,
-                    student.kisw.marks, student.kisw.grade,
-                    student.totalAggregates,
-                    student.division
-                ];
-            } else {
-                return [
-                    student.name,
-                    student.eng.marks, student.eng.grade,
-                    student.mtc.marks, student.mtc.grade,
-                    student.lit.a.marks,
-                    student.lit.b.marks,
-                    student.lit.avg,
-                    student.lit.grade,
-                    student.re.marks, student.re.grade,
-                    student.lit2.marks, student.lit2.grade,
-                    student.lug.marks, student.lug.grade,
-                    student.totalAggregates,
-                    student.division
-                ];
-            }
-        });
-
-        XLSX.utils.sheet_add_aoa(ws, studentData, {origin: -1});
-
-        // Set column widths
-        const cols = Array(headers.length).fill({wch: 15});
-        cols[0] = {wch: 30};  // Name column
-        ws['!cols'] = cols;
-
-        // Make header bold
-        ['A1', 'A2', 'B2'].forEach(cell => {
-            if (!ws[cell]) ws[cell] = {};
-            ws[cell].s = { font: { bold: true } };
-        });
-
-        // Make column headers bold
-        for (let i = 0; i < headers.length; i++) {
-            const cell = XLSX.utils.encode_cell({r: 3, c: i});
-            if (!ws[cell]) ws[cell] = {};
-            ws[cell].s = { font: { bold: true } };
-        }
-
-        // Create workbook and add the worksheet
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Students");
-
-        // Generate Excel file with class name and stream as file name
-        const fileName = `${className}_${stream}.xlsx`.replace(/\s+/g, '_');
-        XLSX.writeFile(wb, fileName);
-
-        // Clear the file input after successful conversion
-        fileInput.value = '';
-
-        closeExcelConversionModal();
-    };
-
-    reader.readAsText(file);
-}
-
-// Check internet connection status every 5 seconds
-setInterval(checkInternetConnection, 5000);
-
-// Initial check when the page loads
-window.addEventListener('load', checkInternetConnection);
-
-// Listen for online/offline events
-window.addEventListener('online', checkInternetConnection);
-window.addEventListener('offline', checkInternetConnection);
-
-function updateAnalysisTables() {
+        function updateAnalysisTables() {
     // Clear existing data
     document.getElementById('divisionAnalysisTable').getElementsByTagName('tbody')[0].innerHTML = '';
     document.getElementById('aggregateAnalysisTable').getElementsByTagName('tbody')[0].innerHTML = '';
@@ -1646,7 +1218,7 @@ function updateAnalysisTables() {
     updateAggregateAnalysisTable();
     updateSubjectAnalysisTable();
 }
-
+        // Function to import JSON
 function importJSON() {
     document.getElementById('jsonFileInput').click();
 }
@@ -1660,7 +1232,6 @@ document.getElementById('jsonFileInput').addEventListener('change', function(eve
                 const data = JSON.parse(e.target.result);
                 populateTableFromJSON(data);
                 showNotification("JSON data imported successfully!", "success");
-                updateAnalysisTables();
             } catch (error) {
                 console.error('Error parsing JSON:', error);
                 showNotification("Error importing JSON. Please check the file format.", "error");
@@ -1670,13 +1241,41 @@ document.getElementById('jsonFileInput').addEventListener('change', function(eve
     }
 });
 
+// Function to import CSV
+function importCSV() {
+    document.getElementById('csvFileInput').click();
+}
 
-
-function populateTableFromJSON(data) {
-    if (!data.class || !data.stream || !Array.isArray(data.students)) {
-        throw new Error("Invalid JSON structure");
+document.getElementById('csvFileInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = parseCSV(e.target.result);
+                populateTableFromCSV(data);
+                showNotification("CSV data imported successfully!", "success");
+            } catch (error) {
+                console.error('Error parsing CSV:', error);
+                showNotification("Error importing CSV. Please check the file format.", "error");
+            }
+        };
+        reader.readAsText(file);
     }
+});
 
+// Function to parse CSV
+function parseCSV(csv) {
+    const lines = csv.split('\n');
+    return lines.map(line => {
+        // Handle cases where fields might contain commas
+        return line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(field => field.replace(/^"|"$/g, '').trim());
+    });
+}
+
+// Function to populate table from JSON data
+function populateTableFromJSON(data) {
+    addInputEventListeners();
     classSelect.value = data.class;
     populateStreamSelect(data.class);
     streamSelect.value = data.stream;
@@ -1685,38 +1284,101 @@ function populateTableFromJSON(data) {
     const tableBody = document.getElementById('gradeTableBody');
     tableBody.innerHTML = '';
 
-    data.students.forEach((student, index) => {
+    data.students.forEach(student => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${index + 1}. <span class="student-name">${student.name || ''}</span></td>
-            <td><input type="text" class="subject-mark main-subject" value="${student.eng?.marks || ''}" required pattern="^\\d+$|^-$" maxlength="3"></td>
-            <td class="subject-aggregate">${student.eng?.grade || ''}</td>
-            <td><input type="text" class="subject-mark main-subject" value="${student.mtc?.marks || ''}" required pattern="^\\d+$|^-$" maxlength="3"></td>
-            <td class="subject-aggregate">${student.mtc?.grade || ''}</td>
-            <td><input type="text" class="subject-mark main-subject" value="${student.scie?.marks || ''}" required pattern="^\\d+$|^-$" maxlength="3"></td>
-            <td class="subject-aggregate">${student.scie?.grade || ''}</td>
-            <td><input type="text" class="subject-mark main-subject" value="${student.sst?.marks || ''}" required pattern="^\\d+$|^-$" maxlength="3"></td>
-            <td class="subject-aggregate">${student.sst?.grade || ''}</td>
+            <td>${student.name}</td>
+            <td><input type="text" class="subject-mark main-subject" value="${student.eng.marks}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${student.eng.grade}</td>
+            <td><input type="text" class="subject-mark main-subject" value="${student.mtc.marks}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${student.mtc.grade}</td>
+            <td><input type="text" class="subject-mark main-subject" value="${student.scie.marks}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${student.scie.grade}</td>
+            <td><input type="text" class="subject-mark main-subject" value="${student.sst.marks}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${student.sst.grade}</td>
             ${student.ict ? `
-                <td><input type="text" class="subject-mark minor-subject" value="${student.ict.marks || ''}" pattern="^\\d+$|^-$" maxlength="3"></td>
-                <td class="subject-aggregate minor-subject">${student.ict.grade || ''}</td>
+                <td><input type="text" class="subject-mark minor-subject" value="${student.ict.marks}" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject">${student.ict.grade}</td>
             ` : ''}
             ${student.kisw ? `
-                <td><input type="text" class="subject-mark minor-subject" value="${student.kisw.marks || ''}" pattern="^\\d+$|^-$" maxlength="3"></td>
-                <td class="subject-aggregate minor-subject">${student.kisw.grade || ''}</td>
+                <td><input type="text" class="subject-mark minor-subject" value="${student.kisw.marks}" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject">${student.kisw.grade}</td>
             ` : ''}
-            <td class="total-aggregates">${student.totalAggregates || ''}</td>
-            <td class="division">${student.division || ''}</td>
+            <td class="total-aggregates">${student.totalAggregates}</td>
+            <td class="division">${student.division}</td>
         `;
         tableBody.appendChild(row);
     });
 
+    // Add event listeners to the new inputs
     addInputEventListeners();
     
+    // Show the grading page
     welcomePage.style.display = 'none';
     gradingPage.style.display = 'block';
 }
 
+// Function to populate table from CSV data
+function populateTableFromCSV(data) {
+    addInputEventListeners();
+    // Assume the first row is headers
+    const headers = data[0];
+    const classStreamInfo = headers[0].split(' - ');
+    classSelect.value = classStreamInfo[0];
+    populateStreamSelect(classStreamInfo[0]);
+    streamSelect.value = classStreamInfo[1];
+    classStreamTitle.textContent = headers[0];
+
+    const tableBody = document.getElementById('gradeTableBody');
+    tableBody.innerHTML = '';
+
+    // Start from the second row (index 1) to skip headers
+    for (let i = 1; i < data.length; i++) {
+        const studentData = data[i];
+        if (studentData.length < 2) continue; // Skip empty rows
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${studentData[0]}</td>
+            <td><input type="text" class="subject-mark main-subject" value="${studentData[1]}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${studentData[2]}</td>
+            <td><input type="text" class="subject-mark main-subject" value="${studentData[3]}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${studentData[4]}</td>
+            <td><input type="text" class="subject-mark main-subject" value="${studentData[5]}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${studentData[6]}</td>
+            <td><input type="text" class="subject-mark main-subject" value="${studentData[7]}" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate">${studentData[8]}</td>
+        `;
+
+        // Add minor subjects if they exist
+        if (studentData.length > 11) {
+            row.innerHTML += `
+                <td><input type="text" class="subject-mark minor-subject" value="${studentData[9]}" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject">${studentData[10]}</td>
+                <td><input type="text" class="subject-mark minor-subject" value="${studentData[11]}" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject">${studentData[12]}</td>
+            `;
+        }
+
+        row.innerHTML += `
+            <td class="total-aggregates">${studentData[studentData.length - 2]}</td>
+            <td class="division">${studentData[studentData.length - 1]}</td>
+        `;
+
+        tableBody.appendChild(row);
+    }
+
+    // Add event listeners to the new inputs
+    addInputEventListeners();
+    
+    // Show the grading page
+    welcomePage.style.display = 'none';
+    gradingPage.style.display = 'block';
+}
+
+
+
+// Function to add event listeners to inputs
 function addInputEventListeners() {
     const inputs = document.querySelectorAll('.subject-mark');
     inputs.forEach((input, index) => {
@@ -1724,6 +1386,7 @@ function addInputEventListeners() {
             this.value = this.value.replace(/[^0-9-]/g, '');
             validateAndUpdateResults(this);
             
+            // Check if the input is complete and valid before moving to the next cell
             const numValue = parseInt(this.value);
             if ((numValue > 10 && numValue < 100) || this.value === '-' || this.value === '100') {
                 if (index < inputs.length - 1) {
@@ -1750,9 +1413,11 @@ function addInputEventListeners() {
     });
 }
 
+// Add event listeners for the Import buttons
 document.getElementById('importJsonBtn').addEventListener('click', importJSON);
+document.getElementById('importCsvBtn').addEventListener('click', importCSV);
 
-function saveTableAsJSON() {
+        function saveTableAsJSON() {
     const selectedClass = classSelect.value;
     const selectedStream = streamSelect.value;
     const table = document.getElementById('gradeTable');
@@ -1762,28 +1427,30 @@ function saveTableAsJSON() {
         students: []
     };
 
+    // Get all rows from the table (skip the header row)
     const rows = table.querySelectorAll('tr:not(:first-child)');
     
-    rows.forEach((row, index) => {
+    rows.forEach(row => {
         let studentData = {};
         const cells = row.querySelectorAll('td');
         
-        studentData.name = cells[0].querySelector('.student-name').textContent.trim();
+        studentData.name = cells[0].textContent.trim();
         
-        const subjects = ['eng', 'mtc', 'scie', 'sst'];
-        subjects.forEach((subject, i) => {
-            studentData[subject] = {
-                marks: cells[i * 2 + 1].querySelector('input').value,
-                grade: cells[i * 2 + 2].textContent.trim()
+        const subjects = ['ENG', 'MTC', 'SCIE', 'SST'];
+        subjects.forEach((subject, index) => {
+            studentData[subject.toLowerCase()] = {
+                marks: cells[index * 2 + 1].querySelector('input').value,
+                grade: cells[index * 2 + 2].textContent.trim()
             };
         });
 
+        // Add minor subjects if they exist
         if (cells.length > 9) {
-            const minorSubjects = ['ict', 'kisw'];
-            minorSubjects.forEach((subject, i) => {
-                const cellIndex = 9 + i * 2;
+            const minorSubjects = ['ICT', 'KISW'];
+            minorSubjects.forEach((subject, index) => {
+                const cellIndex = 9 + index * 2;
                 if (cells[cellIndex]) {
-                    studentData[subject] = {
+                    studentData[subject.toLowerCase()] = {
                         marks: cells[cellIndex].querySelector('input').value,
                         grade: cells[cellIndex + 1].textContent.trim()
                     };
@@ -1797,8 +1464,13 @@ function saveTableAsJSON() {
         data.students.push(studentData);
     });
 
+    // Convert data to JSON string
     const jsonContent = JSON.stringify(data, null, 2);
+
+    // Create a Blob with the JSON content
     const blob = new Blob([jsonContent], { type: 'application/json' });
+
+    // Create a download link
     const link = document.createElement("a");
     if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
@@ -1808,32 +1480,93 @@ function saveTableAsJSON() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        URL.revokeObjectURL(url);
     }
 }
 
+// Add event listener for the Save as JSON button
 document.getElementById('saveJsonBtn').addEventListener('click', saveTableAsJSON);
 
+        function exportTableToCSV() {
+    const selectedClass = classSelect.value;
+    const selectedStream = streamSelect.value;
+    const table = document.getElementById('gradeTable');
+    let csv = [];
+    
+    // Get all rows from the table
+    const rows = table.querySelectorAll('tr');
+    
+    for (let i = 0; i < rows.length; i++) {
+        let row = [], cols = rows[i].querySelectorAll('td, th');
+        
+        for (let j = 0; j < cols.length; j++) {
+            // Get the text content of the cell
+            let data = cols[j].textContent.replace(/"/g, '""');
+            
+            // If it's an input field, get its value instead
+            if (cols[j].querySelector('input')) {
+                data = cols[j].querySelector('input').value.replace(/"/g, '""');
+            }
+            
+            // Wrap the data in quotes and add to the row
+            row.push('"' + data + '"');
+        }
+        
+        csv.push(row.join(','));
+    }
+    
+    // Combine all rows into a single string
+    const csvContent = csv.join('\n');
+    
+    // Create a Blob with the CSV content
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    // Create a download link
+    const link = document.createElement("a");
+    if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", `${selectedClass}_${selectedStream}_Results.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+}
 
+// Add event listener for the Export as CSV button
 function generatePDF() {
+    // Hide elements we don't want in the PDF
     const welcomePage = document.getElementById('welcomePage');
+    const importDataBtn = document.getElementById('importDataBtn');
     const fileInput = document.getElementById('fileInput');
+    const saveDraftBtn = document.getElementById('saveDraftBtn');
+    const exportBtn = document.getElementById('exportBtn');
     const generatePdfBtn = document.getElementById('generatePdfBtn');
 
     welcomePage.style.display = 'none';
+    importDataBtn.style.display = 'none';
     fileInput.style.display = 'none';
+    saveDraftBtn.style.display = 'none';
+    exportBtn.style.display = 'none';
     generatePdfBtn.style.display = 'none';
 
+    // Show the grading page if it's not already visible
     const gradingPage = document.getElementById('gradingPage');
     gradingPage.style.display = 'block';
 
+    // Print the page
     window.print();
 
+    // Restore the hidden elements
     setTimeout(() => {
         welcomePage.style.display = 'block';
+        importDataBtn.style.display = 'inline-block';
         fileInput.style.display = 'inline-block';
+        saveDraftBtn.style.display = 'inline-block';
+        exportBtn.style.display = 'inline-block';
         generatePdfBtn.style.display = 'inline-block';
 
+        // Show the modal
         showModal();
     }, 100);
 }
@@ -1862,7 +1595,9 @@ function showModal() {
     };
 }
 
+// Add event listener for the Generate PDF button
 document.getElementById('generatePdfBtn').addEventListener('click', generatePDF);
+
         function updateAnalysisTables() {
     updateDivisionAnalysisTable();
     updateAggregateAnalysisTable();
@@ -1892,24 +1627,12 @@ function updateDivisionAnalysisTable() {
         }
     });
 
-    // Calculate total number of pupils
-    const totalStudents = Object.values(divisionCounts).reduce((sum, count) => sum + count, 0);
-
     Object.entries(divisionCounts).forEach(([division, count]) => {
         const row = table.insertRow();
         row.insertCell().textContent = division;
         row.insertCell().textContent = count;
-        
-        // Calculate and add percentage
-        if (totalStudents > 0) {
-            const percentage = ((count / totalStudents) * 100).toFixed(2);
-            row.insertCell().textContent = `${percentage}%`;
-        } else {
-            row.insertCell().textContent = '0%';
-        }
     });
 }
-
 function updateAggregateAnalysisTable() {
     const aggregateRow = document.getElementById('aggregateRow');
     const pupilCountRow = document.getElementById('pupilCountRow');
@@ -2069,7 +1792,26 @@ function calculateSubjectPositions(subjectData) {
         }, 300);
     }, duration);
 }
-   
+             // Add this new function to import data
+             let filePickerOpened = false;
+
+function importData() {
+    const fileInput = document.getElementById('fileInput');
+    fileInput.value = ''; // Clear the file input
+    filePickerOpened = true;
+
+    fileInput.onchange = function(event) {
+        filePickerOpened = false;
+        handleFileSelect(event);
+    };
+
+    // Use setTimeout to allow the file picker to open before adding the blur event listener
+    setTimeout(() => {
+        window.addEventListener('focus', checkImportCancelled);
+    }, 1000);
+
+    fileInput.click();
+}
 
 function checkImportCancelled() {
     const fileInput = document.getElementById('fileInput');
@@ -2100,7 +1842,10 @@ function handleFileSelect(event) {
     event.target.value = '';
 }
 
-      function populateTableWithImportedData(data) {
+// Add event listener for the Import Data button
+document.getElementById('importDataBtn').addEventListener('click', importData);
+
+        function populateTableWithImportedData(data) {
     // Set the class and stream selects
     classSelect.value = data.class;
     populateStreamSelect(data.class);
@@ -2151,7 +1896,92 @@ function handleFileSelect(event) {
         validateAndUpdateResults(input);
     });
 }
+        // Add event listeners for the new Import Data button and file input
+        document.getElementById('importDataBtn').addEventListener('click', importData);
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 
+        async function saveDraft() {
+    const selectedClass = classSelect.value;
+    const selectedStream = streamSelect.value;
+    const rows = document.querySelectorAll('#gradeTable tr');
+    let jsonData = {
+        class: selectedClass,
+        stream: selectedStream,
+        students: []
+    };
+
+    // Skip the header row (index 0)
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const columns = row.querySelectorAll('td');
+        const studentData = {
+            name: columns[0].textContent,
+            math: {
+                marks: columns[1].querySelector('input').value,
+                grade: columns[2].textContent.split(' ')[0] || '',
+                aggregates: columns[2].textContent.split('(')[1] ? parseInt(columns[2].textContent.split('(')[1]) : ''
+            },
+            english: {
+                marks: columns[3].querySelector('input').value,
+                grade: columns[4].textContent.split(' ')[0] || '',
+                aggregates: columns[4].textContent.split('(')[1] ? parseInt(columns[4].textContent.split('(')[1]) : ''
+            },
+            sst: {
+                marks: columns[5].querySelector('input').value,
+                grade: columns[6].textContent.split(' ')[0] || '',
+                aggregates: columns[6].textContent.split('(')[1] ? parseInt(columns[6].textContent.split('(')[1]) : ''
+            },
+            science: {
+                marks: columns[7].querySelector('input').value,
+                grade: columns[8].textContent.split(' ')[0] || '',
+                aggregates: columns[8].textContent.split('(')[1] ? parseInt(columns[8].textContent.split('(')[1]) : ''
+            },
+            totalAggregates: columns[9].textContent,
+            division: columns[10].textContent
+        };
+        jsonData.students.push(studentData);
+    }
+
+    // Convert to JSON string
+    const jsonString = JSON.stringify(jsonData, null, 2);
+    const fileName = `${selectedClass}_${selectedStream}_Draft.json`;
+
+    if ('showSaveFilePicker' in window) {
+        try {
+            const fileHandle = await window.showSaveFilePicker({
+                suggestedName: fileName,
+                types: [{
+                    description: 'JSON File',
+                    accept: {'application/json': ['.json']},
+                }],
+            });
+            const writable = await fileHandle.createWritable();
+            await writable.write(jsonString);
+            await writable.close();
+            console.log('Draft saved successfully using modern API');
+            showNotification('Draft saved successfully!', 'success');
+        } catch (err) {
+            if (err.name === 'AbortError') {
+                console.log('User cancelled the save operation');
+                showNotification("Draft save cancelled", "info");
+            } else {
+                console.warn('Error using modern save method:', err);
+                showNotification("Error saving draft. Please try again.", "error");
+            }
+        }
+    } else {
+        const shouldSave = confirm("Do you want to save the draft?");
+        if (shouldSave) {
+            fallbackSaveMethod(jsonString, fileName);
+            showNotification('Draft saved successfully (using fallback method).', 'success');
+        } else {
+            showNotification("Draft save cancelled", "info");
+        }
+    }
+}
+
+// Add event listener for the Save Draft button
+document.getElementById('saveDraftBtn').addEventListener('click', saveDraft);
 const studentData = {
     'Primary Four': {
     'Cubs': [
@@ -2898,6 +2728,8 @@ function fallbackSaveMethod(content, fileName) {
     }, 100);
 }
 
+// Update the event listener
+document.getElementById('exportBtn').addEventListener('click', exportToJSON);
 
 const classSelect = document.getElementById('classSelect');
 const streamSelect = document.getElementById('streamSelect');
@@ -3157,12 +2989,15 @@ function createTableRows(studentList) {
                 <th>Agg</th>
                 <th>SST</th>
                 <th>Agg</th>
+                <th class="minor-subject">ICT</th>
+                <th class="minor-subject">Agg</th>
+                <th class="minor-subject">KISW</th>
+                <th class="minor-subject">Agg</th>
                 <th>TAG</th>
                 <th>Div</th>
             </tr>
         `;
     } else {
-
         tableHeader.innerHTML = `
             <tr>
                 <th>Name</th>
@@ -3185,52 +3020,50 @@ function createTableRows(studentList) {
     }
     
     studentList.forEach((student, rowIndex) => {
-    const row = document.createElement('tr');
-    let rowHTML = `
-        <td class="name-cell">
-            ${rowIndex + 1}. <span class="student-name">${student}</span>
-            <div class="name-options">
-                <button class="edit-name">Edit</button>
-                <button class="delete-name">Delete</button>
-            </div>
-        </td>
-        <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
-        <td class="subject-aggregate"></td>
-        <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
-        <td class="subject-aggregate"></td>
-        <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
-        <td class="subject-aggregate"></td>
-        <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
-        <td class="subject-aggregate"></td>
-    `;
-    
-    if (isLowerPrimary) {
-        rowHTML += `
-            <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
-            <td class="subject-aggregate minor-subject"></td>
-            <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
-            <td class="subject-aggregate minor-subject"></td>
-            <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
-            <td class="subject-aggregate minor-subject"></td>
+        const row = document.createElement('tr');
+        let rowHTML = `
+            <td class="name-cell">
+                ${rowIndex + 1}. <span class="student-name">${student}</span>
+                <div class="name-options">
+                    <button class="edit-name">Edit</button>
+                    <button class="delete-name">Delete</button>
+                </div>
+            </td>
+             <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate"></td>
+            <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate"></td>
+            <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate"></td>
+            <td><input type="text" class="subject-mark main-subject" required pattern="^\\d+$|^-$" maxlength="3"></td>
+            <td class="subject-aggregate"></td>
         `;
-    } else if (isPrimarySeven) {
-        // No minor subjects for Primary Seven
-    } else {
+        
+        if (isLowerPrimary) {
+            rowHTML += `
+                <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject"></td>
+                <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject"></td>
+                <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject"></td>
+            `;
+        } else {
+            rowHTML += `
+                <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject"></td>
+                <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
+                <td class="subject-aggregate minor-subject"></td>
+            `;
+        }
+        
         rowHTML += `
-            <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
-            <td class="subject-aggregate minor-subject"></td>
-            <td><input type="text" class="subject-mark minor-subject" pattern="^\\d+$|^-$" maxlength="3"></td>
-            <td class="subject-aggregate minor-subject"></td>
+            <td class="total-aggregates"></td>
+            <td class="division"></td>
         `;
-    }
-    
-    rowHTML += `
-        <td class="total-aggregates"></td>
-        <td class="division"></td>
-    `;
-    
-    row.innerHTML = rowHTML;
-    tableBody.appendChild(row);
+        
+        row.innerHTML = rowHTML;
+        tableBody.appendChild(row);
 
         // Add event listeners for name CRUD operations
         const nameCell = row.querySelector('.name-cell');
@@ -3291,7 +3124,7 @@ function createTableRows(studentList) {
     const confirmButton = model.querySelector('#confirmButton');
     const cancelButton = model.querySelector('#cancelButton');
 
-confirmButton.addEventListener('click', () => {
+    confirmButton.addEventListener('click', () => {
     if (action === 'edit') {
         const newName = model.querySelector('#editNameInput').value;
         callback(newName);
@@ -3327,8 +3160,8 @@ function showFlashMessage(message) {
         }, 500);
     }, 3000);
 }
-
-function updateRowNumbers() {
+  
+    function updateRowNumbers() {
     const rows = document.querySelectorAll('#gradeTableBody tr');
     rows.forEach((row, index) => {
         const nameCell = row.querySelector('.name-cell');

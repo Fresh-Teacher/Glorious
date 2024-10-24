@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Welcome To Glorious Schools, #1 Academic Giant in Ugandan Educational Sector.">
+    <meta name="keyword"
+        content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
+    <meta name="author" content="Fresh Teacher">
+    <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
+    <link data-n-head="ssr" rel="manifest" href="/manifest.json" data-hid="manifest">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta property="og:site_name" content="Fresh Teacher's Library" />
+    <meta property="og:image" content="https://gloriouschools.vercel.app/gallery.jpg" />
+      <title>JSON to Excel Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #8B4513, #A0522D, #D2691E);
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: linear-gradient(to bottom right, #FFF8DC, #FAEBD7);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid #DEB887;
+        }
+
+        h1 {
+            color: #8B4513;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            text-shadow: 1px 1px 2px rgba(139, 69, 19, 0.2);
+            border-bottom: 3px solid #DEB887;
+            padding-bottom: 15px;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(145deg, #FF8C00, #FFA500);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            border: 1px solid #FF8C00;
+        }
+
+        .file-input-label:hover {
+            background: linear-gradient(145deg, #FFA500, #FF8C00);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 140, 0, 0.3);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        #fileName {
+            margin-top: 15px;
+            color: #8B4513;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #convertBtn {
+            background: linear-gradient(145deg, #FF8C00, #FFA500);
+            color: white;
+            border: 1px solid #FF8C00;
+        }
+
+        #convertBtn:hover {
+            background: linear-gradient(145deg, #FFA500, #FF8C00);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 140, 0, 0.3);
+        }
+
+        #convertBtn:disabled {
+            background: linear-gradient(145deg, #ccc, #ddd);
+            border-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #clearBtn {
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            color: white;
+            border: 1px solid #8B4513;
+        }
+
+        #clearBtn:hover {
+            background: linear-gradient(145deg, #A0522D, #8B4513);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 69, 19, 0.3);
+        }
+
+        #status {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .success {
+            background: linear-gradient(145deg, #DEB887, #D2B48C);
+            color: #8B4513;
+            border: 1px solid #DEB887;
+        }
+
+        .error {
+            background: linear-gradient(145deg, #FFE4B5, #FFDAB9);
+            color: #D2691E;
+            border: 1px solid #FFE4B5;
+        }
+
+        #dragZone {
+            border: 3px dashed #DEB887;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            background: linear-gradient(to bottom right, rgba(255, 248, 220, 0.8), rgba(250, 235, 215, 0.8));
+        }
+
+        #dragZone.dragover {
+            border-color: #FF8C00;
+            background: linear-gradient(to bottom right, rgba(255, 140, 0, 0.1), rgba(255, 165, 0, 0.1));
+            transform: scale(1.02);
+        }
+
+        .drag-text {
+            color: #8B4513;
+            margin: 10px 0;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .drag-text:first-child {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+    /* New Flash Message Styles */
+    .flash-message {
+            position: fixed;
+            top: -100px; /* Start off-screen */
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 500;
+            z-index: 1000;
+            transition: top 0.5s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 300px;
+            max-width: 80%;
+        }
+
+        .flash-message.show {
+            top: 20px;
+        }
+
+        .flash-success {
+            background: linear-gradient(145deg, #FF8C00, #FFA500);
+            color: white;
+            border: 1px solid #FF8C00;
+        }
+
+        .flash-error {
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            color: white;
+            border: 1px solid #8B4513;
+        }
+
+        .flash-icon {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .flash-content {
+            flex-grow: 1;
+        }
+
+        .flash-close {
+            cursor: pointer;
+            padding: 0 5px;
+            font-size: 20px;
+            line-height: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .flash-close:hover {
+            transform: scale(1.2);
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #FFE4B5;
+            border-radius: 50%;
+            border-top-color: #FF8C00;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Override previous status styles */
+        #status {
+            display: none; /* Hide the old status div */
+        }
+                /* Base styles */
+                * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #8B4513, #A0522D, #D2691E);
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: linear-gradient(to bottom right, #FFF8DC, #FAEBD7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid #DEB887;
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #8B4513;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            text-shadow: 1px 1px 2px rgba(139, 69, 19, 0.2);
+            border-bottom: 3px solid #DEB887;
+            padding-bottom: 15px;
+            word-wrap: break-word;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        #dragZone {
+            border: 3px dashed #DEB887;
+            border-radius: 12px;
+            padding: clamp(20px, 5vw, 40px);
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            background: linear-gradient(to bottom right, rgba(255, 248, 220, 0.8), rgba(250, 235, 215, 0.8));
+            width: 100%;
+        }
+
+        .drag-text {
+            color: #8B4513;
+            margin: 10px 0;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: 500;
+        }
+
+        .drag-text:first-child {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: clamp(10px, 3vw, 20px) 0;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px);
+            background: linear-gradient(145deg, #FF8C00, #FFA500);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            border: 1px solid #FF8C00;
+            width: 100%;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        #fileName {
+            margin-top: 15px;
+            color: #8B4513;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            font-weight: 500;
+            word-wrap: break-word;
+            padding: 0 10px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: clamp(10px, 3vw, 15px);
+            justify-content: center;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 28px);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        /* Flash Message Styles */
+        .flash-message {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: clamp(10px, 3vw, 15px) clamp(15px, 4vw, 25px);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 500;
+            z-index: 1000;
+            transition: top 0.5s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 90%;
+            max-width: 400px;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
+
+        /* Media Queries */
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 15px;
+                width: 95%;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            button {
+                width: 100%;
+                max-width: none;
+            }
+
+            .drag-text br {
+                display: none;
+            }
+
+            #dragZone {
+                padding: 15px;
+            }
+        }
+
+        @media screen and (min-width: 481px) and (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            button {
+                max-width: 180px;
+            }
+        }
+
+        @media screen and (min-width: 769px) {
+            .container {
+                padding: 30px;
+            }
+
+            .file-input-label:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(255, 140, 0, 0.3);
+            }
+
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(139, 69, 19, 0.3);
+            }
+        }
+
+        /* High-DPI Screen Adjustments */
+        @media screen and (min-resolution: 192dpi) {
+            .container {
+                border-width: 1px;
+            }
+
+            .file-input-label,
+            button {
+                border-width: 0.5px;
+            }
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            .container {
+                background: linear-gradient(to bottom right, #2C1810, #3C1F15);
+                border-color: #8B4513;
+            }
+
+            h1,
+            .drag-text,
+            #fileName {
+                color: #FFA500;
+            }
+
+            #dragZone {
+                background: linear-gradient(to bottom right, rgba(44, 24, 16, 0.8), rgba(60, 31, 21, 0.8));
+                border-color: #8B4513;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                border: 1px solid #000;
+            }
+
+            .file-input-wrapper,
+            .button-group {
+                display: none;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Message Container -->
+    <div id="flashMessage" class="flash-message">
+        <span class="flash-icon">●</span>
+        <div class="flash-content"></div>
+        <span class="flash-close" onclick="hideFlash()">×</span>
+    </div>
+    <div class="container">
+        <h1>JSON to Excel Converter</h1>
+        
+        <div class="input-section">
+            <div id="dragZone">
+                <p class="drag-text">Drag and drop your JSON file here</p>
+                <p class="drag-text">- or -</p>
+                <div class="file-input-wrapper">
+                    <label for="fileInput" class="file-input-label">Choose File 📥</label>
+                    <input type="file" id="fileInput" accept=".json">
+                </div>
+                <div id="fileName"></div>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button id="convertBtn" disabled>Convert to Excel 📊</button>
+            <button id="clearBtn">Clear 🚮</button>
+        </div>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+   let currentFile = null;
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const convertBtn = document.getElementById('convertBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const dragZone = document.getElementById('dragZone');
+
+        // Function to clean student names
+        function cleanStudentName(name) {
+            return name
+                .replace(/^\d+\.\s*/, '') // Remove numbers and dots at the start
+                .replace(/\s*Edit\s*/g, '') // Remove "Edit"
+                .replace(/\s*Delete\s*/g, '') // Remove "Delete"
+                .trim(); // Remove extra whitespace
+        }
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function determineJsonFormat(data) {
+            if (data.students && data.students[0] && 
+                (data.students[0].lit || data.students[0].re || 
+                 data.students[0].lit2 || data.students[0].lug)) {
+                return 'newFormat';
+            }
+            return 'oldFormat';
+        }
+
+        function getHeadersForFormat(format) {
+            if (format === 'newFormat') {
+                return [
+                    'No.', 'Name', 
+                    'ENG Marks', 'ENG Grade',
+                    'MTC Marks', 'MTC Grade',
+                    'LIT Marks', 'LIT Grade',
+                    'RE Marks', 'RE Grade',
+                    'LIT2 Marks', 'LIT2 Grade',
+                    'LUG Marks', 'LUG Grade',
+                    'ICT Marks', 'ICT Grade',
+                    'Total Aggregates', 'Division'
+                ];
+            } else {
+                return [
+                    'No.', 'Name',
+                    'ENG Marks', 'ENG Grade',
+                    'MTC Marks', 'MTC Grade',
+                    'SCIE Marks', 'SCIE Grade',
+                    'SST Marks', 'SST Grade',
+                    'ICT Marks', 'ICT Grade',
+                    'KISW Marks', 'KISW Grade',
+                    'Total Aggregates', 'Division'
+                ];
+            }
+        }
+
+        function getStudentDataForFormat(student, format, index) {
+            const cleanedName = cleanStudentName(student.name);
+            const baseData = [
+                index + 1,
+                cleanedName
+            ];
+
+            if (format === 'newFormat') {
+                return [
+                    ...baseData,
+                    student.eng?.marks || '', student.eng?.grade || '',
+                    student.mtc?.marks || '', student.mtc?.grade || '',
+                    student.lit?.avg || '', student.lit?.grade || '',
+                    student.re?.marks || '', student.re?.grade || '',
+                    student.lit2?.marks || '', student.lit2?.grade || '',
+                    student.lug?.marks || '', student.lug?.grade || '',
+                    student.ict?.marks || '', student.ict?.grade || '',
+                    student.totalAggregates || '',
+                    student.division || ''
+                ];
+            } else {
+                return [
+                    ...baseData,
+                    student.eng?.marks || '', student.eng?.grade || '',
+                    student.mtc?.marks || '', student.mtc?.grade || '',
+                    student.scie?.marks || '', student.scie?.grade || '',
+                    student.sst?.marks || '', student.sst?.grade || '',
+                    student.ict?.marks || '', student.ict?.grade || '',
+                    student.kisw?.marks || '', student.kisw?.grade || '',
+                    student.totalAggregates || '',
+                    student.division || ''
+                ];
+            }
+        }
+
+        function showFlash(message, type = 'success') {
+            const flash = document.getElementById('flashMessage');
+            const content = flash.querySelector('.flash-content');
+            const icon = flash.querySelector('.flash-icon');
+            
+            flash.classList.remove('flash-success', 'flash-error');
+            flash.classList.add(`flash-${type}`);
+            
+            icon.innerHTML = type === 'success' ? '✓' : '⚠';
+            content.textContent = message;
+            flash.classList.add('show');
+            
+            setTimeout(hideFlash, 5000);
+        }
+
+        function hideFlash() {
+            const flash = document.getElementById('flashMessage');
+            flash.classList.remove('show');
+        }
+
+        function showLoading() {
+            showFlash('Processing... Please wait', 'success');
+            const content = document.querySelector('.flash-content');
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            content.prepend(spinner);
+        }
+
+        function handleFile(file) {
+            if (file && file.type === "application/json") {
+                currentFile = file;
+                fileName.textContent = `Selected file: ${file.name}`;
+                convertBtn.disabled = false;
+                showFlash(`File "${file.name}" selected successfully`, 'success');
+            } else {
+                fileName.textContent = "Please select a JSON file";
+                convertBtn.disabled = true;
+                showFlash('Please select a valid JSON file', 'error');
+            }
+        }
+
+        convertBtn.addEventListener('click', () => {
+            if (!currentFile) return;
+
+            showLoading();
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    convertToExcel(data);
+                } catch (error) {
+                    showFlash('Invalid JSON format. Please check your file.', 'error');
+                    console.error(error);
+                }
+            };
+
+            reader.onerror = function() {
+                showFlash('Error reading file. Please try again.', 'error');
+            };
+
+            reader.readAsText(currentFile);
+        });
+
+        function convertToExcel(data) {
+            try {
+                const format = determineJsonFormat(data);
+                const headers = getHeadersForFormat(format);
+                
+                const wsData = [
+                    ['Class:', data.class],
+                    ['Stream:', data.stream],
+                    [],
+                    headers
+                ];
+
+                data.students.forEach((student, index) => {
+                    const rowData = getStudentDataForFormat(student, format, index);
+                    wsData.push(rowData);
+                });
+
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+                const colWidths = [
+                    {wch: 5},
+                    {wch: 30},
+                    ...Array(headers.length - 2).fill({wch: 12})
+                ];
+                ws['!cols'] = colWidths;
+
+                for (let i = 0; i < 4; i++) {
+                    const range = XLSX.utils.decode_range(ws['!ref']);
+                    for (let C = range.s.c; C <= range.e.c; C++) {
+                        const address = XLSX.utils.encode_cell({r: i, c: C});
+                        if (!ws[address]) continue;
+                        ws[address].s = {
+                            font: { bold: true },
+                            alignment: { horizontal: 'center' }
+                        };
+                    }
+                }
+
+                XLSX.utils.book_append_sheet(wb, ws, 'Student Results');
+                XLSX.writeFile(wb, `${data.class}_${data.stream}_Results.xlsx`);
+
+                showFlash('Excel file generated successfully!', 'success');
+            } catch (error) {
+                showFlash('Failed to process the JSON data. Please check the file format.', 'error');
+                console.error(error);
+            }
+        }
+
+        clearBtn.addEventListener('click', () => {
+            fileInput.value = '';
+            fileName.textContent = '';
+            convertBtn.disabled = true;
+            currentFile = null;
+            showFlash('Form cleared successfully', 'success');
+        });
+
+        dragZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dragZone.classList.add('dragover');
+        });
+
+        dragZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dragZone.classList.remove('dragover');
+        });
+
+        dragZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dragZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                handleFile(files[0]);
+            }
+        });
+    </script>
+</body>
+</html>
