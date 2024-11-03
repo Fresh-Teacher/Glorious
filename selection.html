@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Welcome To Glorious Video Library; your Number 1 stop for your favourite movies and recorded school events .">
+    <meta name="keyword" content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
+    <meta name="author" content="Fresh Teacher">
+    <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
+    <link rel="manifest" href="/manifest.json" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta property="og:site_name" content="Fresh Teacher's Library" />
+    <meta property="og:image" content="https://gloriouschools.vercel.app/netflix.jpg" />
+       <title>Kids Entertainment Zone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffd700, #ff69b4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            max-width: 1200px;
+        }
+
+        .card {
+            width: 300px;
+            height: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cartoons-image {
+            background-image: url('dance.gif');
+        }
+
+        .soaps-image {
+            background-image: url('miriam.jpg');
+        }
+
+        .movies-image {
+            background-image: url('sonic.gif');
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .card h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .bounce {
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .card {
+                width: 90%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>📹 Glorious Video Library 🎥 </h1>
+    
+    <div class="container">
+        <div class="card" onclick="navigate('player.html')" onmouseover="addBounce(this)">
+            <div class="card-image cartoons-image"></div>
+            <div class="card-content">
+                <h2>School Events 📸</h2>
+                <p>Watch fantastic school events here!</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="navigate('youtube.html')" onmouseover="addBounce(this)">
+            <div class="card-image soaps-image"></div>
+            <div class="card-content">
+                <h2>Edutainment 👨🏽‍💻</h2>
+                <p>Watch educational videos here!</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="navigate('videos.html')" onmouseover="addBounce(this)">
+            <div class="card-image movies-image"></div>
+            <div class="card-content">
+                <h2>Movies 🎬</h2>
+                <p>Enjoy your favourite films here!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Define the curriculum structure
+const curriculum = {
+    "Baby Class": {
+        "Mathematics": ["Counting 1-10", "Shapes", "Colours", "Sorting Objects", "Simple Patterns"],
+        "Science": ["Our Body Parts", "Animals", "Weather", "Water", "Plants"],
+        "English": ["Alphabet Sounds", "Simple Words", "Rhymes", "Picture Books", "Listening Skills"],
+        "Social Studies": ["My Family", "My Friends", "School", "Community Helpers", "Transport"],
+        "Art & Craft": ["Drawing Shapes", "Colouring", "Paper Folding", "Clay Moulding", "Simple Painting"]
+    },
+    "Middle Class": {
+        "Mathematics": ["Counting 1-50", "Simple Addition", "Simple Subtraction", "Shapes & Patterns", "Time (Day & Night)"],
+        "Science": ["Animals & Their Sounds", "Plants & Trees", "Weather & Seasons", "Healthy Habits", "Water & Air"],
+        "English": ["Phonics", "Simple Sentences", "Picture Stories", "Basic Reading", "Naming Objects"],
+        "Social Studies": ["My Family", "My School", "Food & Meals", "Transport", "Our Environment"],
+        "Art & Craft": ["Cutting & Pasting", "Painting", "Simple Drawing", "Clay Modelling", "Craft Projects"]
+    },
+    "Top Class": {
+        "Mathematics": ["Numbers 1-100", "Addition & Subtraction", "Simple Word Problems", "Shapes & Sizes", "Days of the Week"],
+        "Science": ["Our Body", "Living Things", "Plants & Seeds", "Animals & Their Homes", "Weather & Climate"],
+        "English": ["Phonics", "Basic Reading", "Simple Stories", "Writing Short Sentences", "Listening & Speaking"],
+        "Social Studies": ["My Family & Relatives", "Neighbourhood", "People Around Us", "Transport & Communication", "Caring for the Environment"],
+        "Art & Craft": ["Free Drawing", "Cutting & Sticking", "Creative Craft", "Colouring", "Paper Craft"]
+    },
+    "Primary One": {
+        "Mathematics": ["Our School", " Our Home", " Our Community", " The Human Body and Health", "Weather", "Accidents and Safety","Living Together","Food And Nutrition"," Our Transport","Things We Make"," Our Environment ","Peace And Security "],
+        "Science": ["Our School", " Our Home", " Our Community", " The Human Body and Health", "Weather", "Accidents and Safety","Living Together","Food And Nutrition"," Our Transport","Things We Make"," Our Environment ","Peace And Security "],
+        "English":["Our School", " Our Home", " Our Community", " The Human Body and Health", "Weather", "Accidents and Safety","Living Together","Food And Nutrition"," Our Transport","Things We Make"," Our Environment ","Peace And Security "],
+        "Social Studies": ["Our School", " Our Home", " Our Community", " The Human Body and Health", "Weather", "Accidents and Safety","Living Together","Food And Nutrition"," Our Transport","Things We Make"," Our Environment ","Peace And Security "],
+        "Religious Education": ["Discovering God's Gift To Me", "Reading From the Quran", "Tawhid (Faith)", "Moral and Spiritual Teachings", "History of Islam"]
+    },
+    "Primary Two": {
+        "Mathematics": ["Our School and Neighbourhood", "Our Home and Community", "The Human Body and Health", "Food and Nutrition", "The Environment", "Thimgs We Make","Transport In Our Community","Accidents and Safety","Peace and Security","Child Protection","Measures","Recreations, Festivals and Holidays"],
+        "Science":  ["Our School and Neighbourhood", "Our Home and Community", "The Human Body and Health", "Food and Nutrition", "The Environment", "Thimgs We Make","Transport In Our Community","Accidents and Safety","Peace and Security","Child Protection","Measures","Recreations, Festivals and Holidays"],
+        "English":  ["Our School and Neighbourhood", "Our Home and Community", "The Human Body and Health", "Food and Nutrition", "The Environment", "Thimgs We Make","Transport In Our Community","Accidents and Safety","Peace and Security","Child Protection","Measures","Recreations, Festivals and Holidays"],
+        "Social Studies":  ["Our School and Neighbourhood", "Our Home and Community", "The Human Body and Health", "Food and Nutrition", "The Environment", "Thimgs We Make","Transport In Our Community","Accidents and Safety","Peace and Security","Child Protection","Measures","Recreations, Festivals and Holidays"],
+        "Religious Education": ["Christians Living in God's Family", "Reading From the Quran", "Tawhid", "Fiqh", "Moral and Spiritual Teaching", "History of Islam"]
+    },
+    "Primary Three": {
+        "Mathematics": ["Our Sub-county / Division", "", "Livelihood in our Sub-county / Division", "Our Environment in our Sub-county / Division", "Environment and Weather in our Sub-county / Division","Living Things: Plants in our Sub-county/ Division ", "Living Things: Animals in our Sub-county/Division", "Managing Our Resources in our Sub-county / Division", "Keeping Peace our Sub-county / Division ", "Culture and Gender in our Sub-county/Division", "Our Health in our Sub-county/ Division", "Basic Technology our Sub- county/ Division", "Energy Resources in our Sub- county/ Division",],
+        "English": ["Our Sub-county / Division", "", "Livelihood in our Sub-county / Division", "Our Environment in our Sub-county / Division", "Environment and Weather in our Sub-county / Division","Living Things: Plants in our Sub-county/ Division ", "Living Things: Animals in our Sub-county/Division", "Managing Our Resources in our Sub-county / Division", "Keeping Peace our Sub-county / Division ", "Culture and Gender in our Sub-county/Division", "Our Health in our Sub-county/ Division", "Basic Technology our Sub- county/ Division", "Energy Resources in our Sub- county/ Division",],
+        "Social Studies": ["Our Sub-county / Division", "", "Livelihood in our Sub-county / Division", "Our Environment in our Sub-county / Division", "Environment and Weather in our Sub-county / Division","Living Things: Plants in our Sub-county/ Division ", "Living Things: Animals in our Sub-county/Division", "Managing Our Resources in our Sub-county / Division", "Keeping Peace our Sub-county / Division ", "Culture and Gender in our Sub-county/Division", "Our Health in our Sub-county/ Division", "Basic Technology our Sub- county/ Division", "Energy Resources in our Sub- county/ Division",],
+        "Science": ["Our Sub-county / Division", "", "Livelihood in our Sub-county / Division", "Our Environment in our Sub-county / Division", "Environment and Weather in our Sub-county / Division","Living Things: Plants in our Sub-county/ Division ", "Living Things: Animals in our Sub-county/Division", "Managing Our Resources in our Sub-county / Division", "Keeping Peace our Sub-county / Division ", "Culture and Gender in our Sub-county/Division", "Our Health in our Sub-county/ Division", "Basic Technology our Sub- county/ Division", "Energy Resources in our Sub- county/ Division",],
+        "Religious Education": ["Our Sub-county / Division", "", "Livelihood in our Sub-county / Division", "Our Environment in our Sub-county / Division", "Environment and Weather in our Sub-county / Division","Living Things: Plants in our Sub-county/ Division ", "Living Things: Animals in our Sub-county/Division", "Managing Our Resources in our Sub-county / Division", "Keeping Peace our Sub-county / Division ", "Culture and Gender in our Sub-county/Division", "Our Health in our Sub-county/ Division", "Basic Technology our Sub- county/ Division", "Energy Resources in our Sub- county/ Division",],
+        },
+    "Primary Four": {
+        "Mathematics": ["Set Concepts", "Whole Numbers Up to 100,000", "Operations on Whole Numbers", "Patterns and Sequences", "Fractions", "Dimensional Geometry","Data Handling","Money","Time","Length, Mass and Capacity","Equations Without Letters"],
+        "Science": ["Plant Life", "Growing Crops", "Weather Changes Around US", "Personal Hygiene", "Our Food", "Human Body Organs","The Teeth","Sanitation","Communicable Intestinal diseases and worm infestation","Vectors and diseases","Accidents, Poisoning and First Aid","Animal Life"],
+        "English": ["Grammar (Nouns, Verbs, Adjectives)", "Reading Comprehension", "Creative Writing", "Spelling", "Speaking Skills"],
+        "Social Studies": ["OUR DISTRICT", "PHYSICAL FEATURES IN OUT DISTRICT", "VEGETATION IN OUT DISTRICT", "PEOPLE IN OUR DISTRICT", "OUR LEADERS IN THE DISTRICT"],
+        "Religious Education": ["Honesty", "Forgiveness", "Religious Stories", "Prayers & Worship", "Religious Festivals"]
+    },
+    "Primary Five": {
+        "Mathematics": ["Set Concepts", "Patterns and Sequences", "Fractions", "Lines, Angles and Geometrical figures", " Data handling", "Time", "Money", "Length, Mass and Capacity ", "Integers", "Algebra"],
+        "Science": ["Keeping Poultry and Bees", "Measurement", "Components of the environment: The Soil ", "Immunization", " The Digestive System ", "Heat Energy ","Occupation in our community: Crop growing","Bacteria and Fungi ","Types of Change - Biological, physical and chemical","Keeping goats, sheep and pigs ","Food and Nutrition","Primary Health Care and Family Care"],
+        "English": ["VEHICLE REPAIR AND MAINTENANCE ", "Parts of a Vehicle", "Equipment used in Vehicle Repair ", "PRINT MEDIA", "TRAVELLING", "COMMUNICATION", "The Post Office", "The Telephone ", " The Internet ", "Nationalities", "Languages", "PEACE AND SECURITY", "SERVICES (BANKING)"],
+        "Social Studies": ["Location of Uganda on the Map of East Africa", "Physical Features in Uganda", "Climate of Uganda ", "Vegetation in Uganda","Natural Resources in Uganda ",  "Foreign Influence in Uganda", "The Road to Independence", "Uganda as an Independent Nation", "The Government of Uganda ", " Population, Size and Distribution"],
+        "Religious Education": ["FAITH", "Christianity and Islam", "God’s Word for Us", "We are the New People of God in the Spirit ", "We are the Church", "Witness", "RELATIONSHIP WITH GOD ", "HOPE", "Surat Al-Zilzala ", "Settlement of Debts", "Resurrection and Judgement ", "Fasting", "Prophet Muhammad at Madina", "Surat Al-Kauthar (Chapter 108) ", "Good Neighbourliness ", "Paradise and Hell ", "Tarawiih and Idd Prayers", "Last Days of Prophet Muhammad (PBUH) ", "Surah Al-Alaq (Chapter 96)", "Sin", "Zakat", "Miracles of Prophet Muhammad (PBUH)"]
+    },
+    "Primary Six": {
+        "Mathematics": ["Sets", "Whole Numbers", "Operation on Whole Numbers", "Patterns and Sequence", "Fractions", "Data Handling", "Money", "Distance, Time and Speed", "Length, Mass and Capacity", "Lines, Angles and Geometric Figures", "Integers", "Algebra"],
+        "Science": ["Classification of Animals", "Sound and Energy", "Circulatory System", "Alcohol, Smoking and Drugs in Society", "Classification of Plants", "Keeping Cattle", "Resources in the Environment", "Respiratory System", "Science at Home and in Our Community", "Accidents and First Aid", "Sanitation", "The Reproductive System", "",],
+        "English": ["Safety on the Road ", "Traffic Dangers ", "Debating", "Family Relationship", "Occupations", "Carpentry","Tailoring","Baking","Keeping Animals","Hotels"," Using a Dictionary  "],
+        "Social Studies": ["The East African Community", " Major resources of East Africa", "Transport and Communication in East Africa", "The Road to Independence in East Africa", "Responsible living in the East African Environment"],
+        "Religious Education": ["God Created Me", "Evil and Suffering", "God Calls His People", "Christ is the Answer", "Christ’s Gift for the Journey", "How to Behave on the Way","People on the Way","Friends on the Way","Christian Involvement in the World","Happiness on the Way to Arrival","The Power of God","Differences between Zakah and Sadaqah","Road Usage and Enjoining others to do Good","Introduction of Islam in Uganda","Unity of God verses 163-164 and 255-258 of Surat Al-Baqarah","Kufr and Shirik","Recipients of Zakat","Hygiene"," Spread of Islam outside Buganda","Surat Al-Kafi run", "Worship", "Ratio of Zakah", " Uprightness and adolescence", " Islam in Buganda"]
+    },
+    "Primary Seven": {
+        "Mathematics": ["Sets", "Whole Numbers", "Operation on Whole Numbers", "Patterns and Sequences", "Fractions", "Intergers", "Data Handling","Construction","Time","Length, Mass and Capacity","Algebra"],
+        "Science": ["Muscular Skeletal System", "Electricity and Magnetism", "Energy Resources in the Environment", "Simple Machines and Friction", "Excretory System", "Light Energy","Interdependence of Things in the Environment","Population and Health"],
+        "English": ["School Holidays", "Letter Writing", "Examinations", "Electronic Media", "Rights, Responsibilities and Freedom", "Environmental Protection","Ceremonies"],
+        "Social Studies": ["Location of Africa on the Map of the World", "Physical Features", "Climate of Africa", "Vegetation of Africa", "The People of Africa, The Ethnic Groups and Settlement Patterns", "Foreign Influence in Africa","Nationalism and the Road to Independence in Africa", "Post-Independence Africa","Economic Developments in Africa","Major World Organisations"],
+        "Religious Education": ["Enriched in the Spirit", "Ancestors, Ourselves and the Spirit", "Enriched by Other Nations and Religions", "Serving Others in the Spirit", "Living in the Spirit of Love", "The Spirit Makes Us Free", "The Spirit Helps Us to Use His Gifts", "Strengthened by the Spirit, We Accept the Events of Life", "Praying in the Spirit", "Growing in the Spirit", "Qur'anic Extracts about Judgement Day", "Hypocrites", "Rites of Hajj","Upholding Good Health", "Asian Muslim Communities in Uganda", "Qur'anic Extracts Regarding Hajj", "Islam and Other Religions", "Hajj and Umra", "Important Muslim Personalities in Islam", "Qur'anic Teaching on Women", "Obedience and Social Security", "Rites of Umra", "Marriage and the Status of Women","Muslim Organisations in Uganda"]
+    }
+};
+
+
+// Enhanced video data structure
+const videoData = [
+    {
+        title: "Counting to 10",
+        type: "youtube",
+        src: "y7MiN5c7WtQ",
+        thumbnail: "",
+        category: "Mathematics",
+        class: "Baby Class",
+        topic: "Counting 1-10"
+    },
+    {
+        title: "Learning Shapes and Colours",
+        type: "youtube",
+        src: "bzdO2YpCl_4",
+        thumbnail: "",
+        category: "Mathematics",
+        class: "Baby Class",
+        topic: "Shapes & Colours"
+    },
+    {
+        title: "Our Body Parts",
+        type: "youtube",
+        src: "vM18D8rOlbg",
+        thumbnail: "",
+        category: "Science",
+        class: "Baby Class",
+        topic: "Our Body"
+    },
+    {
+        title: "Simple Addition for Kids",
+        type: "youtube",
+        src: "1QXTtG2aZT4",
+        thumbnail: "",
+        category: "Mathematics",
+        class: "Middle Class",
+        topic: "Simple Addition"
+    },
+    {
+        title: "Animal Sounds and Movements",
+        type: "youtube",
+        src: "Pp4O2HoAtNs",
+        thumbnail: "",
+        category: "Science",
+        class: "Middle Class",
+        topic: "Animals & Their Sounds"
+    },
+    {
+        title: "The Alphabet Song",
+        type: "youtube",
+        src: "kBB67HOwWQk",
+        thumbnail: "",
+        category: "English",
+        class: "Top Class",
+        topic: "Alphabet Sounds"
+    },
+    {
+        title: "How Plants Grow",
+        type: "youtube",
+        src: "dSN5S6pShnw",
+        thumbnail: "",
+        category: "Science",
+        class: "Top Class",
+        topic: "Plants & Seeds"
+    },
+    {
+        title: "Simple Word Problems",
+        type: "direct",
+        src: "VID-20241031-WA0291.mp4",
+        thumbnail: "",
+        category: "Mathematics",
+        class: "Primary One",
+        topic: "Simple Word Problems"
+    },
+    {
+        title: "What is Weather?",
+        type: "direct",
+        src: "VID-20241031-WA0292.mp4",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Two",
+        topic: "Weather & Seasons"
+    },
+    {
+        title: "Multiplication Made Easy",
+        type: "youtube",
+        src: "fRYsklKJ6pU",
+        thumbnail: "",
+        category: "Mathematics",
+        class: "Primary Three",
+        topic: "Multiplication"
+    },
+    {
+        title: "Food and Nutrition Basics",
+        type: "direct",
+        src: "VID-20241031-WA0293.mp4",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Four",
+        topic: "Health & Nutrition"
+    },
+    {
+        title: "Decimals and Fractions",
+        type: "direct",
+        src: "VID-20241031-WA0294.mp4",
+        thumbnail: "",
+        category: "Mathematics",
+        class: "Primary Five",
+        topic: "Decimals & Fractions"
+    },
+    {
+        title: "Introduction to Electricity",
+        type: "direct",
+        src: "VID-20241031-WA0296.mp4",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Six",
+        topic: "Electricity"
+    },
+    {
+        title: "Human Body Systems",
+        type: "youtube",
+        src: "AaRSpTq6WYY",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Seven",
+        topic: "Human Body Systems"
+    },
+    {
+        title: "Religious Texts in the World",
+        type: "youtube",
+        src: "yHc09EnyqxI",
+        thumbnail: "",
+        category: "Religious Education",
+        class: "Primary Seven",
+        topic: "Religious Texts"
+    },
+    {
+        title: "Poultry Keeping",
+        type: "youtube",
+        src: "oL8-p4K0ZLk",
+        thumbnail: "poultry keeping.jpg",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Poultry Keeping"
+    },
+    {
+        title: "Poultry Keeping",
+        type: "youtube",
+        src: "RLos6Uj1b7I",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Poultry Keeping"
+    },
+    {
+        title: "Poultry Keeping",
+        type: "youtube",
+        src: "ZdsUMG6zO0M",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Poultry Keeping"
+    },
+    {
+        title: "Poultry Keeping",
+        type: "youtube",
+        src: "ww9lS9hlZWk",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Poultry Keeping"
+    },
+    {
+        title: "Poultry Keeping",
+        type: "youtube",
+        src: "GfMi_GVIXf4",
+        thumbnail: "poultry.jpg",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Poultry Keeping"
+    },
+    
+    {
+        title: "Poultry Keeping",
+        type: "youtube",
+        src: "RLos6Uj1b7I",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Poultry Keeping"
+    },
+    
+    {
+        title: "Poultry Keeping",
+        type: "youtube",
+        src: "498k89ozXBU",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Poultry Keeping"
+    },
+    
+    {
+        title: "Poultry Keeping",
+        type: "youtube",
+        src: "lyehFDsijRA",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary",
+        topic: "Poultry Keeping"
+    },
+    
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "PYtukML6SPs",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "ipTLsGbYIyw",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "oTlP9sYyZ9s",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "A4YIpGQiD3w",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "4D_6ugaukIY",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "7U2_Y4blt-M",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "NcZn1JspgrY",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "KPKg43uUUtA",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "o1qtwsNd38M",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },   {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "cDlHHCGbMc4",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },   {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "v6tUWk7vC6g",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },   {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "H_wj50ox8OY",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    }, 
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "lGjSbHgX4jk",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "7KQrbvaNhgc",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "BE-nMqP-j-g",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "-ke1VTdYFmA",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "A4YIpGQiD3w",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "obfXY8dT840",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "MWH7Fz4nzyg",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "DtToowNYWNs",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "-QZW5cBr260",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "s0248uQf_ao",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "uES_6CIgle0",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "eonB-KCDPKk",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "HLi5htzDd4o",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "sAKkjD3nEv0",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "cIwSy1N9BvQ",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "zRqCcgQjMks",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "pqGS96j-SCE",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "xnhmxNoo4EY",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "9ePic3dtykk",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "PdkGSFf8keo",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "zHPxXF4Fo9Y",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "zYjQ6c6iVy8",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "P40QNGGeZFQ",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    {
+        title: "Bee Keeping",
+        type: "youtube",
+        src: "t-QhaD1ecbg",
+        thumbnail: "",
+        category: "Science",
+        class: "Primary Five",
+        topic: "Bee Keeping"
+    },
+    
+];
+
+
+        function navigate(page) {
+            window.location.href = page;
+        }
+
+        function addBounce(element) {
+            element.classList.add('bounce');
+            element.addEventListener('animationend', () => {
+                element.classList.remove('bounce');
+            });
+        }
+    </script>
+</body>
+</html>

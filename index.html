@@ -1348,7 +1348,7 @@ function navigateTo(url) {
                 <a href="javascript:void(0);" class="dropbtn">Gallery</a>
                 <div class="dropdown-content">
                     <a href="javascript:void(0);" onclick="checkAuth('gallery.html')">Photo Gallery</a>
-                    <a href="javascript:void(0);" onclick="checkAuth('player.html')">Video Gallery</a>
+                    <a href="javascript:void(0);" onclick="checkAuth('selection.html')">Video Gallery</a>
                 </div>
             </li>
             <li><a href="javascript:void(0);" onclick="checkAuth('library.html')">Library</a></li>
@@ -1524,7 +1524,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     onlineLibraryBtn.addEventListener('click', function() {
         stopConfetti();
-        window.location.href = 'player.html';
+        window.location.href = 'selection.html';
     });
 
     tvButton.addEventListener('click', function() {
