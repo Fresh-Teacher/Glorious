@@ -530,16 +530,7 @@ function checkAuth(url) {
     }
 }
 </script>
-    <div id="selectionModal" class="modal">
-        <div class="modal-content">
-            <h1>Glorious Video Library 🎬</h1>
-            <p>Which videos would you like to watch?</p>
-            <div class="button-container">
-                <button class="button" onclick="selectOption('events')">EVENTS 🎥</button>
-                <button class="button" onclick="selectOption('videos')">MOVIES 🍿</button>
-            </div>
-        </div>
-    </div>
+  
     <div class="navbar">
         <div class="logo">
             <img src="schoologo-2-150x150.png" alt="School Logo">
@@ -574,21 +565,8 @@ document.addEventListener('DOMContentLoaded', function() {
     showModal();
 });
 
-function showModal() {
-    document.getElementById('selectionModal').style.display = 'block';
-    document.body.classList.add('modal-open');
-}
 
-function selectOption(option) {
-    if (option === 'videos') {
-        // Redirect to videos.html
-        window.location.href = 'videos.html';
-    } else if (option === 'events') {
-        // Hide the modal and show the current page content
-        document.getElementById('selectionModal').style.display = 'none';
-        document.body.classList.remove('modal-open');
-    }
-}
+
 
 function showMovies() {
     // Function to display movie content
