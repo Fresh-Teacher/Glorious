@@ -632,6 +632,73 @@
             font-weight: bold;
             color: #495057;
         }
+        .pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 10px;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+}
+
+.pagination-button {
+    padding: 10px 20px; /* Increase padding for easier touch targets */
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px; /* Make text larger for readability */
+}
+
+.pagination-button:hover {
+    background-color: #e0e0e0;
+}
+
+.pagination-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.page-info {
+    margin: 0 15px;
+    font-size: 14px;
+    text-align: center; /* Center align on smaller screens */
+}
+
+.items-per-page {
+    margin-left: 15px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+    .pagination-button {
+        padding: 8px 12px; /* Slightly smaller padding for mobile */
+        font-size: 14px;
+    }
+
+    .page-info {
+        margin: 10px 0;
+        font-size: 12px; /* Slightly smaller font size for mobile */
+    }
+
+    .pagination-container {
+        gap: 5px; /* Reduce space between buttons on smaller screens */
+    }
+
+    .items-per-page {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%; /* Make dropdown full width on small screens */
+        font-size: 12px;
+    }
+}
+
     </style>
 </head>
 
@@ -675,7 +742,18 @@
 
     <div class="container" id="cardContainer"></div>
 
-
+    <div class="pagination-container">
+        <button id="prevPage" class="pagination-button">Previous</button>
+        <span class="page-info">
+            Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+        </span>
+        <button id="nextPage" class="pagination-button">Next</button>
+        <select id="itemsPerPage" class="items-per-page">
+            <option value="12">12 per page</option>
+            <option value="24">24 per page</option>
+            <option value="48">48 per page</option>
+        </select>
+    </div>
     <div class="modal" id="videoModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -687,6 +765,155 @@
     </div>
 
     <script>
+        // Pagination state variables
+let currentPageNumber = 1;
+let itemsPerPage = 12;
+let filteredVideos = [];
+
+// Update pagination buttons state
+function updatePaginationButtons() {
+    const totalPages = Math.ceil(filteredVideos.length / itemsPerPage);
+    document.getElementById('currentPage').textContent = currentPageNumber;
+    document.getElementById('totalPages').textContent = totalPages;
+    
+    document.getElementById('prevPage').disabled = currentPageNumber === 1;
+    document.getElementById('nextPage').disabled = currentPageNumber === totalPages;
+
+    // Update total items count if you have the element
+    const startItem = ((currentPageNumber - 1) * itemsPerPage) + 1;
+    const endItem = Math.min(currentPageNumber * itemsPerPage, filteredVideos.length);
+    const totalItems = filteredVideos.length;
+    
+    const totalItemsElement = document.getElementById('totalItems');
+    if (totalItemsElement) {
+        totalItemsElement.textContent = `Showing ${startItem}-${endIndex} of ${totalItems} videos`;
+    }
+}
+
+// Display current page of videos
+function displayCurrentPage() {
+    const startIndex = (currentPageNumber - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentPageVideos = filteredVideos.slice(startIndex, endIndex);
+    
+    cardContainer.innerHTML = '';
+    
+    currentPageVideos.forEach(video => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.setAttribute('data-title', video.title);
+        card.setAttribute('data-category', video.category);
+        card.setAttribute('data-class', video.class);
+        card.setAttribute('data-topic', video.topic);
+
+        card.innerHTML = `
+            <div class="thumbnail-container"></div>
+            <h3 class="card-title">${video.title}</h3><br>
+            <div class="category-ribbon ${video.category.replace(/\s+/g, '-')}">
+                <span>${video.category}</span>
+            </div>
+            <div class="class-ribbon ${video.class.replace(/\s+/g, '-')}">
+                <span>${video.class}</span>
+            </div>
+            <div class="topic-ribbon">
+                <span>${video.topic}</span>
+            </div><br><br>
+        `;
+
+        // Add click handler for the video
+        card.addEventListener('click', () => {
+            const modal = document.getElementById('videoModal');
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoTitle = document.getElementById('videoTitle');
+
+            videoTitle.textContent = `${video.title} (${video.category} - ${video.class})`;
+
+            if (video.type === 'youtube') {
+                videoPlayer.innerHTML = `
+                    <iframe
+                        width="100%"
+                        height="100%"
+                        src="https://www.youtube.com/embed/${video.src}?autoplay=1"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    ></iframe>
+                `;
+            } else if (video.type === 'direct') {
+                videoPlayer.innerHTML = `
+                    <video width="100%" height="100%" controls autoplay>
+                        <source src="${video.src}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+            }
+
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Load thumbnail
+        const thumbnailContainer = card.querySelector('.thumbnail-container');
+        loadThumbnail(video, thumbnailContainer);
+
+        // Handle search query highlighting
+        const searchQuery = searchInput.value.toLowerCase().trim();
+        if (searchQuery) {
+            const titleElement = card.querySelector('.card-title');
+            const titleText = video.title;
+            const regex = new RegExp(`(${searchQuery})`, 'gi');
+            titleElement.innerHTML = titleText.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        cardContainer.appendChild(card);
+    });
+    
+    updatePaginationButtons();
+}
+
+
+document.getElementById('prevPage').addEventListener('click', () => {
+    if (currentPageNumber > 1) {
+        currentPageNumber--;
+        displayCurrentPage();
+    }
+});
+
+document.getElementById('nextPage').addEventListener('click', () => {
+    const totalPages = Math.ceil(filteredVideos.length / itemsPerPage);
+    if (currentPageNumber < totalPages) {
+        currentPageNumber++;
+        displayCurrentPage();
+    }
+});
+
+
+
+document.getElementById('itemsPerPage').addEventListener('change', (e) => {
+    itemsPerPage = parseInt(e.target.value);
+    currentPageNumber = 1; // Reset to first page when changing items per page
+    displayCurrentPage();
+});
+
+// Add scroll to top when changing pages
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Add scroll to top to pagination buttons
+document.querySelectorAll('.pagination-button').forEach(button => {
+    button.addEventListener('click', scrollToTop);
+});
+
+// Initialize the display when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    filteredVideos = [...videoData];
+    displayCurrentPage();
+});
+
         const curriculum = {
             "Baby Class": {
                 "Maths": ["Counting 1-10", "Shapes", "Colours", "Sorting Objects", "Simple Patterns"],
@@ -766,6 +993,1310 @@
         
         
         {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "Z-cYBbRAitE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "iPPZKkgA1Zc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "kUpkypydA0g",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "z1ioA77rKaM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "sWZLRr0bnF4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "oQ5iuRpIfRQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "XQNbWTjuBrk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "Enaeun07_ZQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "ryh0XUk3ojc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "wE4IQ8GXA_U",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "gqvwi4ax84I",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "ADfyReSt2L0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "Y7aAI2wjXa4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "ADL-zJZh3Ks",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "e6V5FuDkMG4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "CQFvTsq-JZU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "GNX8PEKeXX8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "CbDXPUR6k5c",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "uGfxgHr9y0E",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "g44a-UlPc8Y",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            {
+                title: "Ceremonies",
+                type: "youtube",
+                src: "gLJaGI7aKxw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Ceremonies"
+            },   
+            
+                  {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "n5ugiigqZks",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "T2Y6Js_52Rk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "tNgOWWpUokc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "44H2dV40_ec",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "WX8-MPuv5gs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "FHNjE1wzfac",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "xb1JANT1zXU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "nL6PMisBXeU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "AS2MgoIuJh0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "YDpVKmKEWlc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "8-xr6orQsyY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "xZ0cdZG1PfI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "H9zFDpu4nJw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "woMo7kH9yRQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "D5ucI2Tw7H0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "XNxUNjnn_Dk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "hoMzyfhhMkg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "XOBviQRjEJU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "GlopHBkuzI4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "kt60HOGXvaY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "usGP0yH-qew",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "s5stGJd7Z5s",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "R19RgAHfUkA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "yXJYRlxkfu4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "fIiRxx9v1jM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "K0P-DMNoj80",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "tOg1j1VK4o8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "e4TmgzoRRr0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "ZEeCpWnCHpw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "-JqAs_vdQb8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            {
+                title: "Environmental Protection",
+                type: "youtube",
+                src: "oHwCX84FDyE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Environmental Protection"
+            }, 
+            
+            {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "00k85ENbak4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "wLgBfF2BHMk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "Z--MZl1Yi2w",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "bJRHDihM5LM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "e5Yv-DyCxUs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "07EmBzcyuG4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "fMBHNI2Tyq8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "2GcD600QhH0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "hqVn9QIxujA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "crVIlOfPFlU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                   
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "CcW88CI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "xQlDwBP7oWk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "IkxwPwCV47M",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "klmsCRxWYNs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "s0YJRk5QthQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "w81zxKdz4Ns",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "LToct5dVXDA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "mcsmHYilD4A",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "2lI8ddx_3m8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "8RpFJIR9Qdg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                   
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "cG45IiY4agE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "gU8hzuiwXmo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "N01wPFrD0Cc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "aNdfBjeC8eU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "8REZ_lrEQ8k",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "XYCdiZk-auk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "PT8hY86-SYQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "J_4vKsyaP1Q",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "P5IHkVFs5fw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "3QH19JZLb4E",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                   
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "TV1kARZU14k",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "DGp7TXilfoI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "QmMGo265bWk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "ZHzKQkX3IxI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "j25CFx-4g0I",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "WkCSumtam0I",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "Kmxd_nej-wk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "nJ5t6hBsVXo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "lLkARyk4CTI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "albpopNvK8E",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                   
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "e665BwrlEyU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "K3-oYE0Pw4A",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "GpV39YEmh5k",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "ey02xkQAFow",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "eFmfoeTkhH0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "mTwQz1e0Fgs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "jTcDugjo0gk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "6o_BZuQ8OYk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "1Y6KxOHsIag",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+                    
+        {
+                title: "Rights, Responsibilities and Freedom",
+                type: "youtube",
+                src: "x5XVziCdnJY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Rights, Responsibilities and Freedom"
+            }, 
+            
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "vXp0ETWXbWo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "FH3ThwR99LM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "bX7nTzbhOe4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "4H3-2smRJJY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "s59ygVYxpag",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "xyq9eJn9W0Q",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "h-Np7dmvw0U",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "WlStOWpZlyY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "KVRozKu2pZs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "eEr6etX5un8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "EmunQjNa3e8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "veTo6eWJQrM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "HiayWmW8NLA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "gxaTP6zF9Vc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "71u-NoY4Ag8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "mJS9Dh5hPNg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "hk1AvFgOsSo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "jk3SKf0mFaw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "jtuMPkqR5FM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "LdGYnh0cvq8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "LbSbvgI-N9g",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "D-CbIhuRMi4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "lv8dQNFqcB4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "SDVclL-ZoN0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "JUQZxGkRW04",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "fTfiebfjY7I",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "kbd_CajdXaw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "iryIL5veP1o",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "mgOxh5Zbj_Y",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "u2ji3X5y_fc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "6CwmOkz3nD0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "-RZHV0OCpoI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "Fq7NGMJ154c",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "T86QtX2XZeg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "AgckxyJUcAE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "BSK8LuNIXGs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            {
+                title: "Electronic Media",
+                type: "youtube",
+                src: "e29CCCnNvas",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Electronic Media"
+            },
+            
+            {
                 title: "Examinations",
                 type: "youtube",
                 src: "UHBrGDmLxgA",
@@ -967,6 +2498,474 @@
                 title: "Examinations",
                 type: "youtube",
                 src: "eX-3CKMvQRs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "G6AUmMaiWwc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "CkzBzBtKW9c",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "t0YF1oD6o-E",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "4_c_wQjV_F4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "tGMy6oMjtSE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "Ayr65Mku7Ks",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "j0Y08VUy4TM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "Ks3wdn6gb3I",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "PYXQXhQHxMs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "BlWkHJ6UvtA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "ZYd3whIRpik",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "NAJ-Ajs05U4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "nX8N9RiGCZg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "rdQlR5UX-3A",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "93kcnHtUMYU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "rROJkoiSVYc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "TX3jmU6pVoE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "wI6kh21WnJ8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "RA0X-ay9W4E",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "cIgKj6If5-g",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "LHKw0QRgewc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "lmcKkyy-ENI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "IkKnrqkHznM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "UFuxlnUeGmg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "tBOTC-V9KEE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "1IYgiyva8f4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "vlx-x3fmuNE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "YzInQMQ7hWE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "ZT7B4enrn50",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "p_XwUtCeddo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "bhzh8VDykc4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "-Du5f8Kgv5M",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "ikjrH7737nY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "gItYElYA_1s",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "hGhmaA9GEww",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "gJrMkcWmt5g",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "G0VXtU6_5b4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "XdkQNkIL6uc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "HZe5LI9oOLA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "obgsPU76rLE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "72NNsK6tvJA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "kmI_2wCewpU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "DftysDW3C98",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "1_6-iVACkLA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "jABDkzCeaC0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "QaLtHMQyYMo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "XRaiyf7c6e0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "h_GnSOIfWf4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "j25CFx-4g0I",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "FI2OKNMWGc4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Seven",
+                topic: "Examinations"
+            }, 
+            {
+                title: "Examinations",
+                type: "youtube",
+                src: "IXjfcEmqAHc",
                 thumbnail: "",
                 category: "English",
                 class: "Primary Seven",
