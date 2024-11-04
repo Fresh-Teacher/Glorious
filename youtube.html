@@ -807,8 +807,10 @@ function displayCurrentPage() {
     const endIndex = startIndex + itemsPerPage;
     const currentPageVideos = filteredVideos.slice(startIndex, endIndex);
     
+    // Clear the container
     cardContainer.innerHTML = '';
     
+    // Create cards for current page videos
     currentPageVideos.forEach(video => {
         const card = document.createElement('div');
         card.className = 'card';
@@ -831,7 +833,20 @@ function displayCurrentPage() {
             </div><br><br>
         `;
 
-        // Add click handler for the video
+        // Load thumbnail
+        const thumbnailContainer = card.querySelector('.thumbnail-container');
+        loadThumbnail(video, thumbnailContainer);
+
+        // Highlight search terms if needed
+        const searchQuery = searchInput.value.toLowerCase().trim();
+        if (searchQuery) {
+            const titleElement = card.querySelector('.card-title');
+            const titleText = video.title;
+            const regex = new RegExp(`(${searchQuery})`, 'gi');
+            titleElement.innerHTML = titleText.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // Add video click handler
         card.addEventListener('click', () => {
             const modal = document.getElementById('videoModal');
             const videoPlayer = document.getElementById('videoPlayer');
@@ -863,22 +878,10 @@ function displayCurrentPage() {
             document.body.style.overflow = 'hidden';
         });
 
-        // Load thumbnail
-        const thumbnailContainer = card.querySelector('.thumbnail-container');
-        loadThumbnail(video, thumbnailContainer);
-
-        // Handle search query highlighting
-        const searchQuery = searchInput.value.toLowerCase().trim();
-        if (searchQuery) {
-            const titleElement = card.querySelector('.card-title');
-            const titleText = video.title;
-            const regex = new RegExp(`(${searchQuery})`, 'gi');
-            titleElement.innerHTML = titleText.replace(regex, '<span class="highlight">$1</span>');
-        }
-
         cardContainer.appendChild(card);
     });
     
+    // Update pagination buttons
     updatePaginationButtons();
 }
 
@@ -8992,89 +8995,75 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         function filterCards() {
-            const searchQuery = searchInput.value.toLowerCase().trim();
-            const selectedCategory = categoryFilter.value;
-            const selectedClass = classFilter.value;
-            const selectedTopic = topicFilter.value;
+    const searchQuery = searchInput.value.toLowerCase().trim();
+    const selectedCategory = categoryFilter.value;
+    const selectedClass = classFilter.value;
+    const selectedTopic = topicFilter.value;
 
-            // First check if the selected class has any videos
-            if (selectedClass !== 'all') {
-                const hasVideosForClass = videoData.some(video => video.class === selectedClass);
-                if (!hasVideosForClass) {
-                    // Hide all cards
-                    const cards = document.querySelectorAll('.card');
-                    cards.forEach(card => card.style.display = 'none');
-
-                    // Show "no videos" message
-                    searchMessage.innerHTML = `
+    // First check if the selected class has any videos in the entire dataset
+    if (selectedClass !== 'all') {
+        const hasVideosForClass = videoData.some(video => video.class === selectedClass);
+        if (!hasVideosForClass) {
+            // Clear the filtered videos array
+            filteredVideos = [];
+            // Clear the container
+            cardContainer.innerHTML = '';
+            
+            // Show "no videos" message
+            searchMessage.innerHTML = `
                 <div class="no-videos-message">
                     <p>There are currently no videos available for ${selectedClass}.</p>
                     <p>Please check back later or select a different class.</p>
                 </div>
             `;
-                    searchMessage.classList.add('visible');
-                    return false;
-                }
-            }
-
-            let matchFound = false;
-            const cards = document.querySelectorAll('.card');
-
-            cards.forEach(card => {
-                const cardTitle = card.getAttribute('data-title').toLowerCase();
-                const cardCategory = card.getAttribute('data-category');
-                const cardClass = card.getAttribute('data-class');
-                const cardTopic = card.getAttribute('data-topic');
-
-                const matchesSearch = searchQuery === '' || cardTitle.includes(searchQuery);
-                const matchesCategory = selectedCategory === 'all' || cardCategory === selectedCategory;
-                const matchesClass = selectedClass === 'all' || cardClass === selectedClass;
-                const matchesTopic = selectedTopic === 'all' || cardTopic === selectedTopic;
-
-                if (matchesSearch && matchesCategory && matchesClass && matchesTopic) {
-                    card.style.display = 'block';
-                    matchFound = true;
-
-                    if (searchQuery) {
-                        const titleElement = card.querySelector('.card-title');
-                        const titleText = card.getAttribute('data-title');
-                        const regex = new RegExp(`(${searchQuery})`, 'gi');
-                        titleElement.innerHTML = titleText.replace(regex, '<span class="highlight">$1</span>');
-                    } else {
-                        const titleElement = card.querySelector('.card-title');
-                        titleElement.innerHTML = card.getAttribute('data-title');
-                    }
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            // Update search message based on results
-            if (!matchFound) {
-                const filters = [];
-                if (selectedCategory !== 'all') filters.push(selectedCategory);
-                if (selectedClass !== 'all') filters.push(selectedClass);
-                if (selectedTopic !== 'all') filters.push(selectedTopic);
-
-                let messageText = '';
-                if (searchQuery) {
-                    messageText = `No matches found for "${searchQuery}"`;
-                    if (filters.length) {
-                        messageText += ` in ${filters.join(' - ')}`;
-                    }
-                    messageText += `. Click "Search" to search on YouTube!`;
-                } else if (filters.length) {
-                    messageText = `No videos found for ${filters.join(' - ')}. Please try typing it in the search bar and click on the search button to watch it on YouTube.`;
-                }
-
-                searchMessage.innerHTML = messageText;
-                searchMessage.classList.add('visible');
-            } else {
-                searchMessage.classList.remove('visible');
-            }
-
-            return matchFound;
+            searchMessage.classList.add('visible');
+            updatePaginationButtons();
+            return false;
         }
+    }
+
+    // Filter the complete videoData array
+    filteredVideos = videoData.filter(video => {
+        const matchesSearch = searchQuery === '' || video.title.toLowerCase().includes(searchQuery);
+        const matchesCategory = selectedCategory === 'all' || video.category === selectedCategory;
+        const matchesClass = selectedClass === 'all' || video.class === selectedClass;
+        const matchesTopic = selectedTopic === 'all' || video.topic === selectedTopic;
+
+        return matchesSearch && matchesCategory && matchesClass && matchesTopic;
+    });
+
+    // Reset to first page when filter changes
+    currentPageNumber = 1;
+
+    // Update search message based on results
+    if (filteredVideos.length === 0) {
+        const filters = [];
+        if (selectedCategory !== 'all') filters.push(selectedCategory);
+        if (selectedClass !== 'all') filters.push(selectedClass);
+        if (selectedTopic !== 'all') filters.push(selectedTopic);
+
+        let messageText = '';
+        if (searchQuery) {
+            messageText = `No matches found for "${searchQuery}"`;
+            if (filters.length) {
+                messageText += ` in ${filters.join(' - ')}`;
+            }
+            messageText += `. Click "Search" to search on YouTube!`;
+        } else if (filters.length) {
+            messageText = `No videos found for ${filters.join(' - ')}. Please try typing it in the search bar and click on the search button to watch it on YouTube.`;
+        }
+
+        searchMessage.innerHTML = messageText;
+        searchMessage.classList.add('visible');
+    } else {
+        searchMessage.classList.remove('visible');
+    }
+
+    // Display the current page of filtered results
+    displayCurrentPage();
+
+    return filteredVideos.length > 0;
+}
 
         // Helper function to update search message
         function updateSearchMessage(matchFound, searchQuery, selectedCategory, selectedClass, selectedTopic) {
