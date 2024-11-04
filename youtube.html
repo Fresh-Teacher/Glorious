@@ -710,6 +710,35 @@
         padding: 1px;
     }
 }
+
+.floating-shuffle-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    font-size: 20px;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background-color 0.3s, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.floating-shuffle-button:hover {
+    transform: scale(1.1);
+    background-color: #1976D2;
+}
+
+.floating-shuffle-button:active {
+    transform: scale(0.95);
+}
     </style>
 </head>
 
@@ -722,6 +751,9 @@
         <input type="text" class="search-input" placeholder="Search for videos here..." id="searchInput">
         <button class="search-button" id="searchButton">Search 🔍</button>
     </div>
+
+    
+<button id="shuffleButton" class="floating-shuffle-button" title="Shuffle Videos">🔄</button>
 
     <!--- First, simplify the HTML by removing the hardcoded options --->
     <div class="filter-container">
@@ -776,6 +808,32 @@
     </div>
 
     <script>
+        // Add this function to check filter state and toggle button visibility
+function updateShuffleButtonVisibility() {
+    const shuffleButton = document.getElementById('shuffleButton');
+    if (shuffleButton) {
+        const noFiltersApplied = 
+            searchInput.value === '' && 
+            categoryFilter.value === 'all' && 
+            classFilter.value === 'all' && 
+            topicFilter.value === 'all';
+
+        shuffleButton.style.opacity = noFiltersApplied ? '1' : '0';
+        shuffleButton.style.visibility = noFiltersApplied ? 'visible' : 'hidden';
+    }
+}
+
+const shuffleButton = document.getElementById('shuffleButton');
+if (shuffleButton) {
+    shuffleButton.addEventListener('click', () => {
+        if (searchInput.value === '' && 
+            categoryFilter.value === 'all' && 
+            classFilter.value === 'all' && 
+            topicFilter.value === 'all') {
+            filterCards();
+        }
+    });
+}
         // Pagination state variables
 let currentPageNumber = 1;
 let itemsPerPage = 12;
@@ -994,7 +1052,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Religious Education": ["God Created Me", "Evil and Suffering", "God Calls His People", "Christ is the Answer", "Christ’s Gift for the Journey", "How to Behave on the Way", "People on the Way", "Friends on the Way", "Christian Involvement in the World", "Happiness on the Way to Arrival", "The Power of God", "Differences between Zakah and Sadaqah", "Road Usage and Enjoining others to do Good", "Introduction of Islam in Uganda", "Unity of God verses 163-164 and 255-258 of Surat Al-Baqarah", "Kufr and Shirik", "Recipients of Zakat", "Hygiene", " Spread of Islam outside Buganda", "Surat Al-Kafi run", "Worship", "Ratio of Zakah", " Uprightness and adolescence", " Islam in Buganda"]
             },
             "Primary Seven": {
-                "Maths": ["Sets", "Whole Numbers", "Operation on Whole Numbers", "Patterns and Sequences", "Fractions", "Intergers", "Data Handling", "Construction", "Time", "Length, Mass and Capacity", "Algebra"],
+                "Maths": ["Sets", "Whole Numbers", "Operation on Whole Numbers", "Patterns and Sequences", "Fractions", "Integers", "Data Handling", "Construction", "Time", "Length, Mass and Capacity", "Algebra"],
                 "Science": ["Musculo Skeletal System", "Electricity and Magnetism", "Energy Resources in the Environment", "Simple Machines and Friction", "Excretory System", "Light Energy", "Interdependence of Things in the Environment", "Population and Health"],
                 "English": ["School Holidays", "Letter Writing", "Examinations", "Electronic Media", "Rights, Responsibilities and Freedom", "Environmental Protection", "Ceremonies"],
                 "Social Studies": ["Location of Africa on the Map of the World", "Physical Features", "Climate of Africa", "Vegetation of Africa", "The People of Africa, The Ethnic Groups and Settlement Patterns", "Foreign Influence in Africa", "Nationalism and the Road to Independence in Africa", "Post-Independence Africa", "Economic Developments in Africa", "Major World Organisations"],
@@ -8934,6 +8992,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const categoryFilter = document.getElementById('categoryFilter');
         const classFilter = document.getElementById('classFilter');
         const topicFilter = document.getElementById('topicFilter');
+        
 
         // Add this function to update the category filter
         function updateCategoryFilter() {
@@ -8995,7 +9054,16 @@ document.addEventListener('DOMContentLoaded', () => {
             updateCategoryFilter();
         });
 
-        function filterCards() {
+// Fisher-Yates shuffle algorithm
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function filterCards() {
     const searchQuery = searchInput.value.toLowerCase().trim();
     const selectedCategory = categoryFilter.value;
     const selectedClass = classFilter.value;
@@ -9033,6 +9101,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return matchesSearch && matchesCategory && matchesClass && matchesTopic;
     });
 
+    // If no filters are applied and we're on the first page, shuffle the videos
+    if (currentPageNumber === 1 && 
+        searchQuery === '' && 
+        selectedCategory === 'all' && 
+        selectedClass === 'all' && 
+        selectedTopic === 'all') {
+        filteredVideos = shuffleArray([...filteredVideos]);
+    }
+
     // Reset to first page when filter changes
     currentPageNumber = 1;
 
@@ -9065,6 +9142,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     return filteredVideos.length > 0;
 }
+
+// Make sure to call filterCards on page load
+document.addEventListener('DOMContentLoaded', filterCards);
+
+// Add a reload function to get new random videos
+function reloadRandomVideos() {
+    if (searchInput.value === '' && 
+        categoryFilter.value === 'all' && 
+        classFilter.value === 'all' && 
+        topicFilter.value === 'all') {
+        filterCards();
+    }
+}
+
+
 
         // Helper function to update search message
         function updateSearchMessage(matchFound, searchQuery, selectedCategory, selectedClass, selectedTopic) {
@@ -9134,11 +9226,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Event listeners for search and filter functionality
-        searchInput.addEventListener('input', filterCards);
-        categoryFilter.addEventListener('change', filterCards);
-        classFilter.addEventListener('change', filterCards);
-        searchButton.addEventListener('click', performYouTubeSearch);
+// Add event listeners to all filters to update button visibility
+searchInput.addEventListener('input', updateShuffleButtonVisibility);
+categoryFilter.addEventListener('change', updateShuffleButtonVisibility);
+classFilter.addEventListener('change', updateShuffleButtonVisibility);
+topicFilter.addEventListener('change', updateShuffleButtonVisibility);
+searchButton.addEventListener('click', performYouTubeSearch);
 
         searchInput.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
