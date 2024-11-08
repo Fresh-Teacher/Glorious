@@ -348,24 +348,35 @@
             66% { border-top-color: #2ecc71; }
             100% { border-top-color: #3498db; }
         }
-/* Search container */
-.search-container {
+        .search-container {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 15px 0;
     background: linear-gradient(to bottom, #ff8c00, #d2691e);
     border-bottom: 1px solid #b35900;
     box-shadow: 0 2px 5px rgba(139, 69, 19, 0.3);
     z-index: 1000;
+    gap: 10px;
+}
+
+/* Search wrapper to contain input and button */
+.search-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    max-width: 500px;
+    width: 100%;
+    padding: 0 20px;
 }
 
 /* Search input */
 #searchInput {
-    width: 300px;
+    flex: 1;
     padding: 12px 20px;
     font-size: 16px;
     border: 2px solid #d2691e;
@@ -374,6 +385,7 @@
     outline: none;
     background-color: #fff5e6;
     color: #4a3728;
+    min-width: 200px;
 }
 
 #searchInput:focus {
@@ -385,7 +397,30 @@
     color: #b38867;
 }
 
-/* No results feedback */
+/* YouTube search button */
+.youtube-search-btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #ff9d00;
+    color: white;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.youtube-search-btn:hover {
+    background-color: #ffb300;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.youtube-search-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
 /* No results feedback */
 .no-results-feedback {
     position: fixed;
@@ -405,6 +440,21 @@
     max-width: 80%;
 }
 
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .search-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #searchInput {
+        width: 100%;
+    }
+
+    .youtube-search-btn {
+        width: 100%;
+    }
+}
 /* Add padding to the body to prevent content from being hidden under the fixed search bar */
 body {
     padding-top: 70px; /* Adjust this value based on the height of your search container */
@@ -420,13 +470,17 @@ body {
     </style>
 </head>
 <body>
-     <!-- Add search container -->
-     <div class="search-container">
+    <!-- Search container with both functionalities -->
+    <div class="search-container">
         <input type="text" id="searchInput" placeholder="Search movies...">
-    </div><br><br>
+        <div class="search-buttons">
+            <button class="youtube-search-btn" id="youtubeSearchBtn">Search 🔍</button>
+        </div>
+    </div>
+    <br><br>
 
-     <!-- Add no results feedback div -->
-     <div id="noResultsFeedback" class="no-results-feedback"></div>
+   <!-- No results feedback div -->
+   <div id="noResultsFeedback" class="no-results-feedback"></div>
 
     <!-- Add spinner div -->
     <div id="spinner">
@@ -448,23 +502,62 @@ body {
 // Add these variables at the beginning of your script
 const searchInput = document.getElementById('searchInput');
 const noResultsFeedback = document.getElementById('noResultsFeedback');
+const youtubeSearchBtn = document.getElementById('youtubeSearchBtn');
 
-        // Add this function to hide the spinner
-        function hideSpinner() {
-            document.getElementById('spinner').style.display = 'none';
-        }
+// Add this function to hide the spinner
+function hideSpinner() {
+    document.getElementById('spinner').style.display = 'none';
+}
 
-        let filteredMovies = [];
+// YouTube search functionality
+function performYouTubeSearch(event) {
+    if (event) {
+        event.preventDefault(); // Prevent default form submission
+    }
+    const query = searchInput.value.trim();
+    if (query) {
+        const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query + ' trailer')}`;
+        window.open(searchUrl, '_blank');
+    }
+}
 
-// Modify the initializePage function
+// Add YouTube search button listener
+youtubeSearchBtn.addEventListener('click', performYouTubeSearch);
+
+let filteredMovies = [];
+
+// Modified initializePage function
 function initializePage() {
     filteredMovies = filterMovies(movies);
     loadCurrentPage();
     window.addEventListener('popstate', handlePopState);
     hideSpinner();
 
-    // Add event listener for search
+    // Create a form wrapper for the search input
+    const searchForm = document.createElement('form');
+    searchForm.addEventListener('submit', performYouTubeSearch); // Changed to performYouTubeSearch
+    searchInput.parentNode.insertBefore(searchForm, searchInput);
+    searchForm.appendChild(searchInput);
+
+    // Add event listener for input (local search)
     searchInput.addEventListener('input', debounce(handleSearch, 300));
+}
+
+// Regular search functionality for typing
+function handleSearch() {
+    const searchTerm = searchInput.value.trim();
+    filteredMovies = filterMovies(movies, searchTerm);
+    currentPage = 1;
+    
+    const url = new URL(window.location);
+    url.searchParams.set('search', searchTerm);
+    url.searchParams.set('page', '1');
+    window.history.pushState({}, '', url);
+    
+    displayMovies(currentPage);
+    updatePagination();
+    updateNoResultsFeedback();
+    scrollToTop();
 }
 
 // Add a debounce function to limit how often the search is performed
@@ -477,7 +570,6 @@ function debounce(func, delay) {
         timeout = setTimeout(() => func.apply(context, args), delay);
     };
 }
-
 
 function handlePopState(event) {
     loadCurrentPage();
@@ -495,9 +587,10 @@ function loadCurrentPage() {
     updateNoResultsFeedback();
     scrollToTop();
 }
+
 window.onload = initializePage;
 
-const movies = [
+        const movies = [
     {
         "title": "Sperm's Journey to the Egg",
         "year": 2001,
@@ -28813,6 +28906,7 @@ const movies = [
     }
 ];
 
+
 // Modify the filterMovies function to include search functionality
 function filterMovies(movies, searchTerm = '') {
     let filtered = movies.filter(movie => 
@@ -28848,24 +28942,26 @@ function filterMovies(movies, searchTerm = '') {
         let currentPage = 1;
 
         // Add this function to handle search
-        function handleSearch() {
-    const searchTerm = searchInput.value.trim();
-    filteredMovies = filterMovies(movies, searchTerm);
-    currentPage = 1;
-    displayMovies(currentPage);
-    updatePagination();
-    updateNoResultsFeedback();
-    scrollToTop();
-}
+      function handleSearch() {
+            const searchTerm = searchInput.value.trim();
+            filteredMovies = filterMovies(movies, searchTerm);
+            currentPage = 1;
+            displayMovies(currentPage);
+            updatePagination();
+            updateNoResultsFeedback();
+            scrollToTop();
+        }
 
-function updateNoResultsFeedback() {
-    if (filteredMovies.length === 0) {
-        noResultsFeedback.textContent = "No movies found! Try adjusting your search term or check for typos.";
-        noResultsFeedback.style.display = 'block';
-    } else {
-        noResultsFeedback.style.display = 'none';
-    }
-}
+        function updateNoResultsFeedback() {
+            if (filteredMovies.length === 0) {
+                noResultsFeedback.innerHTML = 
+                    "No movies found on this page.<br>" +
+                    "You can also search for this video on YouTube using the search button.";
+                noResultsFeedback.style.display = 'block';
+            } else {
+                noResultsFeedback.style.display = 'none';
+            }
+        }
 
         function scrollToTop(duration = 500) {
             const start = window.pageYOffset;
@@ -28942,12 +29038,12 @@ function scrollToTop() {
 }
 
 function updatePageURL(page) {
-    const url = new URL(window.location);
-    url.searchParams.set('page', page);
-    url.searchParams.set('search', searchInput.value);
-    window.history.pushState({page: page, search: searchInput.value}, '', url);
-    loadCurrentPage();
-}
+            const url = new URL(window.location);
+            url.searchParams.set('page', page);
+            url.searchParams.set('search', searchInput.value);
+            window.history.pushState({page: page, search: searchInput.value}, '', url);
+            loadCurrentPage();
+        }
 
         // Back to Top button functionality
         window.onscroll = function() {
