@@ -872,27 +872,39 @@
             }
         }
 
-        // Display current page of videos
-        // Replace the existing createVideoCards and displayCurrentPage functions with these optimized versions
+// Modified displayCurrentPage function to show shared classes info
+function displayCurrentPage() {
+    const startIndex = (currentPageNumber - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentPageVideos = filteredVideos.slice(startIndex, endIndex);
 
-        function displayCurrentPage() {
-            const startIndex = (currentPageNumber - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const currentPageVideos = filteredVideos.slice(startIndex, endIndex);
+    // Clear the container
+    cardContainer.innerHTML = '';
 
-            // Clear the container
-            cardContainer.innerHTML = '';
+    // Only create cards for current page videos
+    currentPageVideos.forEach(video => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.setAttribute('data-title', video.title);
+        card.setAttribute('data-category', video.category);
+        card.setAttribute('data-class', video.class);
+        card.setAttribute('data-topic', video.topic);
 
-            // Only create cards for current page videos
-            currentPageVideos.forEach(video => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.setAttribute('data-title', video.title);
-                card.setAttribute('data-category', video.category);
-                card.setAttribute('data-class', video.class);
-                card.setAttribute('data-topic', video.topic);
+        // Add shared classes indicator if present and no filters are applied
+        let sharedClassesInfo = '';
+        if (video.sharedClasses && 
+            searchInput.value === '' && 
+            categoryFilter.value === 'all' && 
+            classFilter.value === 'all' && 
+            topicFilter.value === 'all') {
+            sharedClassesInfo = `
+                <div class="shared-classes-ribbon">
+                    <span>Shared: ${video.sharedClasses.join(', ')}</span>
+                </div>
+            `;
+        }
 
-                card.innerHTML = `
+        card.innerHTML = `
             <div class="thumbnail-container"></div>
             <div class="category-ribbon ${video.category.replace(/\s+/g, '-')}">
                 <span>${video.category}</span>
@@ -902,23 +914,25 @@
             </div>
             <div class="topic-ribbon">
                 <span>${video.topic}</span>
-            </div><br><br>
+            </div>
+            ${sharedClassesInfo}
+            <br><br>
         `;
 
-                // Load thumbnail only for visible cards
-                const thumbnailContainer = card.querySelector('.thumbnail-container');
-                loadThumbnail(video, thumbnailContainer);
+        // Load thumbnail only for visible cards
+        const thumbnailContainer = card.querySelector('.thumbnail-container');
+        loadThumbnail(video, thumbnailContainer);
 
-                // Add video click handler
-                card.addEventListener('click', () => {
-                    const modal = document.getElementById('videoModal');
-                    const videoPlayer = document.getElementById('videoPlayer');
-                    const videoTitle = document.getElementById('videoTitle');
+        // Add video click handler
+        card.addEventListener('click', () => {
+            const modal = document.getElementById('videoModal');
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoTitle = document.getElementById('videoTitle');
 
-                    videoTitle.textContent = `${video.title} (${video.category} - ${video.class})`;
+            videoTitle.textContent = `${video.title} (${video.category} - ${video.class})`;
 
-                    if (video.type === 'youtube') {
-                        videoPlayer.innerHTML = `
+            if (video.type === 'youtube') {
+                videoPlayer.innerHTML = `
                     <iframe
                         width="100%"
                         height="100%"
@@ -928,25 +942,25 @@
                         allowfullscreen
                     ></iframe>
                 `;
-                    } else if (video.type === 'direct') {
-                        videoPlayer.innerHTML = `
-                    <video width="100%"height="100%"controls autoplay>
-                        <source src="${video.src}"type="video/mp4">
+            } else if (video.type === 'direct') {
+                videoPlayer.innerHTML = `
+                    <video width="100%" height="100%" controls autoplay>
+                        <source src="${video.src}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 `;
-                    }
+            }
 
-                    modal.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
-                });
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
 
-                cardContainer.appendChild(card);
-            });
+        cardContainer.appendChild(card);
+    });
 
-            // Update pagination buttons
-            updatePaginationButtons();
-        }
+    // Update pagination buttons
+    updatePaginationButtons();
+}
 
         // Initialize only the first page
         document.addEventListener('DOMContentLoaded', () => {
@@ -998,6 +1012,37 @@
             filteredVideos = [...videoData];
             displayCurrentPage();
         });
+
+        // First, let's create a structure for shared topics
+const sharedTopics = {
+    "Maths": {
+        "Sets": ["Primary Six", "Primary Seven"],
+        "Whole Numbers": ["Primary Six", "Primary Seven"],
+        "Operation on Whole Numbers": ["Primary Six", "Primary Seven"],
+        "Patterns and Sequences": ["Primary Four", "Primary Five", "Primary Six", "Primary Seven"],
+        "Fractions": ["Primary Four", "Primary Five", "Primary Six", "Primary Seven"],
+        "Data Handling": ["Primary Four", "Primary Five", "Primary Six", "Primary Seven"],
+        "Money": ["Primary Four", "Primary Five", "Primary Six"],
+        "Length, Mass and Capacity": ["Primary Four", "Primary Five", "Primary Six", "Primary Seven"],
+        "Integers": ["Primary Five", "Primary Six", "Primary Seven"],
+        "Algebra": ["Primary Five", "Primary Six", "Primary Seven"],
+        "Time": ["Primary Four", "Primary Five", "Primary Seven"]
+    },
+    "Science": {
+        "Accidents and First Aid": ["Primary Four", "Primary Six"],
+        "Sanitation": ["Primary Four", "Primary Six"]
+    },
+    "English": {
+        // Add shared English topics here if any exist
+    },
+    "Social Studies": {
+        // Add shared Social Studies topics here if any exist
+    },
+    "Religious Education": {
+        // Add shared Religious Education topics here if any exist
+    }
+};
+
 
         const curriculum = {
             "Baby Class": {
@@ -19014,85 +19059,133 @@
             return array;
         }
 
-        function filterCards() {
-            const searchQuery = searchInput.value.toLowerCase().trim();
-            const selectedCategory = categoryFilter.value;
-            const selectedClass = classFilter.value;
-            const selectedTopic = topicFilter.value;
+// Modified filterCards function to handle random shuffling
+function filterCards() {
+    const searchQuery = searchInput.value.toLowerCase().trim();
+    const selectedCategory = categoryFilter.value;
+    const selectedClass = classFilter.value;
+    const selectedTopic = topicFilter.value;
 
-            // First check if the selected class has any videos in the entire dataset
-            if (selectedClass !== 'all') {
-                const hasVideosForClass = videoData.some(video => video.class === selectedClass);
-                if (!hasVideosForClass) {
-                    // Clear the filtered videos array
-                    filteredVideos = [];
-                    // Clear the container
-                    cardContainer.innerHTML = '';
-
-                    // Show "no videos"message
-                    searchMessage.innerHTML = `
+    // First check if the selected class has any videos in the entire dataset
+    if (selectedClass !== 'all') {
+        const hasVideosForClass = videoData.some(video => video.class === selectedClass);
+        if (!hasVideosForClass) {
+            filteredVideos = [];
+            cardContainer.innerHTML = '';
+            searchMessage.innerHTML = `
                 <div class="no-videos-message">
                     <p>There are currently no videos available for ${selectedClass}.</p>
                     <p>Please check back later or select a different class.</p>
                 </div>
             `;
-                    searchMessage.classList.add('visible');
-                    updatePaginationButtons();
-                    return false;
-                }
-            }
-
-            // Filter the complete videoData array
-            filteredVideos = videoData.filter(video => {
-                const matchesSearch = searchQuery === '' || video.title.toLowerCase().includes(searchQuery);
-                const matchesCategory = selectedCategory === 'all' || video.category === selectedCategory;
-                const matchesClass = selectedClass === 'all' || video.class === selectedClass;
-                const matchesTopic = selectedTopic === 'all' || video.topic === selectedTopic;
-
-                return matchesSearch && matchesCategory && matchesClass && matchesTopic;
-            });
-
-            // If no filters are applied and we're on the first page, shuffle the videos
-            if (currentPageNumber === 1 &&
-                searchQuery === '' &&
-                selectedCategory === 'all' &&
-                selectedClass === 'all' &&
-                selectedTopic === 'all') {
-                filteredVideos = shuffleArray([...filteredVideos]);
-            }
-
-            // Reset to first page when filter changes
-            currentPageNumber = 1;
-
-            // Update search message based on results
-            if (filteredVideos.length === 0) {
-                const filters = [];
-                if (selectedCategory !== 'all') filters.push(selectedCategory);
-                if (selectedClass !== 'all') filters.push(selectedClass);
-                if (selectedTopic !== 'all') filters.push(selectedTopic);
-
-                let messageText = '';
-                if (searchQuery) {
-                    messageText = `No matches found for "${searchQuery}"`;
-                    if (filters.length) {
-                        messageText += ` in ${filters.join(' - ')}`;
-                    }
-                    messageText += `. Click "Search"to search on YouTube!`;
-                } else if (filters.length) {
-                    messageText = `No videos found for ${filters.join(' - ')}. Please try typing it in the search bar and click on the search button to watch it on YouTube.`;
-                }
-
-                searchMessage.innerHTML = messageText;
-                searchMessage.classList.add('visible');
-            } else {
-                searchMessage.classList.remove('visible');
-            }
-
-            // Display the current page of filtered results
-            displayCurrentPage();
-
-            return filteredVideos.length > 0;
+            searchMessage.classList.add('visible');
+            updatePaginationButtons();
+            return false;
         }
+    }
+
+    // Create a map to track unique videos and their shared status
+    const uniqueVideosMap = new Map();
+
+    // Filter and deduplicate videos
+    videoData.forEach(video => {
+        const matchesSearch = searchQuery === '' || video.title.toLowerCase().includes(searchQuery);
+        const matchesCategory = selectedCategory === 'all' || video.category === selectedCategory;
+        const matchesClass = selectedClass === 'all' || video.class === selectedClass;
+        
+        // Check if the topic is shared
+        const isSharedTopic = sharedTopics[video.category] && 
+                            sharedTopics[video.category][video.topic];
+
+        let matchesTopic = selectedTopic === 'all';
+        if (!matchesTopic && isSharedTopic) {
+            matchesTopic = sharedTopics[video.category][video.topic].includes(video.class) && 
+                          video.topic === selectedTopic;
+        } else {
+            matchesTopic = selectedTopic === 'all' || video.topic === selectedTopic;
+        }
+
+        if (matchesSearch && matchesCategory && matchesClass && matchesTopic) {
+            const videoKey = `${video.src}-${video.title}-${video.topic}`;
+
+            if (searchQuery === '' && selectedCategory === 'all' && 
+                selectedClass === 'all' && selectedTopic === 'all') {
+                
+                if (isSharedTopic) {
+                    if (!uniqueVideosMap.has(videoKey)) {
+                        uniqueVideosMap.set(videoKey, {
+                            ...video,
+                            sharedClasses: sharedTopics[video.category][video.topic]
+                        });
+                    }
+                } else {
+                    uniqueVideosMap.set(videoKey, video);
+                }
+            } else {
+                uniqueVideosMap.set(videoKey + video.class, video);
+            }
+        }
+    });
+
+    // Convert map values back to array
+    filteredVideos = Array.from(uniqueVideosMap.values());
+
+    // Determine if we should shuffle based on filters
+    const shouldShuffle = (
+        // Shuffle when no filters are applied
+        (searchQuery === '' && selectedCategory === 'all' && 
+         selectedClass === 'all' && selectedTopic === 'all') ||
+        // Shuffle when only class is selected (no subject/category)
+        (searchQuery === '' && selectedCategory === 'all' && 
+         selectedClass !== 'all' && selectedTopic === 'all')
+    );
+
+    if (shouldShuffle) {
+        // Use Fisher-Yates shuffle for random ordering
+        filteredVideos = shuffleArray([...filteredVideos]);
+    } else {
+        // Keep original order when subject/category is selected
+        filteredVideos.sort((a, b) => {
+            // Sort by category first
+            if (a.category !== b.category) {
+                return a.category.localeCompare(b.category);
+            }
+            // Then by topic order in curriculum
+            const topics = curriculum[a.class]?.[a.category] || [];
+            const topicIndexA = topics.indexOf(a.topic);
+            const topicIndexB = topics.indexOf(b.topic);
+            return topicIndexA - topicIndexB;
+        });
+    }
+
+    // Update search message based on results
+    if (filteredVideos.length === 0) {
+        const filters = [];
+        if (selectedCategory !== 'all') filters.push(selectedCategory);
+        if (selectedClass !== 'all') filters.push(selectedClass);
+        if (selectedTopic !== 'all') filters.push(selectedTopic);
+
+        let messageText = '';
+        if (searchQuery) {
+            messageText = `No matches found for "${searchQuery}"`;
+            if (filters.length) {
+                messageText += ` in ${filters.join(' - ')}`;
+            }
+            messageText += `. Click "Search" to search on YouTube!`;
+        } else if (filters.length) {
+            messageText = `No videos found for ${filters.join(' - ')}. Please try typing it in the search bar and click on the search button to watch it on YouTube.`;
+        }
+
+        searchMessage.innerHTML = messageText;
+        searchMessage.classList.add('visible');
+    } else {
+        searchMessage.classList.remove('visible');
+    }
+
+    // Display the current page of filtered results
+    displayCurrentPage();
+    return filteredVideos.length > 0;
+}
 
         // Make sure to call filterCards on page load
         document.addEventListener('DOMContentLoaded', filterCards);
@@ -19142,30 +19235,52 @@
         topicFilter.addEventListener('change', filterCards);
 
         function updateTopicFilter() {
-            const selectedClass = classFilter.value;
-            const selectedCategory = categoryFilter.value;
+    const selectedClass = classFilter.value;
+    const selectedCategory = categoryFilter.value;
 
-            // Clear existing topics
-            topicFilter.innerHTML = '<option value="all">All Topics</option>';
+    // Clear existing topics
+    topicFilter.innerHTML = '<option value="all">All Topics</option>';
 
-            // Disable topic filter if no specific class and category are selected
-            if (selectedClass === 'all' || selectedCategory === 'all') {
-                topicFilter.disabled = true;
-                return;
-            }
+    // Disable topic filter if no specific class and category are selected
+    if (selectedClass === 'all' || selectedCategory === 'all') {
+        topicFilter.disabled = true;
+        return;
+    }
 
-            // Enable topic filter and populate topics
-            topicFilter.disabled = false;
+    // Enable topic filter
+    topicFilter.disabled = false;
 
-            if (curriculum[selectedClass] && curriculum[selectedClass][selectedCategory]) {
-                curriculum[selectedClass][selectedCategory].forEach(topic => {
-                    const option = document.createElement('option');
-                    option.value = topic;
-                    option.textContent = topic;
-                    topicFilter.appendChild(option);
-                });
+    // Get topics for the selected class and category
+    const regularTopics = curriculum[selectedClass][selectedCategory] || [];
+    
+    // Get shared topics for this category that include the selected class
+    const sharedTopicsForCategory = sharedTopics[selectedCategory] || {};
+    const additionalTopics = Object.entries(sharedTopicsForCategory)
+        .filter(([_, classes]) => classes.includes(selectedClass))
+        .map(([topic, _]) => topic);
+
+    // Combine regular and shared topics, remove duplicates
+    const allTopics = [...new Set([...regularTopics, ...additionalTopics])].sort();
+
+    // Populate the topic filter
+    allTopics.forEach(topic => {
+        const option = document.createElement('option');
+        option.value = topic;
+        option.textContent = topic;
+        
+        // Add a visual indicator for shared topics
+        if (sharedTopicsForCategory[topic]) {
+            const sharedWith = sharedTopicsForCategory[topic]
+                .filter(cls => cls !== selectedClass)
+                .join(', ');
+            if (sharedWith) {
+                option.textContent += ` (↔ ${sharedWith})`;
             }
         }
+        
+        topicFilter.appendChild(option);
+    });
+}
 
         function performYouTubeSearch() {
             const query = searchInput.value.trim();
