@@ -3,21 +3,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"content="width=device-width, initial-scale=1">
     <meta name="description"
         content="Welcome To Glorious Video Library; your Number 1 stop for your favourite movies and recorded school events .">
     <meta name="keyword"
         content="Glorious TV, educational videos, Schemes Of Work, Lesson Plans, Lesson Notes, Topical Questions, Luganda Translated Movies, Past Papers">
-    <meta name="author" content="Fresh Teacher">
-    <link rel="icon" type="image/png" sizes="16x16" href="schoologo-2-150x150.png">
-    <link rel="manifest" href="/manifest.json" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-    <meta property="og:site_name" content="Fresh Teacher's Library" />
-    <meta property="og:image" content="https://gloriouschools.vercel.app/netflix.jpg" />
+    <meta name="author"content="Fresh Teacher">
+    <link rel="icon"type="image/png"sizes="16x16"href="schoologo-2-150x150.png">
+    <link rel="manifest"href="/manifest.json"/>
+    <meta http-equiv="Content-Type"content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible"content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"name="viewport">
+    <meta property="og:site_name"content="Fresh Teacher's Library"/>
+    <meta property="og:image"content="https://gloriouschools.vercel.app/netflix.jpg"/>
     <title>Educational Videos</title>
     <style>
         * {
@@ -761,16 +761,16 @@
     </div>
 
     <div class="search-container">
-        <input type="text" class="search-input" placeholder="Search for videos here..." id="searchInput">
-        <button class="search-button" id="searchButton">Search 🔍</button>
+        <input type="text"class="search-input"placeholder="Search for videos here..."id="searchInput">
+        <button class="search-button"id="searchButton">Search 🔍</button>
     </div>
 
 
-    <button id="shuffleButton" class="floating-shuffle-button" title="Shuffle Videos">🔄</button>
+    <button id="shuffleButton"class="floating-shuffle-button"title="Shuffle Videos">🔄</button>
 
     <!--- First, simplify the HTML by removing the hardcoded options --->
     <div class="filter-container">
-        <select class="class-select" id="classFilter">
+        <select class="class-select"id="classFilter">
             <option value="all">All Classes</option>
             <option value="Baby Class">Baby Class</option>
             <option value="Middle Class">Middle Class</option>
@@ -784,39 +784,39 @@
             <option value="Primary Seven">Primary Seven</option>
         </select>
 
-        <select class="category-select" id="categoryFilter" style="display: none;">
+        <select class="category-select"id="categoryFilter"style="display: none;">
             <option value="all">All Subjects</option>
         </select>
 
-        <select class="topic-select" id="topicFilter" style="display: none;">
+        <select class="topic-select"id="topicFilter"style="display: none;">
             <option value="all">All Topics</option>
         </select>
     </div>
 
 
-    <div id="searchMessage" class="search-message"></div>
+    <div id="searchMessage"class="search-message"></div>
 
-    <div class="container" id="cardContainer"></div>
+    <div class="container"id="cardContainer"></div>
 
     <div class="pagination-container">
-        <button id="prevPage" class="pagination-button">Previous</button>
+        <button id="prevPage"class="pagination-button">Previous</button>
         <span class="page-info">
             Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
         </span>
-        <button id="nextPage" class="pagination-button">Next</button>
-        <select id="itemsPerPage" class="items-per-page">
+        <button id="nextPage"class="pagination-button">Next</button>
+        <select id="itemsPerPage"class="items-per-page">
             <option value="12">12 per page</option>
             <option value="24">24 per page</option>
             <option value="48">48 per page</option>
         </select>
     </div>
-    <div class="modal" id="videoModal">
+    <div class="modal"id="videoModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="videoTitle"></h2>
-                <span class="close-button" id="closeModal">&times;</span>
+                <h2 class="modal-title"id="videoTitle"></h2>
+                <span class="close-button"id="closeModal">&times;</span>
             </div>
-            <div class="video-container" id="videoPlayer"></div>
+            <div class="video-container"id="videoPlayer"></div>
         </div>
     </div>
 
@@ -930,8 +930,8 @@
                 `;
                     } else if (video.type === 'direct') {
                         videoPlayer.innerHTML = `
-                    <video width="100%" height="100%" controls autoplay>
-                        <source src="${video.src}" type="video/mp4">
+                    <video width="100%"height="100%"controls autoplay>
+                        <source src="${video.src}"type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 `;
@@ -1052,7 +1052,7 @@
             "Primary Five": {
                 "Maths": ["Set Concepts", "Patterns and Sequences", "Fractions", "Lines, Angles and Geometrical figures", "Data handling", "Time", "Money", "Length, Mass and Capacity", "Integers", "Algebra"],
                 "Science": ["Keeping Poultry and Bees", "Measurement", "Components of the environment: The Soil", "Immunization", "The Digestive System", "Heat Energy", "Occupation in our community: Crop growing", "Bacteria and Fungi", "Types of Change - Biological, physical and chemical", "Keeping goats, sheep and pigs", "Food and Nutrition", "Primary Health Care and Family Care"],
-                "English": ["VEHICLE REPAIR AND MAINTENANCE", "Parts of a Vehicle", "Equipment used in Vehicle Repair", "PRINT MEDIA", "TRAVELLING", "COMMUNICATION", "The Post Office", "The Telephone", "The Internet", "Nationalities", "Languages", "PEACE AND SECURITY", "SERVICES (BANKING)"],
+                "English": ["VEHICLE REPAIR AND MAINTENANCE", "PRINT MEDIA", "TRAVELLING", "COMMUNICATION", "The Post Office", "The Telephone", "The Internet", "Nationalities", "Languages", "PEACE AND SECURITY", "SERVICES (BANKING)"],
                 "Social Studies": ["Location of Uganda on the Map of East Africa", "Physical Features in Uganda", "Climate of Uganda", "Vegetation in Uganda", "Natural Resources in Uganda", "Foreign Influence in Uganda", "The Road to Independence", "Uganda as an Independent Nation", "The Government of Uganda", "Population, Size and Distribution"],
                 "Religious Education": ["FAITH", "Christianity and Islam", "God’s Word for Us", "We are the New People of God in the Spirit", "We are the Church", "Witness", "RELATIONSHIP WITH GOD", "HOPE", "Surat Al-Zilzala", "Settlement of Debts", "Resurrection and Judgement", "Fasting", "Prophet Muhammad at Madina", "Surat Al-Kauthar (Chapter 108)", "Good Neighbourliness", "Paradise and Hell", "Tarawiih and Idd Prayers", "Last Days of Prophet Muhammad (PBUH)", "Surah Al-Alaq (Chapter 96)", "Sin", "Zakat", "Miracles of Prophet Muhammad (PBUH)"]
             },
@@ -1077,6 +1077,1342 @@
         const videoData = [
         
         {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "TLsSCTVIEao",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "0iRbD5rM5qc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "-OWR2oyKbf8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "S90pcbG6gsc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "iSmNwXbNhgQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "d-6qQgvxgAE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "i_RQjG1cggU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "SsNif_dNiUw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "VVWDXihmGlQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "ScXAyGh0MRg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "GZ7y-yFdX9M",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "wknSc6HRUMI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "KCnuQam2pZs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "v-mlEQ7KW5Q",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            {
+                title: "SERVICES (BANKING)",
+                type: "youtube",
+                src: "aJJoV0xSDqA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "SERVICES (BANKING)"
+            },
+            
+            {
+                title: "PEACE AND SECURITY",
+                type: "youtube",
+                src: "sNHAjYuz814",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PEACE AND SECURITY"
+            },
+            {
+                title: "PEACE AND SECURITY",
+                type: "youtube",
+                src: "w-4m_K6aoJU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PEACE AND SECURITY"
+            },
+            {
+                title: "PEACE AND SECURITY",
+                type: "youtube",
+                src: "dwOA5PziUd0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PEACE AND SECURITY"
+            },
+            {
+                title: "PEACE AND SECURITY",
+                type: "youtube",
+                src: "krg4PtUaJk8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PEACE AND SECURITY"
+            },
+            {
+                title: "PEACE AND SECURITY",
+                type: "youtube",
+                src: "sHW-w0HeW9w",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PEACE AND SECURITY"
+            },
+            {
+                title: "PEACE AND SECURITY",
+                type: "youtube",
+                src: "oEU5TI2nqaQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PEACE AND SECURITY"
+            },
+          
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "nA9eucVNKsw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+             {
+                title: "Nationalities",
+                type: "youtube",
+                src: "H0Hi-eDrzDo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "rkwTg07TzdI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "NJVV1LDt2hE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "qyZH4U7_oEk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "eWXZ7-_o_R4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "zbzvx96ahDU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "egpyfzDoDQM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "ZwSmUux1ZSg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "mr_fbArEoEM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "2Jfa2bTM7aU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "PAB18ECDgto",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "-c_JjRk1L4Q",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "tk54tybepac",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "GRduRC0MNGI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "4gHbPDdGCFs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "Hk6G7tJnWLQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "J_nmgntYZHU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "VPvLduIe_lI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "rGcRe4lt4z4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "Nationalities",
+                type: "youtube",
+                src: "1dOTCZwHjPc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "Nationalities"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "UXsomnDkntI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "X9Htg8V3eik",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "lVirRWc_9Rs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "NNQWZf1FQyE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "U5zHadHP7nM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "qkM6RJf15cg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "lQqcEdIwjqA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "yiKeLOKc1tw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "0stDUJaoSqg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "d5kW4pI_VQw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "3lFQjBGYbHo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "HFMtfBbJxjI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "89eCHtFs0XM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "av57XKpQK1E",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "RHAUsTO0Fu8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "PM9O7rk69Cw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "KkKycAYBZ5s",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "qtJNRxMRuPE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "bwFvsLr50tg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "SfK1J3KLF2k",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "JTl211YlFzc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "kZOfLN4YqhY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "u4ipjMYMYik",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "nAU_MErMoDY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "3iucagfoo6Y",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "nVEyG3C-Mqw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "s7GfZt_NuVo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "5JdM95WQKys",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "bofrbUL6l6E",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "SIf77Y1L2tM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "KMt9sd8vSJI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            },         
+            
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "WJbWA5u8cAY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "i3zmCJbGx4g",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "zhIm-CDJBpc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "Hqw_J3pxqDg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            {
+                title: "The Internet",
+                type: "youtube",
+                src: "RBYgqYLmQWM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            },         
+                {
+                title: "The Internet",
+                type: "youtube",
+                src: "h-u_ZeGxOzU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Internet"
+            }, 
+            
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "zNpmtVZFXS0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "H9jUV2AQphY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "GkrEZx6Udsg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "Tw2r9DkL5co",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "AWHI2dMkaec",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "t0S9VyKypjs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "uCr3XwbQOvw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "aW1ht_JIHVM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "SIyQ1dRVjEI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "lCBF659RMtg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "mmXAqMQe0AI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "-2I-2rCAZSk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "6zClkN8TbTQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "6WqHASjUhks",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "x5KFZAB74_w",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "6tfFRD0enV0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "NWawMZxDh9Y",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "2L7g-qlhVco",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "6F5WwPKY8G4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            {
+                title: "The Telephone",
+                type: "youtube",
+                src: "fdG-gz-eOww",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Telephone"
+            }, 
+            
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "MkJKMCwuEYw",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "iBbRRueIUrE",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "lJrFtD4AaSo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "P9VTQV5CMus",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "6d2yCZVMLSs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "jiDyPcOAK5M",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "bBNhNqKLuKg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "BYQS2UC1Eu8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "ZlibYruI3aU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "XqTVGuD1ekY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "CFNaCU3sXh8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "9Xz80hSDk4Y",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+            {
+                title: "The Post Office",
+                type: "youtube",
+                src: "vw9NlQPfqFk",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "The Post Office"
+            }, 
+          
+            {
+                title: "TRAVELLING",
+                type: "youtube",
+                src: "VfG7A3ASblU",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "TRAVELLING"
+            }, 
+            {
+                title: "TRAVELLING",
+                type: "youtube",
+                src: "A9N7OMk5nXg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "TRAVELLING"
+            }, 
+            {
+                title: "TRAVELLING",
+                type: "youtube",
+                src: "1lJQlXvFVXI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "TRAVELLING"
+            }, 
+            {
+                title: "TRAVELLING",
+                type: "youtube",
+                src: "g-Y4TyYGQl8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "TRAVELLING"
+            }, 
+            
+     {
+                title: "TRAVELLING",
+                type: "youtube",
+                src: "ioBPALYxDKM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "TRAVELLING"
+            }, 
+            {
+                title: "TRAVELLING",
+                type: "youtube",
+                src: "JSc1Ydj_dVY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "TRAVELLING"
+            }, 
+            {
+                title: "TRAVELLING",
+                type: "youtube",
+                src: "JNsHfRz7YzI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "TRAVELLING"
+            }, 
+            {
+                title: "TRAVELLING",
+                type: "youtube",
+                src: "ePtKgkMVtOc",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "TRAVELLING"
+            }, 
+            
+            {
+                title: "PRINT MEDIA",
+                type: "youtube",
+                src: "uNL0spV-iho",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PRINT MEDIA"
+            }, 
+            {
+                title: "PRINT MEDIA",
+                type: "youtube",
+                src: "ml7JgINaE1s",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PRINT MEDIA"
+            }, 
+            
+            {
+                title: "PRINT MEDIA",
+                type: "youtube",
+                src: "C8Bu5GngTGM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PRINT MEDIA"
+            },  
+            {
+                title: "PRINT MEDIA",
+                type: "youtube",
+                src: "rukItpHFo1E",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PRINT MEDIA"
+            },  
+            {
+                title: "PRINT MEDIA",
+                type: "youtube",
+                src: "pLbbCFqE2J4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PRINT MEDIA"
+            },  
+            {
+                title: "PRINT MEDIA",
+                type: "youtube",
+                src: "1cIQO0GphlY",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PRINT MEDIA"
+            },  
+            {
+                title: "PRINT MEDIA",
+                type: "youtube",
+                src: "nSeHLujWUFs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PRINT MEDIA"
+            },  
+            {
+                title: "PRINT MEDIA",
+                type: "youtube",
+                src: "ERVyF0Kjfq4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "PRINT MEDIA"
+            },  
+          
+             {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "EpA6M_yFSmM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "Dko5vVSS4LQ",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "5BzL8cD1BCM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "pLbbCFqE2J4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "qClXTmOtFy8",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "HRnraymGHTA",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "dVsLsljaRAo",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "fPjOWekzeGI",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "an-quUaBqsg",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "UEXRYO_Lhfs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "z5sORo2v0l0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "QfBMi3hCn0g",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "zrMl5gIYxd0",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "34n2ntEyJqs",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "leYuNrEfcKM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "dNNcOZ5iKXM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "uTyHLS65TfM",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "ducLiWY7l4Q",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            {
+                title: "VEHICLE REPAIR AND MAINTENANCE",
+                type: "youtube",
+                src: "GRlngUydvb4",
+                thumbnail: "",
+                category: "English",
+                class: "Primary Five",
+                topic: "VEHICLE REPAIR AND MAINTENANCE"
+            },  
+            
+            {
                 title: "Population, Size and Distribution",
                 type: "youtube",
                 src: "yeD5xBCjCLE",
@@ -17693,7 +19029,7 @@
                     // Clear the container
                     cardContainer.innerHTML = '';
 
-                    // Show "no videos" message
+                    // Show "no videos"message
                     searchMessage.innerHTML = `
                 <div class="no-videos-message">
                     <p>There are currently no videos available for ${selectedClass}.</p>
@@ -17741,7 +19077,7 @@
                     if (filters.length) {
                         messageText += ` in ${filters.join(' - ')}`;
                     }
-                    messageText += `. Click "Search" to search on YouTube!`;
+                    messageText += `. Click "Search"to search on YouTube!`;
                 } else if (filters.length) {
                     messageText = `No videos found for ${filters.join(' - ')}. Please try typing it in the search bar and click on the search button to watch it on YouTube.`;
                 }
@@ -17789,7 +19125,7 @@
                 if (selectedTopic !== 'all') filters.push(selectedTopic);
 
                 const filterText = filters.length ? ` in ${filters.join(' - ')}` : '';
-                searchMessage.innerHTML = `No matches found${searchQuery ? ` for "${searchQuery}"` : ''}${filterText}. Click "Search" to search on YouTube!`;
+                searchMessage.innerHTML = `No matches found${searchQuery ? ` for "${searchQuery}"` : ''}${filterText}. Click "Search"to search on YouTube!`;
                 searchMessage.classList.add('visible');
             } else {
                 searchMessage.classList.remove('visible');
