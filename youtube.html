@@ -872,11 +872,11 @@
             }
         }
 
-// Modified displayCurrentPage function to show shared classes info
-function displayCurrentPage() {
+        function displayCurrentPage() {
     const startIndex = (currentPageNumber - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentPageVideos = filteredVideos.slice(startIndex, endIndex);
+    const selectedClass = classFilter.value;
 
     // Clear the container
     cardContainer.innerHTML = '';
@@ -887,36 +887,33 @@ function displayCurrentPage() {
         card.className = 'card';
         card.setAttribute('data-title', video.title);
         card.setAttribute('data-category', video.category);
-        card.setAttribute('data-class', video.class);
-        card.setAttribute('data-topic', video.topic);
-
-        // Add shared classes indicator if present and no filters are applied
-        let sharedClassesInfo = '';
-        if (video.sharedClasses && 
-            searchInput.value === '' && 
-            categoryFilter.value === 'all' && 
-            classFilter.value === 'all' && 
-            topicFilter.value === 'all') {
-            sharedClassesInfo = `
-                <div class="shared-classes-ribbon">
-                    <span>Shared: ${video.sharedClasses.join(', ')}</span>
-                </div>
-            `;
+        
+        // Determine which class to display
+        let displayClass = video.class;
+        if (selectedClass !== 'all') {
+            const videoTopic = video.topic;
+            const relatedGroup = findRelatedTopicGroup(videoTopic);
+            
+            if (relatedGroup && relatedGroup.aliases.includes(videoTopic) && 
+                relatedGroup.classes.includes(selectedClass)) {
+                displayClass = selectedClass; // Show selected class instead of video's original class
+            }
         }
+        
+        card.setAttribute('data-class', displayClass);
+        card.setAttribute('data-topic', video.topic);
 
         card.innerHTML = `
             <div class="thumbnail-container"></div>
             <div class="category-ribbon ${video.category.replace(/\s+/g, '-')}">
                 <span>${video.category}</span>
             </div>
-            <div class="class-ribbon ${video.class.replace(/\s+/g, '-')}">
-                <span>${video.class}</span>
+            <div class="class-ribbon ${displayClass.replace(/\s+/g, '-')}">
+                <span>${displayClass}</span>
             </div>
             <div class="topic-ribbon">
                 <span>${video.topic}</span>
-            </div>
-            ${sharedClassesInfo}
-            <br><br>
+            </div><br><br>
         `;
 
         // Load thumbnail only for visible cards
@@ -929,7 +926,7 @@ function displayCurrentPage() {
             const videoPlayer = document.getElementById('videoPlayer');
             const videoTitle = document.getElementById('videoTitle');
 
-            videoTitle.textContent = `${video.title} (${video.category} - ${video.class})`;
+            videoTitle.textContent = `${video.title} (${video.category} - ${displayClass})`;
 
             if (video.type === 'youtube') {
                 videoPlayer.innerHTML = `
@@ -961,7 +958,6 @@ function displayCurrentPage() {
     // Update pagination buttons
     updatePaginationButtons();
 }
-
         // Initialize only the first page
         document.addEventListener('DOMContentLoaded', () => {
             filteredVideos = [...videoData];
@@ -1012,37 +1008,6 @@ function displayCurrentPage() {
             filteredVideos = [...videoData];
             displayCurrentPage();
         });
-
-        // First, let's create a structure for shared topics
-const sharedTopics = {
-    "Maths": {
-        "Sets": ["Primary Six", "Primary Seven"],
-        "Whole Numbers": ["Primary Six", "Primary Seven"],
-        "Operation on Whole Numbers": ["Primary Six", "Primary Seven"],
-        "Patterns and Sequences": ["Primary Four", "Primary Five", "Primary Six", "Primary Seven"],
-        "Fractions": ["Primary Four", "Primary Five", "Primary Six", "Primary Seven"],
-        "Data Handling": ["Primary Four", "Primary Five", "Primary Six", "Primary Seven"],
-        "Money": ["Primary Four", "Primary Five", "Primary Six"],
-        "Length, Mass and Capacity": ["Primary Four", "Primary Five", "Primary Six", "Primary Seven"],
-        "Integers": ["Primary Five", "Primary Six", "Primary Seven"],
-        "Algebra": ["Primary Five", "Primary Six", "Primary Seven"],
-        "Time": ["Primary Four", "Primary Five", "Primary Seven"]
-    },
-    "Science": {
-        "Accidents and First Aid": ["Primary Four", "Primary Six"],
-        "Sanitation": ["Primary Four", "Primary Six"]
-    },
-    "English": {
-        // Add shared English topics here if any exist
-    },
-    "Social Studies": {
-        // Add shared Social Studies topics here if any exist
-    },
-    "Religious Education": {
-        // Add shared Religious Education topics here if any exist
-    }
-};
-
 
         const curriculum = {
             "Baby Class": {
@@ -18980,6 +18945,7 @@ const sharedTopics = {
 
         ];
 
+
         // Enhanced search and filter functionality
         const searchInput = document.getElementById('searchInput');
         const searchButton = document.getElementById('searchButton');
@@ -19059,131 +19025,192 @@ const sharedTopics = {
             return array;
         }
 
-// Modified filterCards function to handle random shuffling
+        // Define the related topics mapping
+// Define the related topics mapping
+const relatedTopics = {
+    "Sets": {
+        "aliases": ["Sets", "Set Concepts"],
+        "classes": ["Primary Five", "Primary Six", "Primary Seven"]
+    },
+    "Whole Numbers": {
+        "aliases": ["Whole Numbers", "Operation on Whole Numbers"],
+        "classes": ["Primary Six", "Primary Seven"]
+    },
+    "Patterns": {
+        "aliases": ["Patterns and Sequences", "Patterns and Sequence"],
+        "classes": ["Primary Four", "Primary Five", "Primary Six", "Primary Seven"]
+    }
+    // Add more related topics as needed
+};
+
+// Helper function to find related topic group
+function findRelatedTopicGroup(topic) {
+    for (const [mainTopic, config] of Object.entries(relatedTopics)) {
+        if (config.aliases.includes(topic)) {
+            return config;
+        }
+    }
+    return null;
+}
+
+// Helper function to find all related content for a class and category
+function findRelatedContent(className, category) {
+    const relatedVideos = new Set();
+
+    // If there's a curriculum for this class and category
+    if (curriculum[className] && curriculum[className][category]) {
+        const classTopics = curriculum[className][category];
+        
+        // Check each topic in the curriculum
+        classTopics.forEach(topic => {
+            const relatedGroup = findRelatedTopicGroup(topic);
+            if (relatedGroup) {
+                // Add all related videos from any applicable class
+                videoData.forEach(video => {
+                    if (relatedGroup.classes.includes(video.class) && 
+                        relatedGroup.aliases.includes(video.topic) &&
+                        (category === 'all' || video.category === category)) {
+                        relatedVideos.add(video);
+                    }
+                });
+            }
+            
+            // Also add direct matches for this topic
+            videoData.forEach(video => {
+                if (video.topic === topic && 
+                    video.class === className &&
+                    (category === 'all' || video.category === category)) {
+                    relatedVideos.add(video);
+                }
+            });
+        });
+    }
+
+    return Array.from(relatedVideos);
+}
+
+// Helper function to check if related videos exist
+function hasRelatedVideos(className, category) {
+    // If no specific class or category selected, return true
+    if (className === 'all' || category === 'all') return true;
+
+    // Check for direct videos first
+    const hasDirectVideos = videoData.some(video => 
+        video.class === className && 
+        (category === 'all' || video.category === category)
+    );
+
+    if (hasDirectVideos) return true;
+
+    // Check for related videos
+    return findRelatedContent(className, category).length > 0;
+}
+
+// Modified hasVideosForClass function
+function hasVideosForClass(className, category) {
+    // If no specific class is selected, return true
+    if (className === 'all') return true;
+
+    // First check direct videos
+    const directVideos = videoData.filter(video => 
+        video.class === className && 
+        (category === 'all' || video.category === category)
+    );
+    
+    if (directVideos.length > 0) return true;
+
+    // If no direct videos, check for videos with related topics
+    if (curriculum[className] && curriculum[className][category]) {
+        const classTopics = curriculum[className][category];
+        
+        // Check each topic in the class curriculum
+        for (const topic of classTopics) {
+            const relatedGroup = findRelatedTopicGroup(topic);
+            if (relatedGroup) {
+                // Look for videos that match any related topic
+                const relatedVideos = videoData.filter(video => 
+                    relatedGroup.classes.includes(video.class) && 
+                    relatedGroup.aliases.includes(video.topic) &&
+                    (category === 'all' || video.category === category)
+                );
+                if (relatedVideos.length > 0) return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+// Modified filterCards function
 function filterCards() {
     const searchQuery = searchInput.value.toLowerCase().trim();
     const selectedCategory = categoryFilter.value;
     const selectedClass = classFilter.value;
     const selectedTopic = topicFilter.value;
 
-    // First check if the selected class has any videos in the entire dataset
+    // Get all applicable videos including related content
+    let matchingVideos = [...videoData];
+
     if (selectedClass !== 'all') {
-        const hasVideosForClass = videoData.some(video => video.class === selectedClass);
-        if (!hasVideosForClass) {
-            filteredVideos = [];
-            cardContainer.innerHTML = '';
-            searchMessage.innerHTML = `
-                <div class="no-videos-message">
-                    <p>There are currently no videos available for ${selectedClass}.</p>
-                    <p>Please check back later or select a different class.</p>
-                </div>
-            `;
-            searchMessage.classList.add('visible');
-            updatePaginationButtons();
-            return false;
-        }
+        const relatedContent = findRelatedContent(selectedClass, selectedCategory);
+        matchingVideos = [...new Set([...matchingVideos, ...relatedContent])];
     }
 
-    // Create a map to track unique videos and their shared status
-    const uniqueVideosMap = new Map();
-
-    // Filter and deduplicate videos
-    videoData.forEach(video => {
+    // Apply filters to the combined set of videos
+    filteredVideos = matchingVideos.filter(video => {
         const matchesSearch = searchQuery === '' || video.title.toLowerCase().includes(searchQuery);
         const matchesCategory = selectedCategory === 'all' || video.category === selectedCategory;
-        const matchesClass = selectedClass === 'all' || video.class === selectedClass;
         
-        // Check if the topic is shared
-        const isSharedTopic = sharedTopics[video.category] && 
-                            sharedTopics[video.category][video.topic];
-
-        let matchesTopic = selectedTopic === 'all';
-        if (!matchesTopic && isSharedTopic) {
-            matchesTopic = sharedTopics[video.category][video.topic].includes(video.class) && 
-                          video.topic === selectedTopic;
-        } else {
-            matchesTopic = selectedTopic === 'all' || video.topic === selectedTopic;
-        }
-
-        if (matchesSearch && matchesCategory && matchesClass && matchesTopic) {
-            const videoKey = `${video.src}-${video.title}-${video.topic}`;
-
-            if (searchQuery === '' && selectedCategory === 'all' && 
-                selectedClass === 'all' && selectedTopic === 'all') {
-                
-                if (isSharedTopic) {
-                    if (!uniqueVideosMap.has(videoKey)) {
-                        uniqueVideosMap.set(videoKey, {
-                            ...video,
-                            sharedClasses: sharedTopics[video.category][video.topic]
-                        });
-                    }
-                } else {
-                    uniqueVideosMap.set(videoKey, video);
-                }
+        // Class matching includes both direct and related content
+        let matchesClass = selectedClass === 'all';
+        if (!matchesClass) {
+            if (video.class === selectedClass) {
+                matchesClass = true;
             } else {
-                uniqueVideosMap.set(videoKey + video.class, video);
+                // Check if this video is related to any topic in the selected class
+                const relatedContent = findRelatedContent(selectedClass, selectedCategory);
+                matchesClass = relatedContent.some(relatedVideo => relatedVideo.src === video.src);
             }
         }
+
+        // Topic matching
+        let matchesTopic = selectedTopic === 'all';
+        if (!matchesTopic) {
+            const relatedGroup = findRelatedTopicGroup(selectedTopic);
+            if (relatedGroup) {
+                matchesTopic = relatedGroup.aliases.includes(video.topic);
+            } else {
+                matchesTopic = video.topic === selectedTopic;
+            }
+        }
+
+        return matchesSearch && matchesCategory && matchesClass && matchesTopic;
     });
 
-    // Convert map values back to array
-    filteredVideos = Array.from(uniqueVideosMap.values());
-
-    // Determine if we should shuffle based on filters
-    const shouldShuffle = (
-        // Shuffle when no filters are applied
-        (searchQuery === '' && selectedCategory === 'all' && 
-         selectedClass === 'all' && selectedTopic === 'all') ||
-        // Shuffle when only class is selected (no subject/category)
-        (searchQuery === '' && selectedCategory === 'all' && 
-         selectedClass !== 'all' && selectedTopic === 'all')
-    );
-
-    if (shouldShuffle) {
-        // Use Fisher-Yates shuffle for random ordering
-        filteredVideos = shuffleArray([...filteredVideos]);
-    } else {
-        // Keep original order when subject/category is selected
+    // Determine when to maintain original order (only when specific topic is selected)
+    if (selectedTopic !== 'all') {
+        // If specific topic is selected, maintain original order
         filteredVideos.sort((a, b) => {
-            // Sort by category first
-            if (a.category !== b.category) {
-                return a.category.localeCompare(b.category);
-            }
-            // Then by topic order in curriculum
-            const topics = curriculum[a.class]?.[a.category] || [];
-            const topicIndexA = topics.indexOf(a.topic);
-            const topicIndexB = topics.indexOf(b.topic);
-            return topicIndexA - topicIndexB;
+            return videoData.findIndex(v => v.src === a.src) - videoData.findIndex(v => v.src === b.src);
         });
+    } else {
+        // In all other cases (including no filters), randomize the videos
+        filteredVideos = shuffleArray([...filteredVideos]);
     }
 
-    // Update search message based on results
-    if (filteredVideos.length === 0) {
-        const filters = [];
-        if (selectedCategory !== 'all') filters.push(selectedCategory);
-        if (selectedClass !== 'all') filters.push(selectedClass);
-        if (selectedTopic !== 'all') filters.push(selectedTopic);
+    // Reset to first page
+    currentPageNumber = 1;
 
-        let messageText = '';
-        if (searchQuery) {
-            messageText = `No matches found for "${searchQuery}"`;
-            if (filters.length) {
-                messageText += ` in ${filters.join(' - ')}`;
-            }
-            messageText += `. Click "Search" to search on YouTube!`;
-        } else if (filters.length) {
-            messageText = `No videos found for ${filters.join(' - ')}. Please try typing it in the search bar and click on the search button to watch it on YouTube.`;
-        }
-
-        searchMessage.innerHTML = messageText;
+    // Only show search message for no results with search query
+    if (filteredVideos.length === 0 && searchQuery) {
+        searchMessage.innerHTML = `No matches found for "${searchQuery}". Click "Search" to search on YouTube!`;
         searchMessage.classList.add('visible');
     } else {
         searchMessage.classList.remove('visible');
     }
 
-    // Display the current page of filtered results
     displayCurrentPage();
+    updateShuffleButtonVisibility();
     return filteredVideos.length > 0;
 }
 
@@ -19247,41 +19274,44 @@ function filterCards() {
         return;
     }
 
-    // Enable topic filter
+    // Enable topic filter and populate topics
     topicFilter.disabled = false;
 
-    // Get topics for the selected class and category
-    const regularTopics = curriculum[selectedClass][selectedCategory] || [];
-    
-    // Get shared topics for this category that include the selected class
-    const sharedTopicsForCategory = sharedTopics[selectedCategory] || {};
-    const additionalTopics = Object.entries(sharedTopicsForCategory)
-        .filter(([_, classes]) => classes.includes(selectedClass))
-        .map(([topic, _]) => topic);
-
-    // Combine regular and shared topics, remove duplicates
-    const allTopics = [...new Set([...regularTopics, ...additionalTopics])].sort();
-
-    // Populate the topic filter
-    allTopics.forEach(topic => {
-        const option = document.createElement('option');
-        option.value = topic;
-        option.textContent = topic;
+    if (curriculum[selectedClass] && curriculum[selectedClass][selectedCategory]) {
+        const topics = curriculum[selectedClass][selectedCategory];
         
-        // Add a visual indicator for shared topics
-        if (sharedTopicsForCategory[topic]) {
-            const sharedWith = sharedTopicsForCategory[topic]
-                .filter(cls => cls !== selectedClass)
-                .join(', ');
-            if (sharedWith) {
-                option.textContent += ` (↔ ${sharedWith})`;
+        // Create a Set to store unique topics
+        const uniqueTopics = new Set();
+        
+        topics.forEach(topic => {
+            uniqueTopics.add(topic);
+            
+            // Add related topics if they exist
+            const relatedGroup = findRelatedTopicGroup(topic);
+            if (relatedGroup) {
+                // Only add aliases if they have associated videos
+                relatedGroup.aliases.forEach(alias => {
+                    const hasVideos = videoData.some(video => 
+                        video.topic === alias && 
+                        relatedGroup.classes.includes(video.class) &&
+                        (selectedCategory === 'all' || video.category === selectedCategory)
+                    );
+                    if (hasVideos) {
+                        uniqueTopics.add(alias);
+                    }
+                });
             }
-        }
-        
-        topicFilter.appendChild(option);
-    });
-}
+        });
 
+        // Add all unique topics to the filter
+        uniqueTopics.forEach(topic => {
+            const option = document.createElement('option');
+            option.value = topic;
+            option.textContent = topic;
+            topicFilter.appendChild(option);
+        });
+    }
+}
         function performYouTubeSearch() {
             const query = searchInput.value.trim();
             if (query) {
