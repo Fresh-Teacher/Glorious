@@ -99,508 +99,308 @@
 
     <script>
          const quizData = [
-         {
+        {
     "quiz_title": "Computer Basics Multiple Choice Quiz",
     "total_marks": 100,
     "marks_per_question": 2,
     "questions": [
-        {
+    {
             "id": 1,
-            "question": "What does the Enter key do?",
+            "question": "Which part of the computer does the software interact with?",
             "options": [
-                "It moves the cursor to the next line.",
-                "It erases the last letter typed.",
-                "It turns off the computer."
+                "Hardware",
+                "Mouse",
+                "Keyboard"
             ],
             "correct_answer": 0
         },
         {
             "id": 2,
-            "question": "What is the purpose of an antivirus software?",
+            "question": "Which of these is an input device?",
             "options": [
-                "To protect computers from viruses.",
-                "To make computers faster.",
-                "To organise files automatically."
+                "Keyboard",
+                "Printer",
+                "Speaker"
             ],
             "correct_answer": 0
         },
         {
             "id": 3,
-            "question": "Which key is used to erase text after the cursor?",
+            "question": "What are examples of operating systems?",
             "options": [
-                "Delete key",
-                "Spacebar",
-                "Backspace key"
+                "Windows 10, Linux, Mac",
+                "Excel, PowerPoint, Access",
+                "Keyboard, Mouse, Monitor"
             ],
             "correct_answer": 0
         },
         {
             "id": 4,
-            "question": "What does the scroll button on a mouse do?",
+            "question": "Which of these keys is used to delete text?",
             "options": [
-                "It allows you to type faster.",
-                "It helps you move up and down a page.",
-                "It shows pictures on the screen."
+                "Backspace key",
+                "Shift key",
+                "Enter key"
             ],
-            "correct_answer": 1
+            "correct_answer": 0
         },
         {
             "id": 5,
-            "question": "What does the Undo option do in applications?",
+            "question": "What is an operating system?",
             "options": [
-                "Reverses the last action performed.",
-                "Deletes the entire document.",
-                "Prints the document."
+                "A program that manages computer hardware and software.",
+                "A hardware device used for typing.",
+                "A device used for printing documents."
             ],
             "correct_answer": 0
         },
         {
             "id": 6,
-            "question": "Which part allows you to scroll up and down on a webpage?",
+            "question": "What is application software used for?",
             "options": [
-                "Mouse scroll button",
-                "Keyboard space bar",
-                "Monitor"
+                "To perform specialised tasks like typing and calculations.",
+                "To build and maintain a computer’s hardware.",
+                "To keep the computer virus-free."
             ],
             "correct_answer": 0
         },
         {
             "id": 7,
-            "question": "What is the purpose of a web browser?",
+            "question": "What is the purpose of the 'Enter' key on the keyboard?",
             "options": [
-                "To browse and access the internet.",
-                "To edit documents.",
-                "To listen to music."
+                "To submit a command or move to the next line.",
+                "To delete letters.",
+                "To turn off the computer."
             ],
             "correct_answer": 0
         },
         {
             "id": 8,
-            "question": "What happens when you press the space bar on the keyboard?",
+            "question": "Which of the following is NOT an input device?",
             "options": [
-                "A space is created between words.",
-                "The cursor moves up.",
-                "The computer switches off."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 9,
-            "question": "Which part of the computer displays pictures and videos?",
-            "options": [
-                "Keyboard",
+                "Mouse",
                 "Monitor",
-                "Mouse"
+                "Scanner"
             ],
             "correct_answer": 1
         },
         {
-            "id": 10,
-            "question": "Which mouse action is used to move an item from one place to another?",
+            "id": 9,
+            "question": "What is a computer virus?",
             "options": [
-                "Dragging",
-                "Scrolling",
-                "Right-clicking"
+                "A program that damages the computer software.",
+                "A hardware part used to store data.",
+                "A tool to update the operating system."
+            ],
+            "correct_answer": 0
+        },
+        {
+            "id": 10,
+            "question": "Which of the following is the correct definition of computer software?",
+            "options": [
+                "The part of a computer you can see but cannot touch.",
+                "The physical parts of a computer you can touch.",
+                "A person who operates the computer."
             ],
             "correct_answer": 0
         },
         {
             "id": 11,
-            "question": "What is the purpose of the arrow keys on a keyboard?",
+            "question": "Which two main types of software exist in a computer?",
             "options": [
-                "To move the cursor in different directions.",
-                "To type letters.",
-                "To scroll a webpage."
+                "System software and application software.",
+                "Input software and output software.",
+                "Hardware software and human software."
             ],
             "correct_answer": 0
         },
         {
             "id": 12,
-            "question": "What does the Start button on the taskbar do?",
+            "question": "What should you do to protect your computer from viruses?",
             "options": [
-                "Opens a menu to access applications and settings.",
-                "Turns off the computer.",
-                "Saves documents."
+                "Install and update antivirus software regularly.",
+                "Use the computer without a monitor.",
+                "Never turn off the computer."
             ],
             "correct_answer": 0
         },
         {
             "id": 13,
-            "question": "What does ‘left-click’ mean?",
+            "question": "Which operating system is developed by Apple?",
             "options": [
-                "Quickly pressing and releasing the left button on the mouse.",
-                "Holding the mouse upside down.",
-                "Moving the mouse sideways."
+                "MacOS",
+                "Windows XP",
+                "Linux"
             ],
             "correct_answer": 0
         },
         {
             "id": 14,
-            "question": "What does the Save As option do?",
+            "question": "What is the main purpose of files and folders?",
             "options": [
-                "Saves a copy of the file with a new name or location.",
-                "Deletes the file.",
-                "Closes the application."
+                "To store and organise information.",
+                "To display pictures on the desktop.",
+                "To adjust computer settings."
             ],
             "correct_answer": 0
         },
         {
             "id": 15,
-            "question": "Which type of computer is fixed on a desk and not easily moved?",
+            "question": "Which application software is best for surfing the internet?",
             "options": [
-                "Laptop computer",
-                "Desktop computer",
-                "Tablet computer"
+                "Google Chrome",
+                "Microsoft Word",
+                "Microsoft Access"
             ],
-            "correct_answer": 1
+            "correct_answer": 0
         },
         {
             "id": 16,
-            "question": "What does the cursor look like when it is ready to type?",
+            "question": "What happens when you scan a flash disk with antivirus software?",
             "options": [
-                "A blinking line or bar",
-                "A circle",
-                "A square"
+                "It checks for viruses on the flash disk.",
+                "It makes the flash disk faster.",
+                "It deletes all files from the flash disk."
             ],
             "correct_answer": 0
         },
         {
             "id": 17,
-            "question": "What is a touchscreen?",
+            "question": "Which of the following is NOT an element of the desktop?",
             "options": [
-                "A screen that responds to touch instead of using a mouse.",
-                "A screen that shows moving pictures.",
-                "A screen that only shows videos."
+                "Recycle Bin",
+                "Keyboard",
+                "Taskbar"
             ],
-            "correct_answer": 0
+            "correct_answer": 1
         },
         {
             "id": 18,
-            "question": "Which device is used to print documents?",
+            "question": "What are the three basic parts of a computer?",
             "options": [
-                "Printer",
-                "Monitor",
-                "Mouse"
+                "Hardware, Software, and Human ware",
+                "Monitor, Printer, and Scanner",
+                "Keyboard, Mouse, and Cable"
             ],
             "correct_answer": 0
         },
         {
             "id": 19,
-            "question": "What is displayed on the screen when you move the mouse?",
+            "question": "Which of these is a method of spreading viruses?",
             "options": [
-                "A cursor",
-                "A letter",
-                "A file"
+                "Downloading files from the internet.",
+                "Using the computer without a keyboard.",
+                "Clicking the mouse rapidly."
             ],
             "correct_answer": 0
         },
         {
             "id": 20,
-            "question": "What happens when you right-click on an item?",
+            "question": "Which device can transfer viruses to a computer?",
             "options": [
-                "A special menu appears on the screen.",
-                "The item disappears.",
-                "The computer shuts down."
+                "Flash disk",
+                "Monitor",
+                "Printer"
             ],
             "correct_answer": 0
         },
         {
             "id": 21,
-            "question": "Which part is considered to be the \"brain\" of the computer?",
+            "question": "Which of the following is NOT an example of an operating system?",
             "options": [
-                "Keyboard",
-                "Monitor",
-                "System Unit"
+                "Microsoft Word",
+                "Microsoft Windows",
+                "Linux"
             ],
-            "correct_answer": 2
+            "correct_answer": 0
         },
         {
             "id": 22,
-            "question": "What does the Print Screen key do?",
+            "question": "What is antivirus software?",
             "options": [
-                "Captures a snapshot of the current screen.",
-                "Prints a document.",
-                "Turns off the computer."
+                "Software that prevents, detects, and removes computer viruses.",
+                "A hardware device used to scan documents.",
+                "A tool to increase the speed of a computer."
             ],
             "correct_answer": 0
         },
         {
             "id": 23,
-            "question": "Why are computers considered accurate?",
+            "question": "What is the function of an input device?",
             "options": [
-                "They do not make mistakes easily.",
-                "They can only do simple tasks.",
-                "They get tired after long hours of work."
+                "To enter data into a computer.",
+                "To display information from the computer.",
+                "To store files on the computer."
             ],
             "correct_answer": 0
         },
         {
             "id": 24,
-            "question": "What does the Tab key do?",
+            "question": "Which of the following is an example of application software?",
             "options": [
-                "Moves the cursor to the next space.",
-                "Moves the cursor to the next tab stop.",
-                "Erases text."
+                "Microsoft Word",
+                "Linux",
+                "Keyboard"
             ],
-            "correct_answer": 1
+            "correct_answer": 0
         },
         {
             "id": 25,
-            "question": "What is the role of the cursor when using a mouse?",
+            "question": "What is the function of a printer?",
             "options": [
-                "It shows where you are pointing on the screen.",
-                "It types numbers.",
-                "It stores information."
+                "To produce a hard copy of information in the computer on paper.",
+                "To display information on the screen.",
+                "To store files and folders."
             ],
             "correct_answer": 0
         },
         {
             "id": 26,
-            "question": "Why is speed an important characteristic of computers?",
+            "question": "Which of these is a type of virus?",
             "options": [
-                "It allows them to finish tasks faster than humans.",
-                "It makes them harder to use.",
-                "It causes more mistakes in tasks."
+                "Trojan Horse",
+                "Keyboard",
+                "Antivirus"
             ],
             "correct_answer": 0
         },
         {
             "id": 27,
-            "question": "What is a folder?",
+            "question": "What is application software?",
             "options": [
-                "A storage location for organising files.",
-                "A tool for opening files.",
-                "A part of the keyboard."
+                "A program designed to perform specialised tasks.",
+                "A device used to display information.",
+                "A hardware component of a computer."
             ],
             "correct_answer": 0
         },
         {
             "id": 28,
-            "question": "How do you ‘drag and drop’ an item using the mouse?",
+            "question": "What is the main purpose of Microsoft Word?",
             "options": [
-                "Press and hold the left button, move the mouse, then release the button.",
-                "Right-click and move the mouse quickly.",
-                "Scroll the page and press Enter."
+                "To type letters and create documents.",
+                "To browse the internet.",
+                "To calculate numbers."
             ],
             "correct_answer": 0
         },
         {
             "id": 29,
-            "question": "What is the primary function of the Escape (Esc) key?",
+            "question": "Which of the following is NOT an example of antivirus software?",
             "options": [
-                "To cancel an ongoing operation.",
-                "To delete the last letter.",
-                "To save your work."
+                "SMADAV",
+                "Microsoft Excel",
+                "Avira"
             ],
-            "correct_answer": 0
+            "correct_answer": 1
         },
         {
             "id": 30,
-            "question": "Which button on the mouse is used most often for selecting items?",
+            "question": "Which of these keys is used to type a space between words?",
             "options": [
-                "Left click button",
-                "Scroll button",
-                "Right click button"
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 31,
-            "question": "What is the function of the Task Manager in a computer?",
-            "options": [
-                "To manage running applications and processes.",
-                "To save files automatically.",
-                "To edit documents."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 32,
-            "question": "What is one way computers help in education?",
-            "options": [
-                "They allow students to play games.",
-                "They help in studying and researching online.",
-                "They turn books into videos."
-            ],
-            "correct_answer": 1
-        },
-        {
-            "id": 33,
-            "question": "Which icon is commonly used to close an application window?",
-            "options": [
-                "X icon",
-                "Home icon",
-                "Folder icon"
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 34,
-            "question": "Which key allows you to type all letters in capital?",
-            "options": [
+                "Space bar",
                 "Shift key",
-                "Caps Lock key",
-                "Space bar"
-            ],
-            "correct_answer": 1
-        },
-        {
-            "id": 35,
-            "question": "What does it mean when we say computers can \"store\" data?",
-            "options": [
-                "They hold information for future use.",
-                "They lose information after a while.",
-                "They type letters automatically."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 36,
-            "question": "What is a software program?",
-            "options": [
-                "A set of instructions that tells the computer what to do.",
-                "A hardware part of the computer.",
-                "A collection of wires."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 37,
-            "question": "Which area of the keyboard contains the numbers and mathematical symbols?",
-            "options": [
-                "Typing area",
-                "Numerical keys area",
-                "Functional keys area"
-            ],
-            "correct_answer": 1
-        },
-        {
-            "id": 38,
-            "question": "Which characteristic allows a computer to solve problems on its own?",
-            "options": [
-                "Speed",
-                "Artificial intelligence",
-                "Storage"
-            ],
-            "correct_answer": 1
-        },
-        {
-            "id": 39,
-            "question": "Which part is necessary to click on files or open folders?",
-            "options": [
-                "Monitor",
-                "Mouse",
-                "System unit"
-            ],
-            "correct_answer": 1
-        },
-        {
-            "id": 40,
-            "question": "What is a file?",
-            "options": [
-                "A collection of data stored on a computer.",
-                "A type of mouse.",
-                "A screen saver."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 41,
-            "question": "What happens when you press the Backspace key?",
-            "options": [
-                "It deletes the character before the cursor.",
-                "It moves the cursor to the next line.",
-                "It saves your work."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 42,
-            "question": "What happens when you double-click the left mouse button?",
-            "options": [
-                "It opens files or folders.",
-                "It shuts down the computer.",
-                "It deletes items."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 43,
-            "question": "Why is the Shift key important?",
-            "options": [
-                "Helps in typing capital letters when held down.",
-                "Deletes a word.",
-                "Moves the cursor to the next line."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 44,
-            "question": "The buttons on a keyboard are called:",
-            "options": [
-                "Keys",
-                "Screens",
-                "Cursors"
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 45,
-            "question": "What is the purpose of the Home button?",
-            "options": [
-                "Moves the cursor to the beginning of the line or page.",
-                "Closes the current application.",
-                "Saves your document."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 46,
-            "question": "Which storage device is portable and connects via USB?",
-            "options": [
-                "Flash drive",
-                "Hard drive",
-                "Monitor"
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 47,
-            "question": "Which characteristic of computers makes them fast?",
-            "options": [
-                "Speed",
-                "Accuracy",
-                "Reliability"
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 48,
-            "question": "What does the Caps Lock key do?",
-            "options": [
-                "Enables typing in capital letters.",
-                "Moves the cursor to the top of the page.",
-                "Deletes text."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 49,
-            "question": "What does the Recycle Bin on a computer do?",
-            "options": [
-                "Temporarily stores deleted files.",
-                "Deletes files permanently.",
-                "Saves all files automatically."
-            ],
-            "correct_answer": 0
-        },
-        {
-            "id": 50,
-            "question": "Why is artificial intelligence important for computers?",
-            "options": [
-                "It helps computers perform tasks like humans.",
-                "It stores data.",
-                "It types automatically."
+                "Enter key"
             ],
             "correct_answer": 0
         }
