@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ICT Exam Marksheet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --background-light: #f4f6f9;
+            --text-dark: #1f2937;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: var(--background-light);
+        }
+
+        select,
+        button {
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        select {
+            flex-grow: 1;
+            appearance: none;
+            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 0.75rem center;
+            background-size: 1.5rem;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #marksTable {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        #marksTable th,
+        #marksTable td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        #marksTable th {
+            background-color: var(--background-light);
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        #marksTable input {
+            width: 100%;
+            border: none;
+            text-align: center;
+            font-size: 1rem;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        #marksTable input:focus {
+            outline: 2px solid var(--primary-color);
+            background-color: #f0f6ff;
+        }
+
+        .total-cell {
+            font-weight: 700;
+            background-color: #f0fdf4;
+            color: var(--secondary-color);
+        }
+
+        .export-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--background-light);
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .export-buttons button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+            }
+
+            .controls,
+            .export-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .search-container {
+            margin-bottom: 10px;
+        }
+
+        #searchInput {
+            width: 300px;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        .highlight {
+            background-color: yellow;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .controls,
+        .search-container {
+            margin-bottom: 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        #searchInput {
+            flex-grow: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        #searchInput:focus {
+            border-color: #4a90e2;
+        }
+
+        #searchResults {
+            margin-left: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .highlight {
+            background-color: #fffbcc;
+            transition: background-color 0.3s ease;
+        }
+
+        #marksTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        #marksTable th {
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            text-align: left;
+        }
+
+        #marksTable td {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .export-buttons button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .export-buttons button:hover {
+            background-color: #357abd;
+        }
+        .global-search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .search-icon {
+            cursor: pointer;
+            margin-right: 10px;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+        .search-icon:hover {
+            color: #000;
+        }
+        #globalSearchInput {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        #globalSearchInput:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+        #globalSearchResults {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-top: none;
+            background: white;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .global-search-result {
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .global-search-result:hover {
+            background-color: #f0f0f0;
+        }
+        .search-summary {
+            padding: 10px;
+            background-color: #f4f4f4;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ICT Exam Marksheet</h1>
+        </div>
+
+        <div class="global-search-container" id="globalSearchContainer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                 fill="none" stroke="currentColor" stroke-width="2" 
+                 stroke-linecap="round" stroke-linejoin="round" 
+                 class="search-icon" id="searchTrigger">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="globalSearchInput" placeholder="Search students..." style="display:none;">
+            <div id="globalSearchResults"></div>
+        </div>
+
+        <div class="controls">
+            <select id="classSelect">
+                <option value="">Select a Class</option>
+                <option value="P4Cubs">P.4 Cubs</option>
+                <option value="P4Bunnies">P.4 Bunnies</option>
+                <option value="P4Eaglets">P.4 Eaglets</option>
+                <option value="P3Cranes">P.3 Cranes</option>
+                <option value="P3Sparrows">P.3 Sparrows</option>
+                <option value="P3Parrots">P.3 Parrots</option>
+            </select>
+        </div>
+
+        <div class="search-container" id="searchContainer" style="display:none;">
+            <input type="text" id="searchInput" placeholder="Search student name...">
+            <span id="searchResults"></span>
+        </div>
+
+        <div class="export-controls" id="exportControls" style="display:none;">
+            <span id="classNameDisplay"></span>
+            <div class="export-buttons">
+                <button onclick="printMarksheet()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                    Print
+                </button>
+
+                <button onclick="exportToExcel()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M21.2 15c.7-1.2 1-2.5.8-3.9-.3-1.9-1.5-3.6-3.3-4.3-1.3-.5-2.7-.4-4 .2-.7-1.3-1.9-2.3-3.4-2.8C9 4.4 7 5 6.4 6.3c-.4.9-.3 1.9.2 2.8-.7 1-1 2.2-.8 3.4.3 1.9 1.5 3.6 3.3 4.3 1.3.5 2.7.4 4-.2.7 1.3 1.9 2.3 3.4 2.8 1.6.5 3.3-.1 4.1-1.5m0 0V15" />
+                        <path d="M12 15v6m0 0l-3-3m3 3l3-3" />
+                    </svg>
+                    Export Excel
+                </button>
+            </div>
+        </div>
+
+        <table id="marksTable">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Student Name</th>
+                    <th>Theory (70)</th>
+                    <th>Practical (30)</th>
+                    <th>Total (100)</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Students will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const studentData = {
+            'P4Cubs': ['Mokhta Adam Salam',
+                'Bagonza Joab',
+                'Kayongo Jawad',
+                'Kakona Jordan',
+                'Kiggundu Luke',
+                'Buyungo Eric',
+                'Lubega Malcom',
+                'Lukandwa Phillip',
+                'Murungi Ian',
+                'Muyinza Cyrus',
+                'Mulangira Joseph',
+                'Manzi Evans',
+                'Itaaga Nicholast',
+                'Luyiga  Rayan',
+                'Ssewakiryanga Hosea',
+                'Ssuuna Rafan W',
+                'Ssematimba Mark',
+                'Ssebabenga Keron',
+                'Twesigye Adrian',
+                'Walligo Ethan',
+                'Namwanja John Baptist',
+                'Ssengendo Prita',
+                'Kalule Carlos',
+                'Muhumuza Adhelito',
+                'Luggya Akram',
+                'Ssemombwe Anderson',
+                'Ahereza Honour',
+                'Aliyah Adams K.',
+                'Akarabo Golda',
+                'Blessing Shiloh',
+                'Ainomugisha Angel',
+                'Kemigisha Alexandria',
+                'Lubuulwa Melina J',
+                'Mubeezi Shadia L.',
+                'Nakungu Precious',
+                'Nassanga Maria A.',
+                'Namirembe Alpha',
+                'Nanungi Drucilla L.',
+                'Namaganda Imrah',
+                'Nakaweesi Michelle',
+                'Namutebi Gertrude',
+                'Nanjobe Vanessa',
+                'Ninsiima Mary S.',
+                'Nvanungi Shaniez F.',
+                'Temitope Grace A.',
+                'Ashaba Elizabeth',
+                'Nansubuga Manuella',
+                'Namakula Sophia',
+                'Obang Shallom S.',
+                'Bukirwa Leticia',
+                'Kismart Dauda',
+                'Kasozi Aamrat',
+                'Nantongo Bushirah'
+            ],
+            'P4Bunnies': ['Bukenya Keith Martins',
+                'Ddumba Francis',
+                'Gitta Razaq',
+                'Kasozi Nelson',
+                'Kateregga Raul',
+                'Kayemba Shan',
+                'Kimbugwe Melvin',
+                'Kirabira Arnold',
+                'Kuteesa Ismail Kalule',
+                'Lwanga Raphael',
+                'Moya Elisha',
+                'Mugisa Valente',
+                'Mukisa Nathan',
+                'Mukisa Samson',
+                'Mulindwa Eddy',
+                'Muramuzi Jan Jensen',
+                'Najib Al-Shafiq',
+                'Ssekandi Ramathan',
+                'Ssonko Henry Arthur',
+                'Walusimbi Abdul-Sharik',
+                'Ankunda Denise',
+                'Asiimwe Sheena',
+                'Atamba Carol Jireh',
+                'Atukunda Gramia',
+                'Ayebareyesu Excellent',
+                'Bwire Clarrisa',
+                'Hipaingah Salah Josephine',
+                'Jibe Immaculate',
+                'Kabanda Martha',
+                'Kabuyaya Rayanna',
+                'Kalibala Janat',
+                'Kamugisha Natalie',
+                'Kasemire Blessing',
+                'Kavuma Grace',
+                'Kharunda Esther',
+                'Kyazze Martha',
+                'Lymiah Avril Salim',
+                'Manzi Galia',
+                'Michoro Anna Alexa',
+                'Nabakooza Christine',
+                'Nabikolo Anna',
+                'Nakasujja Shannah',
+                'Nalumansi Lyton',
+                'Namala Salsabel',
+                'Nambi Naava',
+                'Nampiima Hyrat',
+                'Namubiru Riah',
+                'Nandawula  Desire',
+                'Nanono Roshan Ismail',
+                'Ninsiima Kirabo Arianah',
+                'Nyonyozi Edrinah',
+                'Umutesi Dinah Inez'
+            ],
+            'P4Eaglets': ['Kisakye Martha',
+                'Anyango Karen Mercy',
+                'Asiimwe Monica',
+                'Atuhaire Angella',
+                'Bukirwa Rahma Ddumba',
+                'Jamilah Peace Athuman',
+                'Kateregga Rashim',
+                'Kayaga Katrinah',
+                'Kebirungi Daisy Eve',
+                'Lumu Anna Gragious',
+                'Mutesi Trina Teddy',
+                'Mutumba Aaliyah',
+                'Nabagulanyi Tendo Treasure',
+                'Nabirye Precious',
+                'Nabuuma Vanessa',
+                'Nakibuuka Assumpta',
+                'Nakibuule Melan Blessed',
+                'Nakitto Happy Daniella',
+                'Naluwooza Bushirah',
+                'Namatovu Immaculate',
+                'Namatovu Provia Abigail',
+                'Nambatya Shivan',
+                'Namulindwa Victoria',
+                'Nantongo Shantel',
+                'Tendo Hasifa Hakim',
+                'Uwineza Shamah Zinduka',
+                'Wassajja Melissa Rap',
+                'Mutesaasira Jollen',
+                'Mubiru Inan',
+                'Nabbale Blessing V.',
+                'Mercy Allen',
+                'Avani Patricia',
+                'Ahabwe Alvin',
+                'Ainebyona Isaiah',
+                'Akol Leon Masaba',
+                'Ddamba Shadrack',
+                'Kakande Blessed',
+                'Kawulukusi Shakuran',
+                'Kevin Khamis Kennedy',
+                'Kigozi Raheem',
+                'Kitandwe Abdulshakul',
+                'Matsiko Hanif',
+                'Mawejje Ukasha',
+                'Mikka Tyaba Nicholas',
+                'Mubiru Miguel Hero',
+                'Mulumba Favour Clinton',
+                'Mulwana Neal',
+                'Namutale Federico',
+                'Nsamba Jordan Rich',
+                'Ssejjuuko Pedro',
+                'Ssekanjako Arafat',
+                'Ssetumba Jessie',
+                'Tusuubira Arthur',
+                'Mbazira Joel',
+                'Mbabazi Cyroh',
+                'Mpanga Fahad',
+                'Rwomushana Omugisha G.'
+            ],
+            'P3Cranes': ['Akampulira Calvin',
+                'Bugembe Shakur',
+                'Ankunda Donald',
+                'Kisira Jordan',
+                'Kibudde Nicholas',
+                'Kagimu Shemaiah',
+                'Keeya Malcom',
+                'Kyeyune Daniel',
+                'Lwasa Dalton',
+                'Lwalanda Hakim',
+                'Isingoma Edgar',
+                'Magala Dalton',
+                'Mukiibi Jonathan',
+                'Mukisa Trajan',
+                'Muwamba Wilfred',
+                'Nkwisana Reagan',
+                'Ssentongo Simon Elvis',
+                'Ssimbwa Talia',
+                'Walusimbi Jethro V.',
+                'Hirwa Alle Ian',
+                'Turyakira Tyrone',
+                'Kafeero Elijah P',
+                'Mugerwa Jericho',
+                'Ssebuufu Raymond',
+                'Ssekajigo Victor',
+                'Bwiire Emmanuel',
+                'Lubega Michael',
+                'Kaweesi Abdul S.',
+                'Tumusiime Frank',
+                'Webare Gabriel',
+                'Kaweesi Evans',
+                'Kasule Eliasafu P.',
+                'Sseruyange Timothy',
+                'Migadde Shakur S.',
+                'Sserunjogi Ethan',
+                'Magumba Shakir',
+                'Adriko Prosper',
+                'Bukenya Krystal N.',
+                'Besigye Tricia',
+                'Byaruhanga Ashnaz',
+                'Mukisa Favour',
+                'Nakitto Rhonel R',
+                'Nannungi Anna',
+                'Namubiru Africa',
+                'Nakiboneka Prudence',
+                'Namagala Edron',
+                'Nanyeza Lyan',
+                'Namyalo Tasheemim',
+                'Nakabuye Cynthia',
+                'Nasasira Divine',
+                'Nambejja Christine',
+                'Nanjego Victoria',
+                'Ola Keron',
+                'Waikya Israella P',
+                'Rashym Wahidah I.',
+                'Nabukeera Shukran Y',
+                'Nankubuge Shainah',
+                'Nakasiisa Sheilah K.',
+                'Namuyiga Jovia',
+                'Nassimbwa Grace H',
+                'Nakiguli Shivan Pia',
+                'Nakalanzi Promise',
+                'Kaitesi Leah',
+                'Nassimbwa Ciara',
+                'Kamugisha Giovana',
+                'Mpairwe Celine L.',
+                'Mwesigwa Milva',
+                'Kiguli Nailor'
+            ],
+            'P3Sparrows': ['Namazzi Hilda',
+                'Abaasa Melisa',
+                'Naluyange Madrine',
+                'Namata Shifra K.',
+                'Nanyunja Rinah',
+                'Nakalungi Gabriella',
+                'Katumba Maria',
+                'Atuhaire Georgia',
+                'Treasure Elizabeth Seku',
+                'Namutebi Leona Rosella',
+                'Namugerwa Sabrina',
+                'Nampiima Pauline',
+                'Mirembe Raudah',
+                'Nyakato Edrinah',
+                'Amila Adams Kyeyune',
+                'Bwire Chloe Grighton',
+                'Akwero Lynne A.',
+                'Asaba Mulungi Joana',
+                'Nalubega Maria',
+                'Akamutuha Janet',
+                'Komujuni Fedrace',
+                'Namaganda Briannah',
+                'Musiime Gift',
+                'Muyama Abigail',
+                'Nabukenya Cate Josephine',
+                'Nalwanga Jazmine',
+                'Arinda Martha',
+                'Kavuma Norine Esther',
+                'Irene Malaika Nabbale',
+                'Namanda Majorine',
+                'Nabbongole Katrinah',
+                'Namujjuzi Winfred',
+                'Ainembabazi Melissa',
+                'Nansirumbi Isabella',
+                'Nakintu Immaculate',
+                'Ainembabazi Rainah Grace',
+                'Sanyu Nisha Gasaro',
+                'Barungi Victoria',
+                'Anviko Shantal',
+                'Malaika Trixie Kiyaga',
+                'Nansumbi Deborah',
+                'Ndagire Sarah',
+                'Kalyango Raheem',
+                'Wasswa Kabuye Jonah',
+                'Kato Kabuye Jovans',
+                'Agaba John Treasure',
+                'Katumba Conrad',
+                'Eloy Titus Ssentongo',
+                'Ahumuza Praise Robert',
+                'Kaweesa Keiran',
+                'Balikuddembe Elvis',
+                'Batanda Jethro',
+                'Walusimbi Martin',
+                'Kaweesi Hashim',
+                'Ssewanyana Aaron',
+                'Tamale John Francis',
+                'Buyondo Israel',
+                'Kwezi Robin',
+                'Wodero Joshua',
+                'Ssempijja Oscar',
+                'Mukiriza George',
+                'Kalibbala Akram',
+                'Ariiho Israel',
+                'KalyesubulanJayden',
+                'Kakungulu Ryan Mark',
+                'Ntambi Reagan J.',
+                'Kimbugwe Abdullah'
+            ],
+            'P3Parrots': ['Agaba Joshua Walter',
+                'Asiimwe Derrick',
+                'Lugendo Amos',
+                'Atwiine Jotham',
+                'Batanda Dylan',
+                'Byamukama Keith',
+                'Tamale Jakira Flavour',
+                'Kakooza Abdul Razaq',
+                'Kakinda Fabian',
+                'Kato Jolly Jonathan',
+                'Kavuma Amir',
+                'Kaweesa Simpson',
+                'Kibuuka Raymond',
+                'Kimbugwe Stewart',
+                'Kimera Jonathan',
+                'Lubowa Abubaker',
+                'Lukwago Rayan',
+                'Magoma Benhur',
+                'Nsubuga Micheal',
+                'Sekate Godfrey',
+                'Ssali Micheal',
+                'Sseremba Jeremiah',
+                'Wasswa David Douglas',
+                'Mayanja Vuubi',
+                'Ssenyonga Jeremiah',
+                'Nayebare Timothy',
+                'Akatuhereza Merrick',
+                'Sserumagga John Putin',
+                'Kawuki Gipson',
+                'Kabagambe Weissman',
+                'Ainomugisha Petrinah',
+                'Ampumuza Elianah',
+                'Asinguza Brenda',
+                'Avghail Batzion',
+                'Kizito Hanah Friend',
+                'Kasule Elsen Zawad',
+                'Katusiime Jasmine',
+                'Kisenyi Mellisa Maggie',
+                'Kyaligonza Josephine',
+                'Lumu Angel Favour',
+                'Lutaaya Catherine',
+                'Magoma Belicia',
+                'Nakanwagi Keirah',
+                'Nakimuli Ethel',
+                'Nambalirwa Trude',
+                'Namirembe Maria Nicole',
+                'Namumbejja Ryhan',
+                'Nassiwa Hailey',
+                'Okallo Natasha Esther',
+                'Nsiimire Faith',
+                'Ssekate Noella',
+                'Namuli Comfort',
+                'Wanyenze Marianah',
+                'Kalungi Neirah',
+                'Nansubuga Tracy Camilla',
+                'Nakirijja Cynthia',
+                'Kyomuhendo Grace',
+                'Ssenyonjo Mercy',
+                'Muhindo Gian',
+                'Niyibizi Jerusa',
+                'Nanyonga Ziadah',
+                'Munezero Blessen',
+                'Nanyonjo Patience',
+                'Kyenyini Cossiline',
+                'Nakasumba Anitah',
+                'Namirembe Peninah',
+            ]
+        };
+
+        const elements = {
+                searchTrigger: document.getElementById('searchTrigger'),
+                globalSearchInput: document.getElementById('globalSearchInput'),
+                globalSearchResults: document.getElementById('globalSearchResults'),
+                classSelect: document.getElementById('classSelect'),
+                tableBody: document.getElementById('tableBody'),
+                exportControls: document.getElementById('exportControls'),
+                classNameDisplay: document.getElementById('classNameDisplay'),
+                searchContainer: document.getElementById('searchContainer'),
+                searchInput: document.getElementById('searchInput'),
+                searchResults: document.getElementById('searchResults')
+            };
+
+            // Toggle search input visibility
+            elements.searchTrigger.addEventListener('click', () => {
+                elements.globalSearchInput.style.display = 'block';
+                elements.globalSearchInput.focus();
+            });
+
+            // Close search if clicked outside
+            document.addEventListener('click', (event) => {
+                const isClickInside = elements.globalSearchContainer.contains(event.target);
+                if (!isClickInside) {
+                    elements.globalSearchInput.style.display = 'none';
+                    elements.globalSearchResults.innerHTML = '';
+                }
+            });
+
+            function globalSearchStudents() {
+                const searchTerm = elements.globalSearchInput.value.toLowerCase().trim();
+                let matchedStudents = [];
+
+                // Search across all classes
+                Object.keys(studentData).forEach(classKey => {
+                    studentData[classKey].forEach((studentName, index) => {
+                        if (studentName.toLowerCase().includes(searchTerm)) {
+                            matchedStudents.push({
+                                name: studentName,
+                                class: classKey,
+                                index: index
+                            });
+                        }
+                    });
+                });
+
+                // Clear previous results
+                elements.globalSearchResults.innerHTML = '';
+
+                // If search term is empty, return
+                if (!searchTerm) return;
+
+                // Create summary
+                const summaryElement = document.createElement('div');
+                summaryElement.classList.add('search-summary');
+                summaryElement.textContent = `Found ${matchedStudents.length} student(s)`;
+                elements.globalSearchResults.appendChild(summaryElement);
+
+                // Populate results
+                matchedStudents.forEach(student => {
+                    const resultElement = document.createElement('div');
+                    resultElement.classList.add('global-search-result');
+                    resultElement.setAttribute('data-class', student.class);
+                    resultElement.setAttribute('data-index', student.index);
+                    resultElement.textContent = `${student.name} (${student.class})`;
+                    
+                    resultElement.addEventListener('click', () => {
+                        const selectedClass = student.class;
+                        const studentIndex = student.index;
+
+                        // Set class selector and load students
+                        elements.classSelect.value = selectedClass;
+                        loadStudents();
+
+                        // Focus on the specific student's row
+                        const rows = elements.tableBody.querySelectorAll('tr');
+                        rows[studentIndex].querySelector('.theory-input').focus();
+                    });
+
+                    elements.globalSearchResults.appendChild(resultElement);
+                });
+            }
+
+            // Add event listeners for global search
+            elements.globalSearchInput.addEventListener('input', globalSearchStudents);
+
+        // Flash Message Functionality
+        function showFlashMessage(message, type = 'info') {
+            // Create flash message container if it doesn't exist
+            let flashContainer = document.getElementById('flashMessageContainer');
+            if (!flashContainer) {
+                flashContainer = document.createElement('div');
+                flashContainer.id = 'flashMessageContainer';
+                flashContainer.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 300px;
+            width: 100%;
+        `;
+                document.body.appendChild(flashContainer);
+            }
+
+            // Create flash message element
+            const flashMessage = document.createElement('div');
+            flashMessage.textContent = message;
+            flashMessage.style.cssText = `
+        background-color: ${type === 'success' ? '#4CAF50' :
+                    type === 'error' ? '#f44336' :
+                        type === 'warning' ? '#ff9800' : '#2196F3'
+                };
+        color: white;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    `;
+
+            // Add to container
+            flashContainer.appendChild(flashMessage);
+
+            // Animate in
+            requestAnimationFrame(() => {
+                flashMessage.style.opacity = '1';
+            });
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                flashMessage.style.opacity = '0';
+                setTimeout(() => {
+                    flashContainer.removeChild(flashMessage);
+                    // Remove container if no messages
+                    if (flashContainer.children.length === 0) {
+                        document.body.removeChild(flashContainer);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+
+        // Function to create and append a button
+        function createButton({ text, id, style, onClick }) {
+            const button = document.createElement('button');
+            button.textContent = text;
+            if (id) button.id = id;
+            if (style) Object.assign(button.style, style);
+            if (onClick) button.addEventListener('click', onClick);
+            return button;
+        }
+
+        // Create Import Draft Button
+        const importDraftButton = document.createElement('div');
+        importDraftButton.innerHTML = `
+    <button id="preClassImportDraft" style="
+        margin: 10px;
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.2 15c.7-1.2 1-2.5.8-3.9-.3-1.9-1.5-3.6-3.3-4.3-1.3-.5-2.7-.4-4 .2-.7-1.3-1.9-2.3-3.4-2.8C9 4.4 7 5 6.4 6.3c-.4.9-.3 1.9.2 2.8-.7 1-1 2.2-.8 3.4.3 1.9 1.5 3.6 3.3 4.3 1.3.5 2.7.4 4-.2.7 1.3 1.9 2.3 3.4 2.8 1.6.5 3.3-.1 4.1-1.5m0 0V15"/>
+            <path d="M12 15v6m0 0l-3-3m3 3l3-3"/>
+        </svg>
+        Import JSON
+    </button>
+`;
+        elements.classSelect.parentNode.insertBefore(importDraftButton, elements.classSelect.nextSibling);
+
+        // Create a single hidden file input for draft import
+        const draftFileInput = document.createElement('input');
+        draftFileInput.type = 'file';
+        draftFileInput.id = 'draftFileInput';
+        draftFileInput.accept = '.json';
+        draftFileInput.style.display = 'none';
+        draftFileInput.addEventListener('change', importDraftJSON);
+        document.body.appendChild(draftFileInput);
+
+        // Add event listeners for import draft
+        importDraftButton.querySelector('button').addEventListener('click', () => draftFileInput.click());
+
+        // Add draft save and import buttons to export controls
+        const exportButtons = document.querySelector('.export-buttons');
+        const draftSaveButton = createButton({
+            text: 'Export JSON',
+            style: { backgroundColor: '#ffa500' }, // Orange color
+            onClick: saveDraftToJSON
+        });
+
+        exportButtons.append(draftSaveButton);
+
+        // Functions for saving/loading marks
+        function saveMarksToLocalStorage(selectedClass) {
+            const markData = [];
+            const rows = elements.tableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const theoryInput = row.querySelector('.theory-input');
+                const practicalInput = row.querySelector('.practical-input');
+                markData.push({
+                    studentName: cells[1].textContent,
+                    theory: theoryInput.value || '',
+                    practical: practicalInput.value || '',
+                    total: cells[4].textContent
+                });
+            });
+            localStorage.setItem(`marks_${selectedClass}`, JSON.stringify(markData));
+
+        }
+
+        function loadMarksFromLocalStorage(selectedClass) {
+            const savedMarks = localStorage.getItem(`marks_${selectedClass}`);
+            if (!savedMarks) return;
+
+            const markData = JSON.parse(savedMarks);
+            const rows = elements.tableBody.querySelectorAll('tr');
+            markData.forEach((data, index) => {
+                if (rows[index]) {
+                    const theoryInput = rows[index].querySelector('.theory-input');
+                    const practicalInput = rows[index].querySelector('.practical-input');
+                    const totalCell = rows[index].querySelector('.total-cell');
+                    theoryInput.value = data.theory;
+                    practicalInput.value = data.practical;
+                    totalCell.textContent = data.total;
+                }
+            });
+            setupInputListeners();
+        }
+
+        function clearAllData() {
+            const selectedClass = classSelect.value;
+
+            // Clear local storage for current class
+            if (selectedClass) {
+                localStorage.removeItem(`marks_${selectedClass}`);
+            }
+
+            // Reset all input fields
+            const rows = tableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const theoryInput = row.querySelector('.theory-input');
+                const practicalInput = row.querySelector('.practical-input');
+                const totalCell = row.querySelector('.total-cell');
+
+                theoryInput.value = '';
+                practicalInput.value = '';
+                totalCell.textContent = '0';
+            });
+
+            showFlashMessage(`Data for ${selectedClass} has been cleared.`, 'info');
+        }
+
+        function saveDraftToJSON() {
+            const selectedClass = classSelect.value;
+            if (!selectedClass) {
+                showFlashMessage('Please select a class first.', 'warning');
+                return;
+            }
+
+            const students = document.querySelectorAll('#marksTable tbody tr');
+            const draftData = {
+                class: selectedClass,
+                students: []
+            };
+
+            students.forEach(student => {
+                const cells = student.querySelectorAll('td');
+                draftData.students.push({
+                    sno: cells[0].textContent,
+                    name: cells[1].textContent,
+                    theory: cells[2].querySelector('input').value,
+                    practical: cells[3].querySelector('input').value,
+                    total: cells[4].textContent
+                });
+            });
+
+            const jsonString = JSON.stringify(draftData, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${selectedClass}_draft_marks.json`;
+            link.click();
+
+            showFlashMessage(`Draft for ${selectedClass} exported successfully!`, 'success');
+        }
+
+        function importDraftJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const draftData = JSON.parse(e.target.result);
+
+                    // Validate draft data
+                    if (!draftData.class || !draftData.students) {
+                        throw new Error('Invalid draft file format');
+                    }
+
+                    // Set the class selector to match the draft
+                    classSelect.value = draftData.class;
+                    loadStudents(); // This will reload the students for the class
+
+                    // Populate marks
+                    const rows = tableBody.querySelectorAll('tr');
+                    draftData.students.forEach((studentData, index) => {
+                        if (rows[index]) {
+                            const theoryInput = rows[index].querySelector('.theory-input');
+                            const practicalInput = rows[index].querySelector('.practical-input');
+                            const totalCell = rows[index].querySelector('.total-cell');
+
+                            theoryInput.value = studentData.theory || '';
+                            practicalInput.value = studentData.practical || '';
+                            totalCell.textContent = studentData.total || '0';
+                        }
+                    });
+
+                    // Recalculate totals and setup listeners
+                    setupInputListeners();
+                    saveMarksToLocalStorage(draftData.class);
+
+                    showFlashMessage('JSON data imported successfully!', 'success');
+                } catch (error) {
+                    console.error('Error importing draft:', error);
+                    showFlashMessage('Failed to import draft. Please check the file format.', 'error');
+                }
+
+                // Reset the file input
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function loadStudents() {
+            const selectedClass = classSelect.value;
+            if (!selectedClass) {
+                tableBody.innerHTML = '';
+                exportControls.style.display = 'none';
+                searchContainer.style.display = 'none';
+                return;
+            }
+
+            // Clear previous data
+            tableBody.innerHTML = '';
+            const students = studentData[selectedClass];
+
+            // Display class name
+            classNameDisplay.textContent = `Class: ${selectedClass}`;
+            exportControls.style.display = 'flex';
+            searchContainer.style.display = 'block';
+            searchInput.value = ''; // Reset search input
+            searchResults.textContent = ''; // Clear previous search results
+
+            students.forEach((student, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${student}</td>
+            <td>
+                <input type="number" min="0" max="70" class="theory-input" data-row="${index}">
+            </td>
+            <td>
+                <input type="number" min="0" max="30" class="practical-input" data-row="${index}">
+            </td>
+            <td class="total-cell">0</td>
+        `;
+                tableBody.appendChild(row);
+            });
+
+            // Load saved marks if exist
+            loadMarksFromLocalStorage(selectedClass);
+            setupInputListeners();
+        }
+
+        function searchStudents() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const rows = tableBody.querySelectorAll('tr');
+            let matchCount = 0;
+
+            rows.forEach(row => {
+                const studentNameCell = row.querySelector('td:nth-child(2)');
+                const studentName = studentNameCell.textContent.toLowerCase();
+
+                if (studentName.includes(searchTerm)) {
+                    row.classList.add('highlight');
+                    matchCount++;
+                } else {
+                    row.classList.remove('highlight');
+                }
+            });
+
+            // Update search results
+            if (searchTerm) {
+                searchResults.textContent = `${matchCount} student(s) found`;
+            } else {
+                searchResults.textContent = '';
+                rows.forEach(row => row.classList.remove('highlight'));
+            }
+        }
+
+        function setupInputListeners() {
+            const theoryInputs = document.querySelectorAll('.theory-input');
+            const practicalInputs = document.querySelectorAll('.practical-input');
+
+            theoryInputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    calculateTotal(index);
+                    saveMarksToLocalStorage(classSelect.value);
+                });
+                input.addEventListener('keyup', (e) => {
+                    if (e.key === 'Enter' || input.value.length === 2) {
+                        if (index < theoryInputs.length - 1) {
+                            practicalInputs[index].focus();
+                        }
+                    }
+                });
+            });
+
+            practicalInputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    calculateTotal(index);
+                    saveMarksToLocalStorage(classSelect.value);
+                });
+                input.addEventListener('keyup', (e) => {
+                    if (e.key === 'Enter' || input.value.length === 2) {
+                        if (index < practicalInputs.length - 1) {
+                            theoryInputs[index + 1].focus();
+                        }
+                    }
+                });
+            });
+        }
+
+        function calculateTotal(index) {
+            const theoryInputs = document.querySelectorAll('.theory-input');
+            const practicalInputs = document.querySelectorAll('.practical-input');
+            const totalCells = document.querySelectorAll('.total-cell');
+
+            const theoryMark = parseInt(theoryInputs[index].value) || 0;
+            const practicalMark = parseInt(practicalInputs[index].value) || 0;
+
+            const totalMark = theoryMark + practicalMark;
+            totalCells[index].textContent = totalMark;
+
+            // Validate input ranges
+            if (theoryMark > 70) {
+                theoryInputs[index].value = 70;
+                totalCells[index].textContent = (70 + practicalMark);
+            }
+            if (practicalMark > 30) {
+                practicalInputs[index].value = 30;
+                totalCells[index].textContent = (theoryMark + 30);
+            }
+        }
+
+        function printMarksheet() {
+            // Remove highlights before printing
+            const highlightedRows = document.querySelectorAll('.highlight');
+            highlightedRows.forEach(row => row.classList.remove('highlight'));
+
+            window.print();
+
+            // Restore highlights after printing
+            highlightedRows.forEach(row => row.classList.add('highlight'));
+
+            showFlashMessage('Marksheet printed successfully!', 'success');
+        }
+
+        function exportToJSON() {
+            const selectedClass = classSelect.value;
+            const students = document.querySelectorAll('#marksTable tbody tr');
+            const exportData = [];
+
+            students.forEach(student => {
+                const cells = student.querySelectorAll('td');
+                exportData.push({
+                    sno: cells[0].textContent,
+                    name: cells[1].textContent,
+                    theory: cells[2].querySelector('input').value,
+                    practical: cells[3].querySelector('input').value,
+                    total: cells[4].textContent
+                });
+            });
+
+            const jsonString = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${selectedClass}_marks.json`;
+            link.click();
+
+            showFlashMessage(`Marks for ${selectedClass} exported successfully!`, 'success');
+        }
+
+        function exportToExcel() {
+            const selectedClass = classSelect.value;
+            const table = document.getElementById('marksTable');
+
+            try {
+                const workbook = XLSX.utils.table_to_book(table);
+                XLSX.writeFile(workbook, `${selectedClass}_marks.xlsx`);
+                showFlashMessage(`Marks for ${selectedClass} exported to Excel successfully!`, 'success');
+            } catch (error) {
+                console.error('Excel export error:', error);
+                showFlashMessage('Failed to export to Excel. Please try again.', 'error');
+            }
+        }
+
+        // Load SheetJS library for Excel export
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js';
+        document.head.appendChild(script);
+
+        classSelect.addEventListener('change', loadStudents);
+        searchInput.addEventListener('input', searchStudents);
+    </script>
+</body>
+
+</html>
