@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glorious Primary School - 2024 UNEB Results</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        :root {
+            --primary-orange: #FF7F50;
+            --secondary-orange: #FFA07A;
+            --light-orange: #FFE4B5;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--light-orange);
+        }
+        .navbar {
+            background-color: var(--primary-orange);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        h1, h2, h3 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .export-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .export-btn {
+            padding: 10px 15px;
+            margin: 0 10px;
+            background-color: var(--secondary-orange);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .export-btn:hover {
+            background-color: var(--primary-orange);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: var(--secondary-orange);
+            color: white;
+        }
+        .summary {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .summary-item {
+            background-color: var(--light-orange);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        @media screen and (max-width: 768px) {
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 5px;
+            }
+            .export-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .export-btn {
+                margin: 5px 0;
+                width: 200px;
+            }
+            .summary {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Glorious Schools</h1>
+    </nav>
+
+    <div class="container">
+        <h2>Uganda National Examination Board (UNEB) Results 2024</h2>
+
+        <div class="export-buttons">
+            <button onclick="exportToPDF()" class="export-btn">Download PDF</button>
+            <button onclick="exportToExcel()" class="export-btn">Export to Excel</button>
+        </div>
+
+
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Index No</th>
+                    <th>Name</th>
+                    <th>Sex</th>
+                    <th>English</th>
+                    <th>Science</th>
+                    <th>SST</th>
+                    <th>Math</th>
+                    <th>Aggregate</th>
+                    <th>Division</th>
+                </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+        </table>
+    </div>
+    <div id="summary" class="summary"></div>
+
+
+<script>
+const students = [
+    {year: "2024", indexNo: "131002/001", name: "TAFFI ABIGAIL KIYAGA", sex: "F", eng: 1, sci: 3, sst: 2, math: 2, aggr: 8, div: 1},
+    {year: "2024", indexNo: "131002/002", name: "ABER JASMINE NOELLA", sex: "F", eng: 1, sci: 2, sst: 2, math: 2, aggr: 7, div: 1},
+    {year: "2024", indexNo: "131002/003", name: "AGASHA CHOICE LABONITA", sex: "F", eng: 3, sci: 3, sst: 3, math: 2, aggr: 11, div: 1},
+    {year: "2024", indexNo: "131002/004", name: "AGWANG NIESHA EMILYN", sex: "F", eng: 2, sci: 2, sst: 2, math: 2, aggr: 8, div: 1},
+    {year: "2024", indexNo: "131002/005", name: "WALUSIMBI ALEX JOSHUA", sex: "M", eng: 1, sci: 2, sst: 2, math: 1, aggr: 6, div: 1},
+ 
+];
+  
+
+// Export functions
+function exportToExcel() {
+    const wb = XLSX.utils.table_to_book(document.getElementById('resultsTable'));
+    XLSX.writeFile(wb, 'Glorious_Primary_School_UNEB_Results_2024.xlsx');
+}
+
+function exportToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('landscape');
+    
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text('Glorious Schools - UNEB Results 2024', 150, 20, { align: 'center' });
+    
+    doc.autoTable({
+        html: '#resultsTable',
+        startY: 30,
+        theme: 'grid',
+        headStyles: { 
+            fillColor: [255, 127, 80], 
+            textColor: 255,
+            fontStyle: 'bold'
+        }
+    });
+    
+    doc.save('Glorious_Primary_School_UNEB_Results_2024.pdf');
+}
+
+(function() {
+    // Calculate summary statistics
+    const calculateSummary = () => {
+        const totalCandidates = students.length;
+        const males = students.filter(s => s.sex === "M").length;
+        const females = students.filter(s => s.sex === "F").length;
+        const div1Students = students.filter(s => s.div === 1).length;
+        const div2Students = students.filter(s => s.div === 2).length;
+
+        return [
+            { label: "Total Candidates", value: totalCandidates },
+            { label: "Male", value: males },
+            { label: "Female", value: females },
+            { label: "Division 1", value: div1Students },
+            { label: "Division 2", value: div2Students }
+        ];
+    };
+
+    // Render summary
+    const renderSummary = () => {
+        const summaryDiv = document.getElementById('summary');
+        const summary = calculateSummary();
+        summaryDiv.innerHTML = summary.map(item => 
+            `<div class="summary-item">
+                <strong>${item.label}:</strong> ${item.value}
+            </div>`
+        ).join('');
+    };
+
+    // Sort and render results
+    const sortedResults = students.sort((a, b) => {
+        if (a.div !== b.div) {
+            return a.div - b.div;
+        }
+        return a.aggr - b.aggr;
+    });
+
+    const tbody = document.getElementById('resultsBody');
+    sortedResults.forEach(student => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${student.indexNo}</td>
+            <td>${student.name}</td>
+            <td>${student.sex}</td>
+            <td>${student.eng}</td>
+            <td>${student.sci}</td>
+            <td>${student.sst}</td>
+            <td>${student.math}</td>
+            <td>${student.aggr}</td>
+            <td>${student.div}</td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // Initial render
+    renderSummary();
+})();
+</script>
+</body>
+</html>
