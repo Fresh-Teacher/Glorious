@@ -159,21 +159,21 @@ export function DangerZone({ personalEmail, userId, userRole }: DangerZoneProps)
       if (userRole === 'student') {
         const { error } = await supabase
           .from('students')
-          .update({ password_hash: formData.newPassword })
+          .update({ password_hash: formData.newPassword } as any)
           .eq('id', userId);
         
         if (error) throw error;
       } else if (userRole === 'teacher') {
         const { error } = await supabase
           .from('teachers')
-          .update({ password_hash: formData.newPassword })
+          .update({ password_hash: formData.newPassword } as any)
           .eq('id', userId);
         
         if (error) throw error;
       } else if (userRole === 'admin') {
         const { error } = await supabase
           .from('admins')
-          .update({ password_hash: formData.newPassword })
+          .update({ password_hash: formData.newPassword } as any)
           .eq('id', userId);
         
         if (error) throw error;

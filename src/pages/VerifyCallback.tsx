@@ -22,15 +22,17 @@ export function VerifyCallback() {
           const { userType, userId, personalEmail } = JSON.parse(pendingVerification);
           
           try {
-            // Call the database function to update the verification status
-            const { error } = await supabase.rpc('verify_user_account', {
-              p_user_type: userType,
-              p_user_id: userId,
-              p_personal_email: personalEmail
+            // Call the edge function to update the verification status
+            const response = await supabase.functions.invoke('verify_user_account', {
+              body: {
+                p_user_type: userType,
+                p_user_id: userId,
+                p_personal_email: personalEmail
+              }
             });
             
-            if (error) {
-              console.error('Verification error:', error);
+            if (response.error) {
+              console.error('Verification error:', response.error);
               toast.error("Failed to verify account. Please try again.");
             } else {
               // Clear the pending verification

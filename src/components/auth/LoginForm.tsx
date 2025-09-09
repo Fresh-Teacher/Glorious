@@ -78,18 +78,20 @@ export function LoginForm({ schoolLogo }: LoginFormProps) {
     
     try {
       // Use the flexible login function that handles all user types
-      const { data, error } = await supabase
-        .rpc('verify_flexible_login', {
+      const response = await supabase.functions.invoke('verify_flexible_login', {
+        body: {
           p_identifier: signInData.email,
           p_password: signInData.password
-        });
+        }
+      });
       
-      if (error) {
-        toast.error(error.message || "Failed to sign in");
+      if (response.error) {
+        toast.error(response.error.message || "Failed to sign in");
         setIsLoading(false);
         return;
       }
       
+      const data = response.data;
       if (data && typeof data === 'object' && 'success' in data && data.success) {
         // Store session info based on role
         const role = (data as any).role;
