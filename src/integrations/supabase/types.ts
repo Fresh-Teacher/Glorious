@@ -49,6 +49,7 @@ export type Database = {
       }
       classes: {
         Row: {
+          class_code: string | null
           created_at: string | null
           description: string | null
           id: string | null
@@ -56,6 +57,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          class_code?: string | null
           created_at?: string | null
           description?: string | null
           id?: string | null
@@ -63,6 +65,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          class_code?: string | null
           created_at?: string | null
           description?: string | null
           id?: string | null
@@ -78,6 +81,7 @@ export type Database = {
           description: string | null
           id: string | null
           name: string | null
+          stream_code: string | null
           updated_at: string | null
         }
         Insert: {
@@ -86,6 +90,7 @@ export type Database = {
           description?: string | null
           id?: string | null
           name?: string | null
+          stream_code?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -94,6 +99,7 @@ export type Database = {
           description?: string | null
           id?: string | null
           name?: string | null
+          stream_code?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -110,6 +116,7 @@ export type Database = {
           personal_email: string | null
           photo_url: string | null
           stream_id: string | null
+          student_id: string | null
         }
         Insert: {
           class_id?: string | null
@@ -122,6 +129,7 @@ export type Database = {
           personal_email?: string | null
           photo_url?: string | null
           stream_id?: string | null
+          student_id?: string | null
         }
         Update: {
           class_id?: string | null
@@ -134,40 +142,62 @@ export type Database = {
           personal_email?: string | null
           photo_url?: string | null
           stream_id?: string | null
+          student_id?: string | null
         }
         Relationships: []
       }
       teachers: {
         Row: {
+          classesTaught: string | null
+          contactNumber: number | null
           created_at: string | null
           email: string | null
-          id: string | null
+          id: string
           is_verified: boolean | null
           name: string | null
+          nationality: string | null
           password_hash: string | null
           personal_email: string | null
+          photo_url: string | null
+          sex: string | null
+          subjectsTaught: string | null
+          teacher_code: string | null
           teacher_id: string | null
           updated_at: string | null
         }
         Insert: {
+          classesTaught?: string | null
+          contactNumber?: number | null
           created_at?: string | null
           email?: string | null
-          id?: string | null
+          id?: string
           is_verified?: boolean | null
           name?: string | null
+          nationality?: string | null
           password_hash?: string | null
           personal_email?: string | null
+          photo_url?: string | null
+          sex?: string | null
+          subjectsTaught?: string | null
+          teacher_code?: string | null
           teacher_id?: string | null
           updated_at?: string | null
         }
         Update: {
+          classesTaught?: string | null
+          contactNumber?: number | null
           created_at?: string | null
           email?: string | null
-          id?: string | null
+          id?: string
           is_verified?: boolean | null
           name?: string | null
+          nationality?: string | null
           password_hash?: string | null
           personal_email?: string | null
+          photo_url?: string | null
+          sex?: string | null
+          subjectsTaught?: string | null
+          teacher_code?: string | null
           teacher_id?: string | null
           updated_at?: string | null
         }
@@ -178,7 +208,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_class_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      generate_stream_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      generate_student_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      generate_teacher_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      verify_flexible_login: {
+        Args: { p_identifier: string; p_password: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
